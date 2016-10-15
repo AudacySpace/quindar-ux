@@ -4,7 +4,7 @@
   "description": "A sample Node.js app using Express 4",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+	"start": "node index.js",
 	"stop": "pkill --signal SIGINT node"	
   },
   "dependencies": {
