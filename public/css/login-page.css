@@ -1,4 +1,9 @@
-
+header {
+  text-align: center;
+}
+header img {
+  margin-top: 10px;
+}
 
 .login-page {
   width: 360px;
@@ -30,7 +35,7 @@
   font-family: "Open Sans", sans-serif;
   text-transform: uppercase;
   outline: 0;
-  background: #3d547a;
+  background: #07d1ea;
   width: 100%;
   border: 0;
   padding: 15px;
