@@ -6,7 +6,7 @@ app.use(express.static(__dirname + '/public'))
 
 app.get('/', function(request, response) {
 	response.writeHead(301,
-		{Location: 'http://whateverhostthiswillbe:8675/'+newRoom}
+		{Location: '/public/html/login.html'}
 		);
 	response.end();
 })
