@@ -4,7 +4,7 @@ This is the repository for the Quindar UX (GUI) code. Quindar is a real-time spa
 
 
 
-# Folder Structure
+## Folder Structure
 
 * public        - any static content served directly by nginx
  * public/css    - stylesheets
