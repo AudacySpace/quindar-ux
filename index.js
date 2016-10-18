@@ -5,9 +5,9 @@ app.set('port', (process.env.PORT || 5000))
 app.use(express.static(__dirname + '/public'))
 
 app.get('/', function(request, response) {
-  response.send('Hello Quindar! <br>\n Built 21 via Jenkins, just for Syndey.')
+  response.send('Hello Quindar!')
 })
 
 app.listen(app.get('port'), function() {
-  console.log("Node app is running at localhost:" + app.get('port'))
+  console.log("Node app is running at port " + app.get('port'))
 })

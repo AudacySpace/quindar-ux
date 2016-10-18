@@ -1,7 +1,7 @@
 {
-  "name": "Node.js Sample",
-  "description": "A barebones Node.js app using Express 4",
-  "repository": "https://github.com/heroku/node-js-sample",
-  "logo": "http://node-js-sample.herokuapp.com/node.svg",
-  "keywords": ["node", "express", "static"]
+  "name": "Node.js Quindar",
+  "description": "A MEAN stack space mission operations platform",
+  "repository": "https://github.com/quindar/quindar-ux",
+  "logo": "https://quindar.space/public/media/logos/quindar_regular.svg",
+  "keywords": ["node", "express"]
 }

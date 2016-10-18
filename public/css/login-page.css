@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
 
 .login-page {
   width: 360px;
@@ -16,7 +16,7 @@
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
 }
 .form input {
-  font-family: "Roboto", sans-serif;
+  font-family: "Open Sans", sans-serif;
   outline: 0;
   background: #f2f2f2;
   width: 100%;
@@ -27,7 +27,7 @@
   font-size: 14px;
 }
 .form button {
-  font-family: "Roboto", sans-serif;
+  font-family: "Open Sans", sans-serif;
   text-transform: uppercase;
   outline: 0;
   background: #3d547a;
@@ -96,7 +96,7 @@ body {
   background: -moz-linear-gradient(right, #153C7C, #3d547a);
   background: -o-linear-gradient(right, #153C7C, #3d547a);
   background: linear-gradient(to left, #153C7C, #3d547a);
-  font-family: "Roboto", sans-serif;
+  font-family: "Open Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;      
 }

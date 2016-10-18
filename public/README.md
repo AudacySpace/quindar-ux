@@ -1,1 +1,0 @@
-All static content should be placed in this folder.

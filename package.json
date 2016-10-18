@@ -1,7 +1,7 @@
 {
-  "name": "node-js-sample",
-  "version": "0.2.0",
-  "description": "A sample Node.js app using Express 4",
+  "name": "quindar-ux",
+  "version": "0.0.1",
+  "description": "Quindar is a space mission operations platform supported by Audacy",
   "main": "index.js",
   "scripts": {
 	"start": "node index.js",
@@ -15,16 +15,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/heroku/node-js-sample"
+    "url": "https://github.com/quindar/quindar-ux"
   },
   "keywords": [
     "node",
-    "heroku",
+	"quindar",
     "express"
   ],
-  "author": "Mark Pundsack",
+  "author": "Quindar by Audacy",
   "contributors": [
-    "Zeke Sikelianos <zeke@sikelianos.com> (http://zeke.sikelianos.com)"
+    "Audacy <quindar@audacy.space> (http://audacy.space)"
   ],
   "license": "MIT"
 }
