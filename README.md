@@ -7,12 +7,12 @@ This is the repository for the Quindar UX (GUI) code. Quindar is a real-time spa
 # Folder Structure
 
 * public        - any static content served directly by nginx
-* public/css    - stylesheets
-* public/media  - images, sounds, etc.
+ * public/css    - stylesheets
+ * public/media  - images, sounds, etc.
 
 * app           - the NodeJS application files
-* dashboard     - files for the main Quindar application
-* qwidgets      - files for Quindar widgets (in individual subfolders)
+ * app/dashboard     - files for the main Quindar application
+ * app/qwidgets      - files for Quindar widgets (in individual subfolders)
 
 * docs          - project documentation
 
