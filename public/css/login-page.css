@@ -96,7 +96,7 @@ footer {
   margin-bottom: 20px;
 }
 footer img {
-  max-width: 100%;
+  max-width: 120px;
 }
 @media (max-width: 800px) {
   margin-top: 40px;
