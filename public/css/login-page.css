@@ -32,7 +32,7 @@ body.planet-bg {
   text-transform: uppercase;
   outline: 0;
   background: #07d1ea;
-  width: 360px;
+  width: 450px;
   border: 0;
   padding: 15px;
   color: #FFFFFF;
@@ -110,4 +110,8 @@ body {
   font-family: "Open Sans", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;      
+}
+.gh-image {
+  margin-left: 20px;
+  margin-top: 7px;
 }
