@@ -18,8 +18,9 @@ body.planet-bg {
 
 .login-page {
   /*width: 360px;*/
-  padding: 8% 0 0;
+  /*padding: 8% 0 0;*/
   /*margin: auto;*/
+  margin-top: 30px;
 }
 .form {
   position: relative;
