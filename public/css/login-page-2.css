@@ -1,0 +1,87 @@
+html {
+    height: 100%;
+}
+body {
+    color: #3d547a;
+    background-color: #3d547a;
+    background-image:url("../media/Quindar-space-bkgrnd.jpg");
+    font-family: "Open Sans", sans-serif;
+}
+.logo img {
+/*  margin-top: 200px;*/
+  /*  width: 200px;*/
+    width: 430px;
+    max-width: 86%;
+    display: block;
+    margin: 0 auto;
+}
+
+#login-page {
+    background-position:  center center;
+    background-repeat:  no-repeat;
+    background-attachment:  fixed;
+    background-size: cover;
+    color: #000;
+    font-size: 16px;
+    height: 100%;
+    line-height: 1.4;
+    min-height: 100%;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    margin: 0;
+    padding: 0;
+}
+#login-page .content {
+    background: rgba(93,110,115,.9);
+    background: -webkit-linear-gradient(-45deg,rgba(57,68,75,.85) 0,rgba(57,68,75,.85) 100%);
+    background: -moz-linear-gradient(-45deg,rgba(57,68,75,.85) 0,rgba(57,68,75,.85) 100%);
+    background: -ms-linear-gradient(-45deg,rgba(57,68,75,.85) 0,rgba(57,68,75,.85) 100%);
+    background: -o-linear-gradient(-45deg,rgba(57,68,75,.85) 0,rgba(57,68,75,.85) 100%);
+    background: linear-gradient(135deg,rgba(57,68,75,.85) 0,rgba(57,68,75,.85) 100%);
+    -webkit-transition: all,.3s,ease-in-out;
+    -moz-transition: all,.3s,ease-in-out;
+    -o-transition: all,.3s,ease-in-out;
+    transition: all .3s ease-in-out;
+    height: 100%;
+/*    margin: 0 0 0 40px;*/
+    position: relative;
+    top: 0;
+/*    width: 400px;*/
+    z-index: 100;
+    padding-top: 160px;
+}
+#login-page .login-with-google button {
+  font-family: "Open Sans", sans-serif;
+  text-transform: uppercase;
+  outline: 0;
+  border: none;
+  background: #07d1ea;
+  width: 430px;
+  max-width: 86%;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+  display: block;
+  margin: 1rem auto 0;
+}
+
+#login-page .login-with-google .button:hover,.form button:active,.form button:focus {
+  background: #1072A4;
+}
+
+#login-page .content .footer-logos {
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    bottom: 30px;
+}
+#login-page .content .footer-logos .row {
+    max-width: 100%;
+    margin-bottom: 5px;
+}
+#login-page .content .footer-logos img {
+    max-width: 100%;
+}
