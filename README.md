@@ -23,10 +23,10 @@ This is the repository for the Quindar UX (GUI) code. Quindar is a real-time spa
 * Git
   * Documentation: http://git-scm.com/doc 
   * Installation: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
-*	Docker
+* Docker
   * Installation: https://docs.docker.com/engine/installation/
   
-## Running Quindar UI on Local Developer Environment	
+## Running Quindar UI on Local Developer Environment  
 
 * Clone the repositories
 * Build and Run docker container
@@ -45,7 +45,12 @@ Clone the two repositories in a single folder, such as ~/repositories
     git clone https://github.com/quindar/quindar-ux.git
     
 ### Build and Run Docker container for Quindar GUI
-Follow [qux Install](https://github.com/quindar/quindar-deploy/blob/master/README.md) to build and deploy the container on localhost
+Follow steps to build and deploy the container on localhost
+
+    cd quindar-deploy/qux-frontend
+    docker build -t "quindar-qux" .
+    cd ../../quindar-ux
+    docker run -d -t --name qux --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /sys:/host/sys:ro -v $(pwd):/node/ -p 80:80 -p 443:443 quindar-qux
 
 The UI should be up and running on: https://localhost
 
@@ -61,22 +66,29 @@ Naming convention for feature branches:
 
 Example(using git-flow)
 
-1. Create a new feature branch
-
+1. Initiate git flow
+        
         cd ~/repositories/quindar-ux
+        git flow init
+
+2. Create a new feature branch
+
         git flow feature start 2964_Developer_Environment
 
-2. Make changes in your favorite editor.
-3. To test the code, use shared volumes(docker) to point the local code to the code in the container.
+3. Publish the branch to the remote repo
+        
+        git flow feature publish 2964_Developer_Environment
 
-        cd ~/repositories/quindar-ux
-        docker run -d -t --name qux --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /sys:/host/sys:ro -v $(pwd):/node/ -p 80:80 -p 443:443 quindar-qux
+4. Make changes in your favorite editor.
+5. Test the code as changes would be reflected in the browser.
+6. Commit code in the feature branch and push it to the remote repo.
+        
+        git add <filename>
+        git commit -m "<commit message>"
+        git push origin feature/2964_Developer_Environment
 
-4. Commit code in the feature branch and push it to the remote repo.
-5. Peer Review
-6. Merge the code to develop branch and switch to develop branch.
+7. Peer Review
+8. Merge the code to develop branch and switch to develop branch.
 
         git flow feature finish 2964_Developer_Environment
-
-
-
+ 
