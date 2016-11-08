@@ -62,7 +62,7 @@ http://jeffkreeftmeijer.com/2010/why-arent-you-using-git-flow/
 A useful cheat-sheet: http://danielkummer.github.io/git-flow-cheatsheet/ 
 
 Naming convention for feature branches: 
-**\<Ticket_Number\>_\<Ticket_Label\>**
+**A\<Ticket_Number\>_\<Ticket_Label\>**
 
 Example(using git-flow)
 
@@ -73,11 +73,11 @@ Example(using git-flow)
 
 2. Create a new feature branch
 
-        git flow feature start 2964_Developer_Environment
+        git flow feature start A2964_Developer_Environment
 
 3. Publish the branch to the remote repo
         
-        git flow feature publish 2964_Developer_Environment
+        git flow feature publish A2964_Developer_Environment
 
 4. Make changes in your favorite editor.
 5. Test the code as changes would be reflected in the browser.
@@ -85,10 +85,10 @@ Example(using git-flow)
         
         git add <filename>
         git commit -m "<commit message>"
-        git push origin feature/2964_Developer_Environment
+        git push origin feature/A2964_Developer_Environment
 
 7. Peer Review
 8. Merge the code to develop branch and switch to develop branch.
 
-        git flow feature finish 2964_Developer_Environment
+        git flow feature finish A2964_Developer_Environment
  
