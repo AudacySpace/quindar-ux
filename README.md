@@ -45,9 +45,13 @@ Clone the two repositories in a single folder, such as ~/repositories
     git clone https://github.com/quindar/quindar-ux.git
     
 ### Build and Run Docker container for Quindar GUI
-Follow [qux Install](https://github.com/quindar/quindar-deploy/blob/master/README.md) to build and deploy the container on localhost
+Follow [qux Install](https://github.com/quindar/quindar-deploy/blob/master/README.md) to build the container on localhost. In order to run the container for development use, you need to map the source code directory inside the container to the source on the host. Use the following command, where ``<local_path_to_quindar-ux>`` is the path on your local machine to the cloned qindar-ux repository.
 
+```
+docker run -d -t --name qux -v <local_path_to_quindar-ux>:/node -p 80:80 -p 443:443 quindar-qux
+```
 The UI should be up and running on: https://localhost
+
 
 ### Building new features for Quindar UX
 Using Git-Flow would be easier to maintain git branches. Follow the link below for documentation and getting started with Git-Flow.
