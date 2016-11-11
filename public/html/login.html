@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="google-signin-client_id"
-          content="362495380849-nrd3ggo9adcrcu493fcu81k8ntkirnkc.apps.googleusercontent.com">
+    <meta name="google-signin-client_id" content="362495380849-nrd3ggo9adcrcu493fcu81k8ntkirnkc.apps.googleusercontent.com">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	
     <title>Quindar Login</title>
 
     <!-- Bootstrap -->
@@ -14,128 +14,122 @@
     <link rel="stylesheet" href="../css/site-fonts.css">
     <link rel="stylesheet" href="../css/login-page-2.css">
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="path/to/your/jquery.ui.min.js"></script>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<style>
+		/* forces google sign-in button to be full width */
+		.abcRioButton {
+			width : 100% !important;
+		}
 
-    <![endif]-->
+	</style>
+	
 </head>
 <body id="login-page">
-<div class="col-sm-offset-1 col-sm-5 content">
-    <div class="logo">
-        <img src="../media/logos/Quindar_Logo_Flat_White.png" alt="Quindar"/>
-    </div>
-    <div class="login-with-google" align="center">
-        <!--<button>Login with Google</button>
-       <div class="g-signin2" data-onsuccess="onSignIn"></div>
-       -->
-        <div id="my-signin2" style="margin-top: 50px">
-        </div>
+	<div class="col-sm-offset-1 col-sm-5 content">
+		<div class="sign-in">
+			<img id="qlogo" src="../media/logos/quindar_white.svg" alt="Quindar"/>
 
-        <script>
-            function onSuccess(googleUser) {
+			<div id="my-signin2"></div>
+		</div>
 
-                console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-                console.log('Successfully logged in!!');
-                window.location.href = "googleAuthentication.html";
-            }
-            function onFailure(error) {
-                console.log(error);
-            }
-            function renderButton() {
-                gapi.signin2.render('my-signin2', {
-                    'scope': 'profile email',
-                    'width': 430,
-                    'height': 50,
-                    'longtitle': true,
-                    'theme': 'dark',
-                    'onsuccess': onSuccess,
-                    'onfailure': onFailure
-                });
-            }
-
-
-        </script>
-
-    </div>
-
-    <div class="footer-logos">
-        <div class="row">
-            <div class="col-xs-4">
-                <img src="../media/logos/aud_audacy_2.png" alt="Audacy"/>
-            </div>
-            <div class="col-xs-4">
-                <img src="../media/logos/aud_angular_2.png" alt="Angular"/>
-            </div>
-            <div class="col-xs-4">
-                <img src="../media/logos/aud_mongodb_2.png" alt="MongoDB"/>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-4">
-                <img src="../media/logos/aud_nodejs_2.png" alt="NodeJS"/>
-            </div>
-            <div class="col-xs-4">
-                <img src="../media/logos/aud_docker_2.png" alt="Docker"/>
-            </div>
-            <div class="col-xs-4">
-                <img src="../media/logos/aud_github_2.png" alt="Github"/>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<div class="footer-logos">
+			<div class="row">
+				<div class="col-xs-4">
+					<img src="../media/logos/aud_audacy_2.png" alt="Audacy"/>
+				</div>
+				<div class="col-xs-4">
+					<img src="../media/logos/aud_angular_2.png" alt="Angular"/>
+				</div>
+				<div class="col-xs-4">
+					<img src="../media/logos/aud_mongodb_2.png" alt="MongoDB"/>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-4">
+					<img src="../media/logos/aud_nodejs_2.png" alt="NodeJS"/>
+				</div>
+				<div class="col-xs-4">
+					<img src="../media/logos/aud_docker_2.png" alt="Docker"/>
+				</div>
+				<div class="col-xs-4">
+					<img src="../media/logos/aud_github_2.png" alt="Github"/>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6" id="image_credit_container">
+		<p id="image_credit"></p>
+	</div>	
 
 
-<script>
+	<script>
+		function onSuccess(googleUser) {
 
-    var imgs=[];
-    imgs[0] = "ida-dactyl-1920.jpg";
-    imgs[1] = "clear-skies-1920.jpg";
-    imgs[2] = "mars-sand-dunes-1920.jpg";
-    imgs[3] = "northeast-usa-1920.jpg";
-    imgs[4] = "acidalia.jpg";
-    imgs[5] = "daily-morning-aurora-1920.jpg";
-    imgs[6] = "mars-sand-dunes-1920.jpg";
-    imgs[7] = "messy-galaxy-hubble-1920.jpg";
-    imgs[8] = "moon-venus-catalina-1920.jpg";
-    imgs[9] = "sculptor-galaxy134-1920.jpg";
-    imgs[10] = "zodiacal_beletsky_1900.jpg";
-    imgs[11] = "cosmic-fireball-falling-over-alma-1920.jpg";
-    imgs[12] = "magellanic-clouds-paranal-1920.jpg";
-    imgs[13] = "morning-light-1920.jpg";
-    imgs[14] = "sculptor-galaxy134-1920.jpg";
-    imgs[15] = "star-trails-eso-paranal-1920.jpg";
-    imgs[16] = "voyager-1-entering-interstellar-space-1920.jpg";
+			console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+			console.log('Successfully logged in!!');
+			window.location.href = "googleAuthentication.html";
+		}
+		function onFailure(error) {
+			console.log(error);
+		}
+		function renderButton() {
+			gapi.signin2.render('my-signin2', {
+				'scope': 'profile email',
+				'width': 430,
+				'height': 50,
+				'longtitle': true,
+				'theme': 'dark',
+				'onsuccess': onSuccess,
+				'onfailure': onFailure
+			});
+		}
+	</script>
+
+	<script>
+
+		/* 
+			The list of available background images should be scraped from 
+			http://www.space.com/wallpapers. Select a random page, then a random
+			image, then get the download URL and credit line. If no image or
+			connection is available, then use one local image as a fallback.
+			
+		*/
+			
+		// first 5 entries are local fallback
+		var imgs=[]; cred=[];
+		
+		imgs[0] = "../media/background/acidalia.jpg";
+		cred[0] = "Acidalia Planitia - NASA/JPL-Caltech/Univ. of Arizona (via space.com)";
+		
+		imgs[1] = "../media/background/cosmic-fireball-falling-over-alma-1920.jpg";
+		cred[1] = "Fiery Voyage Over ALMA - ESO/C. Malin (via space.com)";
+		
+		imgs[2] = "../media/background/star-trails-eso-paranal-1920.jpg";
+		cred[2] = "Acidalia Planitia - NASA/JPL-Caltech/Univ. of Arizona (via space.com)";
+	
+		imgs[3] = "../media/background/mars-sand-dunes-1920.jpg";
+		cred[3] = "Martian Sand Dunes - NASA/JPL-Caltech (via space.com)";
+
+		imgs[4] = "../media/background/messy-galaxy-hubble-1920.jpg";
+		cred[4] = "Hubble Galaxy - NASA/JPL-Caltech (via space.com)";
+		
+
+		
+		// get other possible choices remotely
+		// tba
+
+		
+		// determine array size, and get random index
+		idx = Math.floor(Math.random() * imgs.length);
+		
+		//update the document display
+		document.body.style.backgroundImage = "url('" + imgs[idx] + "')";
+		document.getElementById("image_credit").innerHTML = cred[idx];
 
 
-    var index = 0;
-    document.body.style.backgroundImage = "url('" + imgs[0] + "')";
-
-    setInterval(function(){ getImages(); }, 24*60*60);
-
-    var idx = 0;
-    function getImages() {
-
-        var urlImage = imgs[idx];
-        document.body.style.backgroundImage = "url('" + urlImage + "')";
-        //document.body.style.backgroundImage = urlImage
-
-        console.log("URL display " +  urlImage);
-        console.log("Displaying URL" + document.body.style.backgroundImage);
-
-        idx = idx + 1;
-        idx = idx % imgs.length;
-    }
-
-</script>
-
-<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
-
+	</script>
+	
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
 
 </body>
 </html>
