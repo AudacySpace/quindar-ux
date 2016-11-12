@@ -54,6 +54,9 @@ Follow steps to build and deploy the container on localhost
 
 The UI should be up and running on: http://localhost
 
+Follow [qux Install](https://github.com/quindar/quindar-deploy/blob/master/README.md) to build the container on localhost. In order to run the container for development use, you need to map the source code directory inside the container to the source on the host. Use the following command, where ``<local_path_to_quindar-ux>`` is the path on your local machine to the cloned qindar-ux repository.
+
+
 ### Building new features for Quindar UX
 Using Git-Flow would be easier to maintain git branches. Follow the link below for documentation and getting started with Git-Flow.
 
