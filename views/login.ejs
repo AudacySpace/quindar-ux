@@ -10,49 +10,44 @@
     <title>Quindar Login</title>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="../css/bootstrap-min.css">
-    <link rel="stylesheet" href="../css/site-fonts.css">
-    <link rel="stylesheet" href="../css/login-page-2.css">
-
-	<style>
-		/* forces google sign-in button to be full width */
-		.abcRioButton {
-			width : 100% !important;
-		}
-
-	</style>
+    <link rel="stylesheet" href="/css/bootstrap-min.css">
+    <link rel="stylesheet" href="/css/site-fonts.css">
+    <link rel="stylesheet" href="/css/login-page-2.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
 	
 </head>
 <body id="login-page">
 	<!-- limiting max-width to 600px prevents image & login from getting huge on big screens -->
 	<div class="col-sm-offset-1 col-sm-5 content" style="max-width:600px;">
 		<div class="sign-in">
-			<img id="qlogo" src="../media/logos/quindar_white.svg" alt="Quindar"/>
-
-			<div id="my-signin2"></div>
+			<img id="qlogo" src="/media/logos/quindar_white.svg" alt="Quindar"/>
+            <a href="/auth/google" class="btn btn-danger" style="width: 100%;">
+                <span class="fa fa-google-plus"></span> 
+                Sign in with Google
+            </a>
 		</div>
 
 		<div class="footer-logos">
 			<div class="row">
 				<div class="col-xs-4">
-					<img src="../media/logos/aud_audacy_2.png" alt="Audacy"/>
+					<img src="/media/logos/aud_audacy_2.png" alt="Audacy"/>
 				</div>
 				<div class="col-xs-4">
-					<img src="../media/logos/aud_angular_2.png" alt="Angular"/>
+					<img src="/media/logos/aud_angular_2.png" alt="Angular"/>
 				</div>
 				<div class="col-xs-4">
-					<img src="../media/logos/aud_mongodb_2.png" alt="MongoDB"/>
+					<img src="/media/logos/aud_mongodb_2.png" alt="MongoDB"/>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-xs-4">
-					<img src="../media/logos/aud_nodejs_2.png" alt="NodeJS"/>
+					<img src="/media/logos/aud_nodejs_2.png" alt="NodeJS"/>
 				</div>
 				<div class="col-xs-4">
-					<img src="../media/logos/aud_docker_2.png" alt="Docker"/>
+					<img src="/media/logos/aud_docker_2.png" alt="Docker"/>
 				</div>
 				<div class="col-xs-4">
-					<img src="../media/logos/aud_github_2.png" alt="Github"/>
+					<img src="/media/logos/aud_github_2.png" alt="Github"/>
 				</div>
 			</div>
 		</div>
@@ -98,28 +93,28 @@
 		// local fallback in case Quindar can't reach space.com
 		var imgs=[]; cred=[];
 		
-		imgs[0] = "../media/background/acidalia-planitia-1600.jpg";
+		imgs[0] = "/media/background/acidalia-planitia-1600.jpg";
 		cred[0] = "Acidalia Planitia (Mars) - NASA/JPL-Caltech/Univ. of Arizona";
 
-		imgs[1] = "../media/background/jezero-crater-1600.jpg";
+		imgs[1] = "/media/background/jezero-crater-1600.jpg";
 		cred[1] = "Jezero Crater (Mars) - NASA/JPL-Caltech/Univ. of Arizona";
 
-		imgs[2] = "../media/background/europa-remastered-1600.jpg";
+		imgs[2] = "/media/background/europa-remastered-1600.jpg";
 		cred[2] = "Jupiter's Moon Europa - NASA, JPL-Caltech, SETI Institute, Cynthia Phillips, Marty Valenti";
 		
-		imgs[3] = "../media/background/cosmic-fireball-falling-over-alma-1920.jpg";
+		imgs[3] = "/media/background/cosmic-fireball-falling-over-alma-1920.jpg";
 		cred[3] = "Fiery Voyage Over ALMA - ESO/C. Malin";
 		
-		imgs[4] = "../media/background/star-trails-eso-paranal-1920.jpg";
+		imgs[4] = "/media/background/star-trails-eso-paranal-1920.jpg";
 		cred[4] = "Star Trails - Univ. of Arizona";
 	
-		imgs[5] = "../media/background/mars-sand-dunes-1920.jpg";
+		imgs[5] = "/media/background/mars-sand-dunes-1920.jpg";
 		cred[5] = "Martian Sand Dunes - NASA/JPL-Caltech";
 
-		imgs[6] = "../media/background/messy-galaxy-hubble-1920.jpg";
+		imgs[6] = "/media/background/messy-galaxy-hubble-1920.jpg";
 		cred[6] = "Hubble Galaxy - NASA/JPL-Caltech";
 		
-		imgs[7] = "../media/background/magellanic-clouds-1920.jpg";
+		imgs[7] = "/media/background/magellanic-clouds-1920.jpg";
 		cred[7] = "Magellanic Clouds above the Atacama Desert in Chile - ESO/Y. Beletsky";
 
 		
