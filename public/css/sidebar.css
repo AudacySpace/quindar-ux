@@ -1,0 +1,210 @@
+/*!
+ * Custom CSS for dashboard page 
+ */
+
+ body {
+    overflow-x: hidden;
+ }
+
+.row-offcanvas {
+    margin-right: -25px;
+    margin-left: -25px;
+}
+
+.navbar{
+    border: 0 none;   
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #CFCFD5;
+}
+
+.navbar-default{
+    background-color: white;
+}
+
+.navbar-form{
+    margin-top: 0px;
+}
+
+.navbar-brand>img {
+  height: 100%;
+  width: auto;
+}
+
+.navbar-brand{
+    padding: 5px 5px;
+}
+
+.container-fluid{
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+#add-widget{
+    background-color: #07D1EA;
+    color: white;
+}
+
+#input-search{
+    background-color: #242833;
+    border: #242833;
+    border-radius: 0px;
+}
+
+#group-search{
+    border-radius:0px;     
+    background-color: #464954;
+    border: #464954;
+    color: #FFFFFF;
+}
+/* Toggle Styles */
+
+#wrapper {
+    padding-left: 0;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    overflow: hidden;
+}
+
+#wrapper.toggled {
+    padding-left: 250px;
+    overflow: scroll;
+}
+
+#sidebar-wrapper {
+    z-index: 1000;
+    position: absolute;
+    left: 250px;
+    width: 0;
+    height: 100%;
+    margin-left: -250px;
+    overflow-y: auto;
+    background: #020613;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#header-wrapper {
+    z-index: 1000;
+    position: absolute;
+    left: 250px;
+    width: 0;
+    height: 100%;
+    margin-left: -250px;
+    overflow-y: auto;
+    background: #222;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    width: 250px;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    width: 250px;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: absolute;
+    padding: 15px;
+    overflow-x: hidden; 
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: relative;
+    margin-right: 0px; 
+}
+
+.fixed-brand{
+    width: auto;
+}
+
+/* Sidebar Styles */
+
+.sidebar-nav {
+    position: absolute;
+    top: 0;
+    width: 250px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    margin-top: 2px;
+}
+
+.sidebar-nav li {
+    text-indent: 20px;
+    line-height: 40px;
+}
+
+.sidebar-nav li a {
+    display: block;
+    text-decoration: none;
+    color: #999999;
+}
+
+.sidebar-nav li a:hover {
+    text-decoration: none;
+    color: #fff;
+    background: rgba(255,255,255,0.2);
+}
+
+.sidebar-nav li a:active,
+.sidebar-nav li a:focus {
+    text-decoration: none;
+}
+
+.sidebar-nav > .sidebar-brand {
+    height: 71px;
+    font-size: 18px;
+    line-height: 62px;
+    border-bottom: 3px solid #07D1EA;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-indent: 0px;
+}
+
+.sidebar-nav > .sidebar-brand a {
+    color: #999999;
+}
+
+.sidebar-nav > .sidebar-brand a:hover {
+    color: #fff;
+    background: none;
+}
+
+.no-margin{
+    margin:0;
+}
+
+@media(min-width:768px) {
+    #wrapper {
+        padding-left: 250px;
+    }
+
+    #wrapper.toggled {
+        padding-left: 0;
+    }
+
+    #sidebar-wrapper {
+        width: 250px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        width: 0;
+    }
+
+    #page-content-wrapper {
+        padding: 0px;
+        position: relative;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+    }
+}

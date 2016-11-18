@@ -14,6 +14,13 @@ module.exports = function(app, passport) {
         });
     });
 
+    // DASHBOARD SECTION =========================
+    app.get('/dashboard', isLoggedIn, function(req, res) {
+        res.render('dashboard.ejs', {
+            user : req.user
+        });
+    });
+
     // LOGOUT ==============================
     app.get('/logout', function(req, res) {
         req.logout();
@@ -28,7 +35,7 @@ module.exports = function(app, passport) {
     // the callback after google has authenticated the user
     app.get('/auth/google/callback',
         passport.authenticate('google', {
-            successRedirect : '/profile',
+            successRedirect : '/dashboard',
             failureRedirect : '/'
         }));
 
@@ -38,7 +45,7 @@ module.exports = function(app, passport) {
     // the callback after google has authorized the user
     app.get('/connect/google/callback',
         passport.authorize('google', {
-            successRedirect : '/profile',
+            successRedirect : '/dashboard',
             failureRedirect : '/'
         }));
 
@@ -46,7 +53,7 @@ module.exports = function(app, passport) {
         var user          = req.user;
         user.google.token = undefined;
         user.save(function(err) {
-            res.redirect('/profile');
+            res.redirect('/dashboard');
         });
     });
 
