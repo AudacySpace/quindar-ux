@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="dashboard for mission operations platform, Quindar">
+    <meta name="author" content="Chavi Malhotra">
+
+    <title>Quindar Dashboard</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/css/bootstrap-min.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/css/sidebar.css" rel="stylesheet">
+</head>
+<body>
+
+    <div id="wrapper">
+        <div class="container-fluid">
+            <div class="row row-offcanvas">
+        <!-- Sidebar -->
+                <div id="sidebar-wrapper">
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-brand">
+                            <form class="navbar-form">
+                                <div class="form-group" style="display:inline;">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="input-search" placeholder="Search">
+                                        <span class="input-group-addon" id="group-search">
+                                            <span class="glyphicon glyphicon-search"></span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </form>
+                        </li>
+                        <li>
+                            <a href="#">Realtime Telemetry</a>
+                        </li>
+                        <li>
+                            <a href="#">Sat Subsystems</a>
+                        </li>
+                        <li>
+                            <a href="#">Sat Imagery</a>
+                        </li>
+                        <li>
+                            <a href="#">Atmosphere Pressure</a>
+                        </li>
+                    </ul>      
+        		</div>
+                <!-- /#sidebar-wrapper -->
+                <!-- Page Content -->
+                <div id="page-content-wrapper" class="column col-xs-12 col-sm-9 col-lg-10">
+                    <nav class="navbar navbar-default navbar-static-top no-margin">
+                        <div class="container-fluid">
+                            <div class="navbar-header header-wrapper">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <a class="navbar-brand" href="#" id="menu-toggle"><img src="/media/logos/quindar_regular.svg" alt="Quindar"/></a>
+                            </div>
+                            <div id="navbar" class="navbar-collapse collapse">
+                                <ul class="nav navbar-nav navbar-right no-margin">
+                                    <li class="dropdown">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= user.google.name %></a>
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a href="/logout">Logout</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#" id="add-widget"> 
+                                            <span class="fa fa-bars" aria-hidden="true"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h2>Dashboard</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        <!-- /#page-content-wrapper -->
+            </div>
+        </div>
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="/scripts/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/scripts/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    </script>
+
+</body>
+
+</html>
