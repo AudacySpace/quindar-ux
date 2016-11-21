@@ -18,7 +18,7 @@
 </head>
 <body>
 
-    <div id="wrapper">
+    <div id="wrapper" class="toggled">
         <div class="container-fluid">
             <div class="row row-offcanvas">
         <!-- Sidebar -->
@@ -92,7 +92,29 @@
                         </div>
                     </div>
                 </div>
-        <!-- /#page-content-wrapper -->
+                <!-- /#page-content-wrapper -->
+
+                <!-- Right Sidebar -->
+                <div id="sidebar-right">
+                    <ul class="sidebar-nav">
+                        <li class="sidebar-brand">
+                            <a href="#">Configuration Menu</a>
+                        </li>
+                        <li>
+                            <a href="#">Realtime Telemetry</a>
+                        </li>
+                        <li>
+                            <a href="#">Sat Subsystems</a>
+                        </li>
+                        <li>
+                            <a href="#">Sat Imagery</a>
+                        </li>
+                        <li>
+                            <a href="#">Atmosphere Pressure</a>
+                        </li>
+                    </ul>      
+                </div>
+                <!-- End Right Sidebar -->
             </div>
         </div>
     </div>
@@ -109,6 +131,11 @@
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
+    });
+    $("#add-widget").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-right").toggleClass("active");
+        $("#wrapper").toggleClass("right");
     });
     </script>
 
