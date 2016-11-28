@@ -16,8 +16,8 @@
     <!-- Custom CSS -->
     <link href="/css/sidebar.css" rel="stylesheet">
 </head>
-<body>
 
+<body onload="startTime()">
     <div id="wrapper" class="toggled">
         <!-- Sidebar -->
                 <div id="sidebar-wrapper">
@@ -69,6 +69,9 @@
                                     <li><a href="#" class="status-icon"><img src="/media/icons/status_icons-07.png" alt="Quindar"/></a></li>
                                     <li><a href="#" class="status-icon"><img src="/media/icons/status_icons-08.png" alt="Quindar"/></a></li>
                                     
+                                </ul>
+                                <ul class="nav navbar-nav time">
+                                    <li class="clock" id="txt"></li>
                                 </ul>
                                 <ul class="nav navbar-nav navbar-right no-margin">
                                     <li class="dropdown">
@@ -142,6 +145,28 @@
     });
     </script>
 
-</body>
+    <!-- UTC Clock -->
+    <script>
+    function startTime() {
+        var today = new Date();
+        var start = new Date(today.getUTCFullYear(), 0, 0);
+        var diff = today - start;
+        var h = today.getUTCHours();
+        var m = today.getUTCMinutes();
+        var s = today.getUTCSeconds();
+        var days = Math.floor(diff/(1000*60*60*24));
+        h = checkTime(h);
+        m = checkTime(m);
+        s = checkTime(s);
+        document.getElementById('txt').innerHTML =
+        days + "." + h + ":" + m + ":" + s + " " + "UTC";
+        var t = setTimeout(startTime, 500);
+    }
+    function checkTime(i) {
+        if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+        return i;
+    }
+    </script>
 
+</body>
 </html>
