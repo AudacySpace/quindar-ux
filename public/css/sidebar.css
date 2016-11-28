@@ -141,11 +141,27 @@
 }
 
 .status-icon>img {
-  height: 100%;
-  width: auto;
-  display: block;
+    height: 100%;
+    width: auto;
+    display: block;
 }
 
+.status-bar{
+    padding-right: 60px;
+    border-right: 3px solid #CFCFD5;
+} 
+
+.navbar-nav>li.clock{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    line-height:20px;
+    font-size: 24px;
+}
+
+.time{
+    padding-left: 60px;
+    color: #555;
+}
 
 /* Sidebar Styles */
 
