@@ -45,7 +45,7 @@ Clone the two repositories in a single folder, such as ~/repositories
     git clone https://github.com/quindar/quindar-ux.git
     
 ### Build and Run Docker container for Quindar GUI
-Follow steps to build and deploy the container on localhost
+Follow steps to build and deploy the container on localhost.
 
     cd quindar-deploy/qux-frontend
     docker build -t "quindar-qux" .
