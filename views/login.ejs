@@ -64,33 +64,9 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-6" id="image_credit_container">
+	<div id="image_credit_container">
 		<p id="image_credit"></p>
-	</div>	
-
-
-	<script>
-		function onSuccess(googleUser) {
-
-			console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
-			console.log('Successfully logged in!!');
-			window.location.href = "googleAuthentication.html";
-		}
-		function onFailure(error) {
-			console.log(error);
-		}
-		function renderButton() {
-			gapi.signin2.render('my-signin2', {
-				'scope': 'profile email',
-				'width': 430,
-				'height': 50,
-				'longtitle': true,
-				'theme': 'dark',
-				'onsuccess': onSuccess,
-				'onfailure': onFailure
-			});
-		}
-	</script>
+	</div>
 
 	<script>
 
