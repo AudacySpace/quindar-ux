@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <meta charset="utf-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="dashboard for mission operations platform, Quindar">
+    <meta name="author" content="Chavi Malhotra">
+    <meta name="author" content="Taruni Gattu">
+    <title>Quindar Dashboard</title>
+<!--   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+  <link href="/css/bootstrap-min.css" rel="stylesheet">
+  <link href="/css/font-awesome.min.css" rel="stylesheet">
+  <link href="/css/dashboardstyles.css" rel="stylesheet">
+ <!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> -->
+<!--   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
+ 
+</head>
+<body onload="startTime()">
+<div id="wrapper" class="toggled">
+
+<!--Left side nav bar -->
+  <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <form class="navbar-form">
+      <div class="form-group" style="display:inline;">
+        <div class="input-group">
+          <input type="text" class="form-control" id="input-search" placeholder="Search">
+          <span class="input-group-addon" id="group-search">
+            <span class="glyphicon glyphicon-search"></span>
+          </span>
+        </div>
+      </div>
+    </form>
+    <a href="#">Realtime Telemetry</a>
+    <a href="#">Sat Subsystems</a>
+    <a href="#">Sat Imagery</a>
+    <a href="#">Atmosphere Pressure</a>
+  </div>
+
+  <!-- End of Left Side Nav -->
+  <div id="main">
+    <nav class="navbar navbar-default" id="navbar">
+      <div class="container-fluid">
+        <div class="navbar-header">
+         <a class="navbar-brand" href="#" id="menu-toggle" onclick="openNav()"><img src="/media/logos/quindar_regular.svg" alt="Quindar"/></a>
+       </div>
+       <ul class="nav navbar-nav">
+        <li class="statusicons"><ul class="nav navbar-nav status-bar">
+          <li><a href="#" class="status-icon"><img src="/media/icons/status_icons-05.png" alt="Quindar"/></a></li>
+          <li><a href="#" class="status-icon"><img src="/media/icons/status_icons-06.png" alt="Quindar"/></a></li>
+          <li><a href="#" class="status-icon"><img src="/media/icons/status_icons-07.png" alt="Quindar"/></a></li>
+          <li><a href="#" class="status-icon"><img src="/media/icons/status_icons-08.png" alt="Quindar"/></a></li>
+        </ul></li>
+        <li><ul class="nav navbar-nav time">
+          <li class="clock" id="txt"></li>
+        </ul></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a class="dropdown-toggle"  id="username" data-toggle="dropdown" href="#"><%= user.google.name %></a>
+          <ul class="dropdown-menu logout-bar">
+            <li ><a href="/logout">Logout</a></li>
+          </ul>
+        </li>
+        <li id="cfgmenu"><a href="#" id="add-widget" onclick="openrightNav()"> 
+          <span class="fa fa-bars" aria-hidden="true"> </span>
+        </a></li>
+      </ul>
+    </div>
+  </nav>
+
+
+  <div class="container">
+    <h3>Dashboard</h3>
+  </div>
+</div>
+
+<!--Right Side Nav -->
+<div id="myrightSidenav" class="rightsidenav">
+  <a href="javascript:void(0)" class="rclosebtn" onclick="closerightNav()">&times;</a>
+      <a href="#" id="configmenu"> Configuration Menu</a>
+      <a href="#">Qwidget</a>
+      <a href="#">User Administration</a>
+      <a href="#">Server Administration</a>
+      <a href="#">Documentation</a>
+      <a href="/logout">Logout</a>
+  </div>
+<!--End of Right Side Nav -->
+</div>
+
+
+    <!-- jQuery -->
+    <script src="/scripts/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/scripts/bootstrap.min.js"></script>
+
+  <!-- UTC Clock -->
+  <script src="/scripts/clock.js"></script>
+
+  <!--Side Navigation-->
+  <script src="/scripts/side-navigation.js"></script>
+
+  </body>
+  </html>
