@@ -1,0 +1,334 @@
+/*!
+ * Custom CSS for dashboard page 
+ */
+
+ body {
+    overflow-x: hidden;
+}
+
+.navbar{
+    border: 0 none;  
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #CFCFD5;
+    text-align: center;
+    
+}
+
+.navbar .navbar-nav {
+    display:inline-block;
+    float: none;
+}
+
+
+.navbar-default {
+    background-color: white;
+}
+
+.navbar-form {
+    margin-top: 0px;
+}
+
+.navbar-brand>img {
+  height: 100%;
+  width: auto;
+  padding-left:10px;
+  padding-right:10px;
+}
+
+.navbar-brand {
+    padding: 5px 5px;
+}
+
+.container-fluid {
+    padding-left: 25px;
+    padding-right: 25px;
+
+}
+
+#add-widget {
+    background-color: #07D1EA;
+    color: white;
+}
+
+#input-search {
+    background-color: #242833;
+    border: #242833;
+    border-radius: 0px;
+}
+
+#group-search {
+    border-radius:0px;     
+    background-color: #464954;
+    border: #464954;
+    color: #FFFFFF;
+
+}
+
+#wrapper {
+    padding-left: 250px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    overflow: hidden;
+    padding-right: 0;
+    height: 100%;
+    width:100%;
+    position: absolute;
+}
+
+#wrapper.toggled {
+    padding-left: 0px;
+}
+
+.status-icon {
+    float: left;
+    height: 50px;
+    padding: 10px 10px !important;
+    font-size: 18px;
+}
+
+.status-icon>img {
+    height: 100%;
+    width: auto;
+    display: inline-block;
+}
+
+.status-bar {
+ padding-left:10px;
+ padding-right:10px;
+} 
+
+.navbar-nav>li.clock {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    line-height:20px;
+    font-size: 24px;
+}
+
+.time {
+    padding-left: 10px;
+    padding-right:10px;
+    color: #555;
+    font-size: 12px;
+}
+
+/* Sidebar Styles */
+
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.rightsidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 16px;
+  color: #818181;
+  display: block;
+  transition: 0.3s
+}
+
+.rightsidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #818181;
+  display: block;
+  transition: 0.3s
+}
+
+.rightsidenav div a{
+  font-size: 20px;
+
+}
+
+.sidenav a:hover, .offcanvas a:focus{
+  color: #f1f1f1;
+}
+
+.rightsidenav a:hover, .offcanvas a:focus{
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+.rightsidenav .rclosebtn{
+
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+#configmenu, #configmenu.hover{
+
+  font-size: 22px;
+  color: white;
+
+}
+
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+
+
+@media(min-width:768px) {
+    #wrapper {
+        padding-left: 250px;
+    }
+
+    #wrapper.toggled {
+        padding-left: 0;
+    }
+
+    #sidebar-wrapper {
+        width: 250px;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        width: 0;
+    }
+
+    #page-content-wrapper {
+        padding: 0px;
+        position: relative;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        position: relative;
+        margin-right: 0;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+
+
+    div.navbar-header {
+        padding:0;
+        margin:0;
+        width:20px;
+    }
+
+    .navbar-brand>img {
+        height:40%;
+        padding-left:0px;
+        padding-right:0px;
+        margin-bottom:0;
+        padding-bottom:0;
+    }
+
+
+    .status-icon {
+        height:40px;
+        padding:0;
+    }
+
+    li.status-icon {
+        padding:0;
+        margin:0;
+
+
+    }
+
+    ul.nav.navbar-nav {
+        padding:0;
+        margin:0;
+
+    }
+
+    li#txt.clock{
+        font-size: 12px;
+        position:relative;
+        top:0;
+        left:0;
+    }
+
+    ul.nav.navbar-nav.navbar-right{
+     position:fixed;
+     top:0;
+     right:0;
+     display:inline;
+ }
+
+ a#username.dropdown-toggle{
+    font-size:75%;
+    color:black;
+    
+    /* display:none;*/
+}
+
+a#add-widget {
+    width:70%;
+    position:relative;
+    top:0;
+    right:0;
+    margin-top: 0px ;
+    margin-bottom:0px;
+    margin-right:0;
+    padding:3px 22px;
+}
+
+li.open {
+    width:75%;
+}
+
+li#cfgmenu {
+    font-size:20px;
+    
+}
+li.statusicons{
+ /*display:none;*/
+}
+li#txt.clock{
+    /*    display:none;*/
+}
+
+.container-fluid{
+    width:100%;
+    margin:0;
+}
+
+div.navbar-header{
+    margin:0;
+}
+
+}
+
+@media only screen and (min-width: 600px) {
+    /* For tablets: */
+    
+}

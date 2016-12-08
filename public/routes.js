@@ -16,7 +16,7 @@ module.exports = function(app, passport) {
 
     // DASHBOARD SECTION =========================
     app.get('/dashboard', isLoggedIn, function(req, res) {
-        res.render('dashboard.ejs', {
+        res.render('dashboard_v2.ejs', {
             user : req.user
         });
     });
