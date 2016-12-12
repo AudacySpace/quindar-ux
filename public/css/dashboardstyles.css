@@ -1,121 +1,102 @@
 /*!
  * Custom CSS for dashboard page 
  */
-
- body {
-    overflow-x: hidden;
+body {
+  overflow-x: hidden;
 }
-
+#QBlack{
+  display:none;
+}
 .navbar{
-    border: 0 none;  
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-bottom: 3px solid #CFCFD5;
-    text-align: center;
-    
+  border: 0 none;  
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #CFCFD5;
+  text-align: center; 
 }
-
 .navbar .navbar-nav {
-    display:inline-block;
-    float: none;
+  display:inline-block;
+  float: none;
 }
-
-
 .navbar-default {
-    background-color: white;
+  background-color: white;
 }
-
 .navbar-form {
-    margin-top: 0px;
+  margin-top: 0px;
 }
-
 .navbar-brand>img {
   height: 100%;
   width: auto;
   padding-left:10px;
   padding-right:10px;
 }
-
 .navbar-brand {
-    padding: 5px 5px;
+  padding: 5px 5px;
 }
-
 .container-fluid {
-    padding-left: 25px;
-    padding-right: 25px;
-
+  padding-left: 25px;
+  padding-right: 25px;
 }
-
 #add-widget {
-    background-color: #07D1EA;
-    color: white;
+  background-color: #07D1EA;
+  color: white;
 }
-
 #input-search {
-    background-color: #242833;
-    border: #242833;
-    border-radius: 0px;
+  background-color: #242833;
+  border: #242833;
+  border-radius: 0px;
 }
-
 #group-search {
-    border-radius:0px;     
-    background-color: #464954;
-    border: #464954;
-    color: #FFFFFF;
-
+  border-radius:0px;     
+  background-color: #464954;
+  border: #464954;
+  color: #FFFFFF;
 }
-
 #wrapper {
-    padding-left: 250px;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
-    overflow: hidden;
-    padding-right: 0;
-    height: 100%;
-    width:100%;
-    position: absolute;
+  padding-left: 250px;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  overflow: hidden;
+  padding-right: 0;
+  height: 100%;
+  width:100%;
+  position: absolute;
 }
-
 #wrapper.toggled {
-    padding-left: 0px;
+  padding-left: 0px;
 }
-
 .status-icon {
-    float: left;
-    height: 50px;
-    padding: 10px 10px !important;
-    font-size: 18px;
+  float: left;
+  height: 50px;
+  padding: 10px 10px !important;
+  font-size: 18px;
 }
-
 .status-icon>img {
-    height: 100%;
-    width: auto;
-    display: inline-block;
+  height: 100%;
+  width: auto;
+  display: inline-block;
 }
-
 .status-bar {
- padding-left:10px;
- padding-right:10px;
+  padding-left:10px;
+  padding-right:10px;
 } 
-
 .navbar-nav>li.clock {
-    padding-top: 15px;
-    padding-bottom: 15px;
-    line-height:20px;
-    font-size: 24px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  line-height:20px;
+  font-size: 24px;
+}
+.time {
+  padding-left: 10px;
+  padding-right:10px;
+  color: #555;
+  font-size: 12px;
 }
 
-.time {
-    padding-left: 10px;
-    padding-right:10px;
-    color: #555;
-    font-size: 12px;
-}
 
 /* Sidebar Styles */
-
 .sidenav {
   height: 100%;
   width: 0;
@@ -128,7 +109,6 @@
   transition: 0.5s;
   padding-top: 60px;
 }
-
 .rightsidenav {
   height: 100%;
   width: 0;
@@ -141,7 +121,6 @@
   transition: 0.5s;
   padding-top: 60px;
 }
-
 .sidenav a {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
@@ -150,7 +129,6 @@
   display: block;
   transition: 0.3s
 }
-
 .rightsidenav a {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
@@ -159,51 +137,174 @@
   display: block;
   transition: 0.3s
 }
-
-.rightsidenav div a{
+ a#username.dropdown-toggle {
+  font-size:75%;
+  color:black;
+  display:none;
+}
+.rightsidenav div a {
   font-size: 20px;
-
 }
-
-.sidenav a:hover, .offcanvas a:focus{
+.sidenav a:hover, .offcanvas a:focus {
   color: #f1f1f1;
 }
-
-.rightsidenav a:hover, .offcanvas a:focus{
+.rightsidenav a:hover, .offcanvas a:focus {
   color: #f1f1f1;
 }
-
+#user-name {
+  display:none;
+}
 .sidenav .closebtn {
   position: absolute;
   top: 0;
   right: 25px;
-  font-size: 36px;
+  font-size: 18px;
   margin-left: 50px;
 }
-
-.rightsidenav .rclosebtn{
-
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
+.rightsidenav .rclosebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 18px;
+  margin-left: 50px;
 }
-
-#configmenu, #configmenu.hover{
-
-  font-size: 22px;
+#configmenu, #configmenu:hover {
+  font-size: 20px;
   color: white;
-
+}
+#user-name {
+  display:block;
+  margin:10px 35px;
+  color:#07D1EA;
+  font-size:24px;
 }
 
+@media only screen and (max-width: 736px) {
+    /* For mobile phones: */
+#QRegular {
+  display:none;
+}
+#QBlack {
+  display:inline-block;
+}
+div.navbar-header {
+  padding:0;
+  margin:0;
+  width:20px;
+}
+#user-name {
+  display:block;
+  margin:10px 35px;
+  color:#07D1EA;
+  font-size:18px;
+}
+.navbar {
+  height:60px;
+}
+.navbar-brand>img {
+  height:50%;
+  padding-left:0px;
+  padding-right:0px;
+  margin-bottom:0;
+  padding-bottom:0;
+}
+.status-icon {
+  height:40px;
+  padding:0;
+}
+li.status-icon {
+  padding:0;
+  margin:0;
+}
+ul.nav.navbar-nav {
+  padding:0;
+  margin:0;
+}
+li#txt.clock {
+  font-size: 14px;
+  position:relative;
+  top:0;
+  left:0;
+}
+ul.nav.navbar-nav.navbar-right {
+  position:fixed;
+  top:0;
+  right:0;
+  display:inline;
+ }
+ a#username.dropdown-toggle {
+    font-size:75%;
+    color:black;
+    display:none;
+}
+a#add-widget {
+    width:100%;
+    position:relative;
+    top:0;
+    right:12px;
+    margin-top: 10px ;
+    margin-bottom:10px;
+}
+.sidenav a {
+  font-size:14px;
+}
+#configmenu {
+  font-size:14px;
+  border-bottom: 1px solid #242833;
+}
+.rightsidenav a{
+  font-size: 14px;
+}
+#i5 {
+  position:absolute;
+  top:-45px; /*-45px*/
+  right:74px;/*54px*/
+  height:50%;
+}
+#i6 {
+  position:absolute;
+  top:-85px; /* -85px */
+  left:-52px; /* -30px*/
+  height:50%;
+}
+#i7{
+  position:absolute;
+  top: -124px; /*-124px*/
+  left: -30px;/*-7px*/
+  height: 50%;
+}
+#i8{
+  position:absolute;
+  top: -164px; /* -164px*/
+  left: -8px;/*16px*/
+  height: 50%;
+}
+li.open {
+  width:75%;
+}
+li#cfgmenu {
+  font-size:16px;   
+}
+li#txt.clock{
+  position:absolute;
+  top:-225px;
+  right:-93px;
+  font-size:8px;
+}
+.container-fluid{
+  width:100%;
+  margin:0;
+}
+div.navbar-header{
+    margin:0;
+}
+}   
+}
 
-@media screen and (max-height: 450px) {
+/*@media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
-
-
 
 @media(min-width:768px) {
     #wrapper {
@@ -231,104 +332,4 @@
         position: relative;
         margin-right: 0;
     }
-}
-
-@media only screen and (max-width: 768px) {
-    /* For mobile phones: */
-
-
-    div.navbar-header {
-        padding:0;
-        margin:0;
-        width:20px;
-    }
-
-    .navbar-brand>img {
-        height:40%;
-        padding-left:0px;
-        padding-right:0px;
-        margin-bottom:0;
-        padding-bottom:0;
-    }
-
-
-    .status-icon {
-        height:40px;
-        padding:0;
-    }
-
-    li.status-icon {
-        padding:0;
-        margin:0;
-
-
-    }
-
-    ul.nav.navbar-nav {
-        padding:0;
-        margin:0;
-
-    }
-
-    li#txt.clock{
-        font-size: 12px;
-        position:relative;
-        top:0;
-        left:0;
-    }
-
-    ul.nav.navbar-nav.navbar-right{
-     position:fixed;
-     top:0;
-     right:0;
-     display:inline;
- }
-
- a#username.dropdown-toggle{
-    font-size:75%;
-    color:black;
-    
-    /* display:none;*/
-}
-
-a#add-widget {
-    width:70%;
-    position:relative;
-    top:0;
-    right:0;
-    margin-top: 0px ;
-    margin-bottom:0px;
-    margin-right:0;
-    padding:3px 22px;
-}
-
-li.open {
-    width:75%;
-}
-
-li#cfgmenu {
-    font-size:20px;
-    
-}
-li.statusicons{
- /*display:none;*/
-}
-li#txt.clock{
-    /*    display:none;*/
-}
-
-.container-fluid{
-    width:100%;
-    margin:0;
-}
-
-div.navbar-header{
-    margin:0;
-}
-
-}
-
-@media only screen and (min-width: 600px) {
-    /* For tablets: */
-    
-}
+}*/

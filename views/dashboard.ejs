@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="dashboard for mission operations platform, Quindar">
+    <meta name="author" content="Chavi Malhotra">
+    <meta name="author" content="Taruni Gattu">
+    <title>Quindar Dashboard</title>
+    <link href="/css/bootstrap-min.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/css/dashboardstyles.css" rel="stylesheet">
+    <!--   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+  <!--  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> -->
+  <!--   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> --> 
+</head>
+<body onload="startTime()">
+  <div id="wrapper" class="toggled">
+  <!--Left side nav bar -->
+  <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" id="closebtn" onclick="closeLeftNav()">&times;</a>
+    <form class="navbar-form" id="form1">
+      <div class="form-group" style="display:inline;">
+        <div class="input-group">
+          <input type="text" class="form-control" id="input-search" placeholder="Search">
+          <span class="input-group-addon" id="group-search">
+            <span class="glyphicon glyphicon-search"></span>
+          </span>
+        </div>
+      </div>
+    </form>
+    <a class="leftmenu" href="#" id="left-menu-item1">Realtime Telemetry</a>
+    <a class="leftmenu" href="#" id="left-menu-item2">Sat Subsystems</a>
+    <a class="leftmenu" href="#" id="left-menu-item3">Sat Imagery</a>
+    <a class="leftmenu" href="#" id="left-menu-item4">Atmosphere Pressure</a>
+  </div>
+  <!-- End of Left Side Nav -->
+  
+  <!-- Main Dashboard Navigation-->
+  <div id="main">
+    <nav class="navbar navbar-default" id="navbar">
+      <div class="container-fluid" id="top-header">
+        <div class="navbar-header">
+         <a class="navbar-brand" href="#" id="QRegular" onclick="openLeftNav()"><img id="main-img" src="/media/logos/quindar_regular.svg" alt="Quindar"/></a>
+         <a class="navbar-brand" href="#" id="QBlack" onclick="openLeftNav()"><img id="main-img" src="/media/logos/Quindar_Icon_Black.svg" alt="Quindar"/></a>
+       </div>
+       <ul class="nav navbar-nav">
+        <li class="statusicons"><ul class="nav navbar-nav status-bar" id="s-icons">
+          <li id="icon-05"><a href="#" class="status-icon"><img id="i5" src="/media/icons/status_icons-05.png" alt="Quindar"/></a></li>
+          <li id="icon-06"><a href="#" class="status-icon"><img id="i6" src="/media/icons/status_icons-06.png" alt="Quindar"/></a></li>
+          <li id="icon-07"><a href="#" class="status-icon"><img id="i7" src="/media/icons/status_icons-07.png" alt="Quindar"/></a></li>
+          <li id="icon-08"><a href="#" class="status-icon"><img id="i8" src="/media/icons/status_icons-08.png" alt="Quindar"/></a></li>
+        </ul></li>
+        <li><ul class="nav navbar-nav time">
+          <li class="clock" id="txt"></li>
+        </ul></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <a class="dropdown-toggle"  id="username" data-toggle="dropdown" href="#"><%= user.google.name %></a>
+          <ul class="dropdown-menu logout-bar">
+            <li ><a href="/logout">Logout</a></li>
+          </ul>
+        </li>
+        <li id="cfgmenu"><a href="#" id="add-widget" onclick="openRightNav()"> 
+          <span class="fa fa-bars" aria-hidden="true"> </span>
+        </a></li>
+      </ul>
+      </div>
+    </nav>
+  </div>
+  <!--End Main Dashboard Navigation-->
+
+  <!--Main Dashboard for Widgets -->
+  <div class="container">
+    <h5>Dashboard</h5>
+  </div>
+  <!--End Main Dashboard for Widgets -->
+
+  <!--Right Side Nav -->
+  <div id="myrightSidenav" class="rightsidenav">
+    <h3 id="user-name">Hi <%=user.google.name %></h3>
+    <a href="javascript:void(0)" class="rclosebtn" id="rclosebtn" onclick="closeRightNav()">&times;</a>
+    <a href="#" id="configmenu"> Configuration Menu</a>
+      <a href="#">Qwidget</a>
+      <a href="#">User Administration</a>
+      <a href="#">Server Administration</a>
+      <a href="#">Documentation</a>
+      <a href="/logout">Logout</a>
+  </div>
+<!--End of Right Side Nav -->
+</div>
+    <!-- jQuery -->
+    <script src="/scripts/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/scripts/bootstrap.min.js"></script>
+    <!-- UTC Clock -->
+    <script src="/scripts/clock.js"></script>
+    <!--Side Navigation-->
+    <script src="/scripts/side-navigation.js"></script>
+</body>
+</html>
