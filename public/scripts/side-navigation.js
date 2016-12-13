@@ -17,6 +17,7 @@
        var mq_iphone6plus_landscape = window.matchMedia("(max-width: 736px)");
        var mq_iphone6plus_landscape_height = window.matchMedia("(max-height: 414px)");
        var mq_ipad = window.matchMedia("(max-width: 768px)");
+       var mq_mozilla = window.matchMedia("(max-width: 800px)"); // only for mozilla firefox 800x1280 
        var mq_ipad_landscape = window.matchMedia("(max-width: 1024px");
        var mq_ipad_pro = window.matchMedia("(max-width: 1024px)");
 
@@ -79,6 +80,7 @@
          document.getElementById("input-search").style.width = "700px";
          document.getElementById("rclosebtn").style.fontSize ="21px";
        }
+
       else if(mq_ipad_landscape.matches && window.matchMedia("(orientation: landscape)").matches){
           // document.getElementById("s-icons").style.display = 'none';
          document.getElementById("mySidenav").style.width = "30%";
@@ -101,7 +103,7 @@
        else {
         document.getElementById("mySidenav").style.width = "20%";//18%
         document.getElementById("main").style.marginLeft = "20%";//18%
-        document.getElementById("input-search").style.width = "400px";
+        // document.getElementById("input-search").style.width = "200px";
         document.getElementById("closebtn").style.fontSize ="36px";
         document.getElementById("input-search").style.fontSize = "18px";
         document.getElementById("left-menu-item1").style.fontSize = "18px";
@@ -202,6 +204,7 @@
       document.getElementById("main").style.marginRight = "100%";
       document.getElementById("rclosebtn").style.fontSize ="21px";
    }
+  
   else if(mq_ipad_landscape.matches && window.matchMedia("(orientation: landscape)").matches){
       document.getElementById("myrightSidenav").style.width = "30%";
       document.getElementById("main").style.marginRight = "30%";
