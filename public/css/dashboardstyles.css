@@ -10,7 +10,7 @@ body {
 .navbar{
   border: 0 none;  
   padding-top: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 0px;
   border-bottom: 3px solid #CFCFD5;
   text-align: center; 
 }
@@ -27,16 +27,17 @@ body {
 .navbar-brand>img {
   height: 100%;
   width: auto;
-  padding-left:10px;
-  padding-right:10px;
+  padding-left:5px;
+  padding-right:5px;
 }
 .navbar-brand {
   padding: 5px 5px;
 }
 .container-fluid {
-  padding-left: 25px;
+  padding-left: 15px;
   padding-right: 25px;
 }
+
 #add-widget {
   background-color: #07D1EA;
   color: white;
@@ -52,6 +53,7 @@ body {
   border: #464954;
   color: #FFFFFF;
 }
+
 #wrapper {
   padding-left: 250px;
   -webkit-transition: all 0.5s ease;
@@ -94,6 +96,37 @@ body {
   color: #555;
   font-size: 12px;
 }
+
+#i5 {
+  position:absolute;
+  top:10px; /*-45px*/
+  right:40px;/*54px*/
+  height:65%;
+}
+#i6 {
+  position:absolute;
+  top:10px; /* -85px */
+  right:25px; /* -30px*/
+  height:65%;
+}
+#i7{
+  position:absolute;
+  top: 10px; /*-124px*/
+  right: 10px;/*-7px*/
+  height: 65%;
+}
+#i8{
+  position:absolute;
+  top: 10px; /* -164px*/
+  right: -5px;/*16px*/
+  height: 65%;
+}
+#txt.clock{
+  top:0px;
+  right:-40px;
+  font-size:22px;
+}
+
 
 
 /* Sidebar Styles */
@@ -138,9 +171,9 @@ body {
   transition: 0.3s
 }
  a#username.dropdown-toggle {
-  font-size:75%;
+  font-size:18px;
   color:black;
-  display:none;
+  display:inline-block;
 }
 .rightsidenav div a {
   font-size: 20px;
@@ -161,6 +194,7 @@ body {
   font-size: 18px;
   margin-left: 50px;
 }
+
 .rightsidenav .rclosebtn {
   position: absolute;
   top: 0;
@@ -172,11 +206,17 @@ body {
   font-size: 20px;
   color: white;
 }
+.dropdown-menu{
+  min-width: 128px;
+}
 #user-name {
-  display:block;
+  display:none;
   margin:10px 35px;
   color:#07D1EA;
   font-size:24px;
+}
+#mini-logout{
+    display:none;
 }
 
 @media only screen and (max-width: 736px) {
@@ -198,11 +238,14 @@ div.navbar-header {
   color:#07D1EA;
   font-size:18px;
 }
+#mini-logout{
+  display:block;
+}
 .navbar {
   height:60px;
 }
 .navbar-brand>img {
-  height:50%;
+  height:65%;
   padding-left:0px;
   padding-right:0px;
   margin-bottom:0;
@@ -245,6 +288,7 @@ a#add-widget {
     margin-top: 10px ;
     margin-bottom:10px;
 }
+
 .sidenav a {
   font-size:14px;
 }
@@ -257,27 +301,27 @@ a#add-widget {
 }
 #i5 {
   position:absolute;
-  top:-45px; /*-45px*/
+  top:-43px; /*-45px*/
   right:74px;/*54px*/
-  height:50%;
+  height:55%;
 }
 #i6 {
   position:absolute;
-  top:-85px; /* -85px */
-  left:-52px; /* -30px*/
-  height:50%;
+  top:-83px; /* -85px */
+  right:50px; /* -30px*/
+  height:55%;
 }
 #i7{
   position:absolute;
-  top: -124px; /*-124px*/
-  left: -30px;/*-7px*/
-  height: 50%;
+  top: -122px; /*-124px*/
+  right: 26px;/*-7px*/
+  height: 55%;
 }
 #i8{
   position:absolute;
-  top: -164px; /* -164px*/
-  left: -8px;/*16px*/
-  height: 50%;
+  top: -162px; /* -164px*/
+  right: 2px;/*16px*/
+  height: 55%;
 }
 li.open {
   width:75%;
@@ -287,8 +331,8 @@ li#cfgmenu {
 }
 li#txt.clock{
   position:absolute;
-  top:-225px;
-  right:-93px;
+  top:-222px;
+  right:-100px;
   font-size:8px;
 }
 .container-fluid{
