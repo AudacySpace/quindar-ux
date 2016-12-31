@@ -369,3 +369,14 @@ function closeRightNav() {
     document.getElementById("add-widget").style.display = 'inline-block';
   }
 }
+
+
+function openList1() {
+    var list = document.getElementById("widgetops");
+
+    if (list.style.display == "none"){
+        list.style.display = "block";
+    }else{
+        list.style.display = "none";
+    }
+}

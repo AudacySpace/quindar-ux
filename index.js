@@ -43,3 +43,8 @@ require('./public/routes.js')(app, passport); // load our routes and pass in our
 app.listen(app.get('port'), function() {
   console.log("Node app is running at port " + app.get('port'));
 });
+
+
+
+
+

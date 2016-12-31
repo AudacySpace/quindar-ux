@@ -1,0 +1,32 @@
+  
+/*Custom Grid stack css*/
+
+.grid-stack {
+  background: #ffffff;
+}
+.form-group{
+  display:inline;
+}
+.grid-stack-item-content {
+  color: #2c3e50;
+  text-align: center;
+  height:10%;
+  border:3px solid #808080;
+  background-color: #d9edf7;
+}  
+#removespan {
+  position:absolute;
+  right:0px;
+  top:0px;
+  font-size:24px;
+}
+.grid-stack > .grid-stack-item > .grid-stack-item-content {
+  position: static;
+}
+#widgetops {
+       /* display:none;*/
+      list-style-type: none;
+}
+#usermail{
+      display:none;
+}
