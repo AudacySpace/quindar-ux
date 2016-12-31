@@ -1,4 +1,11 @@
+
+
 module.exports = function(app, passport) {
+        
+var mongoose = require('mongoose');
+
+// load up the layouts model
+var Layout  = require('./models/layouts');
 
 // normal routes ===============================================================
 
@@ -16,6 +23,7 @@ module.exports = function(app, passport) {
 
     // DASHBOARD SECTION =========================
     app.get('/dashboard', isLoggedIn, function(req, res) {
+        
         res.render('dashboard.ejs', {
             user : req.user
         });
@@ -58,12 +66,56 @@ module.exports = function(app, passport) {
     });
 
 
+// -------------------Save and Load Grid Layout ---------------------------------
+
+    //Load Layout from layouts collection of Quindar database
+    app.get('/loadlayout', function(req,res){
+        var email = req.query.emailaddress;
+        // console.log(email);
+        Layout.findOne({'emailaddress':email},function(err,docs){
+            console.log("Layout is " + docs +" "+"grid is"+ docs.grid);
+            res.send(docs.grid);
+        });
+    })
+  
+  //Save Layout to layouts collection of Quindar database
+    app.post('/savelayout',function(req,res){
+        var email = req.body.emailaddress;
+        var gridarray = req.body.grid;
+        console.log(req.body.emailaddress);
+        Layout.findOne({ 'emailaddress' : email }, function(err, layout) {
+            console.log("Layout is " + layout +" " + gridarray);
+            if (err)
+            console.log("Error saving in DB: " + err);
+
+            if (layout) {
+                layout.grid = gridarray;
+
+                layout.save(function(err) {
+                    if (err) throw err;
+                    console.log("Layout data updated successfully for " + email);
+                });                       
+            } 
+            else {
+                var newLayout = new Layout();
+                newLayout.grid = gridarray;
+                newLayout.emailaddress = email;
+                newLayout.save(function(err){
+                    if (err) console.log(err);
+                    console.log("Data saved");
+                })
+            }
+        });
+    });
+
 };
 
 // route middleware to ensure user is logged in
 function isLoggedIn(req, res, next) {
+    console.log("loggedddd");
     if (req.isAuthenticated())
         return next();
 
     res.redirect('/');
 }
+

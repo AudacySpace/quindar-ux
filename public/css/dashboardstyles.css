@@ -64,7 +64,7 @@ body {
   padding-right: 0;
   height: 100%;
   width:100%;
-  position: absolute;
+ /* position: absolute;*/
 }
 #wrapper.toggled {
   padding-left: 0px;
@@ -216,7 +216,11 @@ body {
   font-size:24px;
 }
 #mini-logout{
-    display:none;
+  display:none;
+}
+
+a#addwidget, a#save-grid, a#load-grid, a#clear-grid{
+  font-size:16px;
 }
 
 @media only screen and (max-width: 736px) {
@@ -226,6 +230,9 @@ body {
 }
 #QBlack {
   display:inline-block;
+}
+a#addwidget, a#save-grid, a#load-grid, a#clear-grid{
+  font-size:12px;
 }
 div.navbar-header {
   padding:0;
@@ -344,36 +351,3 @@ div.navbar-header{
 }
 }   
 }
-
-/*@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-}
-
-@media(min-width:768px) {
-    #wrapper {
-        padding-left: 250px;
-    }
-
-    #wrapper.toggled {
-        padding-left: 0;
-    }
-
-    #sidebar-wrapper {
-        width: 250px;
-    }
-
-    #wrapper.toggled #sidebar-wrapper {
-        width: 0;
-    }
-
-    #page-content-wrapper {
-        padding: 0px;
-        position: relative;
-    }
-
-    #wrapper.toggled #page-content-wrapper {
-        position: relative;
-        margin-right: 0;
-    }
-}*/
