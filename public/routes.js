@@ -7,6 +7,9 @@ var mongoose = require('mongoose');
 // load up the layouts model
 var Layout  = require('./models/layouts');
 
+// Load position
+var Position = require('./models/position');
+
 // normal routes ===============================================================
 
     // show the home page (will also have our login links)
@@ -108,8 +111,28 @@ var Layout  = require('./models/layouts');
         });
     });
 
-};
 
+
+// -------------------Connect to database-------------------
+   app.get('/getposition',function(req,res){
+       // var doc = Position.find().sort({$natural:-1}).limit(1);
+       // console.log("Layout is " + doc);
+       // console.log("sending response");
+       //"_id": "5862fc274c6bb5109f206601"
+       console.log("hi");
+       console.log(Position.find().sort({$natural:-1}).limit(1));
+       console.log("please see above for last record");
+
+
+           Position.find({},{},function(e,docs){
+               console.log("collection below");
+               console.log(docs);
+               res.send(docs);
+       });
+   });
+   
+};
+   
 // route middleware to ensure user is logged in
 function isLoggedIn(req, res, next) {
     console.log("loggedddd");

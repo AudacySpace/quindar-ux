@@ -219,7 +219,7 @@ body {
   display:none;
 }
 
-a#addwidget, a#save-grid, a#load-grid, a#clear-grid{
+a#addwidget, a#save-grid, a#load-grid, a#clear-grid, a#addGround{
   font-size:16px;
 }
 
@@ -231,7 +231,7 @@ a#addwidget, a#save-grid, a#load-grid, a#clear-grid{
 #QBlack {
   display:inline-block;
 }
-a#addwidget, a#save-grid, a#load-grid, a#clear-grid{
+a#addwidget, a#save-grid, a#load-grid, a#clear-grid, a#addGround{
   font-size:12px;
 }
 div.navbar-header {

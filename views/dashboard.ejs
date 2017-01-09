@@ -14,6 +14,7 @@
   <link href="/css/dashboardstyles.css" rel="stylesheet">
   <link rel="stylesheet" href="/scripts/dist/gridstack.css"/>
   <link href="/css/gridlayout.css" rel="stylesheet">
+  <link href="/css/widgetstyles.css" rel="stylesheet">  
 </head>
 <body onload="startTime()">
   <div id="wrapper" class="toggled">
@@ -99,6 +100,7 @@
     <a href="#" onclick = "openList1()">Qwidget</a>
     <ul id="widgetops" style="display:none;">  <!-- style="display:none;" -->
       <li><a id="addwidget" href="#">Add Widget</a></li>
+	  <li><a id="addGround" href="#">Add Ground Track</a></li>
       <li><a id="save-grid" href="#">Save Grid</a></li>
       <li><a id="load-grid" href="#">Load Grid</a></li>
       <li><a id="clear-grid" href="#">Clear Grid</a></li>
@@ -117,14 +119,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.0/jquery-ui.js"></script>
 <!-- Bootstrap Core JavaScript -->
 <script src="/scripts/bootstrap.min.js"></script>
-<!-- lodash-->
+<!-- lodash -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.min.js"></script>
 <!-- gridstack library -->
 <script src="/scripts/dist/gridstack.all.js"></script>
 <!-- UTC Clock -->
 <script src="/scripts/clock.js"></script>
-<!--Side Navigation-->
+<!-- Side Navigation -->
 <script src="/scripts/side-navigation.js"></script>
+<!-- D3 -->
+<script src="/scripts/d3.min.js"></script>
+<!-- topojson-client -->
+<script src="/scripts/topojson-client.min.js"></script>
 <!-- Dashboard widget grid layout-->
 <script src="/scripts/widgetgrid.js"></script>
 
