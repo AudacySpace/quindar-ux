@@ -1,10 +1,9 @@
-    
+  var counter=0;  
         $(function () {
             var options = {
             };
-
             var usermail = document.getElementById('usermail').innerHTML;
-             
+ 
             $('.grid-stack').gridstack(options);
 
             new function () {
@@ -17,17 +16,175 @@
               this.grid = $('.grid-stack').data('gridstack');
 
 
-              // function to add widget to the grid layout 
+              //function to add plain widget to the grid layout 
               this.add = function(){
-              this.grid.addWidget($('<div class="panel panel-primary"><div class="grid-stack-item-content panel-heading" /><button type="button" class="close" aria-label="Close" id="removewidget" ><span aria-hidden="true" id="removespan">&times;</span></button><div/>'),0,0,2,2);
-              $('.close').click(this.removeWid);
+              this.grid.addWidget($('<div class="panel panel-primary"><div class="grid-stack-item-content panel-heading" /><button type="button" class="close" aria-label="Close" id="removewidget"><span role="button" aria-hidden="true" id="removespan">&times;</span></button><div/>'),0,0,2,2);
+
+             
+               $(document).on('click', '#removewidget', function(e) {
+                console.log("widget deleted");
+                e.target.closest("div").remove();
+              });
               }.bind(this);
-      
-              // function to remove widget from the grid layout
-              this.removeWid = function(e){
-              //console.log(e.target.closest("div"));
-              e.target.closest("div").remove();
+
+
+              this.tableWidget = function(){
+                var rows='';
+                var width = $(window).width();
+                counter++;
+
+                 for(var i=2;i<12;i++){
+                    rows += '<tr><th id="categoryID'+i+counter+'"></th><td id="ID'+i+counter+'"></td><td id="name'+i+counter+'"></td><td id="alow'+i+counter+'"></td><td id="wlow'+i+counter+'"></td><td id="value'+i+counter+'"></td><td id="whigh'+i+counter+'"></td><td id="ahigh'+i+counter+'"></td><td id="units'+i+counter+'"></td><td id="notes'+i+counter+'"></td></tr></tbody>';
+                 }
+
+                 if(width<=1280){
+                    griddata = '<div class="panel panel-primary" id="divtable'+counter+'" data-gs-min-width="10" data-gs-min-height="7.8" data-gs-max-height="8" ><div class="panel-heading grid-stack-item-content">Table Text Qwidget '+counter +'</div><table class="table table-bordered table-inverse"><thead><tr><th id="category'+counter+'"></th>'
+                                      +'<th id="id'+counter+'"></th><th id="name'+counter+'"></th><th id="alarm_low'+counter+'"></th><th id="warn_low'+counter+'"></th><th id="value'+counter+'"></th><th id="warn_high'+counter+'"></th>'
+                                      +'<th id="alarm_high'+counter+'"></th> <th id="units'+counter+'"></th><th id="notes'+counter+'"></th></tr></thead>'
+                                      +' <tbody>'
+                                      + rows
+                                      +'</table>'
+                                      +'<button type="button" class="close" aria-label="Close" id="removewidget" ><span aria-hidden="true" id="removespan">&times;</span></button><div/>';
+                
+                    $('.grid-stack').data('gridstack').addWidget($(griddata),0,0,0,0);
+                    $(document).on('click', 'span', function(e) {
+                        console.log("table widget deleted");
+                        e.target.closest("div").remove();
+                    });
+                }
+                else {
+                  griddata = '<div class="panel panel-primary" id="divtable'+counter+'" data-gs-min-width="6" data-gs-min-height="5.5" data-gs-max-height="6"><div class="panel-heading grid-stack-item-content">Table Text Qwidget '+counter +'</div><table class="table table-bordered table-inverse"><thead><tr><th id="category'+counter+'"></th>'
+                                      +'<th id="id'+counter+'"></th><th id="name'+counter+'"></th><th id="alarm_low'+counter+'"></th><th id="warn_low'+counter+'"></th><th id="value'+counter+'"></th><th id="warn_high'+counter+'"></th>'
+                                      +'<th id="alarm_high'+counter+'"></th> <th id="units'+counter+'"></th><th id="notes'+counter+'"></th></tr></thead>'
+                                      +' <tbody>'
+                                      + rows
+                                      +'</table>'
+                                      +'<button type="button" class="close" aria-label="Close" id="removewidget" ><span aria-hidden="true" id="removespan">&times;</span></button><div/>';
+                
+                $('.grid-stack').data('gridstack').addWidget($(griddata),0,0,0,0);
+                 $(document).on('click', 'span', function(e) {
+                    console.log("table widget deleted");
+                      e.target.closest("div").remove();
+                });
               }
+
+            var parameters = {collectionName : "position"};
+            window.setInterval(function(){
+              $.ajax({
+              url: "/addtablewidget",
+              type: 'GET',
+              data: parameters,
+              success: function (data) {
+                var size = Object.keys(data).length;
+                var datasize = size-2;
+                var obj = Object.keys(data)[2];
+                var arr = [];
+       
+                for(var k in data.v){
+                    arr.push(k);
+                }
+                arr.splice(1, 0, "id");
+
+                for(var i=0;i<arr.length;i++){
+                  document.getElementById(arr[i]+counter).innerHTML = arr[i].toUpperCase();
+                }
+              
+                for(var c=1;c<=counter;c++){
+                  for(var i=2;i<size;i++){
+                    document.getElementById("categoryID"+i+c).innerHTML = data[Object.keys(data)[i]].category;
+                    document.getElementById("ID"+i+c).innerHTML = Object.keys(data)[i];
+                    document.getElementById("name"+i+c).innerHTML = data[Object.keys(data)[i]].name;
+                    document.getElementById("units"+i+c).innerHTML = data[Object.keys(data)[i]].units;
+                    document.getElementById("notes"+i+c).innerHTML = data[Object.keys(data)[i]].notes;
+                    // document.getElementById("alow"+i+c).innerHTML = data[Object.keys(data)[i]].alarm_low;
+                    // document.getElementById("wlow"+i+c).innerHTML = data[Object.keys(data)[i]].warn_low;
+                    //document.getElementById("value"+i+c).innerHTML = data[Object.keys(data)[i]].value;
+                    // document.getElementById("whigh"+i+c).innerHTML = data[Object.keys(data)[i]].warn_high;
+                    // document.getElementById("ahigh"+i+c).innerHTML = data[Object.keys(data)[i]].alarm_high;
+
+
+                    //Values of telemetry data
+                    if(typeof data[Object.keys(data)[i]].value === "number"){
+                      document.getElementById("value"+i+c).innerHTML = Math.round(data[Object.keys(data)[i]].value * 100)/100;
+                    }
+                    else if(Date.parse(data[Object.keys(data)[i]].value)){
+                        var date = new Date(data[Object.keys(data)[i]].value);
+                        document.getElementById("value"+i+c).innerHTML = date.toUTCString();
+                    }
+                    else {
+                       document.getElementById("value"+i+c).innerHTML = data[Object.keys(data)[i]].value;
+                    }
+
+                    //timestamp alarm low
+
+                   if(typeof data[Object.keys(data)[i]].alarm_low === "number"){
+                      document.getElementById("value"+i+c).innerHTML = data[Object.keys(data)[i]].alarm_low;
+                   }
+                   else if(Date.parse(data[Object.keys(data)[i]].alarm_low)){
+                      var date = new Date(data[Object.keys(data)[i]].alarm_low);
+                      document.getElementById("alow"+i+c).innerHTML= date.toUTCString();
+
+                   }
+                   else {
+                       document.getElementById("alow"+i+c).innerHTML = data[Object.keys(data)[i]].alarm_low;
+                    }
+
+                    //timestamp warn low
+                     if(typeof data[Object.keys(data)[i]].warn_low === "number"){
+                       document.getElementById("wlow"+i+c).innerHTML = data[Object.keys(data)[i]].warn_low;
+                    }
+                     else if(Date.parse(data[Object.keys(data)[i]].warn_low) ){
+                       var date = new Date(data[Object.keys(data)[i]].warn_low);
+                       document.getElementById("wlow"+i+c).innerHTML = date.toUTCString();
+                    }
+                    else{
+                       document.getElementById("wlow"+i+c).innerHTML = data[Object.keys(data)[i]].warn_low;
+                    }
+
+                    //timestamp alarm high
+                      if(typeof data[Object.keys(data)[i]].alarm_high === "number"){
+                      document.getElementById("ahigh"+i+c).innerHTML = data[Object.keys(data)[i]].alarm_high;
+                    }
+                    else if(Date.parse(data[Object.keys(data)[i]].alarm_high) ){
+                       var date = new Date(data[Object.keys(data)[i]].alarm_high);
+                       document.getElementById("ahigh"+i+c).innerHTML= date.toUTCString();
+                    }
+                    else{
+                       document.getElementById("ahigh"+i+c).innerHTML = data[Object.keys(data)[i]].alarm_high;
+                    }
+
+                  //timestamp warn high
+                   if(typeof data[Object.keys(data)[i]].warn_high === "number"){
+                      document.getElementById("whigh"+i+c).innerHTML = data[Object.keys(data)[i]].warn_high;
+                    }
+
+                    else if(Date.parse(data[Object.keys(data)[i]].warn_high) ){
+                      var date = new Date(data[Object.keys(data)[i]].warn_high);
+                      document.getElementById("whigh"+i+c).innerHTML= date.toUTCString();
+
+                    }
+                    else{
+                       document.getElementById("whigh"+i+c).innerHTML = data[Object.keys(data)[i]].warn_high;
+                    } 
+                    }
+                    }
+
+                   }    
+        
+                  });
+
+
+                }, 1000);
+ 
+              }.bind(this);
+
+
+              //function to remove widget from the widget
+              this.removeWid = function(e){
+              console.log("hello");
+              console.log(e.target.closest("div"));
+              e.target.closest("div").remove();
+              }.bind(this);
       
               //function to load Grid from the Quindar database
               this.loadGrid = function (addWidget) {
@@ -46,10 +203,12 @@
                _.each(items, function (node) {
                       $('.grid-stack').data('gridstack').addWidget($('<div class="panel panel-primary"><div class="grid-stack-item-content panel-heading" /><button type="button" class="close" aria-label="Close" id="removewidget"><span aria-hidden="true" id="removespan">&times;</span></button><div/>'),
                             node.x, node.y, node.width, node.height);
-               $('.close').click(this.removeWid);
+              // $('.close').click(this.removeWid);
                $(document).on('click', 'span', function(e) {
+                console.log("hey");
                e.target.closest("div").remove();
               });
+
               }, this);
               }
               });
@@ -97,10 +256,14 @@
                     this.grid.removeAll();
                     return false;
               }.bind(this);
+
         
-                $('#addwidget').click(this.add); //event handler for adding widget
+                $('#addtablewidget').click(this.tableWidget); //event handler for adding widget
+                $('#addwidget').click(this.add);
                 $('#save-grid').click(this.saveGrid); // event handler for saving grid
                 $('#load-grid').click(this.loadGrid); //event handler for loading grid
                 $('#clear-grid').click(this.clearGrid);// event handler for clearing the grid
-            };
+            
+
+            }
         });

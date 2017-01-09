@@ -7,6 +7,8 @@ var mongoose = require('mongoose');
 // load up the layouts model
 var Layout  = require('./models/layouts');
 
+var Position = require('./models/position');
+
 // normal routes ===============================================================
 
     // show the home page (will also have our login links)
@@ -108,6 +110,17 @@ var Layout  = require('./models/layouts');
         });
     });
 
+
+    // Add Table Text Widget
+    app.get('/addtablewidget',function(req,res){
+        //Query to get the latest document from the position collection
+            Position.findOne({}, {}, { sort: { '_id' : -1 } }, function(err, post) {
+               // console.log( post );
+                res.send(post);
+            });
+    });
+
+    //End of Add Table Text Widget
 };
 
 // route middleware to ensure user is logged in

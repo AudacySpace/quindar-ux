@@ -219,7 +219,7 @@ body {
   display:none;
 }
 
-a#addwidget, a#save-grid, a#load-grid, a#clear-grid{
+a#addtablewidget, a#save-grid, a#load-grid, a#clear-grid, a#addwidget{
   font-size:16px;
 }
 
