@@ -7,7 +7,6 @@ var mongoose = require('mongoose');
 // load up the layouts model
 var Layout  = require('./models/layouts');
 
-// Load position
 var Position = require('./models/position');
 
 // normal routes ===============================================================
@@ -79,7 +78,7 @@ var Position = require('./models/position');
             console.log("Layout is " + docs +" "+"grid is"+ docs.grid);
             res.send(docs.grid);
         });
-    })
+    });
   
   //Save Layout to layouts collection of Quindar database
     app.post('/savelayout',function(req,res){
@@ -112,6 +111,17 @@ var Position = require('./models/position');
     });
 
 
+
+    // Add Table Text Widget
+    app.get('/addtablewidget',function(req,res){
+        //Query to get the latest document from the position collection
+            Position.findOne({}, {}, { sort: { '_id' : -1 } }, function(err, post) {
+               // console.log( post );
+                res.send(post);
+            });
+    });
+
+    //End of Add Table Text Widget
 
 // -------------------Connect to database-------------------
    app.get('/getposition',function(req,res){

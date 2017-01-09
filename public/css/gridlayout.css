@@ -10,7 +10,7 @@
 .grid-stack-item-content {
   color: #2c3e50;
   text-align: center;
-  height:10%;
+  height:4%;
   border:3px solid #808080;
   background-color: #d9edf7;
 }  
@@ -30,3 +30,33 @@
 #usermail{
       display:none;
 }
+
+.panel-primary>.panel-heading {
+      background-color: #337ab7;
+    border-color: #337ab7;
+  }
+
+
+
+  div.container{
+    margin:0 auto;  
+    font-size:10px;
+  }
+
+
+
+
+/*Uncomment below media queries for the container to occupy entire screen and not just the middle of the screen*/
+
+    @media (min-width: 1200px){
+.container {
+    width: 99%;
+}
+}
+
+  @media (min-width: 2560px){
+.container {
+    width:99%;
+}
+}
+
