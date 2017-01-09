@@ -12,7 +12,7 @@
   <link href="/css/bootstrap-min.css" rel="stylesheet">
   <link href="/css/font-awesome.min.css" rel="stylesheet">
   <link href="/css/dashboardstyles.css" rel="stylesheet">
-  <link rel="stylesheet" href="/scripts/dist/gridstack.css"/>
+  <link rel="stylesheet" href="/css/gridstack.css"/>
   <link href="/css/gridlayout.css" rel="stylesheet">
   <link href="/css/widgetstyles.css" rel="stylesheet">  
 </head>
@@ -75,9 +75,9 @@
 
   <!--Main Dashboard for Widgets -->
   <div class="container">
-    <h5>Dashboard</h5>
+    <h5 id="dashboard">Dashboard</h5>
     <h6 id="usermail"><%=user.google.email %></h6>
-    <div class="grid-stack">
+    <div class="grid-stack" id="container">
     </div>
   </div>
 
@@ -97,10 +97,12 @@
     <h3 id="user-name">Hi <%=user.google.name %></h3>
     <a href="javascript:void(0)" class="rclosebtn" id="rclosebtn" onclick="closeRightNav()">&times;</a>
     <a href="#" id="configmenu"> Configuration Menu</a>
-    <a href="#" onclick = "openList1()">Qwidget</a>
+    <a href="#" onclick = "openList1()">Qwidget <span class="fa fa-caret-down" aria-hidden="true"></span></a>
     <ul id="widgetops" style="display:none;">  <!-- style="display:none;" -->
+
       <li><a id="addwidget" href="#">Add Widget</a></li>
-	  <li><a id="addGround" href="#">Add Ground Track</a></li>
+	    <li><a id="addGround" href="#">Add Ground Track</a></li>
+      <li><a id="addtablewidget" href="#">Add Table Text Widget</a></li>
       <li><a id="save-grid" href="#">Save Grid</a></li>
       <li><a id="load-grid" href="#">Load Grid</a></li>
       <li><a id="clear-grid" href="#">Clear Grid</a></li>
@@ -133,7 +135,6 @@
 <script src="/scripts/topojson-client.min.js"></script>
 <!-- Dashboard widget grid layout-->
 <script src="/scripts/widgetgrid.js"></script>
-
 
 </body>
 </html>

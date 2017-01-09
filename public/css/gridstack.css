@@ -42,8 +42,9 @@
   bottom: 0;
   width: auto;
   z-index: 0 !important;
-  overflow-x: hidden;
-  overflow-y: auto;
+  line-height: 0.5;
+/*  overflow-x: hidden;*/
+ /* overflow-y: auto;*/
 }
 
 .grid-stack > .grid-stack-item > .ui-resizable-handle {
