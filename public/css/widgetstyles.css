@@ -18,10 +18,25 @@
   fill: none;
   stroke: #FF6D00;  
 }
-#plotspan {
+.plotbutton {
   font-family: "Open Sans", Sans-serif;	
   background-color: #CFCFD5;
   color: #020613;
   position:absolute;
   top:0px;
+}
+.svg-container {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 50%;
+	padding-top: 0%;
+    vertical-align: top;
+    overflow: hidden;
+}
+.svg-content {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
 }

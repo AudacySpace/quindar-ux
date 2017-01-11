@@ -125,18 +125,9 @@ var Position = require('./models/position');
 
 // -------------------Connect to database-------------------
    app.get('/getposition',function(req,res){
-       // var doc = Position.find().sort({$natural:-1}).limit(1);
-       // console.log("Layout is " + doc);
-       // console.log("sending response");
-       //"_id": "5862fc274c6bb5109f206601"
-       console.log("hi");
-       console.log(Position.find().sort({$natural:-1}).limit(1));
-       console.log("please see above for last record");
 
+           Position.find({},{},{sort:{'_id':-1},limit:1},function(e,docs){
 
-           Position.find({},{},function(e,docs){
-               console.log("collection below");
-               console.log(docs);
                res.send(docs);
        });
    });
