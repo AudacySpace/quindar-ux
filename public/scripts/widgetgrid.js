@@ -1,4 +1,5 @@
   var counter=0;  
+  var gcount=0;
         $(function () {
             var options = {
             };
@@ -27,7 +28,7 @@
 
 			  // function to add ground track widget to the grid layout
               this.addGround = function(){
-				counter++;
+				gcount++;
 				var parameters = {collectionName : "position"};
                 var delay = 1000;	// milliseconds
 			    var sc = ["Audacy1", "Audacy2", "Audacy3"];		
@@ -40,22 +41,22 @@
           		}
 					
                 $('.grid-stack').data('gridstack').addWidget($(
-			          '<div class="panel panel-primary" style="margin-bottom:0;" id="divtable'+counter+'">\
+			          '<div class="panel panel-primary" style="margin-bottom:0;" id="divtable'+gcount+'">\
 				        <div class="grid-stack-item-content panel-heading" />\
-				        <button type="button" class="plotbutton" id="plotbutton'+counter+'">PLOT</button>\
+				        <button type="button" class="plotbutton" id="plotbutton'+gcount+'">PLOT</button>\
 						<button type="button" class="close" aria-label="Close" id="removewidget" ><span aria-hidden="true" id="removespan">&times;</span></button>\
-					   <div class="svg-container" id="divplot'+counter+'"></div><div/>'),0,0,6,5);
+					   <div class="svg-container" id="divplot'+gcount+'"></div><div/>'),0,0,6,5);
                 
         		var projection = d3.geoEquirectangular();		
         		var path = d3.geoPath()
         						.projection(projection);
         		var graticule = d3.geoGraticule();
-        		var svg = d3.select("#divplot"+counter).append("svg")
+        		var svg = d3.select("#divplot"+gcount).append("svg")
         						  .attr("preserveAspectRatio", "xMinYMin meet")
                                   .attr("viewBox", "-50 -50 1100 600")
                                   .classed("svg-content", true);
         		var g = svg.append("g");
-				g.attr("id","g"+counter);
+				g.attr("id","g"+gcount);
 
         		// Plot world map
         		d3.json("/media/icons/world-110m.json", function(error, world) {
@@ -72,7 +73,7 @@
         		});				
         						
                 // Plot data when PLOT button is clicked and keep updating						
-        		$('#plotbutton'+counter).click(function(){
+        		$('#plotbutton'+gcount).click(function(){
                   timer = setInterval(updatePlot, delay);
         		});
 
