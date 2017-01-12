@@ -47,7 +47,8 @@
 						<button type="button" class="close" aria-label="Close" id="removewidget" ><span aria-hidden="true" id="removespan">&times;</span></button>\
 					   <div class="svg-container" id="divplot'+gcount+'"></div><div/>'),0,0,6,5);
                 
-        		var projection = d3.geoEquirectangular();		
+        		var projection = d3.geoEquirectangular()
+				                   .precision(.1);	;		
         		var path = d3.geoPath()
         						.projection(projection);
         		var graticule = d3.geoGraticule();
@@ -88,8 +89,7 @@
         			  // -- Find latest data for each spacecraft --				  
         		      // Initialize latestdata
         			  var latestdata = null;
-
-					  console.log(res.length); 				
+				
         			  latestdata = res[0];      				 
         						
                       // Check if the latestdata is available for the selected s/c
@@ -106,15 +106,31 @@
         	            r = Math.sqrt(Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2));
         	            longitude = Math.atan2(y,x)/Math.PI*180;
         	            latitude = Math.asin(z/r)/Math.PI*180;
-        				console.log(longitude,latitude)
-        						
+        				//console.log(longitude,latitude)
+        					
+						// Convert [longitude,latitude] to plot	
+                        var sat_coord = projGround([longitude,latitude]);
+						
+						// Remove data when the length of scHolder reaches a certain value
+						if (scHolder[0].length > 600) {
+                          scHolder[0].splice(0,1);							
+						};
+						
         				// add longitude and latitude to data_plot
-        				scHolder[0].push([longitude, latitude]);			
-        				route = g.append("path")
+        				scHolder[0].push([longitude, latitude]);	
+						g.select("path.route").remove();
+						g.select("image").remove();
+        				var route = g.append("path")
                                  .datum({type: "LineString", coordinates: scHolder[0]})	
                                  .attr("class", "route")
-                                 .attr("d", path);							
-        			  }                    
+                                 .attr("d", path);	
+        			    var  craft = g.append("svg:image")
+						              .attr("xlink:href", "/media/icons/Segment_Icons_Fill_Black-08.svg")
+									  .attr("x",sat_coord[0])
+									  .attr("y",sat_coord[1]-15)
+									  .attr("width",30)
+									  .attr("height",30);
+					  }                    
                       //-------------------------------------------//
 					}					  
    				  });
@@ -131,6 +147,10 @@
                   d3.select("#"+g.attr("id"))
                   .attr("transform", "translate(" + transform.x + "," + transform.y + ") scale(" + transform.k + ")");
 				};
+				
+				function projGround(d){
+	              return projection(d);
+                }; 
 				
                 $('.close').click(this.removeWid);
       				  $(document).on('click', 'span', function(e) {
