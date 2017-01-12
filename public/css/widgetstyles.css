@@ -18,6 +18,10 @@
   fill: none;
   stroke: #FF6D00;  
 }
+.craft {
+  fill: #07D1EA;
+  stroke: #020613;	
+}
 .plotbutton {
   font-family: "Open Sans", Sans-serif;	
   background-color: #CFCFD5;
