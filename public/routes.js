@@ -126,7 +126,7 @@ var Position = require('./models/position');
 // -------------------Connect to database-------------------
    app.get('/getposition',function(req,res){
 
-           Position.find({},{},{sort:{'_id':-1},limit:1},function(e,docs){
+           Position.find({'vehicleId.value':'Audacy1'},{},{sort:{'_id':-1},limit:1},function(e,docs){
 
                res.send(docs);
        });
