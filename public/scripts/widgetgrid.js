@@ -16,7 +16,6 @@
 
               this.grid = $('.grid-stack').data('gridstack');
 
-
               // function to add widget to the grid layout 
               this.add = function(){
               this.grid.addWidget($('<div class="panel panel-primary"><div class="grid-stack-item-content panel-heading" /><button type="button" class="close" aria-label="Close" id="removewidget"><span role="button" aria-hidden="true" id="removespan">&times;</span></button><div/>'),0,0,2,2);
@@ -47,8 +46,8 @@
 						<button type="button" class="close" aria-label="Close" id="removewidget" ><span aria-hidden="true" id="removespan">&times;</span></button>\
 					   <div class="svg-container" id="divplot'+gcount+'"></div><div/>'),0,0,6,5);
                 
-        		var projection = d3.geoEquirectangular()
-				                   .precision(.1);	;		
+        		var projection = d3.geoEquirectangular();
+		
         		var path = d3.geoPath()
         						.projection(projection);
         		var graticule = d3.geoGraticule();
@@ -58,26 +57,34 @@
                                   .classed("svg-content", true);
         		var g = svg.append("g");
 				g.attr("id","g"+gcount);
-
+                 				
         		// Plot world map
         		d3.json("/media/icons/world-110m.json", function(error, world) {
                   if (error) throw error;	
-                  g.insert("path", ".graticule")
+                  
+				  // Show land
+				  g.append("path")
         		   .datum(topojson.feature(world, world.objects.land))
         		   .attr("class", "land")
         		   .attr("d", path);	
 
+				  // Show graticule
         		  g.append("path")
         		   .datum(graticule)
         		   .attr("d", path)
         		   .attr("class","graticule");					
         		});				
         						
+				// Go back to original view						
+        		//$('#homebutton'+gcount).click(function(){
+			    //  zoom.scaleTo(svg,1);
+        		//});
+				
                 // Plot data when PLOT button is clicked and keep updating						
         		$('#plotbutton'+gcount).click(function(){
                   timer = setInterval(updatePlot, delay);
         		});
-
+				
         		// Function to update data to be plotted
         		function updatePlot() {
         		  $.ajax({  
@@ -140,12 +147,10 @@
 				             .scaleExtent([.1,10])
 							 .on("zoom",zoomed);
 							 
-				g.call(zoom);
+				svg.call(zoom);
 				
 				function zoomed(){
-                  var transform = d3.zoomTransform(this);
-                  d3.select("#"+g.attr("id"))
-                  .attr("transform", "translate(" + transform.x + "," + transform.y + ") scale(" + transform.k + ")");
+ 				  g.attr("transform", d3.event.transform);
 				};
 				
 				function projGround(d){
@@ -153,7 +158,8 @@
                 }; 
 				
                 $('.close').click(this.removeWid);
-      				  $(document).on('click', 'span', function(e) {
+      			
+				$(document).on('click', 'span', function(e) {
                   e.target.closest("div").remove();
                 });
 
