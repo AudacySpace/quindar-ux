@@ -4,8 +4,7 @@ module.exports = function(app, passport) {
         
 var mongoose = require('mongoose');
 
-// load up the layouts model
-var Layout  = require('./models/layouts');
+var User = require('./models/user');
 
 var Position = require('./models/position');
 
@@ -73,10 +72,15 @@ var Position = require('./models/position');
     //Load Layout from layouts collection of Quindar database
     app.get('/loadlayout', function(req,res){
         var email = req.query.emailaddress;
-        // console.log(email);
-        Layout.findOne({'emailaddress':email},function(err,docs){
-            console.log("Layout is " + docs +" "+"grid is"+ docs.grid);
-            res.send(docs.grid);
+
+        //----------------load from user table------------------------------------
+
+          User.findOne({ 'google.email' : email }, function(err, user) {
+            if(err){
+                console.log(err);
+            }
+            res.send(user.grid);
+
         });
     });
   
@@ -85,29 +89,21 @@ var Position = require('./models/position');
         var email = req.body.emailaddress;
         var gridarray = req.body.grid;
         console.log(req.body.emailaddress);
-        Layout.findOne({ 'emailaddress' : email }, function(err, layout) {
-            console.log("Layout is " + layout +" " + gridarray);
-            if (err)
-            console.log("Error saving in DB: " + err);
 
-            if (layout) {
-                layout.grid = gridarray;
+        //Insert the grid layout into the user table
 
-                layout.save(function(err) {
-                    if (err) throw err;
-                    console.log("Layout data updated successfully for " + email);
-                });                       
-            } 
-            else {
-                var newLayout = new Layout();
-                newLayout.grid = gridarray;
-                newLayout.emailaddress = email;
-                newLayout.save(function(err){
-                    if (err) console.log(err);
-                    console.log("Data saved");
-                })
+        User.findOne({ 'google.email' : email }, function(err, user) {
+            if(err){
+                console.log(err);
             }
+            user.grid = gridarray;
+            user.save(function(err) {
+                if (err) throw err;
+                    console.log("Layout data updated successfully for " + email);
+                }); 
+
         });
+
     });
 
 
@@ -116,7 +112,7 @@ var Position = require('./models/position');
     app.get('/addtablewidget',function(req,res){
         //Query to get the latest document from the position collection
             Position.findOne({}, {}, { sort: { '_id' : -1 } }, function(err, post) {
-               // console.log( post );
+               if(err) throw err;
                 res.send(post);
             });
     });
@@ -125,15 +121,6 @@ var Position = require('./models/position');
 
 // -------------------Connect to database-------------------
    app.get('/getposition',function(req,res){
-       // var doc = Position.find().sort({$natural:-1}).limit(1);
-       // console.log("Layout is " + doc);
-       // console.log("sending response");
-       //"_id": "5862fc274c6bb5109f206601"
-       console.log("hi");
-       console.log(Position.find().sort({$natural:-1}).limit(1));
-       console.log("please see above for last record");
-
-
            Position.find({},{},function(e,docs){
                console.log("collection below");
                console.log(docs);
