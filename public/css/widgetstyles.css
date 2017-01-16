@@ -13,6 +13,12 @@
 .land {
   fill: #CFCFD5;
   stroke: #020613;
+  stroke-width: .1px;
+}
+.night {
+  stroke: #111950;
+  fill: #111950;
+  opacity: .3;
 }
 .route {
   fill: none;
@@ -49,6 +55,12 @@
 .svg-content {
     display: inline-block;
     position: absolute;
+	height: 100%;
     top: 0;
     left: 0;
+}
+.close-widget{
+	position:absolute;
+    top:0px;
+	right:0px;
 }
