@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 
 var User = require('./models/user');
 
-var Position = require('./models/position');
+var Telemetry = require('./models/telemetry');
 
 // normal routes ===============================================================
 
@@ -106,25 +106,21 @@ var Position = require('./models/position');
 
     });
 
-
-
-    // Add Table Text Widget
+    //get data for table text widget
     app.get('/addtablewidget',function(req,res){
         //Query to get the latest document from the position collection
-            Position.findOne({'vehicleId.value':'Audacy1'}, {}, { sort: { '_id' : -1 } }, function(err, post) {
-               if(err) throw err;
-                res.send(post);
-            });
+        Telemetry.findOne({'vehicleId.value':'Audacy1'}, {}, { sort: { '_id' : -1 } }, function(err, post) {
+           if(err) throw err;
+            res.send(post);
+        });
     });
 
-    //End of Add Table Text Widget
-
-// -------------------Connect to database-------------------
-   app.get('/getposition',function(req,res){
-        Position.find({'vehicleId.value':'Audacy1'},{},{sort:{'_id':-1},limit:1},function(e,docs){
+    //get data for ground track widget
+    app.get('/getposition',function(req,res){
+        Telemetry.find({'vehicleId.value':'Audacy1'},{},{sort:{'_id':-1},limit:1},function(e,docs){
             res.send(docs);
        });
-   });
+    });
    
 };
    

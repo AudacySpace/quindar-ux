@@ -2,7 +2,7 @@
 var mongoose = require('mongoose');
 
 // define the schema for our position model
-var positionSchema = mongoose.Schema({
+var telemetrySchema = mongoose.Schema({
 
     timestamp : {
     	notes: String,
@@ -115,7 +115,7 @@ var positionSchema = mongoose.Schema({
         units: String
     }
 
-});
+}, { collection: 'telemetry' });
 
 // create the model for users and expose it to our app
-module.exports = mongoose.model('Position', positionSchema);
+module.exports = mongoose.model('Telemetry', telemetrySchema);
