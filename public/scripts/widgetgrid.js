@@ -183,31 +183,47 @@
             }
             if(width<=1280){
               // data-gs-min-width="10" data-gs-min-height="7.8" data-gs-max-height="8"
-              griddata = '<div class="panel panel-primary" data-gs-min-width="10" data-gs-min-height="7" id="tabletextqwidget'+counter+'" style="overflow-x:auto;"><div class="panel-heading grid-stack-item-content"></div><table class="table table-bordered table-inverse"><thead><tr><th id="category'+counter+'"></th>'
+              griddata = '<div class="panel panel-primary griddata" data-gs-min-width="10" data-gs-min-height="7" id="tabletextqwidget'+counter+'"><div class="panel-heading grid-stack-item-content" id="paneldiv'+counter+'"></div><table class="table table-bordered table-inverse"><thead><tr><th id="category'+counter+'"></th>'
               +'<th id="id'+counter+'"></th><th id="name'+counter+'"></th><th id="alarm_low'+counter+'"></th><th id="warn_low'+counter+'"></th><th id="value'+counter+'"></th><th id="warn_high'+counter+'"></th>'
               +'<th id="alarm_high'+counter+'"></th> <th id="units'+counter+'"></th><th id="notes'+counter+'"></th></tr></thead>'
               +' <tbody>'
               + rows
               +'</table>'
-              +'<button type="button" class="close" aria-label="Close" id="removewidget" ><span aria-hidden="true" id="removespan">&times;</span></button><div/>';
+              +'<button type="button" class=" glyphicon glyphicon-cog" aria-label="Close" id="removespan" ></button><div/>'
+              +'<div id="toolbar-options" class="hidden">'
+              +'<a href="#"><i class="fa fa-edit"></i></a>'
+              +'<a href="#"><i class="fa fa-trash-o"></i></a>'
+              +'</div>';
+              // +'<button class="btn btn-primary btn-lg glyphicon glyphicon-edit savewidget " data-toggle="modal" data-target="#myModalNorm" id="savewidget'+counter+'">'
+              // +'</button>'
+              // +'<button type="button" class="close" aria-label="Close" id="removewidget" ><span aria-hidden="true" id="removespan">&times;</span></button><div/>';
 
               $('.grid-stack').data('gridstack').addWidget($(griddata),0,0,0,0);
-              $(document).on('click', 'span', function(e) {
+              $(document).on('click', '.fa-trash-o', function(e) {
                 console.log("table widget deleted");
-                console.log(e.target.id);
-                e.target.closest("div").remove();
+                console.log(e);
+                // e.target.closest("div").remove();
                         // e.target.closest("#tabletextqwidget"+counter).remove();
                       });
+
+              $('#removespan').toolbar({
+  content: '#toolbar-options',
+  position: 'right',
+  style: 'primary',
+  event: 'click'
+});
             }
             else {
               //data-gs-min-width="6" data-gs-min-height="5.5" data-gs-max-height="6"
-              griddata = '<div class="panel panel-primary" data-gs-min-width="6" data-gs-min-height="5.5" id="tabletextqwidget'+counter+' style="overflow-x:auto;"><div class="panel-heading grid-stack-item-content"></div><table class="table table-bordered table-inverse"><thead><tr><th id="category'+counter+'"></th>'
+              griddata = '<div class="panel panel-primary" data-gs-min-width="6" data-gs-min-height="5.5" id="tabletextqwidget'+counter+'><div class="panel-heading grid-stack-item-content" id="paneldiv'+counter+'"></div><table class="table table-bordered table-inverse"><thead><tr><th id="category'+counter+'"></th>'
               +'<th id="id'+counter+'"></th><th id="name'+counter+'"></th><th id="alarm_low'+counter+'"></th><th id="warn_low'+counter+'"></th><th id="value'+counter+'"></th><th id="warn_high'+counter+'"></th>'
               +'<th id="alarm_high'+counter+'"></th> <th id="units'+counter+'"></th><th id="notes'+counter+'"></th></tr></thead>'
               +' <tbody>'
               + rows
               +'</table>'
-              +'<button type="button" class="close" aria-label="Close" id="removewidget" ><span aria-hidden="true" id="removespan">&times;</span></button><div/>';
+              //  +'<button class="btn btn-primary btn-lg glyphicon glyphicon-edit savewidget" data-toggle="modal" data-target="#myModalNorm" id="savewidget'+counter+'">'
+              // +'</button>'
+              // +'<button type="button" class="close" aria-label="Close" id="removewidget" ><span aria-hidden="true" id="removespan">&times;</span></button><div/>';
 
               $('.grid-stack').data('gridstack').addWidget($(griddata),0,0,0,0);
               $(document).on('click', 'span', function(e) {
@@ -692,6 +708,11 @@
                 return false;
               }.bind(this);
 
+              // this.addTableName = function(e){
+              //   console.log("hellooooooo");
+              //   console.log(e);
+              // }
+
 
                 $('#addwidget').click(this.add); //event handler for adding widget
                 $('#addGround').click(this.addGround)
@@ -699,6 +720,14 @@
                 $('#save-grid').click(this.saveGrid); // event handler for saving grid
                 $('#load-grid').click(this.loadGrid); //event handler for loading grid
                 $('#clear-grid').click(this.clearGrid);// event handler for clearing the grid
+                // $('#savebtn'+counter).click(this.addTableName);
+                $('#savebtn').click(function(e){
+                  document.getElementById("paneldiv"+counter).innerHTML = $('#exampleInputName').val();
+                   $("#myModalNorm").modal("hide");
+
+                });
+
+           
 
 
               }
