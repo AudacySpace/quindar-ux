@@ -15,11 +15,29 @@
   background-color: #d9edf7;
 }  
 #removespan {
-  position:absolute;
-  right:0px;
-  top:0px;
-  font-size:24px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    font-size: 19px;
+    color: #07D1EA;
+    background-color: #000000;
+    border-color: #000000;
 }
+}
+button.savewidget{
+    position:absolute;
+  right:25px;
+  top:0px;
+  font-size:12px;
+}
+.btn-group-lg>.btn, .btn-lg{
+      padding: 4px 16px;
+}
+
+.btn-primary {
+  border:0;
+}
+
 .grid-stack > .grid-stack-item > .grid-stack-item-content {
   position: static;
 }
@@ -32,8 +50,13 @@
 }
 
 .panel-primary>.panel-heading {
-      background-color: #337ab7;
-    border-color: #337ab7;
+      background-color: #000000;
+    border-color: #000000;
+  }
+
+  .panel-primary {
+
+    border-color: #ffffff;
   }
 
 

@@ -14,7 +14,8 @@
   <link href="/css/dashboardstyles.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/gridstack.css"/>
   <link href="/css/gridlayout.css" rel="stylesheet">
-  <link href="/css/widgetstyles.css" rel="stylesheet">  
+  <link href="/css/widgetstyles.css" rel="stylesheet"> 
+  <link href="/css/jquery.toolbar.css" rel="stylesheet" /> 
 </head>
 <body onload="startTime()">
   <div id="wrapper" class="toggled">
@@ -79,7 +80,57 @@
     <h6 id="usermail"><%=user.google.email %></h6>
     <div class="grid-stack" id="container">
     </div>
+
+
   </div>
+
+  <!-- Modal -->
+<div class="modal fade" id="myModalNorm" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" 
+                   data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Add Name
+                </h4>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                
+                <form role="form">
+                  <div class="form-group">
+                    <label for="exampleInputName">Name your Telemetry Table</label>
+                      <input type="text" class="form-control"
+                      id="exampleInputName" placeholder="Enter Name"/>
+                  </div>
+                </form>
+                
+                
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                            Close
+                </button>
+                <button type="button" class="btn btn-primary" id="savebtn">
+                    Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
   <!-- Dashboard Footer -->
   <footer class="footer">
@@ -133,8 +184,11 @@
 <script src="/scripts/d3.min.js"></script>
 <!-- topojson-client -->
 <script src="/scripts/topojson-client.min.js"></script>
+<script src="/scripts/jquery.toolbar.js"></script>
 <!-- Dashboard widget grid layout-->
 <script src="/scripts/widgetgrid.js"></script>
+
+
 
 </body>
 </html>

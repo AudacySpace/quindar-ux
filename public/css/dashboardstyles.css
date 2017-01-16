@@ -3,9 +3,14 @@
  */
 body {
   overflow-x: hidden;
+    background-color: #F2F3F4  ;
 }
 #QBlack{
   display:none;
+}
+
+#container{
+background-color: #F2F3F4  ;
 }
 .navbar{
   border: 0 none;  
