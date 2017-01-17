@@ -49,13 +49,14 @@
                 $('.grid-stack').data('gridstack').addWidget($(
 			          '<div class="panel panel-primary" style="margin-bottom:0;" id="divtable'+gcount+'">\
 				        <div class="grid-stack-item-content panel-heading" />\
-				        <button type="button" class="plotbutton" id="plotbutton'+gcount+'">PLOT</button>\
-						<button type="button" class="homebutton" id="homebutton'+gcount+'">HOME</button>\
-						<button type="button" class="close" aria-label="Close" id="removewidget" >&times;</button>\
+				        <button type="button" class="plotbutton" id="plotbutton'+gcount+'">Plot</button>\
+						<button type="button" class="homebutton" id="homebutton'+gcount+'">Home</button>\
+						<input type="button" class="timebtn" value="Show Timezones" id="timebtn'+gcount+'">\
+						<button type="button" class="close" aria-label="Close" id="removespan" >&times;</button>\
 					   <div class="svg-container" id="divplot'+gcount+'"></div><div/>'),0,0,6,5);
 
 			    var  temptime = new Date;	// temporary time being replaced by the source time
-				alert((temptime-3600000))
+
 				var π = Math.PI,
                     radians = π / 180,
                     degrees = 180 / π;
@@ -119,7 +120,33 @@
         		$('#plotbutton'+gcount).click(function(){
                   timer = setInterval(updatePlot, delay);
         		});
+			
+				$('#timebtn'+gcount).click(function(){
+				  var tempval = this.value
+				  if (tempval == "Show Timezones"){
+					this.value = "Hide Timezones";
+					
+                    d3.json("/media/icons/timezones.json", function(error, timezones) {
+                      if (error) throw error;
 
+                      var timeZ = g.append("g")
+                                   .attr("class", "timezones")
+                                   .selectAll("path")
+                                   .data(topojson.feature(timezones, timezones.objects.timezones).features)
+                                   .enter().append("path")
+                                   .attr("d", path)
+                                   .append("title")
+                                   .text(function(d) { return d.id; });
+					 
+                    });	
+				  } else {
+					  this.value = "Show Timezones";
+					  
+					  g.select(".timezones").remove();
+					  
+				  }
+				});
+				
         		// Function to update data to be plotted
         		function updatePlot() {
         		  $.ajax({  
