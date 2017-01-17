@@ -13,6 +13,12 @@
 .land {
   fill: #CFCFD5;
   stroke: #020613;
+  stroke-width: .1px;
+}
+.night {
+  stroke: #111950;
+  fill: #111950;
+  opacity: .3;
 }
 .route {
   fill: none;
@@ -35,7 +41,15 @@
   color: #020613;
   position:absolute;
   top:0px;
-  left:50px;
+  left:40px;
+}
+.timebtn {
+  font-family: "Open Sans", Sans-serif;	
+  background-color: #CFCFD5;
+  color: #020613;
+  position:absolute;
+  top:0px;
+  left:90px;
 }
 .svg-container {
     display: inline-block;
@@ -49,6 +63,16 @@
 .svg-content {
     display: inline-block;
     position: absolute;
+	height: 100%;
     top: 0;
     left: 0;
+}
+.timezones {
+  fill: #111950;
+  stroke: #CFCFD5;
+  stroke-width: .05px;  
+}
+
+.timezones :hover {
+  fill: #FFD600;
 }
