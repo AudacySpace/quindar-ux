@@ -49,24 +49,36 @@
                 $('.grid-stack').data('gridstack').addWidget($(
 			          '<div class="panel panel-primary" style="margin-bottom:0;" id="divtable'+gcount+'">\
 				        <div class="grid-stack-item-content panel-heading" />\
-				        <button type="button" class="plotbutton" id="plotbutton'+gcount+'">PLOT</button>\
-						<button type="button" class="close" aria-label="Close" id="removewidget" ><span aria-hidden="true" id="removespan">&times;</span></button>\
+				        <button type="button" class="plotbutton" id="plotbutton'+gcount+'">Plot</button>\
+						<button type="button" class="homebutton" id="homebutton'+gcount+'">Home</button>\
+						<input type="button" class="timebtn" value="Show Timezones" id="timebtn'+gcount+'">\
+						<button type="button" class="close" aria-label="Close" id="removespan" >&times;</button>\
 					   <div class="svg-container" id="divplot'+gcount+'"></div><div/>'),0,0,6,5);
-                
+
+			    var  temptime = new Date;	// temporary time being replaced by the source time
+
+				var π = Math.PI,
+                    radians = π / 180,
+                    degrees = 180 / π;
+	
         		var projection = d3.geoEquirectangular();
 		
         		var path = d3.geoPath()
         						.projection(projection);
         		var graticule = d3.geoGraticule();
+				var circle = d3.geoCircle();
+
         		var svg = d3.select("#divplot"+gcount).append("svg")
         						  .attr("preserveAspectRatio", "xMinYMin meet")
-                                  .attr("viewBox", "-50 -50 1100 600")
+                                  .attr("viewBox", "-20 0 1000 500")
                                   .classed("svg-content", true);
         		var g = svg.append("g");
 				g.attr("id","g"+gcount);
-                 				
+                 		
+                var transform = d3.zoomTransform(svg.node());	
+				
         		// Plot world map
-        		d3.json("/media/icons/world-110m.json", function(error, world) {
+        		d3.json("/media/icons/world-50m.json", function(error, world) {
                   if (error) throw error;	
                   
 				  // Show land
@@ -79,7 +91,19 @@
         		  g.append("path")
         		   .datum(graticule)
         		   .attr("d", path)
-        		   .attr("class","graticule");					
+        		   .attr("class","graticule");	
+
+                  // Show dark region (night time)
+                  var night = g.append("path")				  
+				               .attr("class", "night")
+							   .attr("d", path);
+							   
+				  redraw();
+                  setInterval(redraw, 1000);
+
+                  function redraw() {
+                    night.datum(circle.center(antipode(solarPosition(temptime)))).attr("d", path);
+				  }
         		});				
         						
 				// Go back to original view						
@@ -87,10 +111,41 @@
 			    //  zoom.scaleTo(svg,1);
         		//});
 				
-                // Plot data when PLOT button is clicked and keep updating						
+                // Go back to original view						
+        		$('#homebutton'+gcount).click(function(){
+                  zoom.transform(svg,transform);
+        		});
+				
+				// Plot data when PLOT button is clicked and keep updating						
         		$('#plotbutton'+gcount).click(function(){
                   timer = setInterval(updatePlot, delay);
         		});
+			
+				$('#timebtn'+gcount).click(function(){
+				  var tempval = this.value
+				  if (tempval == "Show Timezones"){
+					this.value = "Hide Timezones";
+					
+                    d3.json("/media/icons/timezones.json", function(error, timezones) {
+                      if (error) throw error;
+
+                      var timeZ = g.append("g")
+                                   .attr("class", "timezones")
+                                   .selectAll("path")
+                                   .data(topojson.feature(timezones, timezones.objects.timezones).features)
+                                   .enter().append("path")
+                                   .attr("d", path)
+                                   .append("title")
+                                   .text(function(d) { return d.id; });
+					 
+                    });	
+				  } else {
+					  this.value = "Show Timezones";
+					  
+					  g.select(".timezones").remove();
+					  
+				  }
+				});
 				
         		// Function to update data to be plotted
         		function updatePlot() {
@@ -151,7 +206,7 @@
         		}
 				
                 var zoom = d3.zoom()
-				             .scaleExtent([.1,10])
+				             .scaleExtent([1,10])
 							 .on("zoom",zoomed);
 							 
 				svg.call(zoom);
@@ -164,6 +219,75 @@
 	              return projection(d);
                 }; 
 				
+				function antipode(position) {
+                  return [position[0] + 180, -position[1]];
+                }
+
+                function solarPosition(time) {
+                  var centuries = (time - Date.UTC(2000, 0, 1, 12)) / 864e5 / 36525, // since J2000
+                  longitude = (d3.utcDay.floor(time) - time) / 864e5 * 360 - 180;
+                  return [
+                    longitude - equationOfTime(centuries) * degrees,
+                    solarDeclination(centuries) * degrees
+                  ];
+                }
+
+                // Equations based on NOAA’s Solar Calculator; all angles in radians.
+                // http://www.esrl.noaa.gov/gmd/grad/solcalc/
+
+                function equationOfTime(centuries) {
+                  var e = eccentricityEarthOrbit(centuries),
+                    m = solarGeometricMeanAnomaly(centuries),
+                    l = solarGeometricMeanLongitude(centuries),
+                    y = Math.tan(obliquityCorrection(centuries) / 2);
+                    y *= y;
+                  return y * Math.sin(2 * l)
+                    - 2 * e * Math.sin(m)
+                    + 4 * e * y * Math.sin(m) * Math.cos(2 * l)
+                    - 0.5 * y * y * Math.sin(4 * l)
+                    - 1.25 * e * e * Math.sin(2 * m);
+                }
+
+                function solarDeclination(centuries) {
+                  return Math.asin(Math.sin(obliquityCorrection(centuries)) * Math.sin(solarApparentLongitude(centuries)));
+                }
+
+                function solarApparentLongitude(centuries) {
+                  return solarTrueLongitude(centuries) - (0.00569 + 0.00478 * Math.sin((125.04 - 1934.136 * centuries) * radians)) * radians;
+                }
+
+                function solarTrueLongitude(centuries) {
+                  return solarGeometricMeanLongitude(centuries) + solarEquationOfCenter(centuries);
+                }
+
+                function solarGeometricMeanAnomaly(centuries) {
+                  return (357.52911 + centuries * (35999.05029 - 0.0001537 * centuries)) * radians;
+                }
+
+                function solarGeometricMeanLongitude(centuries) {
+                  var l = (280.46646 + centuries * (36000.76983 + centuries * 0.0003032)) % 360;
+                  return (l < 0 ? l + 360 : l) / 180 * π;
+                }
+
+                function solarEquationOfCenter(centuries) {
+                  var m = solarGeometricMeanAnomaly(centuries);
+                  return (Math.sin(m) * (1.914602 - centuries * (0.004817 + 0.000014 * centuries))
+                    + Math.sin(m + m) * (0.019993 - 0.000101 * centuries)
+                    + Math.sin(m + m + m) * 0.000289) * radians;
+                }
+
+                function obliquityCorrection(centuries) {
+                  return meanObliquityOfEcliptic(centuries) + 0.00256 * Math.cos((125.04 - 1934.136 * centuries) * radians) * radians;
+                }
+
+                function meanObliquityOfEcliptic(centuries) {
+                  return (23 + (26 + (21.448 - centuries * (46.8150 + centuries * (0.00059 - centuries * 0.001813))) / 60) / 60) * radians;
+                }
+
+                function eccentricityEarthOrbit(centuries) {
+                  return 0.016708634 - centuries * (0.000042037 + 0.0000001267 * centuries);
+                }
+
                 $('.close').click(this.removeWid);
       			
 				$(document).on('click', 'span', function(e) {
