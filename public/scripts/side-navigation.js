@@ -374,7 +374,25 @@ function closeRightNav() {
 function openList1() {
     var list = document.getElementById("widgetops");
 
-    if (list.style.display == "none"){
+    if (list.style.display ===  "none"){
+        list.style.display = "block";
+    }else{
+        list.style.display = "none";
+    }
+}
+
+function openSettings(x){
+  var list= document.getElementById("settings-menu"+x);
+   if (list.style.display ===  "none"){
+        list.style.display = "block";
+    }else{
+        list.style.display = "none";
+    }
+}
+
+function openPlotSettings(x){
+  var list= document.getElementById("plot-settings-menu"+x);
+   if (list.style.display ===  "none"){
         list.style.display = "block";
     }else{
         list.style.display = "none";

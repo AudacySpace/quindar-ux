@@ -15,7 +15,7 @@
   <link rel="stylesheet" href="/css/gridstack.css"/>
   <link href="/css/gridlayout.css" rel="stylesheet">
   <link href="/css/widgetstyles.css" rel="stylesheet"> 
-  <link href="/css/jquery.toolbar.css" rel="stylesheet" /> 
+ 
 </head>
 <body onload="startTime()">
   <div id="wrapper" class="toggled">
@@ -130,6 +130,53 @@
 </div>
 
 
+ <!-- Modal -->
+<div class="modal fade" id="myGTModalNorm" tabindex="-1" role="dialog" 
+     aria-labelledby="myGTModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" 
+                   data-dismiss="modal">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myGTModalLabel">
+                    Add Name
+                </h4>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                
+                <form role="form">
+                  <div class="form-group">
+                    <label for="exampleGTInputName">Name your Ground Track</label>
+                      <input type="text" class="form-control"
+                      id="exampleGTInputName" placeholder="Enter Name"/>
+                  </div>
+                </form>
+                
+                
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default"
+                        data-dismiss="modal">
+                            Close
+                </button>
+                <button type="button" class="btn btn-primary" id="saveGTbtn">
+                    Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 
   <!-- Dashboard Footer -->
@@ -151,7 +198,7 @@
     <a href="#" onclick = "openList1()">Qwidget <span class="fa fa-caret-down" aria-hidden="true"></span></a>
     <ul id="widgetops" style="display:none;">  <!-- style="display:none;" -->
 
-      <!-- <li><a id="addwidget" href="#">Add Widget</a></li> -->
+     <!--  <li><a id="addwidget" href="#">Add Widget</a></li> -->
 	    <li><a id="addGround" href="#">Ground Track</a></li>
       <li><a id="addtablewidget" href="#">Telemetry Table</a></li>
 <!--       <li><a id="save-grid" href="#">Save Grid</a></li>
@@ -184,11 +231,58 @@
 <script src="/scripts/d3.min.js"></script>
 <!-- topojson-client -->
 <script src="/scripts/topojson-client.min.js"></script>
-<script src="/scripts/jquery.toolbar.js"></script>
+
 <!-- Dashboard widget grid layout-->
 <script src="/scripts/widgetgrid.js"></script>
+<script>
+function filterText()
+  {  
+    // var rex = new RegExp($('#filterText').val());
+    var rex = $('#filterText').val();
+    console.log(rex.length);
+
+    if(rex == "CATEGORY" || rex == ""){clearFilter()}else{
+      $('.content').hide();
+      $('.content').filter(function() {
+        var catString = $(this).text();
+         var rexstr = "";
+        if(rex.length>1){
+          rexstr = rex.substring(0,3);
+          console.log(rexstr.length);
+
+          if(rexstr.match(catString.substring(0,3))){
+          return true;
+            }
+        else{
+          return false;
+        }
+
+        }
+        else {
+          rexstr = rex.substring(0,1);
+             console.log(rexstr.length);
+
+        if(rexstr.match(catString.substring(0,1))){
+          return true;
+        }
+        else{
+          return false;
+        }
+        }
+
+      }).show();
+  }
+  }
 
 
+  
+function clearFilter()
+  {
+    $('#filterText').val('CATEGORY');
+    $('.content').show();
+  }
+</script>
 
+<!-- <script src="/scripts/filter-category.js"></script> -->
 </body>
 </html>

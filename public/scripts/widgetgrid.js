@@ -1,31 +1,32 @@
 
-  var counter=0; 
-  var gcount =0; 
-  var pcounter =0;
-  var intervalId;
-  $(function () {
-    var options = {
-        //       cellHeight: 80,
-        // verticalMargin: 10
-      };
-      var usermail = document.getElementById('usermail').innerHTML;
+var counter=0; 
+var gcount =0; 
+var pcounter =0;
+var intervalId;
+$(function () {
+  var options = {
+    verticalMargin:25
 
-      $('.grid-stack').gridstack(options);
+  };
+  var usermail = document.getElementById('usermail').innerHTML;
+
+  $('.grid-stack').gridstack(options);
 
 
-      new function () {
-        this.serializedData = [
-        {x: 0, y: 0, width: 4, height: 2},
-        {x: 4, y: 0, width: 4, height: 4},
-        {x: 8, y: 0, width: 2, height: 2},
-        ];
+  new function () {
+    this.serializedData = [
+    {x: 0, y: 0, width: 4, height: 2},
+    {x: 4, y: 0, width: 4, height: 4},
+    {x: 8, y: 0, width: 2, height: 2},
+    ];
 
-        this.grid = $('.grid-stack').data('gridstack');
+    this.grid = $('.grid-stack').data('gridstack');
 
               // function to add widget to the grid layout 
               this.add = function(){
-                this.grid.addWidget($('<div class="panel panel-primary" id="plainwidget'+pcounter+'"><div class="grid-stack-item-content panel-heading" /><button type="button" class="close" aria-label="Close" id="removewidget"><span role="button" aria-hidden="true" id="removespan">&times;</span></button><div/>'),0,0,2,2);
-                $(document).on('click', '#removewidget', function(e) {
+                this.grid.addWidget($('<div class="panel panel-primary" id="plainwidget'+pcounter+'"><div class="grid-stack-item-content panel-heading" /><button type="button" class="glyphicon glyphicon-trash" aria-label="Close" id="removespan">'
+                  +'</button><div/>'),0,0,2,2);
+                $(document).on('click', '#removespan', function(e) {
                   console.log("widget deleted");
                   e.target.closest("div").remove();
                 });
@@ -33,210 +34,214 @@
 
 
 			  // function to add ground track widget to the grid layout
-              this.addGround = function(){
-				gcount++;
-				var parameters = {collectionName : "position"};
+        this.addGround = function(){
+          gcount++;
+          var parameters = {collectionName : "position"};
                 var delay = 1000;	// milliseconds
-			    var sc = ["Audacy1", "Audacy2", "Audacy3"];		
-									
+                var sc = ["Audacy1", "Audacy2", "Audacy3"];		
+
 				// Initialize scHolder
 				var scHolder={}
 				for (j=0; j<sc.length;j++) {
-          				  scHolder[j] = [[0.,0.]];
-          				  scHolder[j].pop();
-          		}
-					
-                $('.grid-stack').data('gridstack').addWidget($(
-			          '<div class="panel panel-primary" style="margin-bottom:0;" id="divtable'+gcount+'">\
-				        <div class="grid-stack-item-content panel-heading" />\
-				        <button type="button" class="plotbutton" id="plotbutton'+gcount+'">PLOT</button>\
-						<button type="button" class="close" aria-label="Close" id="removewidget" ><span aria-hidden="true" id="removespan">&times;</span></button>\
-					   <div class="svg-container" id="divplot'+gcount+'"></div><div/>'),0,0,6,5);
-                
-        		var projection = d3.geoEquirectangular();
-		
-        		var path = d3.geoPath()
-        						.projection(projection);
-        		var graticule = d3.geoGraticule();
-        		var svg = d3.select("#divplot"+gcount).append("svg")
-        						  .attr("preserveAspectRatio", "xMinYMin meet")
-                                  .attr("viewBox", "-50 -50 1100 600")
-                                  .classed("svg-content", true);
-        		var g = svg.append("g");
-				g.attr("id","g"+gcount);
-                 				
+          scHolder[j] = [[0.,0.]];
+          scHolder[j].pop();
+        }
+
+        $('.grid-stack').data('gridstack').addWidget($(
+         '<div class="panel panel-primary widgetgrid" style="margin-bottom:0;" id="divtable'+gcount+'">\
+         <div class="grid-stack-item-content panel-heading" id="gtpanel'+gcount+'" />\
+         <button type="button" class="plotbutton" id="plotbutton'+gcount+'">PLOT</button>\
+         <button type="button" class="glyphicon glyphicon-cog" id="settings" onclick="openPlotSettings('+gcount+')"></button><div style="display:none" id="plot-settings-menu'+gcount+'" class="settings-menu"><button type="button" class="glyphicon glyphicon-edit" data-toggle="modal" data-target="#myGTModalNorm"></button><button type="button" class="glyphicon glyphicon-trash" aria-label="Close" id="removespan"></button></div>\
+         <div class="svg-container" id="divplot'+gcount+'"></div><div/>'),0,0,6,5);
+
+        var projection = d3.geoEquirectangular();
+
+        var path = d3.geoPath()
+        .projection(projection);
+        var graticule = d3.geoGraticule();
+        var svg = d3.select("#divplot"+gcount).append("svg")
+        .attr("preserveAspectRatio", "xMinYMin meet")
+        .attr("viewBox", "-50 -50 1100 600")
+        .classed("svg-content", true);
+        var g = svg.append("g");
+        g.attr("id","g"+gcount);
+
         		// Plot world map
         		d3.json("/media/icons/world-110m.json", function(error, world) {
-                  if (error) throw error;	
-                  
+              if (error) throw error;	
+
 				  // Show land
 				  g.append("path")
-        		   .datum(topojson.feature(world, world.objects.land))
-        		   .attr("class", "land")
-        		   .attr("d", path);	
+         .datum(topojson.feature(world, world.objects.land))
+         .attr("class", "land")
+         .attr("d", path);	
 
 				  // Show graticule
-        		  g.append("path")
-        		   .datum(graticule)
-        		   .attr("d", path)
-        		   .attr("class","graticule");					
-        		});				
-        						
+          g.append("path")
+          .datum(graticule)
+          .attr("d", path)
+          .attr("class","graticule");					
+        });				
+
 				// Go back to original view						
         		//$('#homebutton'+gcount).click(function(){
 			    //  zoom.scaleTo(svg,1);
         		//});
-				
+
                 // Plot data when PLOT button is clicked and keep updating						
-        		$('#plotbutton'+gcount).click(function(){
+                $('#plotbutton'+gcount).click(function(){
                   timer = setInterval(updatePlot, delay);
-        		});
-				
+                });
+
         		// Function to update data to be plotted
         		function updatePlot() {
-        		  $.ajax({  
-        		    url: "/getposition",
-                    type: 'GET',
-                    data: parameters,
-                    success: function(res) {
-        						  
+              $.ajax({  
+                url: "/getposition",
+                type: 'GET',
+                data: parameters,
+                success: function(res) {
+
         			  // -- Find latest data for each spacecraft --				  
         		      // Initialize latestdata
-        			  var latestdata = null;
-				
-        			  latestdata = res[0];      				 
-        						
+                 var latestdata = null;
+
+                 latestdata = res[0];      				 
+
                       // Check if the latestdata is available for the selected s/c
-        			  if (latestdata == null) {
-        						
-        			  } else {
+                      if (latestdata == null) {
+
+                      } else {
         				  // update latestdata						  				
-        				var x = latestdata.x.value;
-        				var y = latestdata.y.value;
-        				var z = latestdata.z.value;
-        					
+                  var x = latestdata.x.value;
+                  var y = latestdata.y.value;
+                  var z = latestdata.z.value;
+
         				// Calculate longitude and latitude from the satellite position x, y, z.
         	            // The values (x,y,z) must be Earth fixed.
         	            r = Math.sqrt(Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2));
         	            longitude = Math.atan2(y,x)/Math.PI*180;
         	            latitude = Math.asin(z/r)/Math.PI*180;
         				//console.log(longitude,latitude)
-        					
+
 						// Convert [longitude,latitude] to plot	
-                        var sat_coord = projGround([longitude,latitude]);
-						
+            var sat_coord = projGround([longitude,latitude]);
+
 						// Remove data when the length of scHolder reaches a certain value
 						if (scHolder[0].length > 600) {
-                          scHolder[0].splice(0,1);							
-						};
-						
+              scHolder[0].splice(0,1);							
+            };
+
         				// add longitude and latitude to data_plot
         				scHolder[0].push([longitude, latitude]);	
-						g.select("path.route").remove();
-						g.select("image").remove();
-        				var route = g.append("path")
-                                 .datum({type: "LineString", coordinates: scHolder[0]})	
-                                 .attr("class", "route")
-                                 .attr("d", path);	
-        			    var  craft = g.append("svg:image")
-						              .attr("xlink:href", "/media/icons/Segment_Icons_Fill_Black-08.svg")
-									  .attr("x",sat_coord[0])
-									  .attr("y",sat_coord[1]-15)
-									  .attr("width",30)
-									  .attr("height",30);
-					  }                    
+                g.select("path.route").remove();
+                g.select("image").remove();
+                var route = g.append("path")
+                .datum({type: "LineString", coordinates: scHolder[0]})	
+                .attr("class", "route")
+                .attr("d", path);	
+                var  craft = g.append("svg:image")
+                .attr("xlink:href", "/media/icons/Segment_Icons_Fill_Black-08.svg")
+                .attr("x",sat_coord[0])
+                .attr("y",sat_coord[1]-15)
+                .attr("width",30)
+                .attr("height",30);
+              }                    
                       //-------------------------------------------//
-					}					  
-   				  });
-        		}
-				
-                var zoom = d3.zoom()
-				             .scaleExtent([.1,10])
-							 .on("zoom",zoomed);
-							 
-				svg.call(zoom);
-				
-				function zoomed(){
- 				  g.attr("transform", d3.event.transform);
-				};
-				
-				function projGround(d){
-	              return projection(d);
-                }; 
-				
-                $('.close').click(this.removeWid);
-      			
-				$(document).on('click', 'span', function(e) {
-                  e.target.closest("div").remove();
-                });
-
-      	      }.bind(this);
-			      
-
-
-          this.tableWidget = function(){
-            var rows='';
-            var width = $(window).width();
-            counter++;
-            for(var i=2;i<12;i++){
-              rows += '<tr><th id="categoryID'+i+counter+'"></th><td id="ID'+i+counter+'"></td><td id="name'+i+counter+'"></td><td id="alow'+i+counter+'"></td><td id="wlow'+i+counter+'"></td><td id="value'+i+counter+'"></td><td id="whigh'+i+counter+'"></td><td id="ahigh'+i+counter+'"></td><td id="units'+i+counter+'"></td><td id="notes'+i+counter+'"></td></tr></tbody>';
+                    }					  
+                  });
             }
-            if(width<=1280){
+
+            var zoom = d3.zoom()
+            .scaleExtent([.1,10])
+            .on("zoom",zoomed);
+
+            svg.call(zoom);
+
+            function zoomed(){
+             g.attr("transform", d3.event.transform);
+           };
+
+           function projGround(d){
+             return projection(d);
+           }; 
+
+           $('.close').click(this.removeWid);
+
+           $(document).on('click', '#removespan', function(e) {
+            e.target.closest("div").parentElement.remove();
+          });
+
+         }.bind(this);
+
+
+
+         this.tableWidget = function(){
+          var rows='';
+          var width = $(window).width();
+          counter++;
+          for(var i=2;i<12;i++){
+            rows += '<tr class="content"><th id="categoryID'+i+counter+'" class="categorycontent"></th><td id="ID'+i+counter+'"></td><td id="name'+i+counter+'"></td><td id="alow'+i+counter+'"></td><td id="wlow'+i+counter+'"></td><td id="value'+i+counter+'"></td><td id="whigh'+i+counter+'"></td><td id="ahigh'+i+counter+'"></td><td id="units'+i+counter+'"></td><td id="notes'+i+counter+'"></td></tr></tbody>';
+          }
+          if(width<=1280){
               // data-gs-min-width="10" data-gs-min-height="7.8" data-gs-max-height="8"
-              griddata = '<div class="panel panel-primary griddata" data-gs-min-width="10" data-gs-min-height="7" id="tabletextqwidget'+counter+'"><div class="panel-heading grid-stack-item-content" id="paneldiv'+counter+'"></div><table class="table table-bordered table-inverse"><thead><tr><th id="category'+counter+'"></th>'
+              griddata = '<div class="panel panel-primary widgetgrid" data-gs-min-width="10" data-gs-min-height="7" id="tabletextqwidget'+counter+'"><div class="panel-heading grid-stack-item-content" id="paneldiv'+counter+'"></div><table id="table_format" class="table table-bordered table-inverse">'
+              +'<thead><tr><th id="category'+counter+'">'
+              +'</th>'
               +'<th id="id'+counter+'"></th><th id="name'+counter+'"></th><th id="alarm_low'+counter+'"></th><th id="warn_low'+counter+'"></th><th id="value'+counter+'"></th><th id="warn_high'+counter+'"></th>'
               +'<th id="alarm_high'+counter+'"></th> <th id="units'+counter+'"></th><th id="notes'+counter+'"></th></tr></thead>'
               +' <tbody>'
               + rows
               +'</table>'
-              +'<button type="button" class=" glyphicon glyphicon-cog" aria-label="Close" id="removespan" ></button><div/>'
-              +'<div id="toolbar-options" class="hidden">'
-              +'<a href="#"><i class="fa fa-edit"></i></a>'
-              +'<a href="#"><i class="fa fa-trash-o"></i></a>'
+              +'<button type="button" class="glyphicon glyphicon-th" id="data-menu" onclick="openLeftNav()">'
+              +'</button>'
+              +'<button type="button" class="glyphicon glyphicon-cog" id="settings" onclick="openSettings('+counter+')">'
+              +'</button>'
+              +'<div style="display:none" id="settings-menu'+counter+'" class="settings-menu">'
+              +'<button type="button" class="glyphicon glyphicon-edit" data-toggle="modal" data-target="#myModalNorm">'
+              +'</button>'
+              +'<button type="button" class="glyphicon glyphicon-trash" aria-label="Close" id="removespan">'
+              +'</button>'
+              +'</div>'
               +'</div>';
-              // +'<button class="btn btn-primary btn-lg glyphicon glyphicon-edit savewidget " data-toggle="modal" data-target="#myModalNorm" id="savewidget'+counter+'">'
-              // +'</button>'
-              // +'<button type="button" class="close" aria-label="Close" id="removewidget" ><span aria-hidden="true" id="removespan">&times;</span></button><div/>';
-
               $('.grid-stack').data('gridstack').addWidget($(griddata),0,0,0,0);
-              $(document).on('click', '.fa-trash-o', function(e) {
+              $(document).on('click', '#removespan', function(e) {
                 console.log("table widget deleted");
-                console.log(e);
-                // e.target.closest("div").remove();
-                        // e.target.closest("#tabletextqwidget"+counter).remove();
-                      });
+                console.log(e.target.closest("div").parentElement.remove());
 
-              $('#removespan').toolbar({
-  content: '#toolbar-options',
-  position: 'right',
-  style: 'primary',
-  event: 'click'
-});
+              });
+
             }
             else {
               //data-gs-min-width="6" data-gs-min-height="5.5" data-gs-max-height="6"
-              griddata = '<div class="panel panel-primary" data-gs-min-width="6" data-gs-min-height="5.5" id="tabletextqwidget'+counter+'><div class="panel-heading grid-stack-item-content" id="paneldiv'+counter+'"></div><table class="table table-bordered table-inverse"><thead><tr><th id="category'+counter+'"></th>'
+              griddata = '<div class="panel panel-primary widgetgrid" data-gs-min-width="6" data-gs-min-height="5.5" id="tabletextqwidget'+counter+'"><div class="panel-heading grid-stack-item-content" id="paneldiv'+counter+'"></div><table id="table_format" class="table table-bordered table-inverse"><thead><tr><th id="category'+counter+'"></th>'
               +'<th id="id'+counter+'"></th><th id="name'+counter+'"></th><th id="alarm_low'+counter+'"></th><th id="warn_low'+counter+'"></th><th id="value'+counter+'"></th><th id="warn_high'+counter+'"></th>'
               +'<th id="alarm_high'+counter+'"></th> <th id="units'+counter+'"></th><th id="notes'+counter+'"></th></tr></thead>'
               +' <tbody>'
               + rows
               +'</table>'
-              //  +'<button class="btn btn-primary btn-lg glyphicon glyphicon-edit savewidget" data-toggle="modal" data-target="#myModalNorm" id="savewidget'+counter+'">'
-              // +'</button>'
-              // +'<button type="button" class="close" aria-label="Close" id="removewidget" ><span aria-hidden="true" id="removespan">&times;</span></button><div/>';
-
+              +'<button type="button" class="glyphicon glyphicon-th" id="data-menu" onclick="openLeftNav()">'
+              +'</button>'
+              +'<button type="button" class="glyphicon glyphicon-cog" id="settings" onclick="openSettings('+counter+')">'
+              +'</button>'
+              +'<div style="display:none" id="settings-menu'+counter+'" class="settings-menu">'
+              +'<button type="button" class="glyphicon glyphicon-edit" data-toggle="modal" data-target="#myModalNorm">'
+              +'</button>'
+              +'<button type="button" class="glyphicon glyphicon-trash" aria-label="Close" id="removespan">'
+              +'</button>'
+              +'</div>'
+              +'</div>';
               $('.grid-stack').data('gridstack').addWidget($(griddata),0,0,0,0);
-              $(document).on('click', 'span', function(e) {
+              $(document).on('click', '#removespan', function(e) {
                 console.log("table widget deleted");
-                     // e.target.closest("#tabletextqwidget"+counter).remove();
-                     e.target.closest("div").remove();
-                      // counter = counter-1;
-                    });
+                console.log(e.target.closest("div").parentElement.remove());
+
+              });
+
             }
 
             var parameters = {collectionName : "position"};
             //var intervalID = 'Interval'+counter;
-            intervalID = setInterval(function(){
+             intervalID = setInterval(function(){
 
             // (function pullTelemetryData() {
               $.ajax({
@@ -248,6 +253,10 @@
                   var datasize = size-2;
                   var obj = Object.keys(data)[2];
                   var arr = [];
+                  var categories = [];
+                  var uniqueNames = [];
+                  var stringvalue = '';
+
                   // console.log(data);
 
                   for(var k in data.v){
@@ -256,16 +265,44 @@
                   arr.splice(1, 0, "id");
                   try{
                     for(var i=0;i<arr.length;i++){
+
+                      if(arr[i] === "category"){
+                       for(var j=2;j<size;j++){
+                        categories.push(data[Object.keys(data)[j]].category);
+                        $.each(categories, function(j, el){
+                          if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+                        });
+
+                      }
+                      console.log(uniqueNames);
+
+                      for(var k=0;k<uniqueNames.length;k++){
+                        stringvalue = stringvalue + '<option value="'+uniqueNames[k]+'">"'+uniqueNames[k]+'"</option>';
+                      }
+
+                      document.getElementById(arr[i]+counter).innerHTML = '<select id="filterText" style="display:inline-block" onchange="filterText()">'
+                      +' <option selected>'+arr[i].toUpperCase()+'</option>'
+                      +stringvalue
+                      +' </select>';
+
+
+                    }
+                    else{
                       document.getElementById(arr[i]+counter).innerHTML = arr[i].toUpperCase();
                     }
+                  }
 
-                    for(var c=1;c<=counter;c++){
-                      for(var i=2;i<size;i++){
-                        document.getElementById("categoryID"+i+c).innerHTML = data[Object.keys(data)[i]].category;
-                        document.getElementById("ID"+i+c).innerHTML = Object.keys(data)[i];
-                        document.getElementById("name"+i+c).innerHTML = data[Object.keys(data)[i]].name;
-                        document.getElementById("units"+i+c).innerHTML = data[Object.keys(data)[i]].units;
-                        document.getElementById("notes"+i+c).innerHTML = data[Object.keys(data)[i]].notes;
+
+
+
+
+                  for(var c=1;c<=counter;c++){
+                    for(var i=2;i<size;i++){
+                      document.getElementById("categoryID"+i+c).innerHTML = data[Object.keys(data)[i]].category;
+                      document.getElementById("ID"+i+c).innerHTML = Object.keys(data)[i];
+                      document.getElementById("name"+i+c).innerHTML = data[Object.keys(data)[i]].name;
+                      document.getElementById("units"+i+c).innerHTML = data[Object.keys(data)[i]].units;
+                      document.getElementById("notes"+i+c).innerHTML = data[Object.keys(data)[i]].notes;
 
                     //Values of telemetry data
                     if(typeof data[Object.keys(data)[i]].value === "number"){
@@ -338,7 +375,7 @@
            }
          }
        });
-}, 1000);
+ }, 1000);
 }.bind(this);
 
 
@@ -550,29 +587,29 @@
 }
 });
 
-  var parameter = {collectionName : "position"};
-  var loadID = setInterval(function(){
-    $.ajax({
-      url: "/addtablewidget",
-      type: 'GET',
-      data: parameter,
-      success: function (data) {
-        var size = Object.keys(data).length;
-        var datasize = size-2;
-        var obj = Object.keys(data)[2];
-        var arr = [];
-        console.log(data);
+var parameter = {collectionName : "position"};
+var loadID = setInterval(function(){
+  $.ajax({
+    url: "/addtablewidget",
+    type: 'GET',
+    data: parameter,
+    success: function (data) {
+      var size = Object.keys(data).length;
+      var datasize = size-2;
+      var obj = Object.keys(data)[2];
+      var arr = [];
+      console.log(data);
 
-        for(var k in data.v){
-          arr.push(k);
-        }
-        arr.splice(1, 0, "id");
-        try{
-          for(var c=1;c<=count;c++){  
-            for(var i=0;i<arr.length;i++){
-              document.getElementById(arr[i]+c).innerHTML = arr[i].toUpperCase();
+      for(var k in data.v){
+        arr.push(k);
+      }
+      arr.splice(1, 0, "id");
+      try{
+        for(var c=1;c<=count;c++){  
+          for(var i=0;i<arr.length;i++){
+            document.getElementById(arr[i]+c).innerHTML = arr[i].toUpperCase();
 
-            }
+          }
 
 
                 // for(var c=1;c<=count;c++){
@@ -722,13 +759,20 @@
                 $('#clear-grid').click(this.clearGrid);// event handler for clearing the grid
                 // $('#savebtn'+counter).click(this.addTableName);
                 $('#savebtn').click(function(e){
+                  console.log(e.target.parentElement);
                   document.getElementById("paneldiv"+counter).innerHTML = $('#exampleInputName').val();
-                   $("#myModalNorm").modal("hide");
-
+                  $("#myModalNorm").modal("hide");
+                  
                 });
 
-           
+                $('#saveGTbtn').click(function(e){
+                  console.log(e.target.parentElement);
+                  document.getElementById("gtpanel"+gcount).innerHTML = $('#exampleGTInputName').val();
+                  $("#myGTModalNorm").modal("hide");
+                });
 
 
               }
+
+
             });
