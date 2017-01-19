@@ -9,20 +9,28 @@ $(function(){
 		var options = {};
 		$('.grid-stack').gridstack(options);
 		QUINDAR.grid = $('.grid-stack').data('gridstack');
-        console.log(QUINDAR.grid);
-        console.log(QUINDAR.usermail);
         setInterval(QUINDAR.telemetry.init, 1000);
     };
 
     QUINDAR.telemetry = {
-    	contents : null,
+    	Audacy1 : null,
+        Audacy2 : null,
+        Audacy3 : null,
     	init : function(){
     		$.ajax({  
     			url: "/getTelemetry",
     			type: 'GET',
     			data: {'vehicleId.value' : 'Audacy1'},
     			success: function(res) {
-    				QUINDAR.telemetry.contents = res;
+                    if(res.Audacy1) {
+    				    QUINDAR.telemetry.Audacy1 = res.Audacy1;
+                    }
+                    if(res.Audacy2) {
+                        QUINDAR.telemetry.Audacy2 = res.Audacy2;
+                    }
+                    if(res.Audacy3) {
+                        QUINDAR.telemetry.Audacy3 = res.Audacy3;
+                    }
     			}
     		});
 
@@ -45,7 +53,6 @@ $(function(){
     	QUINDAR.gcount++;
         var delay = 1000;	// milliseconds
 		var sc = ["Audacy1", "Audacy2", "Audacy3"];		
-		//var timer = "";
 									
 		// Initialize scHolder
 		var scHolder={}
@@ -146,7 +153,7 @@ $(function(){
 				
         // Function to update data to be plotted
         function updatePlot() {
-        	latestdata = QUINDAR.telemetry.contents;      				 
+        	latestdata = QUINDAR.telemetry.Audacy1;      				 
         	console.log(latestdata);	
             // Check if the latestdata is available for the selected s/c
         	if (latestdata == null) {
@@ -298,7 +305,6 @@ $(function(){
                 console.log("table widget deleted");
                 console.log(e.target.id);
                 e.target.closest("div").remove();
-                        // e.target.closest("#tabletextqwidget"+QUINDAR.counter).remove();
             });
         } else {
               //data-gs-min-width="6" data-gs-min-height="5.5" data-gs-max-height="6"
@@ -313,15 +319,12 @@ $(function(){
             $('.grid-stack').data('gridstack').addWidget($(griddata),0,0,0,0);
             $(document).on('click', 'span', function(e) {
                 console.log("table widget deleted");
-                     // e.target.closest("#tabletextqwidget"+QUINDAR.counter).remove();
                 e.target.closest("div").remove();
-                      // QUINDAR.counter = QUINDAR.counter-1;
             });
         }
 
-        var parameters = {collectionName : "position"};
         intervalID = setInterval(function(){
-            data = QUINDAR.telemetry.contents;
+            data = QUINDAR.telemetry.Audacy1;
             var size = Object.keys(data).length;
             var datasize = size-2;
             var obj = Object.keys(data)[2];

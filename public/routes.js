@@ -107,17 +107,43 @@ var Telemetry = require('./models/telemetry');
     });
 
     app.get('/getTelemetry', function(req, res){
-        params = req.query;
+        var params = req.query;
+        var telemetry = {};
+        var vehicles = [];
+        
+        if(params["vehicleId.value"] != "all"){
+            Telemetry.findOne(params, 
+                {}, 
+                { sort: { 'timestamp.value' : -1} },
+                function(err, data) {
+                    if(err) throw err;
 
-        Telemetry.findOne(params, 
-            {}, 
-            { sort: { '_id' : -1 } },
-            function(err, telemetry) {
+                    telemetry[data.vehicleId.value] = data;
+                    res.send(telemetry);
+                }
+            );
+        } else {
+            Telemetry.distinct('vehicleId.value', function(err, vehicles){
                 if(err) throw err;
 
-                res.send(telemetry);
-            }
-        );
+                if(vehicles) {
+                    Telemetry.find( {'vehicleId.value' : { $in: vehicles}}, 
+                        {}, 
+                        { sort: { 'timestamp.value' : -1 }, limit : vehicles.length },
+                        function(err, data) {
+                            if(err) throw err;
+
+                            for(var i=0; i<data.length; i++) {
+                                telemetry[data[i].vehicleId.value] = data[i];
+                            }
+                            res.send(telemetry);
+                        }
+                    );
+                }
+            });
+
+            
+        }
     })
 
     //get data for table text widget
