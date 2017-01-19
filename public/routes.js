@@ -106,6 +106,20 @@ var Telemetry = require('./models/telemetry');
 
     });
 
+    app.get('/getTelemetry', function(req, res){
+        params = req.query;
+
+        Telemetry.findOne(params, 
+            {}, 
+            { sort: { '_id' : -1 } },
+            function(err, telemetry) {
+                if(err) throw err;
+
+                res.send(telemetry);
+            }
+        );
+    })
+
     //get data for table text widget
     app.get('/addtablewidget',function(req,res){
         //Query to get the latest document from the position collection
