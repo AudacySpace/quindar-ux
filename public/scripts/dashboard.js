@@ -67,16 +67,21 @@ $(function(){
 	        <button type="button" class="plotbutton" id="plotbutton'+QUINDAR.gcount+'">Plot</button>\
             <button type="button" class="homebutton" id="homebutton'+QUINDAR.gcount+'">Home</button>\
             <input type="button" class="timebtn" value="Show Timezones" id="timebtn'+QUINDAR.gcount+'">\
-	       	<button type="button" class="close" aria-label="Close" id="removewidget">\
-	       	<span aria-hidden="true" id="removespan">&times;</span></button>\
-	       	<div class="svg-container" id="divplot'+QUINDAR.gcount+'"></div><div/>'),0,0,6,5);
+	       	<button type="button" class="close" aria-label="Close" id="removespan" >&times;</button>\
+	       	<div class="svg-container" id="divplot'+QUINDAR.gcount+'"></div><div/>'),0,0,6,5,false,3,12,4,16,'idgt'+QUINDAR.gcount);
 
 		var  temptime = new Date;   // temporary time being replaced by the source time
+		
+		// Width of grid
+		var widthG = $('.grid-stack').data('gridstack').cellWidth();
+		$('.grid-stack').data('gridstack').cellHeight(widthG/1.8);
+				
         var π = Math.PI,
             radians = π / 180,
             degrees = 180 / π;
 
-        var projection = d3.geoEquirectangular();
+        var projection = d3.geoEquirectangular()
+							.precision(.1);
         var path = d3.geoPath().projection(projection);
         var graticule = d3.geoGraticule();
         var circle = d3.geoCircle();
@@ -85,7 +90,9 @@ $(function(){
                     .attr("viewBox", "-20 0 1000 500")
                     .classed("svg-content", true);
         var g = svg.append("g");
-		g.attr("id","g"+QUINDAR.gcount);
+		g.attr("id","g"+QUINDAR.gcount)
+			.attr("x",0)
+			.attr("y",0);
 
         var transform = d3.zoomTransform(svg.node());   
                  				
@@ -120,7 +127,9 @@ $(function(){
         						
 		// Go back to original view						
        	$('#homebutton'+QUINDAR.gcount).click(function(){
-            zoom.transform(svg,transform);
+			svg.transition()
+				.duration(500)
+				.call(zoom.transform, d3.zoomIdentity);
        	});
 				
         // Plot data when PLOT button is clicked and keep updating						
@@ -147,6 +156,8 @@ $(function(){
                 }); 
             } else {
                 this.value = "Show Timezones";
+				
+				// Remove timezones
                 g.select(".timezones").remove();
             }
         });
@@ -197,6 +208,7 @@ $(function(){
 				
         var zoom = d3.zoom()
 					.scaleExtent([.1,10])
+					.translateExtent([[0,0],[1000,500]])
 					.on("zoom",zoomed);
 							 
 		svg.call(zoom);
@@ -278,7 +290,7 @@ $(function(){
             return 0.016708634 - centuries * (0.000042037 + 0.0000001267 * centuries);
         }
 
-   		$(document).on('click', 'span', function(e) {
+   		$(document).on('click', '#removespan', function(e) {
    			e.target.closest("div").remove();
    		});
    	}.bind(this);
