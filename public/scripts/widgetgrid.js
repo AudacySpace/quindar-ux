@@ -53,28 +53,36 @@
 						<button type="button" class="homebutton" id="homebutton'+gcount+'">Home</button>\
 						<input type="button" class="timebtn" value="Show Timezones" id="timebtn'+gcount+'">\
 						<button type="button" class="close" aria-label="Close" id="removespan" >&times;</button>\
-					   <div class="svg-container" id="divplot'+gcount+'"></div><div/>'),0,0,6,5);
+					   <div class="svg-container" id="divplot'+gcount+'"></div><div/>'),0,0,6,5,false,3,12,4,16,'idgt'+gcount);
 
 			    var  temptime = new Date;	// temporary time being replaced by the source time
 
+				// Width of grid
+				var widthG = $('.grid-stack').data('gridstack').cellWidth();
+				$('.grid-stack').data('gridstack').cellHeight(widthG/1.8);
+				
 				var π = Math.PI,
                     radians = π / 180,
                     degrees = 180 / π;
 	
-        		var projection = d3.geoEquirectangular();
-		
+        		var projection = d3.geoEquirectangular()
+				                   .precision(.1);
+
         		var path = d3.geoPath()
         						.projection(projection);
         		var graticule = d3.geoGraticule();
 				var circle = d3.geoCircle();
 
         		var svg = d3.select("#divplot"+gcount).append("svg")
-        						  .attr("preserveAspectRatio", "xMinYMin meet")
-                                  .attr("viewBox", "-20 0 1000 500")
-                                  .classed("svg-content", true);
-        		var g = svg.append("g");
-				g.attr("id","g"+gcount);
-                 		
+				                  .attr("preserveAspectRatio", "xMinYMin meet")
+				                  .attr("viewBox", "-20 0 1000 500")
+        						  .classed("svg-content", true);
+        		
+				var g = svg.append("g")
+							.attr("id","g"+gcount)
+							.attr("x",0)
+							.attr("y",0);
+                								
                 var transform = d3.zoomTransform(svg.node());	
 				
         		// Plot world map
@@ -105,15 +113,12 @@
                     night.datum(circle.center(antipode(solarPosition(temptime)))).attr("d", path);
 				  }
         		});				
-        						
-				// Go back to original view						
-        		//$('#homebutton'+gcount).click(function(){
-			    //  zoom.scaleTo(svg,1);
-        		//});
-				
+        										
                 // Go back to original view						
         		$('#homebutton'+gcount).click(function(){
-                  zoom.transform(svg,transform);
+					svg.transition()
+						.duration(500)
+						.call(zoom.transform, d3.zoomIdentity);
         		});
 				
 				// Plot data when PLOT button is clicked and keep updating						
@@ -123,9 +128,11 @@
 			
 				$('#timebtn'+gcount).click(function(){
 				  var tempval = this.value
+				  
 				  if (tempval == "Show Timezones"){
 					this.value = "Hide Timezones";
 					
+					// Show timezones
                     d3.json("/media/icons/timezones.json", function(error, timezones) {
                       if (error) throw error;
 
@@ -142,6 +149,7 @@
 				  } else {
 					  this.value = "Show Timezones";
 					  
+					  // Remove timezones
 					  g.select(".timezones").remove();
 					  
 				  }
@@ -175,7 +183,6 @@
         	            r = Math.sqrt(Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2));
         	            longitude = Math.atan2(y,x)/Math.PI*180;
         	            latitude = Math.asin(z/r)/Math.PI*180;
-        				//console.log(longitude,latitude)
         					
 						// Convert [longitude,latitude] to plot	
                         var sat_coord = projGround([longitude,latitude]);
@@ -204,15 +211,16 @@
 					}					  
    				  });
         		}
-				
+
                 var zoom = d3.zoom()
 				             .scaleExtent([1,10])
+							 .translateExtent([[0,0],[1000,500]])
 							 .on("zoom",zoomed);
 							 
 				svg.call(zoom);
 				
 				function zoomed(){
- 				  g.attr("transform", d3.event.transform);
+					g.attr("transform", d3.event.transform);
 				};
 				
 				function projGround(d){
