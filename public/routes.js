@@ -1,5 +1,3 @@
-
-
 module.exports = function(app, passport) {
         
 var mongoose = require('mongoose');
@@ -172,4 +170,3 @@ function isLoggedIn(req, res, next) {
 
     res.redirect('/');
 }
-

@@ -10,16 +10,88 @@
 .grid-stack-item-content {
   color: #2c3e50;
   text-align: center;
-  height:4%;
-  border:3px solid #808080;
-  background-color: #d9edf7;
+/*  height:4%;*/
+  /*border:3px solid #808080;*/
+ /* background-color: #d9edf7;*/
 }  
-#removespan {
+/*#removespan {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    font-size: 19px;
+    color: #07D1EA;
+    background-color: #000000;
+    border-color: #000000;
+     /*border: 0px;
+    padding: 3px 4px;*/
+/*}*/
+
+button#editwidget.glyphicon.glyphicon-edit{
+    position:absolute;
+  right:29px;
+  top:0px;
+  font-size:19px;
+  color: #07D1EA;
+  background-color: #000000;
+   /* border-color: #000000;*/
+/*    border: 0px;
+    padding: 2px 4px;*/
+}
+
+
+.settings-menu{
   position:absolute;
+  right:1px;
+  top:-27px;
+  font-size:19px;
+  color: #07D1EA;
+  padding:2px 0px;
+/*  background-color: #000000;
+    border-color: #000000;*/
+}
+
+
+
+
+#settings-menu button:hover{
+  background-color:#ccc;
+}
+
+
+
+button#settings.glyphicon.glyphicon-cog{
+    position:absolute;
   right:0px;
   top:0px;
-  font-size:24px;
+  font-size:19px;
+  color: #07D1EA;
+  background-color: #000000;
+    border-color: #000000;
+    border: 0px;
+    padding: 1px 4px;
 }
+
+button#data-menu{
+   position:absolute;
+  left:0px;
+  top:0px;
+  font-size:19px;
+  color: #07D1EA;
+  background-color: #000000;
+    border-color: #000000;
+    border: 0px;
+    padding: 1px 4px;
+   /* margin-right:5px;*/
+
+}
+.btn-group-lg>.btn, .btn-lg{
+      padding: 2px 16px;
+}
+
+.btn-primary {
+  border:0;
+}
+
 .grid-stack > .grid-stack-item > .grid-stack-item-content {
   position: static;
 }
@@ -32,9 +104,19 @@
 }
 
 .panel-primary>.panel-heading {
-      background-color: #337ab7;
-    border-color: #337ab7;
+      background-color: #000000;
+    border-color: #000000;
   }
+
+  .panel-primary {
+
+    border-color: #ffffff;
+  }
+
+/*  div.widgetgrid{
+    margin-left:10px;
+    margin-right:10px;
+  }*/
 
 
 
@@ -42,8 +124,6 @@
     margin:0 auto;  
     font-size:10px;
   }
-
-
 
 
 /*Uncomment below media queries for the container to occupy entire screen and not just the middle of the screen*/
@@ -59,4 +139,10 @@
     width:99%;
 }
 }
+
+
+
+
+
+
 

@@ -33,23 +33,26 @@
   background-color: #CFCFD5;
   color: #020613;
   position:absolute;
-  top:0px;
+  padding:5px;
+  top:5px;
 }
 .homebutton {
   font-family: "Open Sans", Sans-serif;	
   background-color: #CFCFD5;
   color: #020613;
   position:absolute;
-  top:0px;
-  left:40px;
+  padding:5px;
+  top:5px;
+  left:62px;
 }
 .timebtn {
   font-family: "Open Sans", Sans-serif;	
   background-color: #CFCFD5;
   color: #020613;
   position:absolute;
-  top:0px;
-  left:90px;
+  top:5px;
+  padding:5px;
+  left:122px;
 }
 .svg-container {
     display: inline-block;
