@@ -184,7 +184,7 @@ $(function () {
           }
           if(width<=1280){
               // data-gs-min-width="10" data-gs-min-height="7.8" data-gs-max-height="8"
-              griddata = '<div class="panel panel-primary widgetgrid" data-gs-min-width="10" data-gs-min-height="7" id="tabletextqwidget'+counter+'"><div class="panel-heading grid-stack-item-content" id="paneldiv'+counter+'"></div><table id="table_format" class="table table-bordered table-inverse">'
+              griddata = '<div class="row"><div class="panel panel-primary widgetgrid grid-stack-item-content" data-gs-min-width="10" data-gs-min-height="7" id="tabletextqwidget'+counter+'"><div class="panel-heading" id="paneldiv'+counter+'"></div><table id="table_format" class="table table-bordered table-inverse">'
               +'<thead><tr><th id="category'+counter+'">'
               +'</th>'
               +'<th id="id'+counter+'"></th><th id="name'+counter+'"></th><th id="alarm_low'+counter+'"></th><th id="warn_low'+counter+'"></th><th id="value'+counter+'"></th><th id="warn_high'+counter+'"></th>'
@@ -213,7 +213,9 @@ $(function () {
             }
             else {
               //data-gs-min-width="6" data-gs-min-height="5.5" data-gs-max-height="6"
-              griddata = '<div class="panel panel-primary widgetgrid" data-gs-min-width="6" data-gs-min-height="5.5" id="tabletextqwidget'+counter+'"><div class="panel-heading grid-stack-item-content" id="paneldiv'+counter+'"></div><table id="table_format" class="table table-bordered table-inverse"><thead><tr><th id="category'+counter+'"></th>'
+              griddata = '<div class="row"><div class="panel panel-primary widgetgrid grid-stack-item-content" data-gs-min-width="6" data-gs-min-height="5.5" id="tabletextqwidget'+counter+'"><div class="panel-heading" id="paneldiv'+counter+'"></div><table id="table_format" class="table table-bordered table-inverse">'
+              +'<thead><tr><th id="category'+counter+'">'
+              +'</th>'
               +'<th id="id'+counter+'"></th><th id="name'+counter+'"></th><th id="alarm_low'+counter+'"></th><th id="warn_low'+counter+'"></th><th id="value'+counter+'"></th><th id="warn_high'+counter+'"></th>'
               +'<th id="alarm_high'+counter+'"></th> <th id="units'+counter+'"></th><th id="notes'+counter+'"></th></tr></thead>'
               +' <tbody>'
@@ -265,36 +267,9 @@ $(function () {
                   arr.splice(1, 0, "id");
                   try{
                     for(var i=0;i<arr.length;i++){
-
-                      if(arr[i] === "category"){
-                       for(var j=2;j<size;j++){
-                        categories.push(data[Object.keys(data)[j]].category);
-                        $.each(categories, function(j, el){
-                          if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
-                        });
-
-                      }
-                      console.log(uniqueNames);
-
-                      for(var k=0;k<uniqueNames.length;k++){
-                        stringvalue = stringvalue + '<option value="'+uniqueNames[k]+'">"'+uniqueNames[k]+'"</option>';
-                      }
-
-                      document.getElementById(arr[i]+counter).innerHTML = '<select id="filterText" style="display:inline-block" onchange="filterText()">'
-                      +' <option selected>'+arr[i].toUpperCase()+'</option>'
-                      +stringvalue
-                      +' </select>';
-
-
+                        document.getElementById(arr[i]+counter).innerHTML = arr[i].toUpperCase();
                     }
-                    else{
-                      document.getElementById(arr[i]+counter).innerHTML = arr[i].toUpperCase();
-                    }
-                  }
-
-
-
-
+                  
 
                   for(var c=1;c<=counter;c++){
                     for(var i=2;i<size;i++){
@@ -370,6 +345,7 @@ $(function () {
                }
              }
            }
+           
            catch(e){
 
            }
