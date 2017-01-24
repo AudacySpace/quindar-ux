@@ -1,5 +1,3 @@
-
-
 module.exports = function(app, passport) {
         
 var mongoose = require('mongoose');
@@ -106,6 +104,46 @@ var Telemetry = require('./models/telemetry');
 
     });
 
+    app.get('/getTelemetry', function(req, res){
+        var params = req.query;
+        var telemetry = {};
+        //var vehicles = [];
+        
+        if(params["vehicleId.value"] != "all"){
+            Telemetry.findOne(params, 
+                {}, 
+                { sort: { 'timestamp.value' : -1} },
+                function(err, data) {
+                    if(err) throw err;
+
+                    telemetry[data.vehicleId.value] = data;
+                    res.send(telemetry);
+                }
+            );
+        } else {
+            Telemetry.distinct('vehicleId.value', function(err, vehicles){
+                if(err) throw err;
+
+                if(vehicles) {
+                    Telemetry.find( {'vehicleId.value' : { $in: vehicles}}, 
+                        {}, 
+                        { sort: { 'timestamp.value' : -1 }, limit : vehicles.length },
+                        function(err, data) {
+                            if(err) throw err;
+
+                            for(var i=0; i<data.length; i++) {
+                                telemetry[data[i].vehicleId.value] = data[i];
+                            }
+                            res.send(telemetry);
+                        }
+                    );
+                }
+            });
+
+            
+        }
+    })
+
     //get data for table text widget
     app.get('/addtablewidget',function(req,res){
         //Query to get the latest document from the position collection
@@ -132,4 +170,3 @@ function isLoggedIn(req, res, next) {
 
     res.redirect('/');
 }
-

@@ -373,7 +373,6 @@ function closeRightNav() {
 
 function openList1() {
     var list = document.getElementById("widgetops");
-
     if (list.style.display ===  "none"){
         list.style.display = "block";
     }else{
@@ -383,6 +382,7 @@ function openList1() {
 
 function openSettings(x){
   var list= document.getElementById("settings-menu"+x);
+  console.log(list);
    if (list.style.display ===  "none"){
         list.style.display = "block";
     }else{
@@ -392,6 +392,15 @@ function openSettings(x){
 
 function openPlotSettings(x){
   var list= document.getElementById("plot-settings-menu"+x);
+   if (list.style.display ===  "none"){
+        list.style.display = "block";
+    }else{
+        list.style.display = "none";
+    }
+}
+
+function openTableIdSettings(x){
+  var list= document.getElementById("id-settings-menu"+x);
    if (list.style.display ===  "none"){
         list.style.display = "block";
     }else{
