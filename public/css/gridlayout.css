@@ -9,11 +9,10 @@
 }
 .grid-stack-item-content {
   color: #2c3e50;
-  text-align: center;
+  text-align: left;
   height:4%;
-  border:3px solid #808080;
   background-color: #d9edf7;
-}  
+} 
 #removespan {
   position:absolute;
   right:0px;
@@ -24,17 +23,17 @@
   position: static;
 }
 #widgetops {
-       /* display:none;*/
-      list-style-type: none;
+  /* display:none;*/
+  list-style-type: none;
 }
 #usermail{
-      display:none;
+  display:none;
 }
 
 .panel-primary>.panel-heading {
-      background-color: #337ab7;
-    border-color: #337ab7;
-  }
+  background-color: #020613;
+  border-color: #020613;
+}
 
 
 

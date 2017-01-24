@@ -2,7 +2,7 @@
  * Custom CSS for widgets 
  */
 .ground-widget{
-  margin-bottom:0px;
+  margin-bottom: 0px;
 }
 .graticule {
   fill: none;
@@ -30,26 +30,64 @@
 }
 .plotbutton {
   font-family: "Open Sans", Sans-serif;	
-  background-color: #CFCFD5;
+  background-color: #07D1EA;
   color: #020613;
-  position:absolute;
-  top:0px;
+  position: absolute;
+  top: 0px;
 }
 .homebutton {
+  display: inline-block;
   font-family: "Open Sans", Sans-serif;	
-  background-color: #CFCFD5;
+  background-color: #07D1EA;
   color: #020613;
-  position:absolute;
-  top:0px;
-  left:40px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 40px;
+}
+.homebutton:hover {
+    background-color: #0AACCF;
 }
 .timebtn {
+  display: inline-block;
   font-family: "Open Sans", Sans-serif;	
-  background-color: #CFCFD5;
+  text-align: center;
+  background-color: #07D1EA;
   color: #020613;
-  position:absolute;
-  top:0px;
-  left:90px;
+  position: absolute;
+  top: 0px;
+  left: 45px;
+  width: 90px;
+}
+.timebtn:hover {
+    background-color: #0AACCF;
+}
+.satbtn {
+	display: inline-block;
+    font-family: "Open Sans", Sans-serif;	
+    background-color: #07D1EA;
+    color: #020613;
+    cursor: pointer;
+	position: absolute;
+    top: 0px;
+	left: 140px;
+	width: 50px;
+}
+.satbtn:hover {
+    background-color: #0AACCF;
+}
+.clearbtn {
+	display: inline-block;
+    font-family: "Open Sans", Sans-serif;	
+    background-color: #07D1EA;
+    color: #020613;
+    cursor: pointer;
+	position: absolute;
+    top: 0px;
+	left: 195px;
+}
+.clearbtn:hover {
+    background-color: #0AACCF;
 }
 .svg-container {
     display: inline-block;
@@ -72,7 +110,6 @@
   stroke: #CFCFD5;
   stroke-width: .05px;  
 }
-
 .timezones :hover {
   fill: #FFD600;
 }
