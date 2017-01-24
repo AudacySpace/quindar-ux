@@ -473,11 +473,11 @@ $(function(){
                         +'<thead>'
                         +'<tr class="header">'
                         +'<th colspan="2">Name:</th>'
-                        +' <th colspan="2" id="nameid" class="nameid"></th>'
+                        +' <th colspan="2" id="nameid"></th>'
                         +'</tr>'
                         +'<tr class="header">'
                         +'<th colspan="2">Category:</th>'
-                        +' <th colspan="2" id="catVal" class="nameid"></th>'
+                        +' <th colspan="2" id="catVal"></th>'
                         +'</tr>'
                         +'<tr class="header" id="header">'
                         +'<th>Id</th>'
@@ -527,12 +527,12 @@ $(function(){
 
                                      
                                      if(typeof dataX.value === "number") {
-                                            $('.nameid').html(dataX.name);
-                                            $('.catVal').html(dataX.category);
+                                            $('#nameid').html(dataX.name);
+                                            $('#catVal').html(dataX.category);
                                             $table.find('tbody').append($('<tr><td>'+input+'</td><td>'+Math.round(dataX.value * 100)/100+'</td><td>'+dataX.units+'</td><td>'+date.toUTCString()+'</td></tr>'));
                                     }else {
-                                            $('.nameid').html(dataX.name);
-                                            $('.catVal').html(dataX.category);
+                                            $('#nameid').html(dataX.name);
+                                            $('#catVal').html(dataX.category);
                                             $table.find('tbody').append($('<tr><td>'+input+'</td><td>'+dataX.value+'</td><td>'+dataX.units+'</td><td>'+date.toUTCString()+'</td></tr>'));
                                     }
 
