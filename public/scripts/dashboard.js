@@ -4,6 +4,9 @@ $(function(){
 	QUINDAR.grid = {};
 	QUINDAR.gcount = 0;
     QUINDAR.counter = 0;
+    QUINDAR.icount = 0;
+    var intervalID;
+
 
 	QUINDAR.start = function() {
 		var options = {};
@@ -61,27 +64,33 @@ $(function(){
 			scHolder[j].pop();
 		};
 
-		$('.grid-stack').data('gridstack').addWidget($(
-			'<div class="panel panel-primary" style="margin-bottom:0;" id="divtable'+QUINDAR.gcount+'">\
-			<div class="grid-stack-item-content panel-heading" />\
-	        <button type="button" class="plotbutton" id="plotbutton'+QUINDAR.gcount+'">Plot</button>\
+		$('.grid-stack').data('gridstack').addWidget($('<div><div class="panel panel-primary grid-stack-item-content" style="margin-bottom:0;" id="divtable'+QUINDAR.gcount+'">\
+			<div class="panel-heading">\
+            <button type="button" class="plotbutton" id="plotbutton'+QUINDAR.gcount+'">Plot</button>\
             <button type="button" class="homebutton" id="homebutton'+QUINDAR.gcount+'">Home</button>\
             <input type="button" class="timebtn" value="Show Timezones" id="timebtn'+QUINDAR.gcount+'">\
-	       	<button type="button" class="close" aria-label="Close" id="removespan" >&times;</button>\
-	       	<div class="svg-container" id="divplot'+QUINDAR.gcount+'"></div><div/>'),0,0,6,5,false,3,12,4,16,'idgt'+QUINDAR.gcount);
+            <button type="button" class="glyphicon glyphicon-cog pull-right" id="settings" onclick="openPlotSettings('+QUINDAR.gcount+')">\
+            </button>\
+            <div style="display:none" id="plot-settings-menu'+QUINDAR.gcount+'" class="settings-menu">\
+            <button type="button" class="glyphicon glyphicon-trash" aria-label="Close" id="removespan">\
+            </button>\
+            </div>\
+            </div>\
+	       	<div class="svg-container" id="divplot'+QUINDAR.gcount+'"></div><div/></div>'),0,0,6,5,false,3,12,4,16,'idgt'+QUINDAR.gcount);
 
 		var  temptime = new Date;   // temporary time being replaced by the source time
 		
 		// Width of grid
 		var widthG = $('.grid-stack').data('gridstack').cellWidth();
 		$('.grid-stack').data('gridstack').cellHeight(widthG/1.8);
-				
+
+		var  temptime = new Date;   // temporary time being replaced by the source time
         var π = Math.PI,
             radians = π / 180,
             degrees = 180 / π;
-
         var projection = d3.geoEquirectangular()
 							.precision(.1);
+        var projection = d3.geoEquirectangular();
         var path = d3.geoPath().projection(projection);
         var graticule = d3.geoGraticule();
         var circle = d3.geoCircle();
@@ -93,6 +102,7 @@ $(function(){
 		g.attr("id","g"+QUINDAR.gcount)
 			.attr("x",0)
 			.attr("y",0);
+		g.attr("id","g"+QUINDAR.gcount);
 
         var transform = d3.zoomTransform(svg.node());   
                  				
@@ -127,9 +137,13 @@ $(function(){
         						
 		// Go back to original view						
        	$('#homebutton'+QUINDAR.gcount).click(function(){
+
 			svg.transition()
 				.duration(500)
 				.call(zoom.transform, d3.zoomIdentity);
+
+            zoom.transform(svg,transform);
+
        	});
 				
         // Plot data when PLOT button is clicked and keep updating						
@@ -156,6 +170,7 @@ $(function(){
                 }); 
             } else {
                 this.value = "Show Timezones";
+
 				
 				// Remove timezones
                 g.select(".timezones").remove();
@@ -208,7 +223,9 @@ $(function(){
 				
         var zoom = d3.zoom()
 					.scaleExtent([.1,10])
+
 					.translateExtent([[0,0],[1000,500]])
+
 					.on("zoom",zoomed);
 							 
 		svg.call(zoom);
@@ -291,7 +308,9 @@ $(function(){
         }
 
    		$(document).on('click', '#removespan', function(e) {
-   			e.target.closest("div").remove();
+
+   			e.target.closest("div").parentElement.parentElement.parentElement.remove();
+
    		});
    	}.bind(this);
 
@@ -303,35 +322,53 @@ $(function(){
             rows += '<tr><th id="categoryID'+i+QUINDAR.counter+'"></th><td id="ID'+i+QUINDAR.counter+'"></td><td id="name'+i+QUINDAR.counter+'"></td><td id="alow'+i+QUINDAR.counter+'"></td><td id="wlow'+i+QUINDAR.counter+'"></td><td id="value'+i+QUINDAR.counter+'"></td><td id="whigh'+i+QUINDAR.counter+'"></td><td id="ahigh'+i+QUINDAR.counter+'"></td><td id="units'+i+QUINDAR.counter+'"></td><td id="notes'+i+QUINDAR.counter+'"></td></tr></tbody>';
         }
         if(width<=1280){
-              // data-gs-min-width="10" data-gs-min-height="7.8" data-gs-max-height="8"
-            griddata = '<div class="panel panel-primary" data-gs-min-width="10" data-gs-min-height="7"id="tabletextqwidget'+QUINDAR.counter+'" style="overflow-x:auto;"><div class="panel-heading grid-stack-item-content"></div><table class="table table-bordered table-inverse"><thead><tr><th id="category'+QUINDAR.counter+'"></th>'
-              +'<th id="id'+QUINDAR.counter+'"></th><th id="name'+QUINDAR.counter+'"></th><th id="alarm_low'+QUINDAR.counter+'"></th><th id="warn_low'+QUINDAR.counter+'"></th><th id="value'+QUINDAR.counter+'"></th><th id="warn_high'+QUINDAR.counter+'"></th>'
-              +'<th id="alarm_high'+QUINDAR.counter+'"></th> <th id="units'+QUINDAR.counter+'"></th><th id="notes'+QUINDAR.counter+'"></th></tr></thead>'
-              +' <tbody>'
-              + rows
-              +'</table>'
-              +'<button type="button" class="close" aria-label="Close" id="removewidget" ><span aria-hidden="true" id="removespan">&times;</span></button><div/>';
+
+            griddata = '<div data-gs-min-width="11" data-gs-min-height="10"><div class="panel panel-primary grid-stack-item-content" id="tabletextqwidget'+QUINDAR.counter+'">'
+                        +'<div class="panel-heading">'
+                        +'<button type="button" class="glyphicon glyphicon-cog pull-right" id="settings" onclick="openSettings('+QUINDAR.counter+')">'
+                        +'</button>'
+                        +'<div style="display:none" id="settings-menu'+QUINDAR.counter+'" class="settings-menu">'
+                        +'<button type="button" class="glyphicon glyphicon-trash" aria-label="Close" id="removespan">'
+                        +'</button>'
+                        +'</div>'
+                        +'</div><table class="table table-bordered table-inverse"><thead><tr><th id="category'+QUINDAR.counter+'"></th>'
+                        +'<th id="id'+QUINDAR.counter+'"></th><th id="name'+QUINDAR.counter+'"></th><th id="alarm_low'+QUINDAR.counter+'"></th><th id="warn_low'+QUINDAR.counter+'"></th><th id="value'+QUINDAR.counter+'"></th><th id="warn_high'+QUINDAR.counter+'"></th>'
+                        +'<th id="alarm_high'+QUINDAR.counter+'"></th> <th id="units'+QUINDAR.counter+'"></th><th id="notes'+QUINDAR.counter+'"></th></tr></thead>'
+                        +' <tbody>'
+                        + rows
+                        +'</tbody>'
+                        +'</table>'
+                        +'</div></div>';
 
             $('.grid-stack').data('gridstack').addWidget($(griddata),0,0,0,0);
-            $(document).on('click', 'span', function(e) {
+            $(document).on('click', '#removespan', function(e) {
                 console.log("table widget deleted");
                 console.log(e.target.id);
-                e.target.closest("div").remove();
+                e.target.closest("div").parentElement.parentElement.parentElement.remove();
             });
         } else {
-              //data-gs-min-width="6" data-gs-min-height="5.5" data-gs-max-height="6"
-            griddata = '<div class="panel panel-primary" data-gs-min-width="6" data-gs-min-height="5.5" id="tabletextqwidget'+QUINDAR.counter+' style="overflow-x:auto;"><div class="panel-heading grid-stack-item-content"></div><table class="table table-bordered table-inverse"><thead><tr><th id="category'+QUINDAR.counter+'"></th>'
-              +'<th id="id'+QUINDAR.counter+'"></th><th id="name'+QUINDAR.counter+'"></th><th id="alarm_low'+QUINDAR.counter+'"></th><th id="warn_low'+QUINDAR.counter+'"></th><th id="value'+QUINDAR.counter+'"></th><th id="warn_high'+QUINDAR.counter+'"></th>'
-              +'<th id="alarm_high'+QUINDAR.counter+'"></th> <th id="units'+QUINDAR.counter+'"></th><th id="notes'+QUINDAR.counter+'"></th></tr></thead>'
-              +' <tbody>'
-              + rows
-              +'</table>'
-              +'<button type="button" class="close" aria-label="Close" id="removewidget" ><span aria-hidden="true" id="removespan">&times;</span></button><div/>';
+             griddata = '<div data-gs-min-width="11" data-gs-min-height="11"><div class="panel panel-primary grid-stack-item-content" id="tabletextqwidget'+QUINDAR.counter+'">'
+                        +'<div class="panel-heading">'
+                        +'<button type="button" class="glyphicon glyphicon-cog pull-right" id="settings" onclick="openSettings('+QUINDAR.counter+')">'
+                        +'</button>'
+                        +'<div style="display:none" id="settings-menu'+QUINDAR.counter+'" class="settings-menu">'
+                        +'<button type="button" class="glyphicon glyphicon-trash" aria-label="Close" id="removespan">'
+                        +'</button>'
+                        +'</div>'
+                        +'</div><table class="table table-bordered table-inverse"><thead><tr><th id="category'+QUINDAR.counter+'"></th>'
+                        +'<th id="id'+QUINDAR.counter+'"></th><th id="name'+QUINDAR.counter+'"></th><th id="alarm_low'+QUINDAR.counter+'"></th><th id="warn_low'+QUINDAR.counter+'"></th><th id="value'+QUINDAR.counter+'"></th><th id="warn_high'+QUINDAR.counter+'"></th>'
+                        +'<th id="alarm_high'+QUINDAR.counter+'"></th> <th id="units'+QUINDAR.counter+'"></th><th id="notes'+QUINDAR.counter+'"></th></tr></thead>'
+                        +' <tbody>'
+                        + rows
+                        +'</tbody>'
+                        +'</table>'
 
+              +'</div></div>';
             $('.grid-stack').data('gridstack').addWidget($(griddata),0,0,0,0);
-            $(document).on('click', 'span', function(e) {
+            $(document).on('click', '#removespan', function(e) {
                 console.log("table widget deleted");
-                e.target.closest("div").remove();
+                e.target.closest("div").parentElement.parentElement.parentElement.remove();
+
             });
         }
 
@@ -351,8 +388,7 @@ $(function(){
                 for(var i=0;i<arr.length;i++) {
                     document.getElementById(arr[i]+QUINDAR.counter).innerHTML = arr[i].toUpperCase();
                 }
-
-                for(var c=1;c<=QUINDAR.counter;c++) {
+            for(var c=QUINDAR.counter;c>=1;c--) {
                     for(var i=2;i<size;i++) {
                         document.getElementById("categoryID"+i+c).innerHTML = data[Object.keys(data)[i]].category;
                         document.getElementById("ID"+i+c).innerHTML = Object.keys(data)[i];
@@ -417,11 +453,103 @@ $(function(){
             catch(e){
 
             }
-        }, 1000)
+        }, 1000);
     }.bind(this);
+
+
+        QUINDAR.addIdTable = function(e){
+            QUINDAR.icount++;
+                grid = '<div><div class="panel panel-primary filterable grid-stack-item-content" style="overflow:auto;">'
+                        +'<div class="panel-heading ">'
+                        +'<button type="button" class="glyphicon glyphicon-cog pull-right" id="settings" onclick="openTableIdSettings('+QUINDAR.icount+')">'
+                        +'</button>'
+                        +'<div style="display:none" id="id-settings-menu'+QUINDAR.icount+'" class="id-settings-menu">'
+                        +'<button type="button" class="glyphicon glyphicon-trash" aria-label="Close" id="removespan">'
+                        +'</button>'
+                        +'</div>'
+                        +'</div>'
+                        +'<input type="text" id="myInput" placeholder="Search for Satellite Id">'
+                        +'<table id="myTable">'
+                        +'<thead>'
+                        +'<tr class="header">'
+                        +'<th colspan="2">Name:</th>'
+                        +' <th colspan="2" id="nameid" class="nameid"></th>'
+                        +'</tr>'
+                        +'<tr class="header">'
+                        +'<th colspan="2">Category:</th>'
+                        +' <th colspan="2" id="catVal" class="nameid"></th>'
+                        +'</tr>'
+                        +'<tr class="header" id="header">'
+                        +'<th>Id</th>'
+                        +'<th>Value</th>'
+                        +'<th>Units</th>'
+                        +'<th>Timestamp</th>'
+                        +'</tr>'
+                        +'</thead>'
+                        +'<tbody id="tbody" class="idrows">'
+                        +'</tbody>'
+                        +'</table>'
+                        +'</div></div>';
+
+                 $('.grid-stack').data('gridstack').addWidget($(grid),6,0,6,6);
+                 $(document).on('click', '#removespan', function(e) {
+                    console.log("table widget deleted");
+                    e.target.closest("div").parentElement.parentElement.parentElement.remove();
+                 });
+
+                 $('input[type=text]').on('keydown', function(e) {
+                    if (e.which == 13) {
+                        e.preventDefault();
+                        var input = $(this).val();
+                        clearInterval(intervalID);
+                        $(".idrows > tr").remove();
+               
+                        intervalID = setInterval(function(){
+                                data = QUINDAR.telemetry.Audacy1;
+                                console.log(data);
+                                dataX = QUINDAR.telemetry.Audacy1[input];
+                                console.log(dataX);
+                                dataTimestamp = QUINDAR.telemetry.Audacy1.timestamp;
+                                var size = Object.keys(data).length;
+                                var datasize = size-2;
+                                var arr = [];
+
+                                for(var k in data.v){
+                                    arr.push(k);
+                                }
+                                arr.splice(1, 0, "id");
+
+                                try{
+                                    var date = new Date(dataTimestamp.value);
+                                    var $input = $('table'),
+                                     $panel = $input.parents('.filterable'),
+                                     $table = $panel.find('#myTable');
+
+                                     
+                                     if(typeof dataX.value === "number") {
+                                            $('.nameid').html(dataX.name);
+                                            $('.catVal').html(dataX.category);
+                                            $table.find('tbody').append($('<tr><td>'+input+'</td><td>'+Math.round(dataX.value * 100)/100+'</td><td>'+dataX.units+'</td><td>'+date.toUTCString()+'</td></tr>'));
+                                    }else {
+                                            $('.nameid').html(dataX.name);
+                                            $('.catVal').html(dataX.category);
+                                            $table.find('tbody').append($('<tr><td>'+input+'</td><td>'+dataX.value+'</td><td>'+dataX.units+'</td><td>'+date.toUTCString()+'</td></tr>'));
+                                    }
+
+                                }
+                                catch(e){
+                                }
+                        }, 1000);
+                     }
+                 });
+     
+    }.bind(this);  
 
     QUINDAR.clearGrid = function () {
         QUINDAR.grid.removeAll();
+        QUINDAR.counter = 0;
+        QUINDAR.gcount = 0;
+        QUINDAR.icount = 0;
         console.log("Grid cleared");
         return false;
     }.bind(this);    
@@ -431,4 +559,7 @@ $(function(){
     $('#addGround').click(QUINDAR.addGroundWidget);
     $('#addtablewidget').click(QUINDAR.addTableWidget);
     $('#clear-grid').click(QUINDAR.clearGrid);
+    $('#searchId').click(QUINDAR.addIdTable);
+
+
 });
