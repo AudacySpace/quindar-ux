@@ -23,7 +23,7 @@ $(function(){
     		$.ajax({  
     			url: "/getTelemetry",
     			type: 'GET',
-    			data: {'vehicleId.value' : 'Audacy1'},
+    			data: {'vehicleId.value' : 'all'},
     			success: function(res) {
                     if(res.Audacy1) {
     				    QUINDAR.telemetry.Audacy1 = res.Audacy1;
@@ -52,31 +52,54 @@ $(function(){
     	});
     };
 
+	var timerCol=[];	//Create to store timer
     QUINDAR.addGroundWidget = function(){
-    	QUINDAR.gcount++;
+    	QUINDAR.gcount++;	// Increase counter
+					
+		timerCol.push(1);	// Initialize timerCol
+		
         var delay = 1000;	// milliseconds
-		var sc = ["Audacy1", "Audacy2", "Audacy3"];		
 									
 		// Initialize scHolder
 		var scHolder={}
-		for (j=0; j<sc.length;j++) {
-			scHolder[j] = [[0.,0.]];
-			scHolder[j].pop();
-		};
 
-		$('.grid-stack').data('gridstack').addWidget($('<div><div class="panel panel-primary grid-stack-item-content" style="margin-bottom:0;" id="divtable'+QUINDAR.gcount+'">\
+		$('.grid-stack').data('gridstack').addWidget($(
+			'<div><div class="panel panel-primary grid-stack-item-content" style="margin-bottom:0;" id="divtable'+QUINDAR.gcount+'">\
 			<div class="panel-heading">\
-            <button type="button" class="plotbutton" id="plotbutton'+QUINDAR.gcount+'">Plot</button>\
-            <button type="button" class="homebutton" id="homebutton'+QUINDAR.gcount+'">Home</button>\
-            <input type="button" class="timebtn" value="Show Timezones" id="timebtn'+QUINDAR.gcount+'">\
-            <button type="button" class="glyphicon glyphicon-cog pull-right" id="settings" onclick="openPlotSettings('+QUINDAR.gcount+')">\
-            </button>\
-            <div style="display:none" id="plot-settings-menu'+QUINDAR.gcount+'" class="settings-menu">\
-            <button type="button" class="glyphicon glyphicon-trash" aria-label="Close" id="removespan">\
-            </button>\
+              <button type="button" class="homebutton" id="homebutton'+QUINDAR.gcount+'">Home</button>\
+              <input type="button" class="timebtn" value="Show Timezones" id="timebtn'+QUINDAR.gcount+'">\
+              <button class="satbtn" data-toggle="modal" data-target="#myModal'+QUINDAR.gcount+'">Satellite</button> \
+			  <button class="clearbtn" id="clearbtn'+QUINDAR.gcount+'">Clear</button>\
+			  <button type="button" class="glyphicon glyphicon-cog pull-right" id="settings" onclick="openPlotSettings('+QUINDAR.gcount+')">\
+              </button>\
+              <div style="display:none" id="plot-settings-menu'+QUINDAR.gcount+'" class="settings-menu">\
+                <button type="button" class="glyphicon glyphicon-trash" aria-label="Close" id="removespan">\
+                </button>\
+              </div>\
             </div>\
-            </div>\
-	       	<div class="svg-container" id="divplot'+QUINDAR.gcount+'"></div><div/></div>'),0,0,6,5,false,3,12,4,16,'idgt'+QUINDAR.gcount);
+	       	<div class="svg-container" id="divplot'+QUINDAR.gcount+'"></div><div/>\
+			</div><div class="modal fade" id="myModal'+QUINDAR.gcount+'" role="dialog">\
+			  <div class="modal-dialog">\
+                <div class="modal-content">\
+                  <div class="modal-header">\
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>\
+                    <h4 class="modal-title">Satellites</h4>\
+                  </div>\
+                  <div class="modal-body">\
+		            <div class="btn-group" >\
+                      <label class="btn btn-primary active" style="background-color: #172168;">\
+                        <input type="checkbox" name="options'+QUINDAR.gcount+'" id="sat1" checked> Audacy1 </label>\
+                      <label class="btn btn-primary" style="background-color: #172168;">\
+                        <input type="checkbox" name="options'+QUINDAR.gcount+'" id="sat2" > Audacy2 </label>\
+                      <label class="btn btn-primary" style="background-color: #172168;">\
+                        <input type="checkbox" name="options'+QUINDAR.gcount+'" id="sat3" > Audacy3 </label>\
+                    </div>\
+                  </div>\
+                  <div class="modal-footer">\
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="plotbutton'+QUINDAR.gcount+'" >Plot</button>\
+                  </div>\
+                </div>\
+			  </div>'),0,0,6,5,false,3,12,4,16,'idgt'+QUINDAR.gcount);
 
 		var  temptime = new Date;   // temporary time being replaced by the source time
 		
@@ -84,7 +107,6 @@ $(function(){
 		var widthG = $('.grid-stack').data('gridstack').cellWidth();
 		$('.grid-stack').data('gridstack').cellHeight(widthG/1.8);
 
-		var  temptime = new Date;   // temporary time being replaced by the source time
         var π = Math.PI,
             radians = π / 180,
             degrees = 180 / π;
@@ -105,6 +127,8 @@ $(function(){
 		g.attr("id","g"+QUINDAR.gcount);
 
         var transform = d3.zoomTransform(svg.node());   
+		
+		var sat = 1;
                  				
         // Plot world map
         d3.json("/media/icons/world-50m.json", function(error, world) {
@@ -137,18 +161,26 @@ $(function(){
         						
 		// Go back to original view						
        	$('#homebutton'+QUINDAR.gcount).click(function(){
-
 			svg.transition()
 				.duration(500)
 				.call(zoom.transform, d3.zoomIdentity);
-
-            zoom.transform(svg,transform);
-
        	});
 				
         // Plot data when PLOT button is clicked and keep updating						
         $('#plotbutton'+QUINDAR.gcount).click(function(){
+			idnum = this.id.match(/\d+/)[0];
+			$('#myModal'+idnum).modal('hide');
+			document.getElementById("plotbutton"+idnum).disabled = true;
+			sat = document.getElementsByName("options"+idnum)
+
+			//initialize scHolder
+			for (j=0; j<sat.length;j++) {
+				scHolder[j] = [[0.,0.]];
+				scHolder[j].pop();
+			}; 
+			
             timer = setInterval(updatePlot, delay);
+			timerCol[idnum] = timer;
         });
 
         $('#timebtn'+QUINDAR.gcount).click(function(){
@@ -170,62 +202,86 @@ $(function(){
                 }); 
             } else {
                 this.value = "Show Timezones";
-
 				
 				// Remove timezones
                 g.select(".timezones").remove();
             }
         });
-				
+
+		$('#clearbtn'+QUINDAR.gcount).click(function(){
+			idnum = this.id.match(/\d+/)[0];
+			g.selectAll("path.route").remove();
+			g.selectAll("image").remove();	
+			clearTimeout(timerCol[idnum]);
+			document.getElementById("plotbutton"+idnum).disabled = false;
+		});
+		
         // Function to update data to be plotted
         function updatePlot() {
-        	latestdata = QUINDAR.telemetry.Audacy1;      				 
-        	console.log(latestdata);	
-            // Check if the latestdata is available for the selected s/c
-        	if (latestdata == null) {
+ 			
+			g.selectAll("path.route").remove();
+			g.selectAll("image").remove();	
+            
+			for (i=0; i< sat.length; i++){
+				// Selection of satellite
+				latestdata = null;
+				if (i == 0){
+					if (sat[i].checked){
+						latestdata = QUINDAR.telemetry.Audacy1;
+					}    
+				} else if (i == 1){
+					if (sat[i].checked){		
+						latestdata = QUINDAR.telemetry.Audacy2;  
+					}
+				} else {
+					if (sat[i].checked){			
+						latestdata = QUINDAR.telemetry.Audacy3;  
+					}    
+				};			
+				
+				// Check if the latestdata is available for the selected s/c
+				if (latestdata == null) {
         						
-        	} else {
-        		// update latestdata						  				
-        		var x = latestdata.x.value;
-        		var y = latestdata.y.value;
-        		var z = latestdata.z.value;
+				} else {
+					// update latestdata						  				
+					var x = latestdata.x.value;
+					var y = latestdata.y.value;
+					var z = latestdata.z.value;
         					
-        		// Calculate longitude and latitude from the satellite position x, y, z.
-        		// The values (x,y,z) must be Earth fixed.
-        	    r = Math.sqrt(Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2));
-        	    longitude = Math.atan2(y,x)/Math.PI*180;
-       	        latitude = Math.asin(z/r)/Math.PI*180;
-        					
-				// Convert [longitude,latitude] to plot	
-                var sat_coord = projGround([longitude,latitude]);
+					// Calculate longitude and latitude from the satellite position x, y, z.
+					// The values (x,y,z) must be Earth fixed.
+					r = Math.sqrt(Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2));
+					longitude = Math.atan2(y,x)/Math.PI*180;
+					latitude = Math.asin(z/r)/Math.PI*180;
+								
+					// Convert [longitude,latitude] to plot	
+					var sat_coord = projGround([longitude,latitude]);
 						
-				// Remove data when the length of scHolder reaches a certain value
-				if (scHolder[0].length > 600) {
-					scHolder[0].splice(0,1);							
-				};
+					// Remove data when the length of scHolder reaches a certain value
+					if (scHolder[i].length > 600) {
+						scHolder[i].splice(0,1);							
+					};
 						
-        		// add longitude and latitude to data_plot
-        		scHolder[0].push([longitude, latitude]);	
-				g.select("path.route").remove();
-				g.select("image").remove();
-   				var route = g.append("path")
-   							.datum({type: "LineString", coordinates: scHolder[0]})	
+					// add longitude and latitude to data_plot
+					scHolder[i].push([longitude, latitude]);	
+
+					var route = g.append("path")
+   							.datum({type: "LineString", coordinates: scHolder[i]})	
                             .attr("class", "route")
                             .attr("d", path);	
-        		var  craft = g.append("svg:image")
+					var  craft = g.append("svg:image")
         						.attr("xlink:href", "/media/icons/Segment_Icons_Fill_Black-08.svg")
         						.attr("x",sat_coord[0])
 								.attr("y",sat_coord[1]-15)
 								.attr("width",30)
 								.attr("height",30);
-			}                    
+				}   
+			}				
         }
 				
         var zoom = d3.zoom()
-					.scaleExtent([.1,10])
-
+					.scaleExtent([1,10])
 					.translateExtent([[0,0],[1000,500]])
-
 					.on("zoom",zoomed);
 							 
 		svg.call(zoom);
@@ -308,7 +364,7 @@ $(function(){
         }
 
    		$(document).on('click', '#removespan', function(e) {
-
+			QUINDAR.gcount = 0;
    			e.target.closest("div").parentElement.parentElement.parentElement.remove();
 
    		});

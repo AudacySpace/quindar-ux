@@ -30,7 +30,7 @@
 }
 .plotbutton {
   font-family: "Open Sans", Sans-serif;	
-  background-color: #CFCFD5;
+  background-color: #07D1EA;
   color: #020613;
   position:absolute;
   padding:5px;
@@ -38,21 +38,58 @@
 }
 .homebutton {
   font-family: "Open Sans", Sans-serif;	
-  background-color: #CFCFD5;
+  background-color: #07D1EA;
   color: #020613;
   position:absolute;
   padding:5px;
   top:5px;
-  left:62px;
+  left:0px;
+  width: 55px;
+}
+.homebutton:hover {
+    background-color: #0AACCF;
 }
 .timebtn {
   font-family: "Open Sans", Sans-serif;	
-  background-color: #CFCFD5;
+  background-color: #07D1EA;
   color: #020613;
   position:absolute;
   top:5px;
   padding:5px;
-  left:122px;
+  left: 60px;
+  width: 125px;
+}
+.timebtn:hover {
+    background-color: #0AACCF;
+}
+.satbtn {
+	display: inline-block;
+    font-family: "Open Sans", Sans-serif;	
+    background-color: #07D1EA;
+    color: #020613;
+    cursor: pointer;
+	position: absolute;
+	padding:5px;
+    top: 5px;
+	left: 190px;
+	width: 65px;
+}
+.satbtn:hover {
+    background-color: #0AACCF;
+}
+.clearbtn {
+	display: inline-block;
+    font-family: "Open Sans", Sans-serif;	
+    background-color: #07D1EA;
+    color: #020613;
+    cursor: pointer;
+	position: absolute;
+	padding:5px;
+    top: 5px;
+	left: 260px;
+}
+.clearbtn:hover {
+    background-color: #0AACCF;
 }
 .svg-container {
     display: inline-block;
