@@ -104,45 +104,27 @@ var Telemetry = require('./models/telemetry');
 
     });
 
+    //Get telemetry data for the array of vehicles passed as a parameter
     app.get('/getTelemetry', function(req, res){
-        var params = req.query;
+        var vehicles = req.query.vehicles;
         var telemetry = {};
-        var vehicles = [];
-        
-        if(params["vehicleId.value"] != "all"){
-            Telemetry.findOne(params, 
+
+        if(vehicles) {
+            Telemetry.find( 
+                {'vehicleId.value' : { $in: vehicles} }, 
                 {}, 
-                { sort: { 'timestamp.value' : -1} },
-                function(err, data) {
+                { sort: { '_id' : -1 }, limit : vehicles.length },
+                function(err, result) {
                     if(err) throw err;
 
-                    telemetry[data.vehicleId.value] = data;
+                    for(var i=0; i<result.length; i++) {
+                        telemetry[result[i].vehicleId.value] = result[i];
+                    }
                     res.send(telemetry);
                 }
             );
-        } else {
-            Telemetry.distinct('vehicleId.value', function(err, vehicles){
-                if(err) throw err;
-
-                if(vehicles) {
-                    Telemetry.find( {'vehicleId.value' : { $in: vehicles}}, 
-                        {}, 
-                        { sort: { 'timestamp.value' : -1 }, limit : vehicles.length },
-                        function(err, data) {
-                            if(err) throw err;
-
-                            for(var i=0; i<data.length; i++) {
-                                telemetry[data[i].vehicleId.value] = data[i];
-                            }
-                            res.send(telemetry);
-                        }
-                    );
-                }
-            });
-
-            
         }
-    })
+    });
 
     //get data for table text widget
     app.get('/addtablewidget',function(req,res){
