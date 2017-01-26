@@ -17,27 +17,17 @@ $(function(){
     };
 
     QUINDAR.telemetry = {
-    	Audacy1 : null,
-        Audacy2 : null,
-        Audacy3 : null,
     	init : function(){
     		$.ajax({  
     			url: "/getTelemetry",
     			type: 'GET',
-    			data: {'vehicleId.value' : 'all'},
-    			success: function(res) {
-                    if(res.Audacy1) {
-    				    QUINDAR.telemetry.Audacy1 = res.Audacy1;
-                    }
-                    if(res.Audacy2) {
-                        QUINDAR.telemetry.Audacy2 = res.Audacy2;
-                    }
-                    if(res.Audacy3) {
-                        QUINDAR.telemetry.Audacy3 = res.Audacy3;
+    			data: {'vehicles' : ['Audacy1', 'Audacy2', 'Audacy3']},
+    			success: function(data) {
+                    for( var item in data ){
+                        QUINDAR.telemetry[item] = data[item];
                     }
     			}
     		});
-
     	}
     };
 
@@ -541,9 +531,9 @@ $(function(){
                
                         intervalID = setInterval(function(){
                                 data = QUINDAR.telemetry.Audacy1;
-                                console.log(data);
+                                //console.log(data);
                                 dataX = QUINDAR.telemetry.Audacy1[input];
-                                console.log(dataX);
+                                //console.log(dataX);
                                 dataTimestamp = QUINDAR.telemetry.Audacy1.timestamp;
                                 var size = Object.keys(data).length;
                                 var datasize = size-2;
