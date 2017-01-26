@@ -55,26 +55,23 @@ $(function(){
 		var scHolder={}
 
 		$('.grid-stack').data('gridstack').addWidget($(
-			'<div><div class="panel panel-primary grid-stack-item-content" style="margin-bottom:0;" id="divtable'+QUINDAR.gcount+'">\
-			<div class="panel-heading">\
-              <button type="button" class="homebutton" id="homebutton'+QUINDAR.gcount+'">Home</button>\
-              <input type="button" class="timebtn" value="Show Timezones" id="timebtn'+QUINDAR.gcount+'">\
-              <button class="satbtn" data-toggle="modal" data-target="#myModal'+QUINDAR.gcount+'">Satellite</button> \
-			  <button class="clearbtn" id="clearbtn'+QUINDAR.gcount+'">Clear</button>\
-			  <button type="button" class="glyphicon glyphicon-cog pull-right" id="settings" onclick="openPlotSettings('+QUINDAR.gcount+')">\
-              </button>\
-              <div style="display:none" id="plot-settings-menu'+QUINDAR.gcount+'" class="settings-menu">\
-                <button type="button" class="glyphicon glyphicon-trash" aria-label="Close" id="removespan">\
-                </button>\
-              </div>\
-            </div>\
-	       	<div class="svg-container" id="divplot'+QUINDAR.gcount+'"></div><div/>\
-			</div><div class="modal fade" id="myModal'+QUINDAR.gcount+'" role="dialog">\
+			'<div id="gsdiv'+QUINDAR.gcount+'">\
+			  <div class="panel panel-primary grid-stack-item-content" style="margin-bottom:0;" id="divtable'+QUINDAR.gcount+'">\
+			    <div class="panel-heading">\
+                  <button type="button" class="homebutton" id="homebutton'+QUINDAR.gcount+'">Home</button>\
+                  <input type="button" class="timebtn" value="Show Timezones" id="timebtn'+QUINDAR.gcount+'">\
+			      <button type="button" class="glyphicon glyphicon-cog pull-right" id="settings" data-toggle="modal" data-target="#myModal'+QUINDAR.gcount+'"></button>\
+                  <button type="button" class="trash glyphicon glyphicon-cog glyphicon-trash" aria-label="Close" data-dismiss="modal" id="removediv'+QUINDAR.gcount+'"></button>\
+                </div>\
+	       	    <div class="svg-container" id="divplot'+QUINDAR.gcount+'"></div>\
+			  <div/>\
+			</div>\
+			<div class="modal fade" id="myModal'+QUINDAR.gcount+'" role="dialog">\
 			  <div class="modal-dialog">\
                 <div class="modal-content">\
                   <div class="modal-header">\
                     <button type="button" class="close" data-dismiss="modal">&times;</button>\
-                    <h4 class="modal-title">Satellites</h4>\
+                    <h4 class="modal-title">Settings</h4>\
                   </div>\
                   <div class="modal-body">\
 		            <div class="btn-group" >\
@@ -85,12 +82,16 @@ $(function(){
                       <label class="btn btn-primary" style="background-color: #172168;">\
                         <input type="checkbox" name="options'+QUINDAR.gcount+'" id="sat3" > Audacy3 </label>\
                     </div>\
-                  </div>\
+					<div>\
+					  <button type="button" class="btn btn-primary" style="color:#F1F1F5; background-color:#172168" id="clearbtn'+QUINDAR.gcount+'">Clear Plot</button>\
+					</div>\
+				  </div>\
                   <div class="modal-footer">\
-                    <button type="button" class="btn btn-default" data-dismiss="modal" id="plotbutton'+QUINDAR.gcount+'" >Plot</button>\
+                    <button type="button" class="btn btn-default" data-dismiss="modal" id="plotbutton'+QUINDAR.gcount+'">Plot</button>\
                   </div>\
                 </div>\
-			  </div>'),0,0,6,5,false,3,12,4,16,'idgt'+QUINDAR.gcount);
+			  </div>\
+			</div>'),0,0,6,5,false,3,12,4,16,'idgt'+QUINDAR.gcount);
 
 		var  temptime = new Date;   // temporary time being replaced by the source time
 		
@@ -103,7 +104,6 @@ $(function(){
             degrees = 180 / π;
         var projection = d3.geoEquirectangular()
 							.precision(.1);
-        var projection = d3.geoEquirectangular();
         var path = d3.geoPath().projection(projection);
         var graticule = d3.geoGraticule();
         var circle = d3.geoCircle();
@@ -115,12 +115,13 @@ $(function(){
 		g.attr("id","g"+QUINDAR.gcount)
 			.attr("x",0)
 			.attr("y",0);
-		g.attr("id","g"+QUINDAR.gcount);
 
         var transform = d3.zoomTransform(svg.node());   
 		
 		var sat = 1;
-                 				
+		
+		var station = [[-122.4, 37.7],[103.8, 1.4]];
+       				
         // Plot world map
         d3.json("/media/icons/world-50m.json", function(error, world) {
         	if (error) throw error;	
@@ -137,7 +138,11 @@ $(function(){
         		.attr("d", path)
         		.attr("class","graticule");	
 
-            // Show dark region (night time)
+			for (j=0; j<station.length; j++) {
+				plotgs(station[j],QUINDAR.gcount);
+			}
+			
+			// Show dark region (night time)
             var night = g.append("path")                
                        .attr("class", "night")
                        .attr("d", path);
@@ -202,16 +207,23 @@ $(function(){
 		$('#clearbtn'+QUINDAR.gcount).click(function(){
 			idnum = this.id.match(/\d+/)[0];
 			g.selectAll("path.route").remove();
-			g.selectAll("image").remove();	
+			g.selectAll("#craft").remove();	
 			clearTimeout(timerCol[idnum]);
 			document.getElementById("plotbutton"+idnum).disabled = false;
+		});
+		
+		$('#addgs'+QUINDAR.gcount).click(function(){
+			idnum = this.id.match(/\d+/)[0];
+			lon = document.getElementsByName("lon"+idnum);
+			lat = document.getElementsByName("lat"+idnum);
+			plotgs([lat[0].value,lon[0].value], idnum);		
 		});
 		
         // Function to update data to be plotted
         function updatePlot() {
  			
 			g.selectAll("path.route").remove();
-			g.selectAll("image").remove();	
+			g.selectAll("#craft").remove();	
             
 			for (i=0; i< sat.length; i++){
 				// Selection of satellite
@@ -262,6 +274,7 @@ $(function(){
                             .attr("d", path);	
 					var  craft = g.append("svg:image")
         						.attr("xlink:href", "/media/icons/Segment_Icons_Fill_Black-08.svg")
+								.attr("id", "craft")
         						.attr("x",sat_coord[0])
 								.attr("y",sat_coord[1]-15)
 								.attr("width",30)
@@ -270,6 +283,18 @@ $(function(){
 			}				
         }
 				
+		function plotgs(coord, gindex){
+			var gs_coord = projGround(coord);	//convert to px
+			var gs = svg.select('#g'+gindex)
+						.append("svg:image")
+						.attr("xlink:href", "/media/icons/Segment_Icons_Fill_Black-11.svg")
+						.attr("id", "gs")
+						.attr("x",gs_coord[0]-10)
+						.attr("y",gs_coord[1]-16)
+						.attr("width",20)
+						.attr("height",20);
+		};
+		
         var zoom = d3.zoom()
 					.scaleExtent([1,10])
 					.translateExtent([[0,0],[1000,500]])
@@ -354,9 +379,10 @@ $(function(){
             return 0.016708634 - centuries * (0.000042037 + 0.0000001267 * centuries);
         }
 
-   		$(document).on('click', '#removespan', function(e) {
-			QUINDAR.gcount = 0;
-   			e.target.closest("div").parentElement.parentElement.parentElement.remove();
+   		$(document).on('click', '#removediv'+QUINDAR.gcount+'', function(e) {
+			idnum = this.id.match(/\d+/)[0];
+			$('#gsdiv'+idnum).remove();
+			//$('#myModal'+idnum).modal('hide');
 
    		});
    	}.bind(this);
