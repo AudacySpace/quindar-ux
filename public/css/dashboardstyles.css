@@ -3,21 +3,19 @@
  */
 body {
   overflow-x: hidden;
-    background-color: #F2F3F4  ;
+  background-color: #F2F3F4  ;
 }
 #QBlack{
   display:none;
 }
 button#editwidget.glyphicon.glyphicon-edit{
-    position:absolute;
+  position:absolute;
   right:29px;
   top:0px;
   font-size:19px;
   color: #07D1EA;
   background-color: #000000;
 }
-
-
 .settings-menu{
   position:absolute;
   right:30px;
@@ -29,7 +27,6 @@ button#editwidget.glyphicon.glyphicon-edit{
     border-color: #000000;
 */
 }
-
 .id-settings-menu{
   position:absolute;
   right:30px;
@@ -41,39 +38,28 @@ button#editwidget.glyphicon.glyphicon-edit{
     border-color: #000000;
 */
 }
-
 #widgetops {
-       /* display:none;*/
-      list-style-type: none;
+  /* display:none;*/
+  list-style-type: none;
 }
 #usermail{
-      display:none;
+  display:none;
 }
-
 .panel-primary>.panel-heading {
-      background-color: #000000;
-    border-color: #000000;
-  }
-
-  .panel-primary {
-
-    border-color: #ffffff;
-  }
-  .panel-heading{
-    height:30px;
-  }
-
-
-
-
+  background-color: #000000;
+  border-color: #000000;
+}
+.panel-primary {
+  border-color: #ffffff;
+}
+.panel-heading{
+  height:30px;
+}
 #settings-menu button:hover{
   background-color:#ccc;
 }
-
-
-
 button#settings.glyphicon.glyphicon-cog{
-    position:absolute;
+  position:absolute;
   right:0px;
   top:5px;
   font-size:19px;
@@ -83,23 +69,20 @@ button#settings.glyphicon.glyphicon-cog{
     border: 0px;
     padding: 1px 4px;
 }
-
 button#data-menu{
-   position:absolute;
+  position:absolute;
   left:0px;
   top:0px;
   font-size:19px;
   color: #07D1EA;
   background-color: #000000;
-    border-color: #000000;
-    border: 0px;
-    padding: 1px 4px;
-   /* margin-right:5px;*/
-
+  border-color: #000000;
+  border: 0px;
+  padding: 1px 4px;
+  /* margin-right:5px;*/
 }
-
 #container{
-background-color: #F2F3F4  ;
+  background-color: #F2F3F4  ;
 }
 .navbar{
   border: 0 none;  
@@ -220,9 +203,6 @@ background-color: #F2F3F4  ;
   right:-40px;
   font-size:22px;
 }
-
-
-
 /* Sidebar Styles */
 .sidenav {
   height: 100%;
@@ -312,16 +292,12 @@ background-color: #F2F3F4  ;
 #mini-logout{
   display:none;
 }
-
-
 a#addtablewidget, a#save-grid, a#load-grid, a#clear-grid, a#addwidget, a#addGround{
   font-size:16px;
 }
-
 a#searchId{
   font-size:14px;
 }
-
 @media only screen and (max-width: 736px) {
     /* For mobile phones: */
 #QRegular {
@@ -449,4 +425,3 @@ div.navbar-header{
     margin:0;
 }
 }   
-}
