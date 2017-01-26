@@ -63,56 +63,66 @@
     background-color: #0AACCF;
 }
 .satbtn {
-	display: inline-block;
-    font-family: "Open Sans", Sans-serif;	
-    background-color: #07D1EA;
-    color: #020613;
-    cursor: pointer;
-	position: absolute;
-	padding:5px;
-    top: 5px;
-	left: 190px;
-	width: 65px;
+  display: inline-block;
+  font-family: "Open Sans", Sans-serif;	
+  background-color: #07D1EA;
+  color: #020613;
+  cursor: pointer;
+  position: absolute;
+  padding:5px;
+  top: 5px;
+  left: 190px;
+  width: 65px;
 }
 .satbtn:hover {
-    background-color: #0AACCF;
+  background-color: #0AACCF;
 }
 .clearbtn {
-	display: inline-block;
-    font-family: "Open Sans", Sans-serif;	
-    background-color: #07D1EA;
-    color: #020613;
-    cursor: pointer;
-	position: absolute;
-	padding:5px;
-    top: 5px;
-	left: 260px;
+  display: inline-block;
+  font-family: "Open Sans", Sans-serif;	
+  background-color: #07D1EA;
+  color: #020613;
+  cursor: pointer;
+  position: absolute;
+  padding:5px;
+  top: 5px;
+  left: 190px;
 }
 .clearbtn:hover {
-    background-color: #0AACCF;
+  background-color: #0AACCF;
+}
+.trash{
+  position:absolute;
+  right:25px;
+  top:5px;
+  font-size:19px;
+  color: #07D1EA;
+  background-color: #000000;
+    border-color: #000000;
+    border: 0px;
+    padding: 1px 4px;
 }
 .svg-container {
-    display: inline-block;
-    position: relative;
-    width: 100%;
-    padding-bottom: 50%;
-	padding-top: 0%;
-    vertical-align: top;
-    overflow: hidden;
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  padding-bottom: 50%;
+  padding-top: 0%;
+  vertical-align: top;
+  overflow: hidden;
 }
 .svg-content {
-    display: inline-block;
-    position: absolute;
-	height: 100%;
-    top: 0;
-    left: 0;
+  display: inline-block;
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: 0;
 }
 .timezones {
   fill: #111950;
   stroke: #CFCFD5;
   stroke-width: .05px;  
 }
-
 .timezones :hover {
   fill: #FFD600;
 }
