@@ -5,8 +5,6 @@ $(function(){
 	QUINDAR.gcount = 0;
     QUINDAR.counter = 0;
     QUINDAR.icount = 0;
-    var intervalID;
-    var width = $(window).width();
 
 
 	QUINDAR.start = function() {
@@ -393,31 +391,40 @@ $(function(){
         for(var i=2;i<12;i++){
             rows += '<tr><th id="categoryID'+i+QUINDAR.counter+'"></th><td id="ID'+i+QUINDAR.counter+'"></td><td id="name'+i+QUINDAR.counter+'"></td><td id="alow'+i+QUINDAR.counter+'"></td><td id="wlow'+i+QUINDAR.counter+'"></td><td id="value'+i+QUINDAR.counter+'"></td><td id="whigh'+i+QUINDAR.counter+'"></td><td id="ahigh'+i+QUINDAR.counter+'"></td><td id="units'+i+QUINDAR.counter+'"></td><td id="notes'+i+QUINDAR.counter+'"></td></tr></tbody>';
         }
-                griddata = '<div data-gs-min-width="10" data-gs-min-height="9" data-gs-max-height="9"><div class="panel panel-primary grid-stack-item-content" id="tabletextqwidget'+QUINDAR.counter+'">'
-                        +'<div class="panel-heading">'
-                        +'<button type="button" class="glyphicon glyphicon-cog pull-right settings" onclick="openSettings('+QUINDAR.counter+')">'
-                        +'</button>'
-                        +'<div style="display:none" id="settings-menu'+QUINDAR.counter+'" class="settings-menu">'
-                        +'<button type="button" class="glyphicon glyphicon-trash" aria-label="Close" id="removespan">'
-                        +'</button>'
-                        +'</div>'
-                        +'</div><table class="table table-bordered table-inverse" id="teletable"><thead id="telehead"><tr class="telerow"><th id="category'+QUINDAR.counter+'" style="width:15%"></th>'
-                        +'<th id="id'+QUINDAR.counter+'" style="width:5%"></th><th id="name'+QUINDAR.counter+'" style="width:20%"></th><th id="alarm_low'+QUINDAR.counter+'" style="width:10%"></th><th id="warn_low'+QUINDAR.counter+'" style="width:10%"></th><th id="value'+QUINDAR.counter+'" style="width:10%"></th><th id="warn_high'+QUINDAR.counter+'" style="width:10%"></th>'
-                        +'<th id="alarm_high'+QUINDAR.counter+'" style="width:10%"></th> <th id="units'+QUINDAR.counter+'" style="width:5%"></th><th id="notes'+QUINDAR.counter+'" style="width:5%"></th></tr></thead>'
-                        +' <tbody id="telebody">'
-                        + rows
-                        +'</tbody>'
-                        +'</table>'
-                        +'</div></div>';
+        griddata = '<div data-gs-min-width="10" data-gs-min-height="9" data-gs-max-height="9">'
+                        +'<div class="panel panel-primary grid-stack-item-content" id="tabletextqwidget'+QUINDAR.counter+'">'
+                            +'<div class="panel-heading">'
+                                +'<button type="button" class="glyphicon glyphicon-cog pull-right settings" onclick="openSettings('+QUINDAR.counter+')">'
+                                +'</button>'
+                                +'<div style="display:none" id="settings-menu'+QUINDAR.counter+'" class="settings-menu">'
+                                    +'<button type="button" class="glyphicon glyphicon-trash" aria-label="Close" id="removespan">'
+                                    +'</button>'
+                                +'</div>'
+                            +'</div>'
+                        +'<table class="table table-bordered table-inverse" id="teletable">'
+                            +'<thead id="telehead"><tr class="telerow">'
+                                +'<th id="category'+QUINDAR.counter+'" style="width:15%"></th>'
+                                +'<th id="id'+QUINDAR.counter+'" style="width:5%"></th>'
+                                +'<th id="name'+QUINDAR.counter+'" style="width:20%"></th>'
+                                +'<th id="alarm_low'+QUINDAR.counter+'" style="width:10%"></th>'
+                                +'<th id="warn_low'+QUINDAR.counter+'" style="width:10%"></th>'
+                                +'<th id="value'+QUINDAR.counter+'" style="width:10%"></th>'
+                                +'<th id="warn_high'+QUINDAR.counter+'" style="width:10%"></th>'
+                                +'<th id="alarm_high'+QUINDAR.counter+'" style="width:10%"></th>'
+                                +'<th id="units'+QUINDAR.counter+'" style="width:5%"></th>'
+                                +'<th id="notes'+QUINDAR.counter+'" style="width:5%"></th>'
+                            +'</tr></thead>'
+                            +'<tbody id="telebody">'+ rows +'</tbody>'
+                    +'</table>'
+                    +'</div>'
+                +'</div>';
 
         $('.grid-stack').data('gridstack').addWidget($(griddata),0,0,0,0);
         $(document).on('click', '#removespan', function(e) {
-                console.log("table widget deleted");
-                console.log(e.target.id);
-                e.target.closest("div").parentElement.parentElement.parentElement.remove();
-            });
+            e.target.closest("div").parentElement.parentElement.parentElement.remove();
+        });
 
-        intervalID = setInterval(function(){
+        setInterval(function(){
             data = QUINDAR.telemetry.Audacy1;
             var size = Object.keys(data).length;
             var datasize = size-2;
@@ -434,166 +441,157 @@ $(function(){
                     document.getElementById(arr[i]+QUINDAR.counter).innerHTML = arr[i].toUpperCase();
                 }
             for(var c=QUINDAR.counter;c>=1;c--) {
-                    for(var i=2;i<size;i++) {
-                        document.getElementById("categoryID"+i+c).innerHTML = data[Object.keys(data)[i]].category;
-                        document.getElementById("ID"+i+c).innerHTML = Object.keys(data)[i];
-                        document.getElementById("name"+i+c).innerHTML = data[Object.keys(data)[i]].name;
-                        document.getElementById("units"+i+c).innerHTML = data[Object.keys(data)[i]].units;
-                        document.getElementById("notes"+i+c).innerHTML = data[Object.keys(data)[i]].notes;
+                for(var i=2;i<size;i++) {
+                    document.getElementById("categoryID"+i+c).innerHTML = data[Object.keys(data)[i]].category;
+                    document.getElementById("ID"+i+c).innerHTML = Object.keys(data)[i];
+                    document.getElementById("name"+i+c).innerHTML = data[Object.keys(data)[i]].name;
+                    document.getElementById("units"+i+c).innerHTML = data[Object.keys(data)[i]].units;
+                    document.getElementById("notes"+i+c).innerHTML = data[Object.keys(data)[i]].notes;
 
-                        //Values of telemetry data
-                        if(typeof data[Object.keys(data)[i]].value === "number") {
-                            document.getElementById("value"+i+c).innerHTML = Math.round(data[Object.keys(data)[i]].value * 100)/100;
-                        } else if(Date.parse(data[Object.keys(data)[i]].value)) {
-                            var date = new Date(data[Object.keys(data)[i]].value);
-                            document.getElementById("value"+i+c).innerHTML = date.toUTCString();
-                        } else {
-                            document.getElementById("value"+i+c).innerHTML = data[Object.keys(data)[i]].value;
-                        }
+                    //Values of telemetry data
+                    if(typeof data[Object.keys(data)[i]].value === "number") {
+                        document.getElementById("value"+i+c).innerHTML = Math.round(data[Object.keys(data)[i]].value * 100)/100;
+                    } else if(Date.parse(data[Object.keys(data)[i]].value)) {
+                        var date = new Date(data[Object.keys(data)[i]].value);
+                        document.getElementById("value"+i+c).innerHTML = date.toUTCString();
+                    } else {
+                        document.getElementById("value"+i+c).innerHTML = data[Object.keys(data)[i]].value;
+                    }
 
-                        //timestamp alarm low
+                    //timestamp alarm low
 
-                        if(typeof data[Object.keys(data)[i]].alarm_low === "number") {
-                            document.getElementById("alow"+i+c).innerHTML = data[Object.keys(data)[i]].alarm_low;
-                        } else if(Date.parse(data[Object.keys(data)[i]].alarm_low)) {
-                            var date = new Date(data[Object.keys(data)[i]].alarm_low);
-                            document.getElementById("alow"+i+c).innerHTML= date.toUTCString();
-                        } else {
-                         document.getElementById("alow"+i+c).innerHTML = data[Object.keys(data)[i]].alarm_low;
-                        }
+                    if(typeof data[Object.keys(data)[i]].alarm_low === "number") {
+                        document.getElementById("alow"+i+c).innerHTML = data[Object.keys(data)[i]].alarm_low;
+                    } else if(Date.parse(data[Object.keys(data)[i]].alarm_low)) {
+                        var date = new Date(data[Object.keys(data)[i]].alarm_low);
+                        document.getElementById("alow"+i+c).innerHTML= date.toUTCString();
+                    } else {
+                        document.getElementById("alow"+i+c).innerHTML = data[Object.keys(data)[i]].alarm_low;
+                    }
 
-                        //timestamp warn low
-                        if(typeof data[Object.keys(data)[i]].warn_low === "number") {
-                            document.getElementById("wlow"+i+c).innerHTML = data[Object.keys(data)[i]].warn_low;
-                        } else if(Date.parse(data[Object.keys(data)[i]].warn_low)) {
-                            var date = new Date(data[Object.keys(data)[i]].warn_low);
-                            document.getElementById("wlow"+i+c).innerHTML = date.toUTCString();
-                        }
-                        else {
-                            document.getElementById("wlow"+i+c).innerHTML = data[Object.keys(data)[i]].warn_low;
-                        }
+                    //timestamp warn low
+                    if(typeof data[Object.keys(data)[i]].warn_low === "number") {
+                        document.getElementById("wlow"+i+c).innerHTML = data[Object.keys(data)[i]].warn_low;
+                    } else if(Date.parse(data[Object.keys(data)[i]].warn_low)) {
+                        var date = new Date(data[Object.keys(data)[i]].warn_low);
+                        document.getElementById("wlow"+i+c).innerHTML = date.toUTCString();
+                    }
+                    else {
+                        document.getElementById("wlow"+i+c).innerHTML = data[Object.keys(data)[i]].warn_low;
+                    }
 
-                        //timestamp alarm high
-                        if(typeof data[Object.keys(data)[i]].alarm_high === "number") {
-                            document.getElementById("ahigh"+i+c).innerHTML = data[Object.keys(data)[i]].alarm_high;
-                        } else if(Date.parse(data[Object.keys(data)[i]].alarm_high)) {
-                            var date = new Date(data[Object.keys(data)[i]].alarm_high);
-                            document.getElementById("ahigh"+i+c).innerHTML= date.toUTCString();
-                        } else {
-                            document.getElementById("ahigh"+i+c).innerHTML = data[Object.keys(data)[i]].alarm_high;
-                        }
+                    //timestamp alarm high
+                    if(typeof data[Object.keys(data)[i]].alarm_high === "number") {
+                        document.getElementById("ahigh"+i+c).innerHTML = data[Object.keys(data)[i]].alarm_high;
+                    } else if(Date.parse(data[Object.keys(data)[i]].alarm_high)) {
+                        var date = new Date(data[Object.keys(data)[i]].alarm_high);
+                        document.getElementById("ahigh"+i+c).innerHTML= date.toUTCString();
+                    } else {
+                        document.getElementById("ahigh"+i+c).innerHTML = data[Object.keys(data)[i]].alarm_high;
+                    }
 
-                        //timestamp warn high
-                        if(typeof data[Object.keys(data)[i]].warn_high === "number") {
-                            document.getElementById("whigh"+i+c).innerHTML = data[Object.keys(data)[i]].warn_high;
-                        } else if(Date.parse(data[Object.keys(data)[i]].warn_high)) {
-                            var date = new Date(data[Object.keys(data)[i]].warn_high);
-                            document.getElementById("whigh"+i+c).innerHTML= date.toUTCString();
-                        } else {
-                            document.getElementById("whigh"+i+c).innerHTML = data[Object.keys(data)[i]].warn_high;
-                        }
+                    //timestamp warn high
+                    if(typeof data[Object.keys(data)[i]].warn_high === "number") {
+                        document.getElementById("whigh"+i+c).innerHTML = data[Object.keys(data)[i]].warn_high;
+                    } else if(Date.parse(data[Object.keys(data)[i]].warn_high)) {
+                        var date = new Date(data[Object.keys(data)[i]].warn_high);
+                        document.getElementById("whigh"+i+c).innerHTML= date.toUTCString();
+                    } else {
+                        document.getElementById("whigh"+i+c).innerHTML = data[Object.keys(data)[i]].warn_high;
                     }
                 }
             }
+            }
             catch(e){
-
             }
         }, 1000);
     }.bind(this);
 
-
-        QUINDAR.addIdTable = function(e){
-            QUINDAR.icount++;
-                  // if(width<=1280){
-                grid = '<div data-gs-min-width="6" data-gs-min-height="6"><div class="panel panel-primary filterable grid-stack-item-content">'
+    QUINDAR.addIdTable = function(e){
+        QUINDAR.icount++;
+        var intervalID;
+        grid = '<div data-gs-min-width="6" data-gs-min-height="6">'
+                    +'<div class="panel panel-primary filterable grid-stack-item-content">'
                         +'<div class="panel-heading ">'
-                        +'<button type="button" class="glyphicon glyphicon-cog pull-right settings" onclick="openTableIdSettings('+QUINDAR.icount+')">'
-                        +'</button>'
-                        +'<div style="display:none" id="id-settings-menu'+QUINDAR.icount+'" class="id-settings-menu">'
-                        +'<button type="button" class="glyphicon glyphicon-trash" aria-label="Close" id="removespan">'
-                        +'</button>'
-                        +'</div>'
+                            +'<button type="button" class="glyphicon glyphicon-cog pull-right settings" onclick="openTableIdSettings('+QUINDAR.icount+')">'
+                            +'</button>'
+                            +'<div style="display:none" id="id-settings-menu'+QUINDAR.icount+'" class="id-settings-menu">'
+                            +'<button type="button" class="glyphicon glyphicon-trash" aria-label="Close" id="removespan">'
+                            +'</button>'
+                            +'</div>'
                         +'</div>'
                         +'<div class="form-group">'
-                        +'<input type="text" id="myInput" class="form-control inp-val" placeholder="Please Enter Id of the Telemetry Data from Telemetry Table">'
-                        +'<span class="glyphicon glyphicon-search searchicon"></span>'
+                            +'<input type="text" id="myInput" class="form-control inp-val" placeholder="Please Enter Id of the Telemetry Data from Telemetry Table">'
+                            +'<span class="glyphicon glyphicon-search searchicon"></span>'
                         +'</div>'
                         +'<table id="myTable">'
-                        +'<thead id="thead">'
-                        +'<tr class="header">'
-                        +'<th colspan="1" >Name:</th>'
-                        +' <th colspan="3" class="nameid"></th>'
-                        +'</tr>'
-                        +'<tr class="header">'
-                        +'<th colspan="1">Category:</th>'
-                        +' <th colspan="3" class="catVal"></th>'
-                        +'</tr>'
-                        +'<tr class="header" id="header">'
-                        +'<th style="width:10%">Id</th>'
-                        +'<th style="width:20%">Value</th>'
-                        +'<th style="width:10%">Units</th>'
-                        +'<th style="width:60%">Timestamp</th>'
-                        +'</tr>'
-                        +'</thead>'
-                        +'<tbody id="tbody" class="idrows">'
-                        +'</tbody>'
+                            +'<thead id="thead"><tr class="header">'
+                                +'<th colspan="1" >Name:</th>'
+                                +'<th colspan="3" class="nameid"></th>'
+                            +'</tr>'
+                            +'<tr class="header">'
+                                +'<th colspan="1">Category:</th>'
+                                +'<th colspan="3" class="catVal"></th>'
+                            +'</tr>'
+                            +'<tr class="header" id="header">'
+                                +'<th style="width:10%">Id</th>'
+                                +'<th style="width:20%">Value</th>'
+                                +'<th style="width:10%">Units</th>'
+                                +'<th style="width:60%">Timestamp</th>'
+                            +'</tr></thead>'
+                            +'<tbody id="tbody" class="idrows">'
+                            +'</tbody>'
                         +'</table>'
-                        +'</div></div>';
-                $('.grid-stack').data('gridstack').addWidget($(grid),0,0,0,0);
+                    +'</div>'
+                +'</div>';
+        $('.grid-stack').data('gridstack').addWidget($(grid),0,0,0,0);
         
-              $(document).on('click', '#removespan', function(e) {
-                    console.log("table widget deleted");
-                    e.target.closest("div").parentElement.parentElement.parentElement.remove();
-                 });
-
-                 $('.inp-val').on('keydown', function(e) {
-                    if (e.which == 13) {
-                        e.preventDefault();
-                        var input = $(this).val();
-                        clearInterval(intervalID);
-                        $(".idrows > tr").remove();
-                        $('.nameid').html("");
-                        $('.catVal').html("");
+        $(document).on('click', '#removespan', function(e) {
+            e.target.closest("div").parentElement.parentElement.parentElement.remove();
+        });
+        $('.inp-val').on('keydown', function(e) {
+            if (e.which == 13) {
+                e.preventDefault();
+                var input = $(this).val();
+                clearInterval(intervalID);
+                $(".idrows > tr").remove();
+                $('.nameid').html("");
+                $('.catVal').html("");
                
-                        intervalID = setInterval(function(){
-                                data = QUINDAR.telemetry.Audacy1;
-                                //console.log(data);
-                                dataX = QUINDAR.telemetry.Audacy1[input];
-                                //console.log(dataX);
-                                dataTimestamp = QUINDAR.telemetry.Audacy1.timestamp;
-                                var size = Object.keys(data).length;
-                                var datasize = size-2;
-                                var arr = [];
+                intervalID = setInterval(function(){
+                    data = QUINDAR.telemetry.Audacy1;
+                    dataX = QUINDAR.telemetry.Audacy1[input];
+                    dataTimestamp = QUINDAR.telemetry.Audacy1.timestamp;
+                    var size = Object.keys(data).length;
+                    var datasize = size-2;
+                    var arr = [];
 
-                                for(var k in data.v){
-                                    arr.push(k);
-                                }
-                                arr.splice(1, 0, "id");
+                    for(var k in data.v){
+                        arr.push(k);
+                    }
+                    arr.splice(1, 0, "id");
 
-                                try{
-                                    var date = new Date(dataTimestamp.value);
-                                    var $input = $('table'),
-                                     $panel = $input.parents('.filterable'),
-                                     $table = $panel.find('#myTable');
+                    try {
+                        var date = new Date(dataTimestamp.value);
+                        var $input = $('table'),
+                        $panel = $input.parents('.filterable'),
+                        $table = $panel.find('#myTable');
 
-                                     
-                                     if(typeof dataX.value === "number") {
-                                            $('.nameid').html(dataX.name);
-                                            $('.catVal').html(dataX.category);
-                                            $table.find('#tbody').append($('<tr><td>'+input+'</td><td>'+Math.round(dataX.value * 100)/100+'</td><td>'+dataX.units+'</td><td>'+date.toUTCString()+'</td></tr>'));
-                                    }else {
-                                            $('.nameid').html(dataX.name);
-                                            $('.catVal').html(dataX.category);
-                                            $table.find('#tbody').append($('<tr><td>'+input+'</td><td>'+dataX.value+'</td><td>'+dataX.units+'</td><td>'+date.toUTCString()+'</td></tr>'));
-                                    }
-
-                                }
-                                catch(e){
-                                }
-                        }, 1000);
-                     }
-                 });
-     
+                        if(typeof dataX.value === "number") {
+                            $('.nameid').html(dataX.name);
+                            $('.catVal').html(dataX.category);
+                            $table.find('#tbody').append($('<tr><td>'+input+'</td><td>'+Math.round(dataX.value * 100)/100+'</td><td>'+dataX.units+'</td><td>'+date.toUTCString()+'</td></tr>'));
+                        }else {
+                            $('.nameid').html(dataX.name);
+                            $('.catVal').html(dataX.category);
+                            $table.find('#tbody').append($('<tr><td>'+input+'</td><td>'+dataX.value+'</td><td>'+dataX.units+'</td><td>'+date.toUTCString()+'</td></tr>'));
+                        }
+                    }
+                    catch(e){
+                    }
+                }, 1000);
+            }
+        });
     }.bind(this);  
 
     QUINDAR.clearGrid = function () {
@@ -601,7 +599,6 @@ $(function(){
         QUINDAR.counter = 0;
         QUINDAR.gcount = 0;
         QUINDAR.icount = 0;
-        console.log("Grid cleared");
         return false;
     }.bind(this);    
 
@@ -609,6 +606,6 @@ $(function(){
     $('#addwidget').click(QUINDAR.add);
     $('#addGround').click(QUINDAR.addGroundWidget);
     $('#addtablewidget').click(QUINDAR.addTableWidget);
-    $('#clear-grid').click(QUINDAR.clearGrid);
+    $('#clearLayout').click(QUINDAR.clearGrid);
     $('#searchId').click(QUINDAR.addIdTable);
 });

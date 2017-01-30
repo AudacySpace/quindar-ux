@@ -13,16 +13,15 @@
   <link href="/css/font-awesome.min.css" rel="stylesheet">
   <link href="/css/dashboardstyles.css" rel="stylesheet">
   <link rel="stylesheet" href="/css/gridstack.css"/>
- <!--  <link href="/css/gridlayout.css" rel="stylesheet"> -->
   <link href="/css/widgetstyles.css" rel="stylesheet">
   <link href="/css/positions.css" rel="stylesheet"> 
- 
-</head>
+ </head>
+
 <body onload="startTime()">
   <div id="wrapper" class="toggled">
     <!--Left side nav bar -->
     <div id="mySidenav" class="sidenav">
-      <a href="javascript:void(0)" class="closebtn" id="closebtn" onclick="closeLeftNav()">&times;</a>
+      <a href="javascript:void(0)" class="closebtn pull-right" id="closebtn" onclick="closeLeftNav()">&times;</a>
       <form class="navbar-form" id="form1">
         <div class="form-group"> <!-- style="display:inline;" -->
           <div class="input-group" id="searchbar">
@@ -77,12 +76,11 @@
 
   <!--Main Dashboard for Widgets -->
   <div class="container">
-    <h5 id="dashboard">Dashboard</h5>
+   <!--  <h5 id="dashboard">Dashboard</h5> -->
     <h6 id="usermail"><%=user.google.email %></h6>
     <div class="grid-stack" id="container">
     </div>
   </div>
-
 
   <!-- Dashboard Footer -->
   <footer class="footer">
@@ -92,55 +90,55 @@
   </footer>
   <!--End Dashboard Footer -->
 
-
-  <!--End Main Dashboard for Widgets -->
-
   <!--Right Side Nav -->
   <div id="myrightSidenav" class="rightsidenav">
     <h3 id="user-name">Hi <%=user.google.name %></h3>
-    <a href="javascript:void(0)" class="rclosebtn" id="rclosebtn" onclick="closeRightNav()">&times;</a>
-    <a href="#" id="configmenu"> Configuration Menu</a>
-    <a href="#" onclick = "openList1()">Qwidget <span class="fa fa-caret-down" aria-hidden="true"></span></a>
-    <ul id="widgetops" style="display:none;">  <!-- style="display:none;" -->
-
-<!--  <li><a id="addwidget" href="#">Add Widget</a></li> -->
-	    <li><a id="addGround" href="#">Ground Track</a></li>
-      <li><a id="addtablewidget" href="#">Telemetry Table</a></li>
-      <ul>
-      <li><a id="searchId" href="#">Search By Id</a></li>
+    <a href="javascript:void(0)" class="rclosebtn pull-right rmenu" id="rclosebtn" onclick="closeRightNav()">&times;</a>
+    <a href="#" id="configmenu" class="rmenu"> Configuration Menu</a>
+    <a href="#" onclick = "openQwidgetMenu()" id="quindar-widgets" class="rmenu"><span class="glyphicon glyphicon-menu-down pull-right" id="qwidget-arrow"></span><span class="glyphicon glyphicon-modal-window" id="qwidgets"></span>Qwidgets
+    </a>
+      <ul id="qwidgetMenu" style="display:none;">
+        <li><a id="addQwidget" href="#" onclick = "openQwidgetList()"><span class="glyphicon glyphicon-plus" id="qwidgetPlus"></span>Add Qwidget<span class="glyphicon glyphicon-menu-down pull-right" id="qwidget-add"></a> 
+        </li>
+          <ul id="widgettops" style="display:none;">   
+            <li><a id="addGround" href="#"><span class="glyphicon glyphicon-globe" id="g-track"></span>Ground Track</a>
+            </li>
+            <li><a id="addtablewidget" href="#"><i class="fa fa-table" aria-hidden="true" id="t-table"></i>Telemetry Table</a>
+            </li>
+            <li><a id="searchId" href="#"><span class="glyphicon glyphicon-search" id="s-table"></span>Search By Id</a>
+            </li>
+          </ul>
+        <li><a id="saveLayout" href="#"><span class="glyphicon glyphicon-save-file" id="save-layout"></span>Save Layout</a></li>
+        <li><a id="loadLayout" href="#"><span class="glyphicon glyphicon-open-file" id="load-layout"></span>Load Layout<span class="glyphicon glyphicon-menu-down pull-right" id="layout-arrow"></span></a></li>
+        <li><a id="clearLayout" href="#"><span class="glyphicon glyphicon-trash" id="clear-layout"></span>Clear</a></li>
       </ul>
-<!--  <li><a id="save-grid" href="#">Save Grid</a></li>
-      <li><a id="load-grid" href="#">Load Grid</a></li> -->
-      <li><a id="clear-grid" href="#">Clear Grid</a></li>
-    </ul>
-    <a href="#">User Administration</a>
-    <a href="#">Server Administration</a>
-    <a href="#">Documentation</a>
-    <a href="/logout" id="mini-logout">Logout</a>
+  
+    <a href="#" id="user" class="rmenu"><span class="glyphicon glyphicon-menu-down pull-right" id="user-admin-arrow"></span><span class="glyphicon glyphicon-user" id="user-admin"></span>User Administration</a>
+    <a href="#" id="server" class="rmenu"><span class="glyphicon glyphicon-menu-down pull-right" id="server-admin-arrow"></span><i class="fa fa-server" aria-hidden="true" id="server-admin"></i></span>Server Administration</a>
+    <a href="#" id="document" class="rmenu"><span class="glyphicon glyphicon-menu-down pull-right" id="doc-arrow"></span><i class="fa fa-file-text-o" aria-hidden="true" id="docs"></i>Documentation</a>
+    <a href="/logout" id="mini-logout" class="rmenu">Logout</a>
   </div>
   <!--End of Right Side Nav -->
-</div>
 
-
-<!-- jQuery -->
-<script src="/scripts/jquery.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.0/jquery-ui.js"></script>
-<!-- Bootstrap Core JavaScript -->
-<script src="/scripts/bootstrap.min.js"></script>
-<!-- lodash -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.min.js"></script>
-<!-- gridstack library -->
-<script src="/scripts/dist/gridstack.all.js"></script>
-<!-- UTC Clock -->
-<script src="/scripts/clock.js"></script>
-<!-- Side Navigation -->
-<script src="/scripts/side-navigation.js"></script>
-<!-- D3 -->
-<script src="/scripts/d3.min.js"></script>
-<!-- topojson-client -->
-<script src="/scripts/topojson-client.min.js"></script>
-<!-- Dashboard widget grid layout-->
-<!-- <script src="/scripts/widgetgrid.js"></script> -->
-<script src="/scripts/dashboard.js"></script>
-</body>
-</html>
+  <!-- jQuery -->
+  <script src="/scripts/jquery.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.0/jquery-ui.js"></script>
+  <!-- Bootstrap Core JavaScript -->
+  <script src="/scripts/bootstrap.min.js"></script>
+  <!-- lodash -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.min.js"></script>
+  <!-- gridstack library -->
+  <script src="/scripts/dist/gridstack.all.js"></script>
+  <!-- UTC Clock -->
+  <script src="/scripts/clock.js"></script>
+  <!-- Side Navigation -->
+  <script src="/scripts/side-navigation.js"></script>
+  <!-- D3 -->
+  <script src="/scripts/d3.min.js"></script>
+  <!-- topojson-client -->
+  <script src="/scripts/topojson-client.min.js"></script>
+  <!-- Dashboard widget grid layout-->
+  <!-- <script src="/scripts/widgetgrid.js"></script> -->
+  <script src="/scripts/dashboard.js"></script>
+  </body>
+  </html>

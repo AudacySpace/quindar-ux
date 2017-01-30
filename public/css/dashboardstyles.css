@@ -1,7 +1,7 @@
 /*!
  * Custom CSS for dashboard page 
  */
- body {
+body {
   overflow-x: hidden;
   background-color: #F2F3F4  ;
 }
@@ -31,7 +31,6 @@ button#removespan{
   top:2px;
   padding: 2px 2px;
 }
-
 button#removespan:hover{
   background-color:#ccc;
 }
@@ -51,21 +50,50 @@ button.glyphicon.glyphicon-cog.pull-right.settings:active {
   transform: translateY(1px);
 }
 button.glyphicon.glyphicon-cog.pull-right#settings:focus{
-    outline:0;
+  outline:0;
 }
 button.glyphicon.glyphicon-cog.pull-right#settings:active {
   background-color: #000000;
   box-shadow: 0 2px #ccc;
   transform: translateY(1px);
 }
-#widgetops {
+#qwidgetMenu{
   list-style-type: none;
+  padding-left:0px;
+  border-top:1px solid #ccc;
+  border-bottom:1px solid #ccc;
+}
+#widgettops {
+  list-style-type: none;
+  padding-left:0px;
+  border-top:1px solid #242833;
+  border-bottom:1px solid #242833;
 }
 #widgetops ul{
   list-style-type: none;
 }
 #usermail{
   display:none;
+}
+span#layout-arrow{
+  position: relative;
+  top: 0px;
+  right:0px;
+}
+span#qwidgets{
+  position: relative;
+  top: 2px;
+  right: 8px;
+}
+span#user-admin,i#server-admin,i#docs{
+  position: relative;
+  top: 0px;
+  right: 8px;
+}
+span#qwidgetPlus,span#g-track,i#t-table,span#s-table,span#save-layout,span#load-layout,span#clear-layout{
+  position: relative;
+  top: 0px;
+  right: 5px;
 }
 .panel-primary>.panel-heading {
   background-color: #000000;
@@ -240,6 +268,7 @@ button#data-menu{
   right:-40px;
   font-size:22px;
 }
+
 /* Sidebar Styles */
 .sidenav {
   height: 100%;
@@ -264,19 +293,20 @@ button#data-menu{
   overflow-x: hidden;
   transition: 0.5s;
   padding-top: 60px;
+  padding-bottom: 60px;
 }
 .sidenav a {
-  padding: 8px 8px 8px 32px;
+  padding: 8px 8px 8px 19px;
   text-decoration: none;
   font-size: 16px;
   color: #818181;
   display: block;
   transition: 0.3s
 }
-.rightsidenav a {
-  padding: 8px 8px 8px 32px;
+.rightsidenav a{
+  padding: 8px 15px 8px 19px;
   text-decoration: none;
-  font-size: 18px;
+  font-size: 16px;
   color: #818181;
   display: block;
   transition: 0.3s
@@ -292,6 +322,17 @@ a#username.dropdown-toggle {
 .sidenav a:hover, .offcanvas a:focus {
   color: #f1f1f1;
 }
+a#quindar-widgets:hover,a#addQwidget:hover,a#addGround:hover,
+a#addtablewidget:hover,a#searchId:hover,a#saveLayout:hover,
+a#loadLayout:hover,a#clearLayout:hover,a#user:hover,a#server:hover,a#document:hover{
+    background-color: #464954;
+}
+a#left-menu-item1,a#left-menu-item2,a#left-menu-item3,a#left-menu-item4{
+  font-size:16px;
+}
+a#left-menu-item1:hover,a#left-menu-item2:hover,a#left-menu-item3:hover,a#left-menu-item4:hover{
+  background-color: #464954;
+}
 .rightsidenav a:hover, .offcanvas a:focus {
   color: #f1f1f1;
 }
@@ -301,14 +342,14 @@ a#username.dropdown-toggle {
 .sidenav .closebtn {
   position: absolute;
   top: 0;
-  right: 25px;
+  right: 0px;
   font-size: 18px;
   margin-left: 50px;
 }
 .rightsidenav .rclosebtn {
   position: absolute;
   top: 0;
-  right: 25px;
+  right: 0px;
   font-size: 18px;
   margin-left: 50px;
 }
@@ -328,11 +369,18 @@ a#username.dropdown-toggle {
 #mini-logout{
   display:none;
 }
-a#addtablewidget, a#save-grid, a#load-grid, a#clear-grid, a#addwidget, a#addGround{
-  font-size:16px;
+a#saveLayout, a#loadLayout, a#clearLayout, a#addQwidget{
+  font-size:14px;
+}
+a#addtablewidget,a#addGround{
+  font-size:12px;
+  border-top:1px solid #242833;
+  border-bottom:1px solid #242833; 
 }
 a#searchId{
-  font-size:14px;
+  font-size:12px;
+  border-top:1px solid #242833;
+  border-bottom:1px solid #242833; 
 }
 @media only screen and (max-width: 736px) {
   /* For mobile phones: */
