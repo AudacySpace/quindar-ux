@@ -1,0 +1,34 @@
+.btn-group {  
+    white-space: nowrap;              
+}
+.btn-group .btn {  
+    float: none;
+    display: inline-block;
+}
+ .btn + .dropdown-toggle { 
+    margin-left: -4px;
+}
+.btn{
+	border:0px;
+}
+.btn:focus{
+	border:0px;
+}
+.btn:hover{
+	border:0px;
+
+}
+.btn:active{
+	border:0px;
+
+}
+span#side-arrow:active{
+	color:red;
+}
+
+
+
+.table-responsive {
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+}
