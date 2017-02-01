@@ -14,6 +14,7 @@ var session      = require('express-session');
 var configDB = require('./config/database.js');
 
 app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/app'));
 
 mongoose.connect(configDB.url); // connect to our database
 
@@ -25,6 +26,7 @@ app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.json()); // get information from html forms
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.set('views', __dirname + '/app/views');
 app.set('view engine', 'ejs'); // set up ejs for templating
 
 // required for passport
