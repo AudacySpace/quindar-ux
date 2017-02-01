@@ -113,6 +113,39 @@ var telemetrySchema = mongoose.Schema({
         warn_high: Number,
         alarm_high: Number,
         units: String
+    },
+    longitude : {
+        notes: String,
+        category: String,
+        name: String,
+        alarm_low: Number,
+        warn_low: Number,
+        value: Number,
+        warn_high: Number,
+        alarm_high: Number,
+        units: String
+    },
+    latitude : {
+        notes: String,
+        category: String,
+        name: String,
+        alarm_low: Number,
+        warn_low: Number,
+        value: Number,
+        warn_high: Number,
+        alarm_high: Number,
+        units: String
+    },
+    stationId : {
+        notes: String,
+        category: String,
+        name: String,
+        alarm_low: String,
+        warn_low: String,
+        value: String,
+        warn_high: String,
+        alarm_high: String,
+        units: String
     }
 
 }, { collection: 'telemetry' });
