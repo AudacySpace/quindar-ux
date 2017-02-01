@@ -47,7 +47,9 @@ Follow steps to build and deploy the container on localhost.
     docker run -d -t --name qux --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /sys:/host/sys:ro -v $(pwd):/node/ -p 80:80 -p 443:443 quindar-qux
 
 Notes:
+
 1. $(pwd) is the present working directory which over here is the path on your local machine to quindar-ux repository. Windows users can replace $(pwd) with the absolute path to the quindar-ux directory. 
+
 2. For Windows users, enable Shared Drives in Docker settings to use the above docker run command.
 
 The UI should be up and running on: http://localhost
