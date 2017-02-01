@@ -42,6 +42,7 @@ $(function(){
     };
 
 	var timerCol=[];	//Create to store timer
+	rEarth = 6378.16;	//Earth radius [km]
     QUINDAR.addGroundWidget = function(){
     	QUINDAR.gcount++;	// Increase counter
 					
@@ -51,7 +52,8 @@ $(function(){
 									
 		// Initialize scHolder
 		var scHolder={}
-
+		// Initialize gsHoldar
+		var gsHolder={}
 		$('.grid-stack').data('gridstack').addWidget($(
 			'<div id="gsdiv'+QUINDAR.gcount+'">\
 			  <div class="panel panel-primary grid-stack-item-content" style="margin-bottom:0;" id="divtable'+QUINDAR.gcount+'">\
@@ -71,20 +73,57 @@ $(function(){
                     <button type="button" class="close" data-dismiss="modal">&times;</button>\
                     <h4 class="modal-title">Settings</h4>\
                   </div>\
-                  <div class="modal-body">\
-		            <div class="btn-group" >\
-                      <label class="btn btn-primary active" style="background-color: #172168;">\
-                        <input type="checkbox" name="options'+QUINDAR.gcount+'" id="sat1" checked> Audacy1 </label>\
-                      <label class="btn btn-primary" style="background-color: #172168;">\
-                        <input type="checkbox" name="options'+QUINDAR.gcount+'" id="sat2" > Audacy2 </label>\
-                      <label class="btn btn-primary" style="background-color: #172168;">\
-                        <input type="checkbox" name="options'+QUINDAR.gcount+'" id="sat3" > Audacy3 </label>\
-                    </div>\
-					<div>\
-					  <button type="button" class="btn btn-primary" style="color:#F1F1F5; background-color:#172168" id="clearbtn'+QUINDAR.gcount+'">Clear Plot</button>\
+                  <div class="modal-body modal-overflow">\
+					<div class="form-group">\
+					  <label class="control-label col-sm-3">Satellites:</label>\
+		              <div class="col-sm-9">\
+					    <div class="checkbox" >\
+                          <label>\
+                            <input type="checkbox" name="options'+QUINDAR.gcount+'" id="sat1" > Audacy1 </label>\
+						</div>\
+						<div class="checkbox"> \
+                          <label>\
+                            <input type="checkbox" name="options'+QUINDAR.gcount+'" id="sat2" > Audacy2 </label>\
+						</div> \
+						<div class="checkbox">\
+                          <label>\
+                            <input type="checkbox" name="options'+QUINDAR.gcount+'" id="sat3" > Audacy3 </label>\
+                        </div> \
+					  </div>\
+					</div>\
+					<div class="form-group">\
+					  <label class="control-label col-sm-3">Satellite Coverage Area:</label>\
+		              <div class="col-sm-9">\
+                        <div class="checkbox">\
+						  <label>\
+                            <input type="checkbox" name="satCov'+QUINDAR.gcount+'" id="satCov1"> Audacy1 </label>\
+						</div>\
+						<div class="checkbox">\
+                          <label>\
+                            <input type="checkbox" name="satCov'+QUINDAR.gcount+'" id="satCov2" > Audacy2 </label>\
+						</div>\
+						<div class="checkbox">\
+                          <label>\
+                            <input type="checkbox" name="satCov'+QUINDAR.gcount+'" id="satCov3" > Audacy3 </label>\
+                        </div>\
+					  </div>\
+					</div>\
+					<div class="form-group">\
+					  <label class="control-label col-sm-3">Ground Station Coverage Area:</label>\
+					  <div class="col-sm-9">\
+					    <div class="checkbox">\
+                          <label>\
+                            <input type="checkbox" name="gs'+QUINDAR.gcount+'" id="gs1" > Station1 </label>\
+						</div>\
+						<div class="checkbox">\
+                          <label>\
+                            <input type="checkbox" name="gs'+QUINDAR.gcount+'" id="gs2" > Station2 </label>\
+                        </div>\
+					  </div>\
 					</div>\
 				  </div>\
                   <div class="modal-footer">\
+				    <button type="button" class="btn btn-default" id="clearbtn'+QUINDAR.gcount+'">Clear Plot</button>\
                     <button type="button" class="btn btn-default" data-dismiss="modal" id="plotbutton'+QUINDAR.gcount+'">Plot</button>\
                   </div>\
                 </div>\
@@ -117,9 +156,12 @@ $(function(){
         var transform = d3.zoomTransform(svg.node());   
 		
 		var sat = 1;
-		
+		var satCov = [];
+		var gs = [];
 		var station = [[-122.4, 37.7],[103.8, 1.4]];
-       				
+       	
+		var satRadius = 7000;
+		
         // Plot world map
         d3.json("/media/icons/world-50m.json", function(error, world) {
         	if (error) throw error;	
@@ -149,7 +191,7 @@ $(function(){
             setInterval(redraw, 1000);
 
             function redraw() {
-                night.datum(circle.center(antipode(solarPosition(temptime)))).attr("d", path);
+                night.datum(circle.center(antipode(solarPosition(temptime))).radius(90)).attr("d", path);
             }				
         });				
         						
@@ -165,15 +207,17 @@ $(function(){
 			idnum = this.id.match(/\d+/)[0];
 			$('#myModal'+idnum).modal('hide');
 			document.getElementById("plotbutton"+idnum).disabled = true;
-			sat = document.getElementsByName("options"+idnum)
-
-			//initialize scHolder
+			sat = document.getElementsByName("options"+idnum);
+			satCov = document.getElementsByName("satCov"+idnum);
+			gs = document.getElementsByName("gs"+idnum);
+			
+			//Initialize scHolder
 			for (j=0; j<sat.length;j++) {
 				scHolder[j] = [[0.,0.]];
 				scHolder[j].pop();
 			}; 
-			
-            timer = setInterval(updatePlot, delay);
+						
+            timer = setInterval(updatePlot, delay, idnum);
 			timerCol[idnum] = timer;
         });
 
@@ -206,6 +250,8 @@ $(function(){
 			idnum = this.id.match(/\d+/)[0];
 			g.selectAll("path.route").remove();
 			g.selectAll("#craft").remove();	
+			g.selectAll("#satlos").remove();
+			g.selectAll("#gslos"+idnum).remove();
 			clearTimeout(timerCol[idnum]);
 			document.getElementById("plotbutton"+idnum).disabled = false;
 		});
@@ -218,11 +264,19 @@ $(function(){
 		});
 		
         // Function to update data to be plotted
-        function updatePlot() {
- 			
+        function updatePlot(idnum) {
 			g.selectAll("path.route").remove();
 			g.selectAll("#craft").remove();	
-            
+			g.selectAll("#satlos").remove();
+            g.selectAll("#gslos"+idnum).remove();
+			
+			//Plot ground station coverage
+			for (j=0; j<gs.length;j++) {
+				if (gs[j].checked) {
+					plotGsCover(station[j], idnum);
+				}
+			}
+			
 			for (i=0; i< sat.length; i++){
 				// Selection of satellite
 				latestdata = null;
@@ -277,6 +331,15 @@ $(function(){
 								.attr("y",sat_coord[1]-15)
 								.attr("width",30)
 								.attr("height",30);
+					
+					if (satCov[i].checked) {
+						var satAng = satCoverage(satRadius, 65);
+						var range = g.append("path")
+								.datum(circle.center([longitude, latitude]).radius(satAng))
+								.attr("id", "satlos")
+								.attr("class", "satlos")
+								.attr("d", path);		
+					}								
 				}   
 			}				
         }
@@ -291,6 +354,17 @@ $(function(){
 						.attr("y",gs_coord[1]-16)
 						.attr("width",20)
 						.attr("height",20);
+			
+		};
+		
+		function plotGsCover(coord, gindex){
+			covAng = gsCoverage(satRadius, 85);	// Coverage angle [deg]
+			var gslos = svg.select('#g'+gindex)
+						.append("path")
+						.datum(circle.center(coord).radius(covAng))
+						.attr("id", "gslos"+gindex)
+						.attr("class", "gslos")
+						.attr("d", path);			
 		};
 		
         var zoom = d3.zoom()
@@ -377,6 +451,37 @@ $(function(){
             return 0.016708634 - centuries * (0.000042037 + 0.0000001267 * centuries);
         }
 
+		// Ground station coverage area based on the sat's altitude
+		function gsCoverage(r, gsAng){
+			// r: radius to satellite [km]
+			// gsAng: Ground station coverage angle [deg]
+			
+			// Temp angle
+			alpha = Math.asin(rEarth*Math.sin((180-gsAng)*radians)/r);
+			
+			//Coverage angle from the center of Earth
+			return  180 - (180-gsAng) - alpha*degrees;
+		}
+		
+		// Satellite coverage
+		function satCoverage(r, satAng){
+			// r: radius to satellite [km]
+			// satAng: satellite coverage angle [deg]			
+
+			if (r*Math.sin(satAng*radians) > rEarth) {
+				// satAng is larger than the limit
+				// Math.asin(r*Math.sin(satAng*radians)/rEarth) is invalid
+				// beta is smallest
+				beta = π/2;
+			} else {
+				// Two values for beta and select larger one
+				beta = π - Math.asin(r*Math.sin(satAng*radians)/rEarth);				
+			}
+		
+			return 180 - satAng - beta*degrees;
+			
+		}
+		
    		$(document).on('click', '#removediv'+QUINDAR.gcount+'', function(e) {
 			idnum = this.id.match(/\d+/)[0];
 			$('#gsdiv'+idnum).remove();

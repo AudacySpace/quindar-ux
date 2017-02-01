@@ -28,6 +28,16 @@
   fill: #07D1EA;
   stroke: #020613;	
 }
+.satlos {
+  stroke: #71ECF9;
+  fill: #B8F6FC;
+  opacity: .3;
+}
+.gslos {
+  stroke: #AEEA00;
+  fill: #76FF03;
+  opacity: .3;
+}
 .plotbutton {
   font-family: "Open Sans", Sans-serif;	
   background-color: #07D1EA;
@@ -93,7 +103,7 @@
 }
 .trash{
   position:absolute;
-  right:25px;
+  right:30px;
   top:5px;
   font-size:19px;
   color: #07D1EA;
@@ -125,4 +135,7 @@
 }
 .timezones :hover {
   fill: #FFD600;
+}
+.modal-overflow{
+  overflow: auto;
 }
