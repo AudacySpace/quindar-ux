@@ -23,7 +23,7 @@ var Telemetry = require('./models/telemetry');
     // DASHBOARD SECTION =========================
     app.get('/dashboard', isLoggedIn, function(req, res) {
         
-        res.render('dashboard.ejs', {
+        res.render('ang_dashboard.ejs', {
             user : req.user
         });
     });
