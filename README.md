@@ -1,7 +1,7 @@
 # Quindar UX
 Updated: Dec 01,2016
 
-This is the repository for the Quindar UX (GUI) code. Quindar is a real-time space mission operations application supported by Audacy (http://audacy.space). The application is develpoed on the MEAN technology stack.
+This is the repository for the Quindar UX (GUI) code. Quindar is a real-time space mission operations application supported by Audacy (https://audacy.space). The application is develpoed on the MEAN technology stack.
 
 
 
@@ -10,13 +10,6 @@ This is the repository for the Quindar UX (GUI) code. Quindar is a real-time spa
 * public        - any static content served directly by nginx
  * public/css    - stylesheets
  * public/media  - images, sounds, etc.
-
-* app           - the NodeJS application files
- * app/dashboard     - files for the main Quindar application
- * app/qwidgets      - files for Quindar widgets (in individual subfolders)
-
-* docs          - project documentation
-
 
 ## Prerequisite Tools
 
@@ -50,7 +43,12 @@ Follow steps to build and deploy the container on localhost.
     cd quindar-deploy/qux-frontend
     docker build -t "quindar-qux" .
     cd ../../quindar-ux
+    npm install
     docker run -d -t --name qux --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /sys:/host/sys:ro -v $(pwd):/node/ -p 80:80 -p 443:443 quindar-qux
+
+Notes:
+1. $(pwd) is the present working directory which over here is the path on your local machine to quindar-ux repository. Windows users can replace $(pwd) with the absolute path to the quindar-ux directory. 
+2. For Windows users, enable Shared Drives in Docker settings to use the above docker run command.
 
 The UI should be up and running on: http://localhost
 
