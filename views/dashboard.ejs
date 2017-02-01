@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="/css/gridstack.css"/>
   <link href="/css/widgetstyles.css" rel="stylesheet">
   <link href="/css/positions.css" rel="stylesheet"> 
+   <link href="/css/datatablestyles.css" rel="stylesheet"> 
  </head>
 
 <body onload="startTime()">
@@ -103,9 +104,11 @@
           <ul id="widgettops" style="display:none;">   
             <li><a id="addGround" href="#"><span class="glyphicon glyphicon-globe" id="g-track"></span>Ground Track</a>
             </li>
-            <li><a id="addtablewidget" href="#"><i class="fa fa-table" aria-hidden="true" id="t-table"></i>Telemetry Table</a>
+            <li><a id="addtablewidget" href="#"><span class="fa fa-table" aria-hidden="true" id="t-table"></span>Telemetry Table</a>
             </li>
             <li><a id="searchId" href="#"><span class="glyphicon glyphicon-search" id="s-table"></span>Search By Id</a>
+            </li>
+            <li><a id="datatable" href="#" onclick="addDataTable();"><span class="fa fa-table" id="d-table"></span>Data Table</a>
             </li>
           </ul>
         <li><a id="saveLayout" href="#"><span class="glyphicon glyphicon-save-file" id="save-layout"></span>Save Layout</a></li>
@@ -140,5 +143,6 @@
   <!-- Dashboard widget grid layout-->
   <!-- <script src="/scripts/widgetgrid.js"></script> -->
   <script src="/scripts/dashboard.js"></script>
+  <script src="/scripts/datatableqwidget.js"></script>
   </body>
   </html>

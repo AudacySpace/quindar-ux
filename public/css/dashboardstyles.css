@@ -90,7 +90,7 @@ span#user-admin,i#server-admin,i#docs{
   top: 0px;
   right: 8px;
 }
-span#qwidgetPlus,span#g-track,i#t-table,span#s-table,span#save-layout,span#load-layout,span#clear-layout{
+span#qwidgetPlus,span#g-track,span#t-table,span#d-table,span#s-table,span#save-layout,span#load-layout,span#clear-layout{
   position: relative;
   top: 0px;
   right: 5px;
@@ -372,7 +372,7 @@ a#left-menu-item1:hover,a#left-menu-item2:hover,a#left-menu-item3:hover,a#left-m
 a#saveLayout, a#loadLayout, a#clearLayout, a#addQwidget{
   font-size:14px;
 }
-a#addtablewidget,a#addGround{
+a#addtablewidget,a#addGround,a#datatable{
   font-size:12px;
   border-top:1px solid #242833;
   border-bottom:1px solid #242833; 
