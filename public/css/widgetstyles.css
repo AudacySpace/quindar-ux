@@ -38,6 +38,16 @@
   fill: #76FF03;
   opacity: .3;
 }
+.link {
+  stroke: #07D1EA; 
+  fill: none  ;
+  stroke-width: 1px;
+}
+.gslink {
+  stroke: #172168; 
+  fill: none  ;
+  stroke-width: 1px;
+}
 .plotbutton {
   font-family: "Open Sans", Sans-serif;	
   background-color: #07D1EA;

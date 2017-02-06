@@ -51,9 +51,10 @@ $(function(){
         var delay = 1000;	// milliseconds
 									
 		// Initialize scHolder
-		var scHolder={}
+		var scHolder={};
+		var scStates={};
 		// Initialize gsHoldar
-		var gsHolder={}
+		var gsHolder={};
 		$('.grid-stack').data('gridstack').addWidget($(
 			'<div id="gsdiv'+QUINDAR.gcount+'">\
 			  <div class="panel panel-primary grid-stack-item-content" style="margin-bottom:0;" id="divtable'+QUINDAR.gcount+'">\
@@ -76,7 +77,7 @@ $(function(){
                   <div class="modal-body modal-overflow">\
 					<div class="form-group">\
 					  <label class="control-label col-sm-3">Satellites:</label>\
-		              <div class="col-sm-9">\
+		              <div class="col-sm-3">\
 					    <div class="checkbox" >\
                           <label>\
                             <input type="checkbox" name="options'+QUINDAR.gcount+'" id="sat1" > Audacy1 </label>\
@@ -89,6 +90,34 @@ $(function(){
                           <label>\
                             <input type="checkbox" name="options'+QUINDAR.gcount+'" id="sat3" > Audacy3 </label>\
                         </div> \
+					  </div>\
+					  <div class="col-sm-3">\
+					    <div class="checkbox" >\
+                          <label>\
+                            <input type="checkbox" name="orbits'+QUINDAR.gcount+'" > Orbit </label>\
+						</div>\
+						<div class="checkbox" >\
+                          <label>\
+                            <input type="checkbox" name="orbits'+QUINDAR.gcount+'" > Orbit </label>\
+						</div>\
+						<div class="checkbox" >\
+                          <label>\
+                            <input type="checkbox" name="orbits'+QUINDAR.gcount+'" > Orbit </label>\
+						</div>\
+					  </div>\
+					  <div class="col-sm-3">\
+					    <div class="checkbox" >\
+                          <label>\
+                            <input type="checkbox" name="icons'+QUINDAR.gcount+'" > Icon </label>\
+						</div>\
+						<div class="checkbox" >\
+                          <label>\
+                            <input type="checkbox" name="icons'+QUINDAR.gcount+'" > Icon </label>\
+						</div>\
+						<div class="checkbox" >\
+                          <label>\
+                            <input type="checkbox" name="icons'+QUINDAR.gcount+'" > Icon </label>\
+						</div>\
 					  </div>\
 					</div>\
 					<div class="form-group">\
@@ -118,6 +147,33 @@ $(function(){
 						<div class="checkbox">\
                           <label>\
                             <input type="checkbox" name="gs'+QUINDAR.gcount+'" id="gs2" > Station2 </label>\
+                        </div>\
+					  </div>\
+					</div>\
+					<div class="form-group">\
+					  <label class="control-label col-sm-3">Links:</label>\
+					  <div class="col-sm-3">\
+					    <div class="checkbox" >\
+                          <label>\
+                            <input type="checkbox" name="satLinks'+QUINDAR.gcount+'"> Audacy1 </label>\
+						</div>\
+						<div class="checkbox"> \
+                          <label>\
+                            <input type="checkbox" name="satLinks'+QUINDAR.gcount+'"> Audacy2 </label>\
+						</div> \
+						<div class="checkbox">\
+                          <label>\
+                            <input type="checkbox" name="satLinks'+QUINDAR.gcount+'"> Audacy3 </label>\
+                        </div> \
+					  </div>\
+					  <div class="col-sm-3">\
+					    <div class="checkbox">\
+                          <label>\
+                            <input type="checkbox" name="gsLinks'+QUINDAR.gcount+'"> Station1 </label>\
+						</div>\
+						<div class="checkbox">\
+                          <label>\
+                            <input type="checkbox" name="gsLinks'+QUINDAR.gcount+'"> Station2 </label>\
                         </div>\
 					  </div>\
 					</div>\
@@ -158,10 +214,10 @@ $(function(){
 		var sat = 1;
 		var satCov = [];
 		var gs = [];
-		var station = [[-122.4, 37.7],[103.8, 1.4]];
+		var station = [[-122.4, 37.7],[103.8, 1.4]];	//[longitude, latitude]
        	
-		var satRadius = 7000;
-		
+		var satRadius = 10000;	// Satellite radius [km]
+		var gsAng = 85;	// Ground station coverage angle [deg]
         // Plot world map
         d3.json("/media/icons/world-50m.json", function(error, world) {
         	if (error) throw error;	
@@ -208,13 +264,13 @@ $(function(){
 			$('#myModal'+idnum).modal('hide');
 			document.getElementById("plotbutton"+idnum).disabled = true;
 			sat = document.getElementsByName("options"+idnum);
-			satCov = document.getElementsByName("satCov"+idnum);
-			gs = document.getElementsByName("gs"+idnum);
 			
 			//Initialize scHolder
 			for (j=0; j<sat.length;j++) {
 				scHolder[j] = [[0.,0.]];
 				scHolder[j].pop();
+				scStates[j] = [[0.,0.,0.]];
+				scStates[j].pop();
 			}; 
 						
             timer = setInterval(updatePlot, delay, idnum);
@@ -249,26 +305,28 @@ $(function(){
 		$('#clearbtn'+QUINDAR.gcount).click(function(){
 			idnum = this.id.match(/\d+/)[0];
 			g.selectAll("path.route").remove();
-			g.selectAll("#craft").remove();	
+			g.selectAll("#craft"+idnum).remove();	
 			g.selectAll("#satlos").remove();
 			g.selectAll("#gslos"+idnum).remove();
+			g.selectAll("#link").remove();
 			clearTimeout(timerCol[idnum]);
 			document.getElementById("plotbutton"+idnum).disabled = false;
-		});
-		
-		$('#addgs'+QUINDAR.gcount).click(function(){
-			idnum = this.id.match(/\d+/)[0];
-			lon = document.getElementsByName("lon"+idnum);
-			lat = document.getElementsByName("lat"+idnum);
-			plotgs([lat[0].value,lon[0].value], idnum);		
 		});
 		
         // Function to update data to be plotted
         function updatePlot(idnum) {
 			g.selectAll("path.route").remove();
-			g.selectAll("#craft").remove();	
+			g.selectAll("#craft"+idnum).remove();	
 			g.selectAll("#satlos").remove();
             g.selectAll("#gslos"+idnum).remove();
+			g.selectAll("#link").remove();
+			
+			satCov = document.getElementsByName("satCov"+idnum);
+			gs = document.getElementsByName("gs"+idnum);
+			orb = document.getElementsByName("orbits"+idnum);
+			icon = document.getElementsByName("icons"+idnum);
+			satLink = document.getElementsByName("satLinks"+idnum);
+			gsLink = document.getElementsByName("gsLinks"+idnum);
 			
 			//Plot ground station coverage
 			for (j=0; j<gs.length;j++) {
@@ -293,7 +351,7 @@ $(function(){
 						latestdata = QUINDAR.telemetry.Audacy3;  
 					}    
 				};			
-				
+								
 				// Check if the latestdata is available for the selected s/c
 				if (latestdata == null) {
         						
@@ -314,23 +372,31 @@ $(function(){
 						
 					// Remove data when the length of scHolder reaches a certain value
 					if (scHolder[i].length > 600) {
-						scHolder[i].splice(0,1);							
+						scHolder[i].splice(0,1);
+						scStates[i].splice(0,1);
 					};
 						
 					// add longitude and latitude to data_plot
 					scHolder[i].push([longitude, latitude]);	
-
-					var route = g.append("path")
+					scStates[i].push([x,y,z]);
+					
+					if (orb[i].checked) {
+						var route = g.append("path")
    							.datum({type: "LineString", coordinates: scHolder[i]})	
                             .attr("class", "route")
                             .attr("d", path);	
-					var  craft = g.append("svg:image")
+					}
+					
+					if (icon[i].checked) {
+						var  craft = svg.select('#g'+idnum)
+								.append("svg:image")
         						.attr("xlink:href", "/media/icons/Segment_Icons_Fill_Black-08.svg")
-								.attr("id", "craft")
+								.attr("id", "craft"+idnum)
         						.attr("x",sat_coord[0])
 								.attr("y",sat_coord[1]-15)
 								.attr("width",30)
 								.attr("height",30);
+					}
 					
 					if (satCov[i].checked) {
 						var satAng = satCoverage(satRadius, 65);
@@ -339,9 +405,34 @@ $(function(){
 								.attr("id", "satlos")
 								.attr("class", "satlos")
 								.attr("d", path);		
-					}								
+					}
 				}   
-			}				
+			}
+
+			for (k=0; k<satLink.length-1; k++) {
+				if (satLink[k].checked) {
+					for (kk=k+1; kk<satLink.length; kk++) {
+						if (satLink[kk].checked) {
+							commlink(scStates[k][scStates[k].length-1],scStates[kk][scStates[kk].length-1],
+								scHolder[k][scHolder[k].length-1],scHolder[kk][scHolder[kk].length-1]);			
+						}		
+					}
+				}
+			}
+			
+			for (k=0; k<satLink.length; k++) {
+				if(satLink[k].checked) {
+					for (kk=0; kk<gsLink.length; kk++) {
+						if (gsLink[kk].checked){
+							gsCommLink(station[kk], scHolder[k][scHolder[k].length-1], scStates[k][scStates[k].length-1], gsAng);			
+						}
+						
+					}
+					
+				}
+				
+			}
+			
         }
 				
 		function plotgs(coord, gindex){
@@ -358,7 +449,7 @@ $(function(){
 		};
 		
 		function plotGsCover(coord, gindex){
-			covAng = gsCoverage(satRadius, 85);	// Coverage angle [deg]
+			covAng = gsCoverage(satRadius, gsAng);	// Coverage angle [deg]
 			var gslos = svg.select('#g'+gindex)
 						.append("path")
 						.datum(circle.center(coord).radius(covAng))
@@ -366,6 +457,75 @@ $(function(){
 						.attr("class", "gslos")
 						.attr("d", path);			
 		};
+		
+		// Comm between satellites
+		function commlink(a,b,c,d){
+			//a: Satellite A [x,y,z] [km]
+			//b: Satellite B [x,y,z] [km]
+			//c: Satellite A [longitude, latitude] [deg]
+			//d: Satellite B [longitude, latitude] [deg]
+			
+			// Half angles [radians]
+			var th1 = Math.acos(rEarth/Math.sqrt(a[0]*a[0]+a[1]*a[1]+a[2]*a[2]));
+			var th2 = Math.acos(rEarth/Math.sqrt(b[0]*b[0]+b[1]*b[1]+b[2]*b[2]));
+
+			// Angle between a and b
+			var th = Math.acos(dotProd(a,b)/(mag(a)*mag(b)));
+
+			if (th < th1+th2){
+				var comm = g.append("path")
+   							.datum({type: "LineString", coordinates: [[c[0]+6,c[1]-2], [d[0]+6,d[1]-2]]})	
+                            .attr("class", "link")
+							.attr("id", "link")
+                            .attr("d", path);
+			} else {
+			}
+		};
+		
+		// Comm between satellite and ground station
+		function gsCommLink(a,b,c,ang){
+			// a: Ground station [longitude, latitude] [deg]
+			// b: Satellite [longitude, latitude] [deg]
+			// c: Satellite [x,y,z] [km]
+			// ang: Ground station coverage angle [deg]
+			
+			// Convert Ground station location //
+			// Calculate z
+			var gs_z = rEarth*Math.sin(a[1]*radians);
+			
+			// Project ground station location on xy plane
+			var rp = rEarth*Math.cos(a[1]*radians);
+			
+			var gs_y = rp*Math.sin(a[0]*radians);
+			var gs_x = rp*Math.cos(a[0]*radians);
+			
+			var gs_state = [gs_x,gs_y,gs_z];
+			// End convert gound station location //
+			
+			// Vector from ground station to satellite
+			var r_gs2sat = [c[0]-gs_state[0], c[1]-gs_state[1], c[2]-gs_state[2]];
+			
+			// Angle ground station to satellite
+			var th = Math.acos(dotProd(r_gs2sat,gs_state)/(mag(r_gs2sat)*mag(gs_state)));
+
+			if (th*degrees < ang) {
+				var comm = g.append("path")
+   							.datum({type: "LineString", coordinates: [[a[0],a[1]], [b[0]+6,b[1]-2]]})	
+                            .attr("class", "gslink")
+							.attr("id", "link")
+                            .attr("d", path);				
+			}
+		};
+		
+		// Calculate a dot product
+		function dotProd(a,b){
+			return a[0]*b[0] + a[1]*b[1] + a[2]*b[2];
+		}
+		
+		// Calculate a magnitude
+		function mag(a){
+			return Math.sqrt(a[0]*a[0] + a[1]*a[1] + a[2]*a[2]);
+		}
 		
         var zoom = d3.zoom()
 					.scaleExtent([1,10])
