@@ -3,6 +3,7 @@ $(function(){
 	QUINDAR.usermail = document.getElementById('usermail').innerHTML;
 	QUINDAR.grid = {};
 	QUINDAR.gcount = 0;
+	QUINDAR.lcount = 0;
     QUINDAR.counter = 0;
     QUINDAR.icount = 0;
 
@@ -61,8 +62,9 @@ $(function(){
 			    <div class="panel-heading">\
                   <button type="button" class="homebutton" id="homebutton'+QUINDAR.gcount+'">Home</button>\
                   <input type="button" class="timebtn" value="Show Timezones" id="timebtn'+QUINDAR.gcount+'">\
-			      <button type="button" class="glyphicon glyphicon-cog pull-right" id="settings" data-toggle="modal" data-target="#myModal'+QUINDAR.gcount+'"></button>\
-                  <button type="button" class="trash glyphicon glyphicon-cog glyphicon-trash" aria-label="Close" data-dismiss="modal" id="removediv'+QUINDAR.gcount+'"></button>\
+			      <button type="button" class="settingsbtn glyphicon glyphicon-cog" data-toggle="modal" data-target="#myModal'+QUINDAR.gcount+'"></button>\
+                  <button type="button" class="savebtn glyphicon glyphicon-cog glyphicon-save"></button>\
+				  <button type="button" class="trash glyphicon glyphicon-cog glyphicon-trash" aria-label="Close" data-dismiss="modal" id="removediv'+QUINDAR.gcount+'"></button>\
                 </div>\
 	       	    <div class="svg-container" id="divplot'+QUINDAR.gcount+'"></div>\
 			  <div/>\
@@ -650,6 +652,80 @@ $(function(){
    		});
    	}.bind(this);
 
+	QUINDAR.addLineWidget = function(){
+		QUINDAR.lcount++;
+    	$('.grid-stack').data('gridstack').addWidget($(
+			'<div id="lpdiv'+QUINDAR.lcount+'">\
+			  <div class="panel panel-primary grid-stack-item-content" style="margin-bottom:0;">\
+			    <div class="panel-heading">\
+				  <button type="button" class="thbtn glyphicon glyphicon-th"></button>\
+				  <span class="lineplot">Line Plot</span> \
+			      <button type="button" class="settingsbtn glyphicon glyphicon-cog" data-toggle="modal" data-target="#myModal'+QUINDAR.lcount+'"></button>\
+				  <button type="button" class="savebtn glyphicon glyphicon-cog glyphicon-save"></button>\
+                  <button type="button" class="trash glyphicon glyphicon-cog glyphicon-trash" aria-label="Close" id="removelp'+QUINDAR.lcount+'"></button>\
+                </div>\
+				<div class="svg-container" id="divlp'+QUINDAR.lcount+'"></div>\
+				<button type="button" class="homeicon fa fa-home" id="homelp'+QUINDAR.lcount+'"></button>\
+				<p class="liveDisp" id="liveDisp'+QUINDAR.lcount+'">LIVE</p>\
+			  <div/>\
+			</div>'),0,0,10,6);
+    	
+		// Width of grid
+		var widthG = $('.grid-stack').data('gridstack').cellWidth();
+		$('.grid-stack').data('gridstack').cellHeight(widthG/1.5);
+		
+		var margin = {top: 20, right: 10, bottom: 20, left: 10};
+		
+		var svg = d3.select("#divlp"+QUINDAR.lcount).append("svg")
+					.attr("preserveAspectRatio", "xMinYMin meet")
+                    .attr("viewBox", "0 0 1000 500")
+                    .classed("svg-content", true),
+			g = svg.append("g")
+					.attr("id",'g'+QUINDAR.lcount);
+
+
+
+		var width = document.getElementById("divlp"+QUINDAR.lcount).offsetWidth - margin.left - margin.right;
+		var height = document.getElementById("divlp"+QUINDAR.lcount).offsetHeight - margin.top - margin.bottom;
+		
+		var x = d3.scaleLinear()
+		.domain([0, 1])
+		.range([0, width]);
+
+		var y = d3.scaleLinear()
+		.domain([0, 1])
+		.range([height-20, 0]);
+		
+
+
+		g.append("g")
+		.attr("transform", "translate(50,20)")
+		.attr("class", "axis")
+		.call(d3.axisLeft(y).tickSize(-width));
+
+		g.append("g")
+		.attr("transform", "translate(50,"+ height +")")
+		.attr("class", "axis")
+		.call(d3.axisBottom(x).tickSize(-height+20));	
+		
+		g.selectAll("path")
+		.attr("stroke","none");
+		
+		g.selectAll("line")
+		.attr("opacity", 0.1);
+		
+		$('#homelp'+QUINDAR.lcount).click(function(){
+			idnum = this.id.match(/\d+/)[0];
+			var elem = document.getElementById("liveDisp"+idnum);
+			elem.style.color = "#ff0000";			
+		});
+		
+		$(document).on('click', '#removelp'+QUINDAR.lcount+'', function(e) {
+			idnum = this.id.match(/\d+/)[0];
+    		$('#lpdiv'+idnum).remove();
+    	});
+    }.bind(this);
+	
     QUINDAR.addTableWidget = function(){
         var rows='';
         QUINDAR.counter++;
@@ -869,6 +945,7 @@ $(function(){
     QUINDAR.start();
     $('#addwidget').click(QUINDAR.add);
     $('#addGround').click(QUINDAR.addGroundWidget);
+	$('#addLine').click(QUINDAR.addLineWidget);
     $('#addtablewidget').click(QUINDAR.addTableWidget);
     $('#clearLayout').click(QUINDAR.clearGrid);
     $('#searchId').click(QUINDAR.addIdTable);

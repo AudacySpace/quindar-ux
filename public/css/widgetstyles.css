@@ -113,14 +113,79 @@
 }
 .trash{
   position:absolute;
-  right:30px;
+  right:5px;
   top:5px;
-  font-size:19px;
+  font-size:15px;
   color: #07D1EA;
   background-color: #000000;
-    border-color: #000000;
-    border: 0px;
-    padding: 1px 4px;
+  border-color: #000000;
+  border: 0px;
+  padding: 4px 4px;
+}
+.settingsbtn{
+  position:absolute;
+  right:55px;
+  top:5px;
+  font-size:15px;
+  color: #07D1EA;
+  background-color: #000000;
+  border-color: #000000;
+  border: 0px;
+  padding: 4px 4px;
+}
+.savebtn{
+  position:absolute;
+  right:30px;
+  top:5px;
+  font-size:15px;
+  color: #07D1EA;
+  background-color: #000000;
+  border-color: #000000;
+  border: 0px;
+  padding: 4px 4px;
+}
+.thbtn{
+  position:absolute;
+  left:5px;
+  top:5px;
+  font-size:15px;
+  color: #07D1EA;
+  background-color: #000000;
+  border-color: #000000;
+  border: 0px;
+  padding: 2px 4px;
+}
+.homeicon{
+  position:absolute;
+  right:45px;
+  top:55px;
+  font-size:15px;
+  color: #8B8C94;
+  background-color: #CFCFD5;
+  border-color: #CFCFD5;
+  border: 0px;
+  padding: 2px 4px;	
+}
+.liveDisp{
+  position:absolute;
+  font-family: "Open Sans", Sans-serif;	
+  font-weight: bold;
+  right:75px;
+  top:55px;
+  font-size:12px;
+  color: #8B8C94;
+  border-style: solid;
+  border-width: 2px;
+  padding: 4px 4px;	
+}
+.lineplot {
+  display: inline-block;
+  font-family: "Open Sans", Sans-serif;	
+  color: #F1F1F5;
+  position: absolute;
+  padding:5px;
+  top: 7px;
+  left: 30px;
 }
 .svg-container {
   display: inline-block;

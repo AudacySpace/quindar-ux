@@ -49,14 +49,6 @@ button.glyphicon.glyphicon-cog.pull-right.settings:active {
   box-shadow: 0 2px #ccc;
   transform: translateY(1px);
 }
-button.glyphicon.glyphicon-cog.pull-right#settings:focus{
-  outline:0;
-}
-button.glyphicon.glyphicon-cog.pull-right#settings:active {
-  background-color: #000000;
-  box-shadow: 0 2px #ccc;
-  transform: translateY(1px);
-}
 #qwidgetMenu{
   list-style-type: none;
   padding-left:0px;
@@ -90,7 +82,7 @@ span#user-admin,i#server-admin,i#docs{
   top: 0px;
   right: 8px;
 }
-span#qwidgetPlus,span#g-track,i#t-table,span#s-table,span#save-layout,span#load-layout,span#clear-layout{
+span#qwidgetPlus,span#g-track,i#l-plot,i#t-table,span#s-table,span#save-layout,span#load-layout,span#clear-layout{
   position: relative;
   top: 0px;
   right: 5px;
@@ -322,7 +314,7 @@ a#username.dropdown-toggle {
 .sidenav a:hover, .offcanvas a:focus {
   color: #f1f1f1;
 }
-a#quindar-widgets:hover,a#addQwidget:hover,a#addGround:hover,
+a#quindar-widgets:hover,a#addQwidget:hover,a#addGround:hover,a#addLine:hover,
 a#addtablewidget:hover,a#searchId:hover,a#saveLayout:hover,
 a#loadLayout:hover,a#clearLayout:hover,a#user:hover,a#server:hover,a#document:hover{
     background-color: #464954;
@@ -372,7 +364,7 @@ a#left-menu-item1:hover,a#left-menu-item2:hover,a#left-menu-item3:hover,a#left-m
 a#saveLayout, a#loadLayout, a#clearLayout, a#addQwidget{
   font-size:14px;
 }
-a#addtablewidget,a#addGround{
+a#addtablewidget,a#addGround,a#addLine{
   font-size:12px;
   border-top:1px solid #242833;
   border-bottom:1px solid #242833; 
