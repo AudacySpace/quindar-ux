@@ -1,3 +1,4 @@
+<!--Left Side Nav -->
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn pull-right" id="closebtn" onclick="closeLeftNav()">&times;</a>
     <form class="navbar-form">
@@ -10,5 +11,5 @@
             </div>
         </div>
     </form>
-    <a ng-repeat="item in menuitems" class="leftmenu" href="#">{{ item }}</a>
+    <a ng-repeat="item in $ctrl.menuitems" class="leftmenu" href="#">{{ item }}</a>
 </div>

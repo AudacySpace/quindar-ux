@@ -17,103 +17,20 @@
   <link href="/css/positions.css" rel="stylesheet"> 
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.js"></script>
-  <script src="https://code.angularjs.org/1.2.15/angular-route.min.js"></script>
-
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+  
+  <script src="/app.js"></script>
   <script src="/controllers/MainController.js"></script>
-
+  <script src="/components/components.js"></script>
+  <script src="/services/user.js"></script>
+  <script>
+  var username = "<%= user.google.name %>";
+  var usermail = "<%= user.google.email %>";
+  </script>
  </head>
 
-<body ng-app="app" onload="startTime()">
-  <div id="wrapper" class="toggled" ng-controller="MainController" ng-init=start()>
-    <!--Left side nav bar -->
-
-    <div ng-include="" src="'./views/partials/sidebar.ejs'" ng-controller="LeftSidebarCtrl" ></div>
-    <!-- End of Left Side Nav -->
-
-    <!-- Main Dashboard Navigation-->
-    <div id="main" >
-      <nav class="navbar navbar-default" id="navbar">
-        <div class="container-fluid" id="top-header">
-          <div class="navbar-header">
-           <a class="navbar-brand" href="#" id="QRegular" onclick="openLeftNav()"><img id="main-img" src="/media/logos/quindar_regular.svg" alt="Quindar"/></a>
-           <a class="navbar-brand" href="#" id="QBlack" onclick="openLeftNav()"><img id="main-img" src="/media/logos/Quindar_Icon_Black.svg" alt="Quindar"/></a>
-         </div>
-         <ul class="nav navbar-nav">
-          <li class="statusicons"><ul class="nav navbar-nav status-bar" id="s-icons">
-            <li id="icon-05"><a href="#" class="status-icon"><img id="i5" src="/media/icons/status_icons-05.png" alt="Quindar"/></a></li>
-            <li id="icon-06"><a href="#" class="status-icon"><img id="i6" src="/media/icons/status_icons-06.png" alt="Quindar"/></a></li>
-            <li id="icon-07"><a href="#" class="status-icon"><img id="i7" src="/media/icons/status_icons-07.png" alt="Quindar"/></a></li>
-            <li id="icon-08"><a href="#" class="status-icon"><img id="i8" src="/media/icons/status_icons-08.png" alt="Quindar"/></a></li>
-          </ul></li>
-          <li><ul class="nav navbar-nav time">
-            <li class="clock" id="txt"></li>
-          </ul></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li>
-            <a class="dropdown-toggle"  id="username" data-toggle="dropdown" href="#"><%= user.google.name %></a>
-            <ul class="dropdown-menu logout-bar">
-              <li ><a href="/logout">Logout</a></li>
-            </ul>
-          </li>
-          <li id="cfgmenu"><a href="#" id="add-widget" onclick="openRightNav()"> 
-            <span class="fa fa-bars" aria-hidden="true"> </span>
-          </a></li>
-        </ul>
-      </div>
-    </nav>
-
-    <!--End Main Dashboard Navigation-->
-
-    <!--Main Dashboard for Widgets -->
-    <div class="container">
-     <!--  <h5 id="dashboard">Dashboard</h5> -->
-      <h6 id="usermail" ng-model="usermail"><%=user.google.email %></h6>
-      <div class="grid-stack" id="container">
-      </div>
-    </div>
-
-    <!-- Dashboard Footer -->
-    <footer class="footer">
-      <div class="container">
-        <p class="text-muted"></p>
-      </div>
-    </footer>
-  </div>
-
-  <!--End Dashboard Footer -->
-
-  <!--Right Side Nav -->
-  <div id="myrightSidenav" class="rightsidenav">
-    <h3 id="user-name">Hi <%=user.google.name %></h3>
-    <a href="javascript:void(0)" class="rclosebtn pull-right rmenu" id="rclosebtn" onclick="closeRightNav()">&times;</a>
-    <a href="#" id="configmenu" class="rmenu"> Configuration Menu</a>
-    <a href="#" onclick = "openQwidgetMenu()" id="quindar-widgets" class="rmenu"><span class="glyphicon glyphicon-menu-down pull-right" id="qwidget-arrow"></span><span class="glyphicon glyphicon-modal-window" id="qwidgets"></span>Qwidgets
-    </a>
-      <ul id="qwidgetMenu" style="display:none;">
-        <li><a id="addQwidget" href="#" onclick = "openQwidgetList()"><span class="glyphicon glyphicon-plus" id="qwidgetPlus"></span>Add Qwidget<span class="glyphicon glyphicon-menu-down pull-right" id="qwidget-add"></a> 
-        </li>
-          <ul id="widgettops" style="display:none;">   
-            <li><a id="addGround" href="#"><span class="glyphicon glyphicon-globe" id="g-track"></span>Ground Track</a>
-            </li>
-            <li><a id="addtablewidget" href="#"><i class="fa fa-table" aria-hidden="true" id="t-table"></i>Telemetry Table</a>
-            </li>
-            <li><a id="searchId" href="#"><span class="glyphicon glyphicon-search" id="s-table"></span>Search By Id</a>
-            </li>
-          </ul>
-        <li><a id="saveLayout" href="#"><span class="glyphicon glyphicon-save-file" id="save-layout"></span>Save Layout</a></li>
-        <li><a id="loadLayout" href="#"><span class="glyphicon glyphicon-open-file" id="load-layout"></span>Load Layout<span class="glyphicon glyphicon-menu-down pull-right" id="layout-arrow"></span></a></li>
-        <li><a id="clearLayout" href="#"><span class="glyphicon glyphicon-trash" id="clear-layout"></span>Clear</a></li>
-      </ul>
-  
-    <a href="#" id="user" class="rmenu"><span class="glyphicon glyphicon-menu-down pull-right" id="user-admin-arrow"></span><span class="glyphicon glyphicon-user" id="user-admin"></span>User Administration</a>
-    <a href="#" id="server" class="rmenu"><span class="glyphicon glyphicon-menu-down pull-right" id="server-admin-arrow"></span><i class="fa fa-server" aria-hidden="true" id="server-admin"></i></span>Server Administration</a>
-    <a href="#" id="document" class="rmenu"><span class="glyphicon glyphicon-menu-down pull-right" id="doc-arrow"></span><i class="fa fa-file-text-o" aria-hidden="true" id="docs"></i>Documentation</a>
-    <a href="/logout" id="mini-logout" class="rmenu">Logout</a>
-  </div>
-  <!--End of Right Side Nav -->
-</div>
+<body ng-app="app">
+  <dashboard-container id="wrapper" class="toggled"></dashboard-container>
 
   <!-- jQuery -->
   <script src="/scripts/jquery.js"></script>
@@ -125,7 +42,7 @@
   <!-- gridstack library -->
   <script src="/scripts/dist/gridstack.all.js"></script>
   <!-- UTC Clock -->
-  <script src="/scripts/clock.js"></script>
+
   <!-- Side Navigation -->
   <script src="/scripts/side-navigation.js"></script>
   <!-- D3 -->

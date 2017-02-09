@@ -1,6 +1,6 @@
 var QUINDAR = window.QUINDAR || {};
 $(function(){
-	QUINDAR.usermail = document.getElementById('usermail').innerHTML;
+	//QUINDAR.usermail = document.getElementById('usermail').innerHTML;
 	QUINDAR.grid = {};
 	QUINDAR.gcount = 0;
 	QUINDAR.lcount = 0;
