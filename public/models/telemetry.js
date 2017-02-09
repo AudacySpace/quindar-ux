@@ -146,6 +146,50 @@ var telemetrySchema = mongoose.Schema({
         warn_high: String,
         alarm_high: String,
         units: String
+    },
+    q1 : {
+        notes: String,
+        category: String,
+        name: String,
+        alarm_low: Number,
+        warn_low: Number,
+        value: Number,
+        warn_high: Number,
+        alarm_high: Number,
+        units: String
+    },
+    q2 : {
+        notes: String,
+        category: String,
+        name: String,
+        alarm_low: Number,
+        warn_low: Number,
+        value: Number,
+        warn_high: Number,
+        alarm_high: Number,
+        units: String
+    },
+    q3 : {
+        notes: String,
+        category: String,
+        name: String,
+        alarm_low: Number,
+        warn_low: Number,
+        value: Number,
+        warn_high: Number,
+        alarm_high: Number,
+        units: String
+    },
+    qc : {
+        notes: String,
+        category: String,
+        name: String,
+        alarm_low: Number,
+        warn_low: Number,
+        value: Number,
+        warn_high: Number,
+        alarm_high: Number,
+        units: String
     }
 
 }, { collection: 'telemetry' });
