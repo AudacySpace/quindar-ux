@@ -118,7 +118,7 @@ button#settings.glyphicon.glyphicon-cog{
 }
 button.settings.glyphicon.glyphicon-cog{
   position:absolute;
-  right:4px;
+  right:50px;
   top:4px;
   font-size:19px;
   color: #07D1EA;
@@ -165,6 +165,8 @@ button#data-menu{
 }
 .navbar-form {
   margin-top: 0px;
+/*  padding-bottom:5px;
+  border-bottom:3px solid #07D1EA;*/
 }
 .navbar-brand>img {
   height: 100%;
@@ -311,6 +313,9 @@ button#data-menu{
   display: block;
   transition: 0.3s
 }
+/*#rightHeader{
+  border-bottom:3px solid #07D1EA;
+}*/
 a#username.dropdown-toggle {
   font-size:18px;
   color:black;
@@ -341,14 +346,14 @@ a#left-menu-item1:hover,a#left-menu-item2:hover,a#left-menu-item3:hover,a#left-m
 }
 .sidenav .closebtn {
   position: absolute;
-  top: 0;
+  top: 0px;
   right: 0px;
   font-size: 18px;
   margin-left: 50px;
 }
 .rightsidenav .rclosebtn {
   position: absolute;
-  top: 0;
+  top: 0px;
   right: 0px;
   font-size: 18px;
   margin-left: 50px;

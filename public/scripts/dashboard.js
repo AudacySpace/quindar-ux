@@ -5,6 +5,8 @@ $(function(){
 	QUINDAR.gcount = 0;
     QUINDAR.counter = 0;
     QUINDAR.icount = 0;
+    QUINDAR.rcount = 0;
+    QUINDAR.dcount = 0;
 
 
 	QUINDAR.start = function() {
