@@ -6,6 +6,8 @@ $(function(){
 	QUINDAR.lcount = 0;
     QUINDAR.counter = 0;
     QUINDAR.icount = 0;
+    QUINDAR.rcount = 0;
+    QUINDAR.dcount = 0;
 
 
 	QUINDAR.start = function() {
@@ -734,7 +736,7 @@ $(function(){
         for(var i=2;i<size;i++){
             rows += '<tr><th id="categoryID'+i+QUINDAR.counter+'"></th><td id="ID'+i+QUINDAR.counter+'"></td><td id="name'+i+QUINDAR.counter+'"></td><td id="alow'+i+QUINDAR.counter+'"></td><td id="wlow'+i+QUINDAR.counter+'"></td><td id="value'+i+QUINDAR.counter+'"></td><td id="whigh'+i+QUINDAR.counter+'"></td><td id="ahigh'+i+QUINDAR.counter+'"></td><td id="units'+i+QUINDAR.counter+'"></td><td id="notes'+i+QUINDAR.counter+'"></td></tr></tbody>';
         }
-        griddata = '<div data-gs-min-width="11" data-gs-min-height="9" data-gs-max-height="9">'
+        griddata = '<div data-gs-min-width="11" data-gs-min-height="10" data-gs-max-height="10">'
                         +'<div class="panel panel-primary grid-stack-item-content" id="tabletextqwidget'+QUINDAR.counter+'">'
                             +'<div class="panel-heading">'
                                 +'<button type="button" class="glyphicon glyphicon-cog pull-right settings" onclick="openSettings('+QUINDAR.counter+')">'
