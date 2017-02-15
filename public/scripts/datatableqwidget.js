@@ -11,7 +11,7 @@ var timerArray = [];
                           +'<h5 class="datatable-title">Data Table</h5>'
                           +'<button type="button" class="glyphicon glyphicon-cog pull-right settings" onclick="openDataTableSettings('+QUINDAR.dcount+')">'
                           +'</button>'
-                          +'<button type="button" class="glyphicon glyphicon-download-alt pull-right save-data-table">'
+                          +'<button type="button" class="glyphicon glyphicon-download-alt pull-right save-data-table" onclick="openDataTableSaveLoadOptions('+QUINDAR.dcount+')">'
                           +'</button>'
                           +'<button type="button" class="glyphicon glyphicon-trash pull-right delete-data-table" onclick="openDeleteTableOptions('+QUINDAR.dcount+')">'
                           +'</button>'
@@ -68,12 +68,12 @@ var timerArray = [];
                         +'<div class="checkbox-form row datatablesettings" style="display:none" id="data-table-settings-menu'+QUINDAR.dcount+'">'
                           +'<div class="col-md-1"></div>'
                           +'<div class="col-md-10 categorydrpdown">'
-                            +'<h4>Category Display</h4>'
+                            +'<h4>Category Display:</h4>'
                             +'<div class="dropdown">'
-                              +'<button type="button" name="lpbtn'+QUINDAR.dcount+'" class="btn dropdown-toggle cdrpdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
+                              +'<button type="button" name="dtqbtn'+QUINDAR.dcount+'" class="btn dropdown-toggle cdrpdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
                                 +'<span class="pull-left categoryname">Category</span> <span class="caret pull-right caretcategory"></span>'
                               +'</button>'
-                              +'<ul class="dropdown-menu dtdropdown" name="lpdropdown'+QUINDAR.dcount+'">'
+                              +'<ul class="dropdown-menu dtdropdown" name="dtqdropdown'+QUINDAR.dcount+'">'
                                 +'<li class="checkbox dtcheckbox"><label><input style="margin-top: -2px" type="checkbox" value="" name="id" checked="checked">Id</label></li>'
                                 +'<li class="checkbox dtcheckbox"><label><input style="margin-top: -2px" type="checkbox" value="" name="name" checked="checked">Name</label></li>'
                                 +'<li class="checkbox dtcheckbox"><label><input style="margin-top: -2px" type="checkbox" value="" name="alarm_low" checked="checked">Alarm Low</label></li>'
@@ -100,6 +100,49 @@ var timerArray = [];
                             +'<button type="button" class="btn btn-default btn-info dtbtns" onclick="closeDelDataTableOptions('+QUINDAR.dcount+')">NO</button>'
                           +'</div>'
                           +'<div class="col-md-1"></div>'
+                        +'</div>'
+                        +'<div class="checkbox-form saveloaddatatable" style="display:none" id="save-load-data-table-options'+QUINDAR.dcount+'">'
+                          +'<div class="row slmenurow1">'
+                            +'<div class="col-md-1"></div>'
+                            +'<div class="col-md-3">'
+                              +'<h4>Save Widget:</h4>'
+                            +'</div>'
+                            +'<div class="col-md-1"></div>'
+                            +'<div class="col-md-3">'
+                              +'<h4>Load Widget:</h4>'
+                            +'</div>'
+                            +'<div class="col-md-1"></div>'
+                          +'</div>'
+                          +'<div class="row slmenurow2">'
+                            +'<div class="col-md-1"></div>'
+                            +'<div class="col-md-2">'
+                              +'<input type="text" value="" id="DTwidgetName" placeholder="Enter Name" class="DTwidgetName"/>'
+                            +'</div>'
+                            +'<div class="col-md-1"></div>'
+                            +'<div class="col-md-2">'
+                              +'<div class="dropdown">'
+                                +'<button type="button" name="dtlbtn'+QUINDAR.dcount+'" class="btn dropdown-toggle dtldrpdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'
+                                +'<span class="pull-left categoryname">Data Table</span> <span class="caret pull-right caretcategory"></span>'
+                                +'</button>'
+                              // +'<ul class="dropdown-menu dtldropdown" name="dtldropdown'+QUINDAR.dcount+'">'
+                              // +'</ul>'
+                              +'</div>'
+                            +'</div>'
+                            +'<div class="col-md-1"></div>'
+                          +'</div>'
+                          +'<div class="row slmenurow3">'
+                            +'<div class="col-md-1"></div>'
+                            +'<div class="col-md-10">'
+                              +'<hr class="hline"/>'
+                            +'</div>'
+                          +'</div>'
+                          +'<div class="row slmenurow4">'
+                            +'<div class="col-md-1"></div>'
+                            +'<div class="col-md-10">'
+                              +'<button type="submit" class="btn btn-default btn-info dtbtns" onclick="saveWidget('+QUINDAR.dcount+')">SAVE</button>'
+                              +'<button type="button" class="btn btn-default btn-info dtbtns" onclick="closeSaveLoadOptions('+QUINDAR.dcount+')">CLOSE</button>'
+                            +'</div>'
+                          +'</div>'
                         +'</div>'
                       +'</div>'
                     +'</div>';
@@ -323,10 +366,12 @@ var timerArray = [];
     var sMenu = document.getElementById("data-table-settings-menu"+x);
     var dMenu = document.getElementById("del-data-table-options"+x);
     var table = document.getElementById("data-tables"+x);
+    var slMenu = document.getElementById("save-load-data-table-options"+x);
     
     sMenu.style.display = "none";
     table.style.display = "block";
     dMenu.style.display = "none";
+    slMenu.style.display = "none";
   }
 
   /*Function to Delete Data Table Widget*/
@@ -340,10 +385,25 @@ var timerArray = [];
     var sMenu = document.getElementById("data-table-settings-menu"+x);
     var dMenu = document.getElementById("del-data-table-options"+x);
     var table = document.getElementById("data-tables"+x);
+    var slMenu = document.getElementById("save-load-data-table-options"+x);
     
     sMenu.style.display = "none";
     table.style.display = "block";
     dMenu.style.display = "none";
+    slMenu.style.display = "none";
+  }
+
+  /*Function to Close Save Load Data Table Options*/
+  function closeSaveLoadOptions(x){
+    var sMenu = document.getElementById("data-table-settings-menu"+x);
+    var dMenu = document.getElementById("del-data-table-options"+x);
+    var table = document.getElementById("data-tables"+x);
+    var slMenu = document.getElementById("save-load-data-table-options"+x);
+    
+    sMenu.style.display = "none";
+    table.style.display = "block";
+    dMenu.style.display = "none";
+    slMenu.style.display = "none";
   }
 
 
@@ -389,16 +449,19 @@ var timerArray = [];
     var sMenu = document.getElementById("data-table-settings-menu"+x);
     var dMenu = document.getElementById("del-data-table-options"+x);
     var table = document.getElementById("data-tables"+x);
+    var slMenu = document.getElementById("save-load-data-table-options"+x);
 
     if(sMenu.style.display === "none"){
       table.style.display = "none";
       sMenu.style.display = "block";
       dMenu.style.display = "none";
+      slMenu.style.display = "none";
     }
     else{
      sMenu.style.display = "none";
      table.style.display = "block";
      dMenu.style.display = "none";
+     slMenu.style.display = "none";
     }
   }
 
@@ -407,19 +470,42 @@ var timerArray = [];
     var sMenu = document.getElementById("data-table-settings-menu"+x);
     var dMenu = document.getElementById("del-data-table-options"+x);
     var table = document.getElementById("data-tables"+x);
+    var slMenu = document.getElementById("save-load-data-table-options"+x);
 
     if(dMenu.style.display === "none"){
       table.style.display = "none";
       dMenu.style.display = "block";
       sMenu.style.display = "none";
+      slMenu.style.display = "none";
     }
     else{
      dMenu.style.display = "none";
      table.style.display = "block";
      sMenu.style.display = "none";
+     slMenu.style.display = "none";
     }
   }
 
+ /*Function to Open Save/Load Data Table Options*/
+  function openDataTableSaveLoadOptions(x){
+    var sMenu = document.getElementById("data-table-settings-menu"+x);
+    var dMenu = document.getElementById("del-data-table-options"+x);
+    var slMenu = document.getElementById("save-load-data-table-options"+x);
+    var table = document.getElementById("data-tables"+x);
+
+    if(slMenu.style.display === "none"){
+      table.style.display = "none";
+      slMenu.style.display = "block";
+      sMenu.style.display = "none";
+      dMenu.style.display = "none";
+    }
+    else{
+     dMenu.style.display = "none";
+     table.style.display = "block";
+     sMenu.style.display = "none";
+     slMenu.style.display = "none";
+    }
+  }
 
 
 

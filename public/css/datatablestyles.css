@@ -205,6 +205,12 @@ div.deldatatable{
   margin:0px;
   color:#fff;
 }
+div.saveloaddatatable{
+  background-color:#242833;
+  height:100%;
+  margin:0px;
+  color:#fff;
+}
 div.categorydrpdown{
   margin-top:20px;
   margin-bottom:20px;
@@ -219,6 +225,16 @@ button.cdrpdown{
   border-radius:0px;
   width:23.3%;
   overflow:hidden;
+}
+
+button.dtldrpdown{
+ /* font-family: "Open Sans", Sans-serif;  */
+  background-color: #fff;
+  color:#000;
+  border-radius:0px;
+  width:130%;
+  overflow:hidden;
+  margin-left:81px;
 }
 span.categoryname{
   margin-right:20px;
@@ -247,10 +263,24 @@ li.dtcheckbox {
  height: 10px;
 }
 button.dtbtns{
-  margin-right:10px;
+  margin-right:15px;
   border-radius:0px;
   width:15%;
+  overflow:hidden;
 }
 .hline{
   margin-top:50px;
+}
+div.slmenurow1{
+  padding-top:40px;
+  overflow:hidden;
+}
+div.slmenurow2{
+  padding-top:10px;
+  overflow:hidden;
+}
+input.DTwidgetName{
+  padding:6px 0px;
+  color:#000;
+  width:130%;
 }
