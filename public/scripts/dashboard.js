@@ -662,21 +662,171 @@ $(function(){
 			    <div class="panel-heading">\
 				  <button type="button" class="thbtn glyphicon glyphicon-th"></button>\
 				  <span class="lineplot">Line Plot</span> \
-			      <button type="button" class="settingsbtn glyphicon glyphicon-cog" data-toggle="modal" data-target="#myModal'+QUINDAR.lcount+'"></button>\
-				  <button type="button" class="savebtn glyphicon glyphicon-cog glyphicon-save"></button>\
+			      <button type="button" class="settingsbtn glyphicon glyphicon-cog" id="lpModal'+QUINDAR.lcount+'"></button>\
+				  <button type="button" class="savebtn glyphicon glyphicon-cog glyphicon-save" id="lpModalSL'+QUINDAR.lcount+'"></button>\
                   <button type="button" class="trash glyphicon glyphicon-cog glyphicon-trash" aria-label="Close" id="removelp'+QUINDAR.lcount+'"></button>\
                 </div>\
-				<div class="svg-container" id="divlp'+QUINDAR.lcount+'"></div>\
-				<button type="button" class="homeicon fa fa-home" id="homelp'+QUINDAR.lcount+'"></button>\
-				<p class="liveDisp" id="liveDisp'+QUINDAR.lcount+'">LIVE</p>\
-			  <div/>\
-			</div>'),0,0,10,6);
+				<div id="lpmain'+QUINDAR.lcount+'">\
+				  <div class="svg-container" id="divlp'+QUINDAR.lcount+'"></div>\
+				  <button type="button" class="homeicon fa fa-home" id="homelp'+QUINDAR.lcount+'"></button>\
+				  <p class="liveDisp" id="liveDisp'+QUINDAR.lcount+'">LIVE</p>\
+				</div>\
+				<div class="svg-container settingsdiv" id="lpsettings'+QUINDAR.lcount+'">\
+				  <div class="row" id="lpmargin'+QUINDAR.lcount+'"></div>\
+				  <div class="row" id="lplabel'+QUINDAR.lcount+'">\
+				    <div class="col-md-1 " id="lpcol1'+QUINDAR.lcount+'"></div>\
+					<div class="col-md-3 ">\
+					  <p class="settingslabel">Vehicle:</p>\
+					</div>\
+					<div class="col-md-3 ">\
+					  <p class="settingslabel">Livestream:</p>\
+					</div>\
+					<div class="col-md-5 ">\
+					  <p class="settingslabel">Custom Range:</p>\
+					</div>\
+				  </div>\
+				  <div class="row" id="lpbtn'+QUINDAR.lcount+'">\
+				    <div class="col-md-1 "></div>\
+					<div class="col-md-2 ">\
+					  <div class="dropdown">\
+	                    <button type="button" name="lpbtn'+QUINDAR.lcount+'" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\
+						  <span class="pull-left">Vehicl ID</span> <span class="caret pull-right"></span></button>\
+					    <ul class="dropdown-menu qdropdown" name="lpdropdown'+QUINDAR.lcount+'">\
+					      <li><a class="dropdown-item qmenu" href="#">Audacy1</a></li>\
+                          <li><a class="dropdown-item qmenu" href="#">Audacy2</a></li>\
+                          <li><a class="dropdown-item qmenu" href="#">Audacy3</a></li>\
+                        </ul>\
+					  </div>\
+					  <br><br><br>\
+					  <div class="dropdown">\
+					    <button type="button" name="lpbtn'+QUINDAR.lcount+'" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\
+						  <span class="pull-left">Parameter</span> <span class="caret pull-right"></span></button>\
+					  	<ul class="dropdown-menu qdropdown" name="lpdropdown'+QUINDAR.lcount+'">\
+					      <li class="checkbox qcheckbox"><label><input style="margin-top: -2px" type="checkbox" value="">x-position</label></li>\
+                          <li class="checkbox qcheckbox"><label><input style="margin-top: -2px" type="checkbox" value="">y-position</label></li>\
+                          <li class="checkbox qcheckbox"><label><input style="margin-top: -2px" type="checkbox" value="">z-position</label></li>\
+                        </ul>\
+					  </div>\
+					</div>\
+					<div class="col-md-1 "></div>\
+					<div class="col-md-2 ">\
+					   <button type="button" name="lpbtn'+QUINDAR.lcount+'" class="btn" aria-haspopup="true" aria-expanded="false">\
+					     <span class="pull-left">PLAY</span> <span class="fa fa-play pull-right" style="top:50%"></span></button>\
+					   <br><br><br><br>\
+					   <button type="button" name="lpbtn'+QUINDAR.lcount+'" class="btn" aria-haspopup="true" aria-expanded="false">\
+					     <span class="pull-left">PAUSE</span> <span class="fa fa-pause pull-right" ></span></button>\
+					</div>\
+					<div class="col-md-1 "></div>\
+					<div class="col-md-2 ">\
+					  <div class="form-group">\
+					    <div class="input-group date" id="datetimestart'+QUINDAR.lcount+'" name="lpbtn'+QUINDAR.lcount+'">\
+                          <input type="text" class="form-control" name="caldispstart'+QUINDAR.lcount+'">\
+                          <span class="input-group-addon" name="calbtn'+QUINDAR.lcount+'">\
+                            <span class="glyphicon glyphicon-time"></span>\
+                          </span>\
+                        </div>\
+					    <br><br><br>\
+                        <div class="input-group date" id="datetimeend'+QUINDAR.lcount+'" name="lpbtn'+QUINDAR.lcount+'">\
+                          <input type="text" class="form-control" name="caldispend'+QUINDAR.lcount+'">\
+                          <span class="input-group-addon" name="calbtn'+QUINDAR.lcount+'">\
+                            <span class="glyphicon glyphicon-time"></span>\
+                          </span>\
+                        </div>\
+					  </div>\
+					</div>\
+				  </div>\
+				  <div class="row">\
+				    <div class="col-md-1 "></div>\
+					<div class="col-md-10 ">\
+					  <hr>\
+					</div>\
+				  </div>\
+				  <div class="row">\
+				    <div class="col-md-1 "></div>\
+				  	<div class="col-md-1 ">\
+					  <button type="button" name="qsavebtn'+QUINDAR.lcount+'" class="btn" aria-haspopup="true" aria-expanded="false">SAVE</button>\
+					</div>\
+					<div class="col-md-1">\
+					  <button type="button" name="closebtn'+QUINDAR.lcount+'" id="closebtn'+QUINDAR.lcount+'"class="btn" aria-haspopup="true" aria-expanded="false">CLOSE</button>\
+					</div>\
+				  </div>\
+				</div>\
+				<div class="svg-container settingsdiv" id="lpsaveload'+QUINDAR.lcount+'">\
+				  <div class="row" id="lpmarginSL'+QUINDAR.lcount+'"></div>\
+				  <div class="row" id="lplabelSL'+QUINDAR.lcount+'">\
+				    <div class="col-md-1 " id="lpcolSL'+QUINDAR.lcount+'"></div>\
+					<div class="col-md-3 ">\
+					  <p class="settingslabel">Save Widget:</p>\
+					</div>\
+					<div class="col-md-3 ">\
+					  <p class="settingslabel">Load Widget:</p>\
+					</div>\
+				  </div>\
+				  <div class="row" id="lpbtnSL'+QUINDAR.lcount+'">\
+				    <div class="col-md-1 "></div>\
+					<div class="col-md-2 ">\
+					  <input type="text" name="lpbtn'+QUINDAR.lcount+'">\
+				    </div>\
+					<div class="col-md-1 "></div>\
+					<div class="col-md-2 ">\
+					  <div class="dropdown">\
+	                    <button type="button" name="lpbtn'+QUINDAR.lcount+'" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\
+						    <span class="pull-left">File Name</span><span class="caret pull-right"></span></button>\
+					    <ul class="dropdown-menu qdropdown" name="lpdropdown'+QUINDAR.lcount+'">\
+					      <li><a class="dropdown-item qmenu" href="#">Audacy_Plot_01</a></li>\
+                          <li><a class="dropdown-item qmenu" href="#">Audacy_Plot_02</a></li>\
+                          <li><a class="dropdown-item qmenu" href="#">Audacy_Plot_03</a></li>\
+                        </ul>\
+					  </div>\
+					</div>\
+				  </div>\
+				  <div class="row">\
+				    <div class="col-md-1 "></div>\
+					<div class="col-md-10 ">\
+					  <hr>\
+					</div>\
+				  </div>\
+				  <div class="row">\
+				    <div class="col-md-1 "></div>\
+				  	<div class="col-md-1 ">\
+					  <button type="button" name="qsavebtn'+QUINDAR.lcount+'" class="btn" aria-haspopup="true" aria-expanded="false">SAVE</button>\
+					</div>\
+					<div class="col-md-1">\
+					  <button type="button" name="closebtn'+QUINDAR.lcount+'" id="closebtnSL'+QUINDAR.lcount+'" class="btn" aria-haspopup="true" aria-expanded="false">CLOSE</button>\
+					</div>\
+				  </div>\
+				</div>\
+				<div class="svg-container settingsdiv" id="lpdelete'+QUINDAR.lcount+'">\
+				  <div class="row" id="lpmarginD'+QUINDAR.lcount+'"></div>\
+				  <div class="row" id="lplabelD'+QUINDAR.lcount+'">\
+				    <div class="col-md-1 " id="lpcolD'+QUINDAR.lcount+'"></div>\
+					<div class="col-md-3 ">\
+					  <p class="settingslabel">Delete Widget?</p>\
+					</div>\
+				  </div>\
+				  <div class="row">\
+				    <div class="col-md-1 "></div>\
+					<div class="col-md-10 ">\
+					  <hr>\
+					</div>\
+				  </div>\
+				  <div class="row">\
+				    <div class="col-md-1 "></div>\
+				  	<div class="col-md-1 ">\
+					  <button type="button" name="qsavebtn'+QUINDAR.lcount+'" id="removeW'+QUINDAR.lcount+'" class="btn" aria-haspopup="true" aria-expanded="false">YES</button>\
+					</div>\
+					<div class="col-md-1">\
+					  <button type="button" name="closebtn'+QUINDAR.lcount+'" id="closebtnD'+QUINDAR.lcount+'" class="btn" aria-haspopup="true" aria-expanded="false">NO</button>\
+					</div>\
+				  </div>\
+				</div>\
+			</div>'),0,0,12,8);
     	
 		// Width of grid
 		var widthG = $('.grid-stack').data('gridstack').cellWidth();
 		$('.grid-stack').data('gridstack').cellHeight(widthG/1.5);
 		
-		var margin = {top: 20, right: 10, bottom: 20, left: 10};
+		var margin = {top: 40, right: 40, bottom: 40, left: 40};
 		
 		var svg = d3.select("#divlp"+QUINDAR.lcount).append("svg")
 					.attr("preserveAspectRatio", "xMinYMin meet")
@@ -685,25 +835,21 @@ $(function(){
 			g = svg.append("g")
 					.attr("id",'g'+QUINDAR.lcount);
 
-
-
 		var width = document.getElementById("divlp"+QUINDAR.lcount).offsetWidth - margin.left - margin.right;
 		var height = document.getElementById("divlp"+QUINDAR.lcount).offsetHeight - margin.top - margin.bottom;
 		
 		var x = d3.scaleLinear()
 		.domain([0, 1])
-		.range([0, width]);
+		.range([0, width-120]);
 
 		var y = d3.scaleLinear()
 		.domain([0, 1])
 		.range([height-20, 0]);
 		
-
-
 		g.append("g")
 		.attr("transform", "translate(50,20)")
 		.attr("class", "axis")
-		.call(d3.axisLeft(y).tickSize(-width));
+		.call(d3.axisLeft(y).tickSize(-width+120));
 
 		g.append("g")
 		.attr("transform", "translate(50,"+ height +")")
@@ -722,10 +868,233 @@ $(function(){
 			elem.style.color = "#ff0000";			
 		});
 		
+		$('#lpModal'+QUINDAR.lcount).click(function(){
+			idnum = this.id.match(/\d+/)[0];
+			$("#lpmain"+idnum).hide();
+
+			$("#lpsettings"+idnum).show();
+			
+			var elem = document.getElementById("lpmargin"+idnum);
+			elem.style.height = (height + margin.top + margin.bottom)/6 + "px";
+			
+			var elem = document.getElementById("lplabel"+idnum);
+			elem.style.height = (height + margin.top + margin.bottom)/12 + "px";
+
+			var elem = document.getElementById("lpbtn"+idnum);
+			elem.style.height = (height + margin.top + margin.bottom)/12*5 + "px";
+			
+			var elem = document.getElementsByName("lpbtn"+idnum);
+			for (i=0; i<elem.length; i++) {
+				elem[i].style.width = $("#lpcol1"+idnum).width()*2+30 + "px";
+				elem[i].style.height = "28px";
+				elem[i].style.fontSize = "12px";
+				elem[i].style.fontFamily = "Open Sans, Sans-serif";
+				elem[i].style.borderRadius = "0";
+			}
+
+			var elem = document.getElementsByName("caldispstart"+idnum);
+			for (i=0; i<elem.length; i++) {
+				elem[i].style.height = "28px";
+				elem[i].style.fontSize = "12px";
+				elem[i].style.fontFamily = "Open Sans, Sans-serif";
+				elem[i].style.borderRadius = "0"
+				elem[i].style.backgroundColor = "#F1F1F5"
+				elem[i].style.border = "0px"
+				elem[i].defaultValue = "Start Time"
+				elem[i].style.paddingRight = "0px";
+			}
+			
+			var elem = document.getElementsByName("caldispend"+idnum);
+			for (i=0; i<elem.length; i++) {
+				elem[i].style.height = "28px";
+				elem[i].style.fontSize = "12px";
+				elem[i].style.fontFamily = "Open Sans, Sans-serif";
+				elem[i].style.borderRadius = "0"
+				elem[i].style.backgroundColor = "#F1F1F5"
+				elem[i].style.border = "0px"
+				elem[i].defaultValue = "End Time"
+				elem[i].style.paddingRight = "0px";
+			}
+			
+			var elem = document.getElementsByName("calbtn"+idnum);
+			for (i=0; i<elem.length; i++) {
+				elem[i].style.height = "28px";
+				elem[i].style.fontSize = "12px";
+				elem[i].style.fontFamily = "Open Sans, Sans-serif";
+				elem[i].style.borderRadius = "0"
+				elem[i].style.backgroundColor = "#F1F1F5"
+				elem[i].style.border = "0px"
+			}
+			var elem = document.getElementsByName("lpdropdown"+idnum);
+			for (i=0; i<elem.length; i++) {
+				elem[i].style.width =  $("#lpcol1"+idnum).width()*2+30 + "px";
+			}
+			
+			var elem = document.getElementsByName("qsavebtn"+idnum);
+			for (i=0; i<elem.length; i++) {
+				elem[i].style.width = $("#lpcol1"+idnum).width() + "px";
+				elem[i].style.height = "28px";
+				elem[i].style.fontFamily = "Open Sans, Sans-serif";
+				elem[i].style.fontSize = "12px";
+				elem[i].style.paddingLeft = "0";
+				elem[i].style.paddingRight = "0";
+				elem[i].style.borderRadius = "0";
+				elem[i].style.backgroundColor = "#07D1EA";
+				elem[i].style.color = "#F1F1F5";
+			}
+			
+			var elem = document.getElementsByName("closebtn"+idnum);
+			for (i=0; i<elem.length; i++) {
+				elem[i].style.width = $("#lpcol1"+idnum).width() + "px";
+				elem[i].style.height = "28px";
+				elem[i].style.fontFamily = "Open Sans, Sans-serif";
+				elem[i].style.fontSize = "12px";
+				elem[i].style.paddingLeft = "0";
+				elem[i].style.paddingRight = "0";
+				elem[i].style.borderRadius = "0";
+				elem[i].style.backgroundColor = "#07D1EA";
+				elem[i].style.color = "#F1F1F5";
+			}
+		});
+		
+		$('#lpModalSL'+QUINDAR.lcount).click(function(){
+			idnum = this.id.match(/\d+/)[0];
+			$("#lpmain"+idnum).hide();
+			$("#lpsaveload"+idnum).show();
+
+			var elem = document.getElementById("lpmarginSL"+idnum);
+			elem.style.height = (height + margin.top + margin.bottom)/4 + "px";
+			
+			var elem = document.getElementById("lplabelSL"+idnum);
+			elem.style.height = (height + margin.top + margin.bottom)/12 + "px";	
+
+			var elem = document.getElementById("lpbtnSL"+idnum);
+			elem.style.height = (height + margin.top + margin.bottom)/12*4 + "px";
+			
+			var elem = document.getElementsByName("lpbtn"+idnum);
+			for (i=0; i<elem.length; i++) {
+				elem[i].style.width = $("#lpcolSL"+idnum).width()*2+30 + "px";
+				elem[i].style.height = "28px";
+				elem[i].style.fontSize = "12px";
+				elem[i].style.fontFamily = "Open Sans, Sans-serif";
+				elem[i].style.borderRadius = "0";
+			}	
+
+			var elem = document.getElementsByName("lpdropdown"+idnum);
+			for (i=0; i<elem.length; i++) {
+				elem[i].style.width = $("#lpcolSL"+idnum).width()*2+30 + "px";
+			}	
+			
+			var elem = document.getElementsByName("qsavebtn"+idnum);
+			for (i=0; i<elem.length; i++) {
+				elem[i].style.width = $("#lpcolSL"+idnum).width() + "px";
+				elem[i].style.height = "28px";
+				elem[i].style.fontFamily = "Open Sans, Sans-serif";
+				elem[i].style.fontSize = "12px";
+				elem[i].style.paddingLeft = "0";
+				elem[i].style.paddingRight = "0";
+				elem[i].style.borderRadius = "0";
+				elem[i].style.backgroundColor = "#07D1EA";
+				elem[i].style.color = "#F1F1F5";
+			}
+			
+			var elem = document.getElementsByName("closebtn"+idnum);
+			for (i=0; i<elem.length; i++) {
+				elem[i].style.width = $("#lpcolSL"+idnum).width() + "px";
+				elem[i].style.height = "28px";
+				elem[i].style.fontFamily = "Open Sans, Sans-serif";
+				elem[i].style.fontSize = "12px";
+				elem[i].style.paddingLeft = "0";
+				elem[i].style.paddingRight = "0";
+				elem[i].style.borderRadius = "0";
+				elem[i].style.backgroundColor = "#07D1EA";
+				elem[i].style.color = "#F1F1F5";
+			}			
+			
+		});
+			
+		$("#closebtn"+QUINDAR.lcount).click(function(){
+			idnum = this.id.match(/\d+/)[0];
+			$("#lpmain"+idnum).show();
+
+			$("#lpsettings"+idnum).hide();
+			$("#lpsaveload"+idnum).hide();
+			$("#lpdelete"+idnum).hide();
+		});
+		
+		$("#closebtnSL"+QUINDAR.lcount).click(function(){
+			idnum = this.id.match(/\d+/)[0];
+			$("#lpmain"+idnum).show();
+
+			$("#lpsettings"+idnum).hide();
+			$("#lpsaveload"+idnum).hide();
+			$("#lpdelete"+idnum).hide();
+		});
+		
+		$("#closebtnD"+QUINDAR.lcount).click(function(){
+			idnum = this.id.match(/\d+/)[0];
+			$("#lpmain"+idnum).show();
+
+			$("#lpsettings"+idnum).hide();
+			$("#lpsaveload"+idnum).hide();
+			$("#lpdelete"+idnum).hide();
+		});
+		
+		$("#datetimestart"+QUINDAR.lcount).click(function(){
+			idnum = this.id.match(/\d+/)[0];
+			$('#datetimestart'+idnum).datetimepicker({
+			});
+		});
+		
+		$("#datetimeend"+QUINDAR.lcount).click(function(){
+			idnum = this.id.match(/\d+/)[0];
+			$('#datetimeend'+idnum).datetimepicker({
+			});
+		});
+			
 		$(document).on('click', '#removelp'+QUINDAR.lcount+'', function(e) {
 			idnum = this.id.match(/\d+/)[0];
-    		$('#lpdiv'+idnum).remove();
+			$("#lpmain"+idnum).hide();
+			$("#lpdelete"+idnum).show();			
+
+			var elem = document.getElementById("lpmarginD"+idnum);
+			elem.style.height = (height + margin.top + margin.bottom)/3 + "px";
+			
+			var elem = document.getElementById("lplabelD"+idnum);
+			elem.style.height = (height + margin.top + margin.bottom)/4 + "px";	
+
+			var elem = document.getElementsByName("qsavebtn"+idnum);
+			for (i=0; i<elem.length; i++) {
+				elem[i].style.width = $("#lpcolD"+idnum).width() + "px";
+				elem[i].style.height = "28px";
+				elem[i].style.fontFamily = "Open Sans, Sans-serif";
+				elem[i].style.fontSize = "12px";
+				elem[i].style.paddingLeft = "0";
+				elem[i].style.paddingRight = "0";
+				elem[i].style.borderRadius = "0";
+				elem[i].style.backgroundColor = "#07D1EA";
+				elem[i].style.color = "#F1F1F5";
+			}
+			
+			var elem = document.getElementsByName("closebtn"+idnum);
+			for (i=0; i<elem.length; i++) {
+				elem[i].style.width = $("#lpcolD"+idnum).width() + "px";
+				elem[i].style.height = "28px";
+				elem[i].style.fontFamily = "Open Sans, Sans-serif";
+				elem[i].style.fontSize = "12px";
+				elem[i].style.paddingLeft = "0";
+				elem[i].style.paddingRight = "0";
+				elem[i].style.borderRadius = "0";
+				elem[i].style.backgroundColor = "#07D1EA";
+				elem[i].style.color = "#F1F1F5";
+			}			
+   		
     	});
+		
+		$(document).on('click', '#removeW'+QUINDAR.lcount+'', function(e) {
+			$('#lpdiv'+idnum).remove();
+		});
+		
     }.bind(this);
 	
     QUINDAR.addTableWidget = function(){
