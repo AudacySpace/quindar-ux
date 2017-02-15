@@ -1,0 +1,18 @@
+<div gridster="$ctrl.gridsterOptions">
+	<ul>
+		<li gridster-item="widget" ng-repeat="widget in $ctrl.dashboard.widgets">
+			<div class="box">
+				<div class="box-header">
+					<h3 style="text-transform: capitalize;">{{ widget.name }}</h3>
+					<div class="box-header-btns pull-right">
+						<a title="settings" ng-click="$ctrl.openSettings(widget)"><i class="glyphicon glyphicon-cog"></i></a>
+						<a title="Remove widget" ng-click="$ctrl.remove(widget)"><i class="glyphicon glyphicon-trash"></i></a>
+					</div>
+				</div>
+				<div class="box-content">
+					<div quindarwidget = "{{ widget.directive }}"></div>
+				</div>
+			</div>
+		</li>
+	</ul>
+</div>

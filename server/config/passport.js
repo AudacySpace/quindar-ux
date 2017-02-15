@@ -1,7 +1,7 @@
 var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
 
 // load up the user model
-var User       = require('../public/models/user');
+var User       = require('../models/user');
 
 // load the auth variables
 var configAuth = require('./auth'); // use this one for testing
@@ -118,27 +118,3 @@ function initCaps(str){
      }
      return words.join(' ');
 }
-
-
-
-
-// function saveUserGrid(layoutdata){
-
-//                     var user               = req.user; // pull the user out of the session
-
-//                 layouts.gridlayout.email    = (profile.emails[0].value || '').toLowerCase();
-//                 layouts.gridlayout.x = layoutdata.x;
-//                 layouts.gridlayout.y  = layoutdata.y;
-//                 layouts.gridlayout.width = layoutdata.width; // pull the first email
-//                 layouts.gridlayout.height = layoutdata.height;
-
-//                 layouts.save(function(err) {
-//                     if (err)
-//                         return done(err);
-                        
-//                     return done(null, user);
-//                 });
-
-//             }
-
-// }
