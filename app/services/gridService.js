@@ -41,6 +41,28 @@ app
             id: "s-table",
             type: "fa-search"
         }
+    },
+    {
+        sizeY: 2,
+        sizeX: 2,
+        name: "Line Plot",
+        directive: "lineplot",
+        id: "addLine",
+        icon: {
+            id: "l-plot",
+            type: "fa-line-chart"
+        }
+    },
+    {
+        sizeY: 2,
+        sizeX: 2,
+        name: "Data Table",
+        directive: "datatable",
+        id: "datatable",
+        icon: {
+            id: "d-table",
+            type: "fa-table"
+        }
     }];
 
     var dashboards = {
@@ -58,7 +80,8 @@ app
                 icon: {
                     id: "t-table",
                     type: "fa-table"
-                }
+                },
+                option: ""
             }, 
             {
                 col: 2,
@@ -71,7 +94,8 @@ app
                 icon: {
                     id: "g-track",
                     type: "fa-globe"
-                }
+                },
+                option: ""
             },
             {
                 col: 4,
@@ -84,7 +108,8 @@ app
                 icon: {
                     id: "s-table",
                     type: "fa-search"
-                }
+                },
+                option: ""
             }]
         }
     };
