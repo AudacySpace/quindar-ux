@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="dashboard for mission operations platform, Quindar">
+    <meta name="author" content="Chavi Malhotra">
+    <meta name="author" content="Taruni Gattu">
+    <title>Quindar Dashboard</title>
+    <link href="/css/bootstrap-min.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/css/dashboardstyles.css" rel="stylesheet">
+    <link href="/css/widgetstyles.css" rel="stylesheet">
+    <link href="/css/positions.css" rel="stylesheet"> 
+
+    <!-- scripts for AngularJS and UI Bootstrap -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+    <script src="https://code.angularjs.org/1.4.7/angular-route.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.0.0/ui-bootstrap-tpls.min.js"></script>
+
+    <!-- Angular Gridster Script and Stylesheet -->
+    <script src="/scripts/gridster/angular-gridster.js"></script>
+    <link href="/css/gridster/angular-gridster.min.css" rel="stylesheet" >
+    <link href="/css/gridster/grid.css" rel="stylesheet" > 
+    
+    <!-- Angular application -->
+    <script src="/app.js"></script>
+
+    <!-- components -->
+    <script src="/components/dashboard/dashboard.js"></script>
+    <script src="/components/dashboardContainer/container.js"></script>
+    <script src="/components/grid/grid.js"></script>
+    <script src="/components/rightSidebar/rightSidebar.js"></script>
+    <script src="/components/leftSidebar/leftSidebar.js"></script>
+    <!-- services -->
+    <script src="/services/dashboardService.js"></script>
+    <script src="/services/gridService.js"></script>
+    <!--directives -->
+    <script src="/directives/widget.js"></script>
+    <script src="/directives/searchtable.js"></script>
+    <script src="/directives/table.js"></script>
+    <script src="/directives/groundtrack.js"></script>
+    <script src="/directives/datatable.js"></script>
+    <script src="/directives/lineplot.js"></script>
+
+    <!-- script to get user details from backend -->
+    <script>
+        var username = "<%= user.google.name %>";
+        var usermail = "<%= user.google.email %>";
+    </script>
+</head>
+
+<body ng-app="app">
+    <dashboard-container id="wrapper" class="toggled"></dashboard-container>
+
+    <!-- jQuery -->
+    <script src="/scripts/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.0/jquery-ui.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/scripts/bootstrap.min.js"></script>
+    <!-- Side Navigation -->
+    <script src="/scripts/side-navigation.js"></script>
+    <!-- D3 -->
+    <script src="/scripts/d3.min.js"></script>
+    <!-- topojson-client -->
+    <script src="/scripts/topojson-client.min.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!--Right Side Nav -->
+<div id="myrightSidenav" class="rightsidenav">
+    <h3 id="user-name">Hi {{ $ctrl.name }}</h3>
+    <a href="javascript:void(0)" class="rclosebtn pull-right rmenu" id="rclosebtn" onclick="closeRightNav()">&times;</a>
+    <a href="#" id="configmenu" class="rmenu"> Configuration Menu</a>
+    <a href="#" onclick = "openQwidgetMenu()" id="quindar-widgets" class="rmenu">
+        <span class="glyphicon glyphicon-menu-down pull-right" id="qwidget-arrow"></span>
+        <span class="glyphicon glyphicon-modal-window" id="qwidgets"></span>Qwidgets
+    </a>
+    <ul id="qwidgetMenu" style="display:none;">
+        <li>
+            <a id="addQwidget" href="#" onclick = "openQwidgetList()">
+                <span class="glyphicon glyphicon-plus" id="qwidgetPlus"></span>Add Qwidget
+                <span class="glyphicon glyphicon-menu-down pull-right" id="qwidget-add">
+            </a> 
+        </li>
+        <ul id="widgettops" style="display:none;">   
+            <li ng-repeat="widget in $ctrl.widgetDefinitions">
+                <a id="{{widget.id}}" href="#" ng-click="$ctrl.addWidgets(widget)">
+                    <i class="fa {{widget.icon.type}}" aria-hidden="true" id="{{widget.icon.id}}" ></i>{{widget.name}}
+                </a>
+            </li>
+        </ul>
+        <li>
+            <a id="saveLayout" href="#">
+                <span class="glyphicon glyphicon-save-file" id="save-layout"></span>Save Layout
+            </a>
+        </li>
+        <li>
+            <a id="loadLayout" href="#">
+                <span class="glyphicon glyphicon-open-file" id="load-layout"></span>Load Layout
+                <span class="glyphicon glyphicon-menu-down pull-right" id="layout-arrow"></span>
+            </a>
+        </li>
+        <li>
+            <a id="clearLayout" href="#" ng-click="$ctrl.clear()">
+                <span class="glyphicon glyphicon-trash" id="clear-layout"></span>Clear
+            </a>
+        </li>
+    </ul>
+    <a href="#" id="user" class="rmenu">
+        <span class="glyphicon glyphicon-menu-down pull-right" id="user-admin-arrow"></span>
+        <span class="glyphicon glyphicon-user" id="user-admin"></span>User Administration
+    </a>
+    <a href="#" id="server" class="rmenu">
+        <span class="glyphicon glyphicon-menu-down pull-right" id="server-admin-arrow"></span>
+        <i class="fa fa-server" aria-hidden="true" id="server-admin"></i></span>Server Administration
+    </a>
+    <a href="#" id="document" class="rmenu">
+        <span class="glyphicon glyphicon-menu-down pull-right" id="doc-arrow"></span>
+        <i class="fa fa-file-text-o" aria-hidden="true" id="docs"></i>Documentation
+    </a>
+    <a href="/logout" id="mini-logout" class="rmenu">Logout</a>
+</div>
+<!--End of Right Side Nav -->
