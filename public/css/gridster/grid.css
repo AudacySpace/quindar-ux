@@ -14,21 +14,23 @@ ul {
     background-color: #fff;
 }
 .box-header {
-    background-color: #eee;
+    background-color: #000;
     padding: 0 30px 0 10px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #000;
     cursor: move;
     position: relative;
 }
-.box-header h3 {
+.box-header h5 {
     margin-top: 10px;
     display: inline-block;
+    text-transform: capitalize;
+    color: white;
 }
 .box-content {
     padding: 10px;
 }
 .box-header-btns {
-    top: 15px;
+    top: 8px;
     right: 10px;
     cursor: pointer;
     position: absolute;

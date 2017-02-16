@@ -12,7 +12,6 @@ app
             scope.buildView(value);
         });
     }],
-
     link: function (scope, elm, attrs) {
         scope.buildView = function (viewName) {
             var z = compile('<' + viewName + '></' + viewName + '>')(scope);

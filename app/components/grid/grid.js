@@ -12,10 +12,12 @@ angular.module('app')
 
 		vm.remove = function(widget) {
 			gridService.remove(widget);
+			//widget.option = "remove";
 		};
 
 		vm.openSettings = function(widget) {
 			console.log(widget);
+			//widget.option = "settings"
 		};
     }
 })

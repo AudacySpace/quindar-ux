@@ -3,7 +3,7 @@
 		<li gridster-item="widget" ng-repeat="widget in $ctrl.dashboard.widgets">
 			<div class="box">
 				<div class="box-header">
-					<h3 style="text-transform: capitalize;">{{ widget.name }}</h3>
+					<h5>{{ widget.name }}</h5>
 					<div class="box-header-btns pull-right">
 						<a title="settings" ng-click="$ctrl.openSettings(widget)"><i class="glyphicon glyphicon-cog"></i></a>
 						<a title="Remove widget" ng-click="$ctrl.remove(widget)"><i class="glyphicon glyphicon-trash"></i></a>
@@ -12,6 +12,11 @@
 				<div class="box-content">
 					<div quindarwidget = "{{ widget.directive }}"></div>
 				</div>
+<!-- 				<div class="box-content" ng-switch on="widget.option">
+					<div ng-switch-default quindarwidget = "{{ widget.directive }}"></div>
+					<div ng-switch-when="settings">Settings Menu</div>
+					<div ng-switch-when="delete">Delete Menu</div>
+				</div> -->
 			</div>
 		</li>
 	</ul>
