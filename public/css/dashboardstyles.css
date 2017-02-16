@@ -82,7 +82,8 @@ span#user-admin,i#server-admin,i#docs{
   top: 0px;
   right: 8px;
 }
-span#qwidgetPlus,span#g-track,i#l-plot,span#t-table,span#d-table,span#s-table,span#save-layout,span#load-layout,span#clear-layout{
+
+span#qwidgetPlus,i#g-track,i#t-table,i#s-table,i#d-table,i#l-plot,span#save-layout,span#load-layout,span#clear-layout{
   position: relative;
   top: 0px;
   right: 5px;
@@ -168,10 +169,6 @@ button#data-menu{
 }
 .navbar-brand {
   padding: 5px 5px;
-}
-.container-fluid {
-  padding-left: 15px;
-  padding-right: 25px;
 }
 
 #add-widget {
@@ -506,3 +503,9 @@ a#searchId{
     margin:0;
   }
 }   
+
+@media only screen and (min-width: 768px){
+  .navbar-right {
+    margin-right: 0px !important;
+  }
+}

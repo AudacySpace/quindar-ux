@@ -1,0 +1,61 @@
+<!--Main Dashboard Navigation-->
+<div id="main" >
+    <nav class="navbar navbar-default" id="navbar">
+        <div class="container-fluid" id="top-header">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#" id="QRegular" onclick="openLeftNav()">
+                    <img id="main-img" src="/media/logos/quindar_regular.svg" alt="Quindar"/>
+                </a>
+                <a class="navbar-brand" href="#" id="QBlack" onclick="openLeftNav()">
+                    <img id="main-img" src="/media/logos/Quindar_Icon_Black.svg" alt="Quindar"/>
+                </a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="statusicons">
+                    <ul class="nav navbar-nav status-bar" id="s-icons">
+                        <li ng-repeat="icon in $ctrl.icons">
+                            <a href="#" class="status-icon">
+                                <img id="{{icon.id}}" ng-src="{{icon.image}}" alt="Quindar"/>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <ul class="nav navbar-nav time">
+                        <li class="clock" id="txt">{{ $ctrl.clock }}</li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a class="dropdown-toggle"  id="username" data-toggle="dropdown" href="#">{{ $ctrl.name }}</a>
+                    <ul class="dropdown-menu logout-bar">
+                        <li ><a href="/logout">Logout</a></li>
+                    </ul>
+                </li>
+                <li id="cfgmenu">
+                    <a href="#" id="add-widget" onclick="openRightNav()"> 
+                        <span class="fa fa-bars" aria-hidden="true"> </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!--Main Dashboard for Widgets -->
+    <div class="container-fluid">
+        <!-- <div class="grid-stack" id="container"></div> -->
+
+        <grid></grid>
+
+    </div>
+
+    <!-- Dashboard Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted"></p>
+        </div>
+    </footer>
+</div>
+
+<!--End Main Dashboard Navigation
