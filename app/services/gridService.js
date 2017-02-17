@@ -1,11 +1,12 @@
 app
 .factory('gridService', function() { 
     var gridsterOptions = {
-      margins: [20, 20],
-      columns: 8,
-      draggable: {
-        handle: 'h3'
-      }
+        margins: [20, 20],
+        columns: 8,
+        draggable: {
+            enabled: true,
+            handle: '.box-header'
+        }
     };
 
     var widgetDefinitions = [
