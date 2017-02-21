@@ -44,8 +44,8 @@ app
         }
     },
     {
-        sizeY: 2,
-        sizeX: 2,
+        sizeY: 3,
+        sizeX: 4,
         name: "Line Plot",
         directive: "lineplot",
         id: "addLine",
