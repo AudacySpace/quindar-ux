@@ -11,37 +11,40 @@ app
 
     var widgetDefinitions = [
     {
-        sizeY: 2,
-        sizeX: 2,
+        sizeY: 4,
+        sizeX: 4,
         name: "Ground Track",
         directive: "groundtrack",
         id: "addGround",
         icon: {
             id: "g-track",
             type: "fa-globe"
-        }
+        },
+        option: ""  
     }, 
     {
-        sizeY: 2,
-        sizeX: 2,
+        sizeY: 4,
+        sizeX: 4,
         name: "Telemetry Table",
         directive: "tabletext",
         id: "addtablewidget",
         icon: {
             id: "t-table",
             type: "fa-table"
-        }
+        },
+        option: "" 
     }, 
     {
-        sizeY: 2,
-        sizeX: 2,
+        sizeY: 4,
+        sizeX: 4,
         name: "Search By Id",
         directive: "searchtable",
         id: "searchId",
         icon: {
             id: "s-table",
             type: "fa-search"
-        }
+        },
+        option: ""
     },
     {
         sizeY: 3,
@@ -52,18 +55,20 @@ app
         icon: {
             id: "l-plot",
             type: "fa-line-chart"
-        }
+        },
+        option: "" 
     },
     {
-        sizeY: 2,
-        sizeX: 2,
+        sizeY: 4,
+        sizeX: 4,
         name: "Data Table",
         directive: "datatable",
         id: "datatable",
         icon: {
             id: "d-table",
             type: "fa-table"
-        }
+        },
+        option: "" 
     }];
 
     var dashboards = {
@@ -73,22 +78,22 @@ app
             widgets: [{
                 col: 0,
                 row: 0,
-                sizeY: 2,
-                sizeX: 2,
+                sizeY: 4,
+                sizeX: 4,
                 name: "Telemetry Table",
                 directive: "tabletext",
                 id: "addtablewidget",
                 icon: {
                     id: "t-table",
                     type: "fa-table"
-                },
+                }, 
                 option: ""
             }, 
             {
-                col: 2,
+                col: 4,
                 row: 1,
-                sizeY: 2,
-                sizeX: 2,
+                sizeY: 4,
+                sizeX: 4,
                 name: "Ground Track",
                 directive: "groundtrack",
                 id: "addGround",
@@ -99,10 +104,10 @@ app
                 option: ""
             },
             {
-                col: 4,
-                row: 1,
-                sizeY: 2,
-                sizeX: 2,
+                col: 0,
+                row: 2,
+                sizeY: 4,
+                sizeX: 4,
                 name: "Search By Id",
                 directive: "searchtable",
                 id: "searchId",
@@ -157,7 +162,9 @@ app
             icon: {
                 id: widget.icon.id,
                 type: widget.icon.type
-            }
+            },
+            option: ""
+
         });
     }
 
