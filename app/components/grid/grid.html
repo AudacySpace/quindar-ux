@@ -3,20 +3,87 @@
 		<li gridster-item="widget" ng-repeat="widget in $ctrl.dashboard.widgets">
 			<div class="box">
 				<div class="box-header">
-					<h5>{{ widget.name }}</h5>
+					<a><img class="drag-menu" ng-src="../../public/icons/panel-icons/dragIcon.svg"/></a>
+					<h4>{{ widget.name }}</h4>
 					<div class="box-header-btns pull-right">
-						<a title="settings" ng-click="$ctrl.openSettings(widget)"><i class="glyphicon glyphicon-cog"></i></a>
-						<a title="Remove widget" ng-click="$ctrl.remove(widget)"><i class="glyphicon glyphicon-trash"></i></a>
+						<a title="Settings" ng-click="$ctrl.openSettings(widget)">			
+							<img class="cog-menu" ng-src="../../public/icons/panel-icons/cog.svg"/>
+						</a>
+						<a title="Save or Load Widget" ng-click="$ctrl.openSaveLoadSettings(widget)">
+							<img class="save-load-menu" ng-src="../../public/icons/panel-icons/save-load.svg"/>
+						</a>
+						<a title="Remove widget" ng-click="$ctrl.remove(widget)">
+							<img class="trash-menu" ng-src="../../public/icons/panel-icons/trash.svg"/>
+						</a>
 					</div>
 				</div>
-				<div class="box-content">
-					<div quindarwidget = "{{ widget.directive }}"></div>
-				</div>
-<!-- 				<div class="box-content" ng-switch on="widget.option">
+				<div class="box-content" ng-switch on="widget.option">
 					<div ng-switch-default quindarwidget = "{{ widget.directive }}"></div>
-					<div ng-switch-when="settings">Settings Menu</div>
-					<div ng-switch-when="delete">Delete Menu</div>
-				</div> -->
+					<div ng-switch-when="settings" class="settingsMenu">Settings</div>
+					<div ng-switch-when="save-load" class="saveloaddatatable">
+						<div class="savestyles">
+							<form class="form-inline savestyles" >
+								<div class="row">
+  									<div class="col-sm-5">
+  										<label for="SaveWidget">Save Widget</label>
+  									</div>
+   									<div class="col-sm-1"></div>
+    								<div class="col-sm-5">
+    								<label for="LoadWidget">Load Widget</label>
+  									</div>
+  								</div>
+  								<div class="row">
+  									<div class="col-sm-5">
+ 										<input type="text" class="form-control save-widget-styles " id="inlineFormInput" placeholder="Enter Name">
+  									</div>
+   									<div class="col-sm-1"></div>
+    								<div class="col-sm-5">
+    									<div class="dropdown">
+                   							<button type="button" class="btn dropdown-toggle load-widget-styles" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    							<span class="pull-left">Widget</span> 
+                    							<span class="caret caretstyles"></span>
+                    						</button>
+                						</div>
+  									</div>
+  								</div>
+								<div class="row">
+  									<div class="col-sm-11">
+										<hr/>
+									</div>
+								</div>
+ 								<div class="row">
+									<div class="col-sm-11">
+  										<button type="submit" class="btn btn-primary sbtns">SAVE</button>
+  										<button type="submit" class="btn btn-primary sbtns" ng-click="$ctrl.closeSaveLoadSettings(widget)">CLOSE</button>
+  									</div>
+  								</div>
+							</form>
+						</div>
+					</div>
+
+					<div ng-switch-when="delete" class="deldatatable">
+						<div class="savestyles">
+							<form class="form-inline savestyles" >
+								<div class="row">
+  									<div class="col-sm-11">
+  										<label for="DeleteWidget">Delete Widget?</label>
+  									</div>
+  								</div>
+								<div class="row">
+  									<div class="col-sm-11">
+										<hr/>
+									</div>
+								</div>
+ 								<div class="row">
+									<div class="col-sm-11">
+  										<button type="submit" class="btn btn-primary sbtns" ng-click="$ctrl.deleteWidget(widget)">YES</button>
+  										<button type="submit" class="btn btn-primary sbtns" ng-click="$ctrl.closedeleteWidget(widget)">NO</button>
+  									</div>
+  								</div>
+							</form>
+						</div>
+					</div>
+				</div>
 			</div>
 		</li>
 	</ul>
