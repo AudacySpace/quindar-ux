@@ -3,7 +3,6 @@ angular.module('app')
     templateUrl: "../components/grid/grid.html",
     controller: function(gridService){
     	var vm = this;
-
 		vm.gridsterOptions = gridService.gridsterOptions;
 		vm.dashboards = gridService.dashboards;
 	    vm.selectedDashboardId = gridService.getDashboardId();
@@ -11,13 +10,27 @@ angular.module('app')
 		vm.widgetDefinitions = gridService.widgetDefinitions;
 
 		vm.remove = function(widget) {
-			gridService.remove(widget);
-			//widget.option = "remove";
+			widget.option = "delete";
 		};
 
-		vm.openSettings = function(widget) {
-			console.log(widget);
-			//widget.option = "settings"
+		vm.deleteWidget = function(widget) {
+			gridService.remove(widget);
 		};
+
+		vm.closedeleteWidget = function(widget){
+			widget.option = "";
+		}
+
+		vm.openSettings = function(widget) {
+			widget.option = "settings";
+		};
+
+		vm.openSaveLoadSettings = function(widget) {
+			widget.option = "save-load";
+		};
+
+		vm.closeSaveLoadSettings = function(widget){
+			widget.option = "";
+		}
     }
 })
