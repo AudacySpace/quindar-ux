@@ -1,0 +1,27 @@
+/*Panel-Icon Styles*/
+.cog-menu{
+    top: 6px;
+    right: 18px;
+    position: relative;
+    width: 15px;
+}
+.save-load-menu{
+    top: 6px;
+    right: 12px;
+    position: relative;
+    width:15px;
+}
+.trash-menu{
+  top:6px;
+  right:6px;
+  position: relative;
+  width:15px;
+}
+
+.drag-menu{
+  top:-1px;
+  left:0px;
+  position: relative;
+/*  width:5%;*/
+  width:20px;
+}
