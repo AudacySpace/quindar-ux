@@ -11,8 +11,8 @@ app
 
     var widgetDefinitions = [
     {
-        sizeY: 4,
-        sizeX: 4,
+        sizeY: 3,
+        sizeX: 3,
         name: "Ground Track",
         directive: "groundtrack",
         id: "addGround",
@@ -23,8 +23,8 @@ app
         option: ""  
     }, 
     {
-        sizeY: 4,
-        sizeX: 4,
+        sizeY: 3,
+        sizeX: 3,
         name: "Telemetry Table",
         directive: "tabletext",
         id: "addtablewidget",
@@ -35,8 +35,8 @@ app
         option: "" 
     }, 
     {
-        sizeY: 4,
-        sizeX: 4,
+        sizeY: 3,
+        sizeX: 3,
         name: "Search By Id",
         directive: "searchtable",
         id: "searchId",
@@ -59,8 +59,8 @@ app
         option: "" 
     },
     {
-        sizeY: 4,
-        sizeX: 4,
+        sizeY: 3,
+        sizeX: 3,
         name: "Data Table",
         directive: "datatable",
         id: "datatable",
@@ -78,8 +78,8 @@ app
             widgets: [{
                 col: 0,
                 row: 0,
-                sizeY: 4,
-                sizeX: 4,
+                sizeY: 3,
+                sizeX: 3,
                 name: "Telemetry Table",
                 directive: "tabletext",
                 id: "addtablewidget",
@@ -90,30 +90,16 @@ app
                 option: ""
             }, 
             {
-                col: 4,
-                row: 1,
-                sizeY: 4,
-                sizeX: 4,
+                col: 3,
+                row: 0,
+                sizeY: 3,
+                sizeX: 3,
                 name: "Ground Track",
                 directive: "groundtrack",
                 id: "addGround",
                 icon: {
                     id: "g-track",
                     type: "fa-globe"
-                },
-                option: ""
-            },
-            {
-                col: 0,
-                row: 2,
-                sizeY: 4,
-                sizeX: 4,
-                name: "Search By Id",
-                directive: "searchtable",
-                id: "searchId",
-                icon: {
-                    id: "s-table",
-                    type: "fa-search"
                 },
                 option: ""
             }]

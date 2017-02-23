@@ -4,7 +4,7 @@ angular.module('app')
   	scope: true,
    	bindToController: true,
   	templateUrl: "./components/dashboard/dashboard.html",
-  	controller: function(dashboardService, $interval) {
+  	controller: function(dashboardService, $interval, $mdSidenav, $scope, $window) {
   		var vm = this;
   		var theInterval = $interval(function(){
 	    	vm.clock = dashboardService.startTime();
@@ -41,5 +41,21 @@ angular.module('app')
   				vm.telemetry = response.data;
        		});
   		}
+
+  		vm.openRightNav = function(){
+	    	if ($window.innerWidth < 1400){
+	    		$mdSidenav('right').open();
+	    	} else {
+	    		$scope.lockRight = !$scope.lockRight;
+	    	}
+	    }
+
+	   	// vm.openLeftNav = function(){
+	    // 	if ($window.innerWidth < 1400){
+	    // 		$mdSidenav('left').open();
+	    // 	} else {
+	    // 		$scope.lockLeft = !$scope.lockLeft;
+	    // 	}
+	    // }
 	}
 })

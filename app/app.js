@@ -1,1 +1,1 @@
-var app = angular.module('app', ['gridster', 'ui.bootstrap']);
+var app = angular.module('app', ['gridster', 'ui.bootstrap', 'ngMaterial']);

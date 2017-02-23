@@ -144,10 +144,11 @@ button#data-menu{
 }
 .navbar{
   border: 0 none;  
-  padding-top: 10px;
+  padding-top: 7px;
   padding-bottom: 0px;
   border-bottom: 3px solid #CFCFD5;
   text-align: center; 
+  height: 67px;
 }
 .navbar .navbar-nav {
   display:inline-block;
