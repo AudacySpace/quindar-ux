@@ -17,5 +17,15 @@ app
         };
 
         vm.widgetDefinitions = gridService.widgetDefinitions;
+        vm.QwidgetMenu =  false;
+        vm.addMenu = false;
+
+        vm.showQwidgetMenu = function(){
+            vm.QwidgetMenu = !vm.QwidgetMenu;
+        }
+
+        vm.showAddMenu = function(){
+            vm.addMenu = !vm.addMenu;
+        }
 	}
 })
