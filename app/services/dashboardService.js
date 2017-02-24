@@ -5,7 +5,7 @@ app
         return i;
     }
 
-    function getTelemetry(value) {
+    function getTelemetry(telemetry) {
         $interval(function () { 
             $http({
                 url: "/getTelemetry", 
@@ -13,7 +13,7 @@ app
                 params: {'vehicles' : ['Audacy1', 'Audacy2', 'Audacy3']}
             }).then(function(response) {
                 for(var item in response.data){
-                    value[item] = response.data[item];
+                    telemetry[item] = response.data[item];
                 }
             })
         },1000);
