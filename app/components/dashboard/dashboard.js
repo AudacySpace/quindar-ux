@@ -6,10 +6,13 @@ angular.module('app')
   	templateUrl: "./components/dashboard/dashboard.html",
   	controller: function(dashboardService, $interval, $mdSidenav, $scope, $window) {
   		var vm = this;
+
+  		//getTelemetry function usage (dashboardService) 
+  		vm.telemetry = {};
+  		dashboardService.getTelemetry(vm.telemetry);
+
   		var theInterval = $interval(function(){
 	    	vm.clock = dashboardService.startTime();
-	    	getData();
-            //console.log(vm.telemetry);
 	   	}.bind(vm), 1000); 
 
   		vm.clock = dashboardService.startTime();
@@ -34,13 +37,6 @@ angular.module('app')
 		    	id:"i8"
 		    }
 	    ];
-
-	    function getData(){
-  			dashboardService.getTelemetry()
-  			.then(function(response) {
-  				vm.telemetry = response.data;
-       		});
-  		}
 
   		vm.openRightNav = function(){
 	    	if ($window.innerWidth < 1400){
