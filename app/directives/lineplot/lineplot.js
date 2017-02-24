@@ -6,8 +6,9 @@ app
 		link: function(scope, element, attributes) {
 			
 			scope.dispClass = "liveDisp";
-			
-			var vm = this;
+			scope.telemetry = {};
+  			db.getTelemetry(scope.telemetry);
+
 			var parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%S.%L%Z");
 			var plotData = [];
 			var delay = 1000;	// [milisecond]
@@ -18,21 +19,6 @@ app
 			var paramX = "timestamp";
 			var rectHeight = 10;
 			var rectWidth = 20;
-			
-			getData();	//Initialization
-			var theInterval = $interval(function(){
-				getData();
-				var tTemp = parseTime(vm.telemetry[vehicle][paramX].value);
-				var xTemp = vm.telemetry[vehicle][paramY].value;
-				xUnits = vm.telemetry[vehicle][paramY].units;
-
-				plotData.push({x:tTemp, y:xTemp});
-				
-				if (plotData.length > ptNum) {
-					plotData.splice(0,1);
-				};
-
-			}.bind(vm), 1000);
 
 			var margin = {top: 10, right: 40, bottom: 30, left: 40};
 				
@@ -88,6 +74,16 @@ app
 				g.selectAll("circle").remove();
 				g.selectAll("text").remove();
 				
+				var tTemp = parseTime(scope.telemetry[vehicle][paramX].value);
+				var xTemp = scope.telemetry[vehicle][paramY].value;
+				xUnits = scope.telemetry[vehicle][paramY].units;
+
+				plotData.push({x:tTemp, y:xTemp});
+				
+				if (plotData.length > ptNum) {
+					plotData.splice(0,1);
+				};
+
 				data = plotData;
 				
 				var x = d3.scaleTime()
@@ -156,23 +152,13 @@ app
 				g.append("text")
 				.attr("transform","translate(" + (margin.left+20+rectWidth) + " ,"+ (margin.top+10) +")")
 				.attr("class","linelabel")
-				.text(vehicle);
-				
-				timer = setTimeout(updatePlot, delay);				
+				.text(vehicle);				
 				
 				return this;
 			};
-
-						
-			function getData(){
-				db.getTelemetry()
-				.then(function(response) {
-					vm.telemetry = response.data;
-				});
-			}
 			
 			scope.goHome = function(){
-				updatePlot();
+				$interval(updatePlot, delay);
 				scope.dispClass = "liveDispOn";
 			}
 		}
