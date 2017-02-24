@@ -5,12 +5,18 @@ app
         return i;
     }
 
-    function getTelemetry() {
-        return $http({
-            url: "/getTelemetry", 
-            method: "GET",
-            params: {'vehicles' : ['Audacy1', 'Audacy2', 'Audacy3']}
-        });
+    function getTelemetry(value) {
+        $interval(function () { 
+            $http({
+                url: "/getTelemetry", 
+                method: "GET",
+                params: {'vehicles' : ['Audacy1', 'Audacy2', 'Audacy3']}
+            }).then(function(response) {
+                for(var item in response.data){
+                    value[item] = response.data[item];
+                }
+            })
+        },1000);
     }
 
     function startTime() {
