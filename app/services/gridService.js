@@ -20,7 +20,10 @@ app
             id: "g-track",
             type: "fa-globe"
         },
-        option: ""  
+        main: true,
+		settings: false,
+		saveLoad: false,
+		delete: false,
     }, 
     {
         sizeY: 3,
@@ -32,7 +35,10 @@ app
             id: "t-table",
             type: "fa-table"
         },
-        option: "" 
+        main: true,
+		settings: false,
+		saveLoad: false,
+		delete: false,
     }, 
     {
         sizeY: 3,
@@ -44,19 +50,26 @@ app
             id: "s-table",
             type: "fa-search"
         },
-        option: ""
+        main: true,
+		settings: false,
+		saveLoad: false,
+		delete: false,
     },
     {
-        sizeY: 3,
-        sizeX: 4,
+        sizeY: 4,
+        sizeX: 6,
         name: "Line Plot",
         directive: "lineplot",
+		directiveSettings: "linesettings",
         id: "addLine",
         icon: {
             id: "l-plot",
             type: "fa-line-chart"
         },
-        option: "" 
+        main: true,
+		settings: false,
+		saveLoad: false,
+		delete: false,
     },
     {
         sizeY: 2,
@@ -68,7 +81,10 @@ app
             id: "d-table",
             type: "fa-table"
         },
-        option: "" 
+        main: true,
+		settings: false,
+		saveLoad: false,
+		delete: false,
     }];
 
     var dashboards = {
@@ -86,8 +102,29 @@ app
                 icon: {
                     id: "d-table",
                     type: "fa-table"
+                }, 
+                main: true,
+				settings: false,
+				saveLoad: false,
+				delete: false,
+            }, 
+            {
+                col: 3,
+                row: 0,
+                sizeY: 3,
+                sizeX: 3,
+                name: "Ground Track",
+                directive: "groundtrack",
+				directiveSettings: "",
+                id: "addGround",
+                icon: {
+                    id: "g-track",
+                    type: "fa-globe"
                 },
-                option: "" 
+				main: true,
+				settings: false,
+				saveLoad: false,
+				delete: false,
             }]
         }
     };
@@ -130,13 +167,16 @@ app
             sizeX: widget.sizeX,
             sizeY: widget.sizeY,
             directive: widget.directive,
+			directiveSettings: widget.directiveSettings,
             id: widget.id,
             icon: {
                 id: widget.icon.id,
                 type: widget.icon.type
             },
-            option: ""
-
+			main: widget.main,
+			settings: widget.settings,
+			saveLoad: widget.saveLoad,
+			delete: widget.delete
         });
     }
 
