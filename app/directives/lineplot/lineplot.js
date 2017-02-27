@@ -20,21 +20,6 @@ app
 			var rectHeight = 10;
 			var rectWidth = 10;
 
-			getData();	//Initialization
-			var theInterval = $interval(function(){
-				getData();
-				var tTemp = parseTime(vm.telemetry[vehicle][paramX].value);
-				var xTemp = vm.telemetry[vehicle][paramY].value;
-				xUnits = vm.telemetry[vehicle][paramY].units;
-
-				plotData.push({x:tTemp, y:xTemp});
-				
-				if (plotData.length > ptNum) {
-					plotData.splice(0,1);
-				};
-
-			}.bind(vm), 1000);
-
 			var margin = {top: 10, right: 30, bottom: 30, left: 30};
 				
 			var temp = element[0].getElementsByTagName("div")[0];
