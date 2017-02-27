@@ -14,13 +14,13 @@ app
 			var delay = 1000;	// [milisecond]
 			var ptNum = 100;	// Number of points in a plot
 			var xUnits;			
-			var vehicle = "Audacy1";
-			var paramY = "x";
+			var vehicle = "Audacy2";
+			var paramY = "y";
 			var paramX = "timestamp";
 			var rectHeight = 10;
-			var rectWidth = 20;
+			var rectWidth = 10;
 
-			var margin = {top: 10, right: 40, bottom: 30, left: 40};
+			var margin = {top: 10, right: 30, bottom: 30, left: 30};
 				
 			var temp = element[0].getElementsByTagName("div")[0];
 			var el = temp.getElementsByTagName("div")[0];
@@ -106,7 +106,7 @@ app
 				// text label for the y axis
 				g.append("text")
 				.attr("transform", "rotate(-90)")
-				.attr("y", 0 )
+				.attr("y", -10 )
 				.attr("x",0 - (transHeight / 2))
 				.attr("class", "linelabel")
 				.text(paramY+ " [" + xUnits + "]");  

@@ -17,10 +17,10 @@
 						</a>
 					</div>
 				</div>
-				<div class="box-content" ng-switch on="widget.option">
-					<div ng-switch-default quindarwidget = "{{ widget.directive }}"></div>
-					<div ng-switch-when="settings" class="settingsMenu">Settings</div>
-					<div ng-switch-when="save-load" class="saveloaddatatable">
+				<div class="box-content">
+					<div ng-show="widget.main" quindarwidget = "{{ widget.directive }}"></div>
+					<div ng-show="widget.settings" class="settingsMenu" quindarwidget = "{{ widget.directiveSettings }}"></div>
+					<div ng-show="widget.saveLoad" class="saveloaddatatable">
 						<div class="savestyles">
 							<form class="form-inline savestyles" >
 								<div class="row">
@@ -61,7 +61,7 @@
 						</div>
 					</div>
 
-					<div ng-switch-when="delete" class="deldatatable">
+					<div ng-show="widget.delete" class="deldatatable">
 						<div class="savestyles">
 							<form class="form-inline savestyles" >
 								<div class="row">
