@@ -1,15 +1,37 @@
 <!--Left Side Nav -->
-<div id="mySidenav" class="sidenav">
-    <a href="javascript:void(0)" class="closebtn pull-right" id="closebtn" onclick="closeLeftNav()">&times;</a>
-    <form class="navbar-form">
-        <div class="form-group"> <!-- style="display:inline;" -->
+<md-toolbar>
+    <div class="md-toolbar-tools">
+        <form>
             <div class="input-group">
                 <input type="text" class="form-control" id="input-search" placeholder="Search">
                 <span class="input-group-addon" id="group-search">
-                    <span class="glyphicon glyphicon-search"></span>
+                    <img ng-src="/icons/search.svg"/>
                 </span>
             </div>
-        </div>
-    </form>
-    <a ng-repeat="item in $ctrl.menuitems" class="leftmenu" href="#">{{ item }}</a>
-</div>
+        </form>
+    </div>
+</md-toolbar>
+<md-content flex role="navigation" id="left">
+    <md-list>
+        <md-list-item ng-click="$ctrl.showVehicleMenu()">
+            <md-icon class="md-icon" md-svg-icon="/icons/aud_signal.svg"></md-icon>
+            <p>GMAT</p>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-list class="md-dense" flex ng-show="$ctrl.vehicleMenu" ng-repeat = "vehicle in $ctrl.vehicles">
+            <md-list-item ng-click="$ctrl.showTelemetryMenu(vehicle)" id="list2">
+                <md-icon class="md-icon" md-svg-icon="/icons/aud_sat.svg"></md-icon>
+                <p>{{ vehicle.name }}</p>
+            </md-list-item>
+            <md-list class="md-dense" flex ng-show="vehicle.active">
+                <md-divider></md-divider>
+                <md-list-item ng-repeat="data in vehicle.config" ng-click="$ctrl.selectConfig(vehicle,data)" id="list3" >
+                    <md-icon class="md-icon small" md-svg-icon="/icons/aud_target.svg"></md-icon>
+                    <p>{{ data }}</p>
+                </md-list-item>
+            </md-list>
+            <md-divider></md-divider>
+        </md-list>
+    </md-list>
+</md-content>
+<!--End of Left Side Nav -->
