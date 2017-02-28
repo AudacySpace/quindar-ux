@@ -46,12 +46,12 @@ angular.module('app')
 	    	}
 	    }
 
-	   	// vm.openLeftNav = function(){
-	    // 	if ($window.innerWidth < 1400){
-	    // 		$mdSidenav('left').open();
-	    // 	} else {
-	    // 		$scope.lockLeft = !$scope.lockLeft;
-	    // 	}
-	    // }
+	   	vm.openLeftNav = function(){
+	    	if ($window.innerWidth < 1400){
+	    		$mdSidenav('left').open();
+	    	} else {
+	    		$scope.lockLeft = !$scope.lockLeft;
+	    	}
+	    }
 	}
 })
