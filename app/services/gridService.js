@@ -59,8 +59,8 @@ app
         option: "" 
     },
     {
-        sizeY: 4,
-        sizeX: 4,
+        sizeY: 2,
+        sizeX: 7,
         name: "Data Table",
         directive: "datatable",
         id: "datatable",
