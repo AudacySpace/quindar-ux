@@ -2,7 +2,7 @@ app.directive('datatable', function() {
   return { 
     restrict: 'E', 
     scope: {},
-    templateUrl:'./directives/datatable.html', 
+    templateUrl:'./directives/datatable/datatable.html', 
     controller: 'DataTableCtrl',
     controllerAs: 'vm',
     bindToController: true              
