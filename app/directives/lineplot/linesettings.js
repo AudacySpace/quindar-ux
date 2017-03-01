@@ -4,7 +4,7 @@ app
     	restrict: 'EA', 
 		templateUrl: './directives/lineplot/linesettings.html',
 		controller: 'lineController',
-		link: function(scope, element, attributes,linecontrollerCtrl) {
+		link: function(scope, element, attributes) {
 
 		}
 	}

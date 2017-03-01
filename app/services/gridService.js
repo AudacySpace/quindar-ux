@@ -15,6 +15,7 @@ app
         sizeX: 3,
         name: "Ground Track",
         directive: "groundtrack",
+		directiveSettings: "samplesettings",
         id: "addGround",
         icon: {
             id: "g-track",
@@ -30,6 +31,7 @@ app
         sizeX: 3,
         name: "Telemetry Table",
         directive: "tabletext",
+		directiveSettings: "samplesettings",
         id: "addtablewidget",
         icon: {
             id: "t-table",
@@ -45,6 +47,7 @@ app
         sizeX: 3,
         name: "Search By Id",
         directive: "searchtable",
+		directiveSettings: "samplesettings",
         id: "searchId",
         icon: {
             id: "s-table",
@@ -76,6 +79,7 @@ app
         sizeX: 5,
         name: "Data Table",
         directive: "datatable",
+		directiveSettings: "samplesettings",
         id: "datatable",
         icon: {
             id: "d-table",
@@ -98,30 +102,13 @@ app
                 sizeX: 5,
                 name: "Data Table",
                 directive: "datatable",
+				directiveSettings: "samplesettings",
                 id: "datatable",
                 icon: {
                     id: "d-table",
                     type: "fa-table"
                 }, 
                 main: true,
-				settings: false,
-				saveLoad: false,
-				delete: false,
-            }, 
-            {
-                col: 3,
-                row: 0,
-                sizeY: 3,
-                sizeX: 3,
-                name: "Ground Track",
-                directive: "groundtrack",
-				directiveSettings: "",
-                id: "addGround",
-                icon: {
-                    id: "g-track",
-                    type: "fa-globe"
-                },
-				main: true,
 				settings: false,
 				saveLoad: false,
 				delete: false,
