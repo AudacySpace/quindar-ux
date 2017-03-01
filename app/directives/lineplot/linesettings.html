@@ -1,0 +1,44 @@
+<div ng-controller="lineController" class="settingstop">
+	<div class="row settingsrightcol">
+		<div class="col-sm-6">
+			Source:
+		</div>
+		<div class="col-sm-6">
+			<div class="row">
+				<div class="col-sm-2">Livestream:</div>
+			</div>
+			<div class="row">
+				<div class = "col-sm-6">			
+					<button class="btn btn-primary setbtn" ng-click="stream()"><span class="linebtnlabel pull-left">PLAY</span>
+						<span class="pull-right"><img class="lineplay" ng-src="/icons/line-plot-widget/aud_lineplot_play.svg">
+							</img></span></button>
+				</div>
+				<div class = "col-sm-6"> 
+					<button" class="btn btn-primary setbtn" ng-click="pause()"><span class="linebtnlabel pull-left">PAUSE</span>
+						<span class="pull-right"><img class="linepause" ng-src="/icons/line-plot-widget/aud_lineplot_pause.svg">
+							</img></span></button>
+				</div>
+			</div>
+			<div class="row">
+				<p class="col-sm-12">Custom Range:</p>
+			</div>
+			<div class="row">
+				<div class = "col-sm-6">			
+					<button class="btn btn-primary setbtn"><span class="linebtnlabel pull-left">Start Time</span>
+						<span class="pull-right"><img class="linerange" ng-src="/icons/line-plot-widget/aud_lineplot_customrange.svg">
+							</img></span></button>
+				</div>
+				<div class = "col-sm-6"> 
+					<button" class="btn btn-primary setbtn"><span class="linebtnlabel pull-left">End Time</span>
+						<span class="pull-right"><img class="linerange" ng-src="/icons/line-plot-widget/aud_lineplot_customrange.svg">
+							</img></span></button>
+				</div>
+			</div>
+		</div>	
+	</div>
+	<div class="row">
+		<hr>
+	<div>
+		<button type="submit" class="btn btn-primary sbtns" ng-click="saveWidget()">SAVE</button>
+  		<button type="submit" class="btn btn-primary sbtns" ng-click="closeWidget()">CLOSE</button>	
+</div>
