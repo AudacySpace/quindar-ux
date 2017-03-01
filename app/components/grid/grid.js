@@ -44,7 +44,7 @@ angular.module('app')
 		};
 
 		vm.closeSaveLoadSettings = function(widget){
-			widget.main = main;
+			widget.main = true;
 			widget.settings = false;
 			widget.saveLoad = false;
 			widget.delete = false;

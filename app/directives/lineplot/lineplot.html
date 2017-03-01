@@ -1,5 +1,5 @@
-<div id="lpmain">
+<div ng-controller="lineController" id="lpmain">
 	<div class="svg-container" id="divlp"></div>
 	<button type="button" class="homeicon fa fa-home" ng-click="goHome()"></button>
-	<p ng-class="dispClass">LIVE</p>
+	<p ng-class="{'liveDisp':disp=='off', 'liveDispOn':disp=='on'}">LIVE</p>
 </div>
