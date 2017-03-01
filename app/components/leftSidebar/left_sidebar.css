@@ -1,0 +1,37 @@
+#input-search {
+  background-color: #242833;
+  border: #242833;
+  border-radius: 0px;
+  color: #FFFFFF;
+}
+
+#group-search {
+  border-radius:0px;     
+  background-color: #464954;
+  border: #464954;
+  color: #FFFFFF;
+}
+
+.md-sidenav-left {
+  background-color: #020613;
+}
+
+md-icon {
+  	width: 16px !important;
+    height: 16px;
+    margin-right: 16px !important;
+    margin-top: 12px !important;
+}
+
+md-icon.small {
+  	width: 12px !important;
+    height: 12px;
+    margin-right: 16px !important;
+    margin-top: 14px !important;
+    margin-bottom: 14px !important;
+}
+
+md-content#left {
+  color: #ccc;
+  background-color: #020613;
+}
