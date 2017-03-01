@@ -67,7 +67,7 @@ app
 			g.selectAll("line")
 				.attr("opacity", 0.1);
 			// End Grids //
-						
+
 			lineService.elem = g;
 			lineService.disp = scope.disp;
 			lineService.transWidth = transWidth;
