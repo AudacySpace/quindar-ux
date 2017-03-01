@@ -15,60 +15,80 @@ app
         sizeX: 3,
         name: "Ground Track",
         directive: "groundtrack",
+		directiveSettings: "samplesettings",
         id: "addGround",
         icon: {
             id: "g-track",
             type: "fa-globe"
         },
-        option: ""  
+        main: true,
+		settings: false,
+		saveLoad: false,
+		delete: false,
     }, 
     {
         sizeY: 3,
         sizeX: 3,
         name: "Telemetry Table",
         directive: "tabletext",
+		directiveSettings: "samplesettings",
         id: "addtablewidget",
         icon: {
             id: "t-table",
             type: "fa-table"
         },
-        option: "" 
+        main: true,
+		settings: false,
+		saveLoad: false,
+		delete: false,
     }, 
     {
         sizeY: 3,
         sizeX: 3,
         name: "Search By Id",
         directive: "searchtable",
+		directiveSettings: "samplesettings",
         id: "searchId",
         icon: {
             id: "s-table",
             type: "fa-search"
         },
-        option: ""
+        main: true,
+		settings: false,
+		saveLoad: false,
+		delete: false,
     },
     {
-        sizeY: 3,
-        sizeX: 4,
+        sizeY: 4,
+        sizeX: 6,
         name: "Line Plot",
         directive: "lineplot",
+		directiveSettings: "linesettings",
         id: "addLine",
         icon: {
             id: "l-plot",
             type: "fa-line-chart"
         },
-        option: "" 
+        main: true,
+		settings: false,
+		saveLoad: false,
+		delete: false,
     },
     {
         sizeY: 2,
         sizeX: 5,
         name: "Data Table",
         directive: "datatable",
+		directiveSettings: "samplesettings",
         id: "datatable",
         icon: {
             id: "d-table",
             type: "fa-table"
         },
-        option: "" 
+        main: true,
+		settings: false,
+		saveLoad: false,
+		delete: false,
     }];
 
     var dashboards = {
@@ -82,12 +102,16 @@ app
                 sizeX: 5,
                 name: "Data Table",
                 directive: "datatable",
+				directiveSettings: "samplesettings",
                 id: "datatable",
                 icon: {
                     id: "d-table",
                     type: "fa-table"
-                },
-                option: "" 
+                }, 
+                main: true,
+				settings: false,
+				saveLoad: false,
+				delete: false,
             }]
         }
     };
@@ -130,13 +154,16 @@ app
             sizeX: widget.sizeX,
             sizeY: widget.sizeY,
             directive: widget.directive,
+			directiveSettings: widget.directiveSettings,
             id: widget.id,
             icon: {
                 id: widget.icon.id,
                 type: widget.icon.type
             },
-            option: ""
-
+			main: widget.main,
+			settings: widget.settings,
+			saveLoad: widget.saveLoad,
+			delete: widget.delete
         });
     }
 
