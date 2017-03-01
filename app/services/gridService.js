@@ -60,7 +60,7 @@ app
     },
     {
         sizeY: 2,
-        sizeX: 7,
+        sizeX: 5,
         name: "Data Table",
         directive: "datatable",
         id: "datatable",
@@ -78,30 +78,16 @@ app
             widgets: [{
                 col: 0,
                 row: 0,
-                sizeY: 3,
-                sizeX: 3,
-                name: "Telemetry Table",
-                directive: "tabletext",
-                id: "addtablewidget",
+                sizeY: 2,
+                sizeX: 5,
+                name: "Data Table",
+                directive: "datatable",
+                id: "datatable",
                 icon: {
-                    id: "t-table",
+                    id: "d-table",
                     type: "fa-table"
-                }, 
-                option: ""
-            }, 
-            {
-                col: 3,
-                row: 0,
-                sizeY: 3,
-                sizeX: 3,
-                name: "Ground Track",
-                directive: "groundtrack",
-                id: "addGround",
-                icon: {
-                    id: "g-track",
-                    type: "fa-globe"
                 },
-                option: ""
+                option: "" 
             }]
         }
     };
