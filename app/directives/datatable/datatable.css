@@ -45,6 +45,11 @@ div.btn-group.selectmenu.open > a{
   border: 1px solid #999;
   vertical-align:baseline;
   padding:5px;
+  /* border-right-width:0px;*/
+}
+
+.table{
+  border-right-width:0px;
 }
 
 tr{
@@ -100,9 +105,9 @@ span.header-span{
   color:#fff;
 }
 
-td.rowcell{
+/*td.rowcell{
   border-right-width:0px;
-}
+}*/
 .rowinput{
   border:0px;
   width:100%;
@@ -113,7 +118,8 @@ td.rowcell{
   color:#ffffff;
 }
 
-.table-bordered>tbody>tr>td{
-  border: 1px solid #ddd;
+/*.table-bordered>tbody>tr>td{
+  border: 1px solid #999;
   border-right-width: 0px;
 }
+*/
