@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var User = require('./models/user');
 
 var Telemetry = require('./models/telemetry');
+var Config = require('./models/configuration');
 
 // normal routes ===============================================================
 
@@ -124,6 +125,26 @@ var Telemetry = require('./models/telemetry');
                 }
             );
         }
+    });
+
+    //Get Configuration contents for the source name passed as a parameter
+    app.get('/getConfig', function(req, res){
+        var source = req.query.source;
+        var contents = [];
+
+        Config.findOne({ 'source.name' : source }, { '_id': 0 }, function(err, config) {
+            if(err){
+                console.log(err);
+            }
+
+            for (var item in config.contents){
+                if(config.contents[item].category != "ground station" && 
+                    config.contents[item].category != "vehicle") {
+                    contents.push(item);
+                }
+            }
+            res.send(contents);
+        });
     });
 
     //get data for table text widget
