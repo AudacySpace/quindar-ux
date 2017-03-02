@@ -10,14 +10,12 @@ app
 	}
 });	
 
-app.controller('lineController', ['$scope', 'lineService', 'gridService', '$interval', 'd3Service',function($scope, lineService, gridService, $interval, d3){
+app.controller('lineController', ['$scope', 'lineService', '$interval', 'd3Service',function($scope, lineService, $interval, d3){
 
 	var vm = this;
 
-	vm.dashboards = gridService.dashboards;		
 	vm.telemetry = lineService.telemetry;
 	vm.g = lineService.elem;
-	vm.id = vm.dashboards[1].widgets.length;
 
 	var parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%S.%L%Z");
 	var plotData = [];
@@ -43,15 +41,15 @@ app.controller('lineController', ['$scope', 'lineService', 'gridService', '$inte
 	}
 	
 	// Close
-	$scope.closeWidget = function(){
-		vm.dashboards[1].widgets[vm.id-1].settings = false;
-		vm.dashboards[1].widgets[vm.id-1].main = true;
+	$scope.closeWidget = function(widget){
+		widget.main = true;
+		widget.settings = false;
 	}
 	
 	// Save
-	$scope.saveWidget = function(){
-		vm.dashboards[1].widgets[vm.id-1].settings = false;
-		vm.dashboards[1].widgets[vm.id-1].main = true;	
+	$scope.saveWidget = function(widget){
+		widget.main = true;
+		widget.settings = false;
 	}
 	
 	// Home
