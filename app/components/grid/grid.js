@@ -14,20 +14,7 @@ angular.module('app')
 			widget.settings = false;
 			widget.saveLoad = false;
 			widget.delete = true;
-
 		};
-
-		vm.deleteWidget = function(widget) {
-			gridService.remove(widget);
-		};
-
-		vm.closedeleteWidget = function(widget){
-			widget.main = true;
-			widget.settings = false;
-			widget.saveLoad = false;			
-			widget.delete = false;
-			
-		}
 
 		vm.openSettings = function(widget) {
 			widget.main = false;
@@ -42,12 +29,5 @@ angular.module('app')
 			widget.saveLoad = true;
 			widget.delete = false;			
 		};
-
-		vm.closeSaveLoadSettings = function(widget){
-			widget.main = true;
-			widget.settings = false;
-			widget.saveLoad = false;
-			widget.delete = false;
-		}
     }
 })

@@ -4,7 +4,8 @@ app
   return {
     restrict: 'AE',
     scope: {
-        quindarwidget: '@'
+        quindarwidget: '@',
+        widget: '=widget'
     },
     replace: true,
     controller: ['$scope', function (scope) {
