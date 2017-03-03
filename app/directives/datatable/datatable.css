@@ -10,12 +10,12 @@ img.arrow-right-img{
   width:15px;
 }
 a.arrowbtn{
-	border:0px;
+  border:0px;
   background-color:#F2F3F4;
   color:#b3b3b3;
 }
 a.arrowbtn:focus{
-	border:0px;
+  border:0px;
   background-color:#F2F3F4;
   outline: none
 }
@@ -45,16 +45,11 @@ div.btn-group.selectmenu.open > a{
   border: 1px solid #999;
   vertical-align:baseline;
   padding:5px;
-  /* border-right-width:0px;*/
+}
+.datatableheader{
+  border: 1px solid #999;
 }
 
-.table{
-  border-right-width:0px;
-}
-
-tr{
- /* border: 1px solid #999;*/
-}
 .datatableheader{
   background-color: #bfbfbf;
 }
@@ -104,22 +99,14 @@ span.header-span{
   float:left;
   color:#fff;
 }
-
-/*td.rowcell{
-  border-right-width:0px;
-}*/
 .rowinput{
   border:0px;
   width:100%;
 }
-
 .header{
   background-color:#1072a4;
   color:#ffffff;
 }
-
-/*.table-bordered>tbody>tr>td{
-  border: 1px solid #999;
-  border-right-width: 0px;
+.table-bordered>tbody>tr>td{
+  border: 1px solid #ccc;
 }
-*/

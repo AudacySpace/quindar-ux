@@ -18,10 +18,78 @@
 					</div>
 				</div>
 				<div class="box-content">
+<<<<<<< HEAD
 					<div ng-show="widget.main" quindarwidget = "{{ widget.directive }}" widget="widget"></div>
 					<div ng-show="widget.settings" class="settingsMenu" quindarwidget = "{{ widget.directiveSettings }}" widget="widget"></div>
 					<save-menu widget="widget" ng-show="widget.saveLoad"></save-menu>
 					<delete-menu widget="widget" ng-show="widget.delete"></delete-menu>
+=======
+					<div ng-show="widget.main" quindarwidget = "{{ widget.directive }}"></div>
+					<div ng-show="widget.settings" class="settingsMenu" quindarwidget = "{{ widget.directiveSettings }}"></div>
+					<div ng-show="widget.saveLoad" class="saveloaddatatable">
+						<div class="savestyles">
+							<form class="form-inline" >
+								<div class="row">
+  									<div class="col-sm-5">
+  										<label for="SaveWidget">Save Widget</label>
+  									</div>
+   									<div class="col-sm-1"></div>
+    								<div class="col-sm-5">
+    								<label for="LoadWidget">Load Widget</label>
+  									</div>
+  								</div>
+  								<div class="row">
+  									<div class="col-sm-5">
+ 										<input type="text" class="form-control save-widget-styles " id="inlineFormInput" placeholder="Enter Name">
+  									</div>
+   									<div class="col-sm-1"></div>
+    								<div class="col-sm-5">
+    									<div class="dropdown">
+                   							<button type="button" class="btn dropdown-toggle load-widget-styles" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    							<span class="pull-left">Widget</span> 
+                    							<span class="caret caretstyles"></span>
+                    						</button>
+                						</div>
+  									</div>
+  								</div>
+								<div class="row">
+  									<div class="col-sm-11">
+										<hr/>
+									</div>
+								</div>
+ 								<div class="row">
+									<div class="col-sm-11">
+  										<button type="submit" class="btn btn-primary sbtns">SAVE</button>
+  										<button type="submit" class="btn btn-primary sbtns" ng-click="$ctrl.closeSaveLoadSettings(widget)">CLOSE</button>
+  									</div>
+  								</div>
+							</form>
+						</div>
+					</div>
+
+					<div ng-show="widget.delete" class="deldatatable">
+						<div class="savestyles">
+							<form class="form-inline" >
+								<div class="row">
+  									<div class="col-sm-11">
+  										<label for="DeleteWidget">Delete Widget?</label>
+  									</div>
+  								</div>
+								<div class="row">
+  									<div class="col-sm-11">
+										<hr/>
+									</div>
+								</div>
+ 								<div class="row">
+									<div class="col-sm-11">
+  										<button type="submit" class="btn btn-primary sbtns" ng-click="$ctrl.deleteWidget(widget)">YES</button>
+  										<button type="submit" class="btn btn-primary sbtns" ng-click="$ctrl.closedeleteWidget(widget)">NO</button>
+  									</div>
+  								</div>
+							</form>
+						</div>
+					</div>
+>>>>>>> settings
 				</div>
 			</div>
 		</li>
