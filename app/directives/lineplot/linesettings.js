@@ -52,7 +52,6 @@ app.controller('lineController', ['$scope', 'lineService', '$interval', 'd3Servi
 	$scope.moveRowDown = function($index){
 		$scope.table.rows.data[$index+1] = $scope.table.rows.data.splice($index, 1, $scope.table.rows.data[$index+1])[0];
 	}
-
 			
 	//
 	
