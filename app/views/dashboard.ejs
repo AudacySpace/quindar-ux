@@ -16,6 +16,7 @@
 	<link href="/directives/lineplot/lineplot.css" rel="stylesheet">
     <link href="/css/widgetsettingsstyles.css" rel="stylesheet">
     <link href="/directives/datatable/datatable.css" rel="stylesheet">
+	<link href="/css/datetimepicker.css" rel="stylesheet">
 
     <!-- scripts for AngularJS and UI Bootstrap -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
@@ -67,7 +68,7 @@
     <script src="/directives/lineplot/lineplot.js"></script>
 	<script src="/directives/lineplot/linesettings.js"></script>
 	<script src="/directives/lineplot/samplesettings.js"></script>	
-
+	
     <!-- script to get user details from backend -->
     <script>
         var username = "<%= user.google.name %>";
@@ -90,7 +91,10 @@
     <script src="/scripts/d3.min.js"></script>
     <!-- topojson-client -->
     <script src="/scripts/topojson-client.min.js"></script>
-
+	<!-- Calendar datetimepicker -->
+	<script src="/scripts/moment.js"></script>
+	<script src="/scripts/datetimepicker.js"></script>
+	<script src="/scripts/datetimepicker.templates.js"></script>
 
 </body>
 </html>
