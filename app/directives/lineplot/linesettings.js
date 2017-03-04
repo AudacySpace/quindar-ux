@@ -28,6 +28,32 @@ app.controller('lineController', ['$scope', 'lineService', '$interval', 'd3Servi
 	var rectHeight = 10;
 	var rectWidth = 10;
 	var margin = {top: 10, right: 30, bottom: 30, left: 30};
+
+	//
+	var jsonData = '{"rows":{"data":[[{"value":"","checked":"true","style":"text-align:left"},{"value":"","checked":"true","style":"text-align:left"},{"value":"","checked":"true","style":"text-align:left"}]]}}';
+	$scope.table = JSON.parse(jsonData);
+
+	$scope.addRowAbove = function($index){
+		$scope.table.rows.data.splice($index,0,[{"value":"","checked":"true","style":"text-align:left"},{"value":"","checked":"true","style":"text-align:left"},{"value":"","checked":"true","style":"text-align:right"}]);
+	}
+
+	$scope.addRowBelow = function($index){
+		$scope.table.rows.data.splice($index+1,0,[{"value":"","checked":"true","style":"text-align:left"},{"value":"","checked":"true","style":"text-align:left"},{"value":"","checked":"true","style":"text-align:right"}]);
+	}
+
+	$scope.deleteRow = function($index){
+		$scope.table.rows.data.splice($index, 1);
+	}
+
+	$scope.moveRowUp = function($index){
+		$scope.table.rows.data[$index-1] = $scope.table.rows.data.splice($index, 1, $scope.table.rows.data[$index-1])[0];
+	}
+
+	$scope.moveRowDown = function($index){
+		$scope.table.rows.data[$index+1] = $scope.table.rows.data.splice($index, 1, $scope.table.rows.data[$index+1])[0];
+	}
+			
+	//
 	
 	// Stream
 	$scope.stream = function(){

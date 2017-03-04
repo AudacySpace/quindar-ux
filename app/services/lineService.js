@@ -9,12 +9,23 @@ app
 	var telemetry = {};
   	db.getTelemetry(telemetry);
 	
+	var setElem = function(element){
+		console.log(element);
+		elem = element;
+	}
+	
+	var getElem = function(){
+		return elem;
+	}
+	
 	return {
 		elem: elem,
 		transWidth: transWidth,
 		transHeight: transHeight,
 		disp: disp,
 		telemetry: telemetry,
+		setElem: setElem,
+		getElem: getElem,
 	}
 
 }]);
