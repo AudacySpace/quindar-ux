@@ -13,6 +13,10 @@ app
 		checkedNotes: true
 	};
 
+	function getValues(){
+		return checkedValues;
+	}
+
 	function setCheckedValues(val){
 		checkedValues.checkedId = val.checkedId;
 		checkedValues.checkedName = val.checkedName;
@@ -27,6 +31,7 @@ app
 
 	return {
 		checkedValues:checkedValues,
+		getValues:getValues,
 		setCheckedValues:setCheckedValues
 	}
 

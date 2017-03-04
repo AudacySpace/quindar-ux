@@ -1,7 +1,9 @@
 app.directive('datatablesettings', function() { 
   return { 
     restrict: 'E',
-    scope: {},
+    // bindings: {
+    //     widget: '='
+    // },
     templateUrl:'./directives/datatable/datatablesettings.html', 
     controller: function(datatableSettingsService,$scope){
 
@@ -17,15 +19,23 @@ app.directive('datatablesettings', function() {
             checkedNotes: true
         };
     	
-        $scope.submitValues = function(){
-            datatableSettingsService.setCheckedValues($scope.checkedValues);
-        }
+        $scope.saveDataTableSettings = function(widget){
+            var val = $scope.checkedValues;
+            widget.main = true;
+            widget.settings = false;
+            widget.saveLoad = false;
+            widget.delete = false;
+            datatableSettingsService.setCheckedValues(val);
+        };
 
-        $scope.closeValues = function(){
+        $scope.closeDataTableSettings = function(widget){
+            console.log("hi");
+            widget.main = true;
+            widget.settings = false;
+            widget.saveLoad = false;
+            widget.delete = false;
         }
-    },
-    controllerAs: 'vm',
-    bindToController: true 
+    }
   	}; 
 });
 

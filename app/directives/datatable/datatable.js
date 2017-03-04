@@ -1,17 +1,17 @@
 app.directive('datatable',function() { 
   return { 
     restrict: 'E', 
-    scope: {},
+    // scope: {},
     templateUrl:'./directives/datatable/datatable.html',
     controller: 'DataTableCtrl',
-    controllerAs: 'vm',
-    bindToController: true              
+    // controllerAs: 'vm',
+    // bindToController: true              
   	}; 
 });
 
 app.controller('DataTableCtrl',function ($scope,datatableSettingsService) {
 
-    $scope.checkedValues = datatableSettingsService.checkedValues;
+    $scope.checkedValues = datatableSettingsService.getValues();
 
     $scope.table = {"rows":{
                     "data":[
