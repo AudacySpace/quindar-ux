@@ -10,7 +10,7 @@ app
 	}
 });	
 
-app.controller('lineController', ['$scope', 'lineService', 'gridService', '$interval', 'd3Service',function($scope, lineService, gridService, $interval, d3){
+app.controller('lineController', ['$scope', 'lineService', 'gridService', '$interval', 'd3Service', '$timeout',function($scope, lineService, gridService, $interval, d3, $timeout){
 
 	var vm = this;
 
@@ -30,6 +30,51 @@ app.controller('lineController', ['$scope', 'lineService', 'gridService', '$inte
 	var rectHeight = 10;
 	var rectWidth = 10;
 	var margin = {top: 10, right: 30, bottom: 30, left: 30};
+
+	//
+	var jsonData = '{"rows":{"data":[[{"value":"","checked":"true","style":"text-align:left"},{"value":"","checked":"true","style":"text-align:left"},{"value":"","checked":"true","style":"text-align:left"}]]}}';
+	$scope.table = JSON.parse(jsonData);
+
+	$scope.addRowAbove = function($index){
+		$scope.table.rows.data.splice($index,0,[{"value":"","checked":"true","style":"text-align:left"},{"value":"","checked":"true","style":"text-align:left"},{"value":"","checked":"true","style":"text-align:right"}]);
+	}
+
+	$scope.addRowBelow = function($index){
+		$scope.table.rows.data.splice($index+1,0,[{"value":"","checked":"true","style":"text-align:left"},{"value":"","checked":"true","style":"text-align:left"},{"value":"","checked":"true","style":"text-align:right"}]);
+	}
+
+	$scope.deleteRow = function($index){
+		$scope.table.rows.data.splice($index, 1);
+	}
+
+	$scope.moveRowUp = function($index){
+		$scope.table.rows.data[$index-1] = $scope.table.rows.data.splice($index, 1, $scope.table.rows.data[$index-1])[0];
+	}
+
+	$scope.moveRowDown = function($index){
+		$scope.table.rows.data[$index+1] = $scope.table.rows.data.splice($index, 1, $scope.table.rows.data[$index+1])[0];
+	}
+
+
+	$timeout(function() { // simulating a REST API Call that takes 500 ms
+                vm.date = moment('2015-11-20T22:10Z');
+            }, 500);
+
+            vm.options = {format: 'YYYY/MM/DD HH:mm', showClear: true};
+
+            vm.getTime = function () {
+                alert('Selected time is:' + vm.date.format('YYYY/MM/DD HH:mm'));
+            };
+
+            vm.addTime = function (val, selector) {
+                vm.date = moment(vm.date.add(val, selector));
+            };
+
+            vm.clearTime = function () {
+                vm.date = undefined;
+            };
+			
+	//
 	
 	// Stream
 	$scope.stream = function(){
