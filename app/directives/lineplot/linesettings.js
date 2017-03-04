@@ -10,7 +10,7 @@ app
 	}
 });	
 
-app.controller('lineController', ['$scope', 'lineService', 'gridService', '$interval', 'd3Service', '$timeout',function($scope, lineService, gridService, $interval, d3, $timeout){
+app.controller('lineController', ['$scope', 'lineService', '$interval', 'd3Service',function($scope, lineService, $interval, d3){
 
 	var vm = this;
 
@@ -53,24 +53,6 @@ app.controller('lineController', ['$scope', 'lineService', 'gridService', '$inte
 		$scope.table.rows.data[$index+1] = $scope.table.rows.data.splice($index, 1, $scope.table.rows.data[$index+1])[0];
 	}
 
-
-	$timeout(function() { // simulating a REST API Call that takes 500 ms
-                vm.date = moment('2015-11-20T22:10Z');
-            }, 500);
-
-            vm.options = {format: 'YYYY/MM/DD HH:mm', showClear: true};
-
-            vm.getTime = function () {
-                alert('Selected time is:' + vm.date.format('YYYY/MM/DD HH:mm'));
-            };
-
-            vm.addTime = function (val, selector) {
-                vm.date = moment(vm.date.add(val, selector));
-            };
-
-            vm.clearTime = function () {
-                vm.date = undefined;
-            };
 			
 	//
 	
