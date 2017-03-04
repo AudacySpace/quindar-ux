@@ -2,10 +2,7 @@ app
 .directive('lineplot', ['d3Service','dashboardService','$interval','lineService', function(d3,db,$interval,lineService) { 
   	return { 
     	restrict: 'EA', 
-		scope: {
-			transHeight: '&',
-			transWidth:	 '&',
-		},
+		scope: {},
     	templateUrl: './directives/lineplot/lineplot.html', 
 		link: function(scope, element, attributes) {
 			
@@ -38,7 +35,7 @@ app
 			// Grids //
 			transHeight = height*.87;
 			transWidth = width*.9;
-			
+
 			var x = d3.scaleLinear()
 						.domain([0, 1])
 						.rangeRound([0, transWidth]);
