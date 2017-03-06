@@ -1,15 +1,8 @@
-# Quindar UX
-Updated: Dec 01,2016
+# Welcome to Quindar
 
-This is the repository for the Quindar UX (GUI) code. Quindar is a real-time space mission operations application supported by Audacy (https://audacy.space). The application is develpoed on the MEAN technology stack.
+Quindar is a real-time space mission operations application supported by Audacy (https://audacy.space). This project aims to create a modern, browser based, real time data visualization platform to monitor and operate complex engineering systems in a spaceflight mission operations setting. While other FOSS (Free Open Source Software) projects of this nature exist, this particular project is commercially backed by Audacy (http://audacy.space), who is fully committed to maintain it as free (no cost, open source) to the growing worldwide community of spacecraft operators of all sizes, now and in perpetuity.
 
-
-
-## Folder Structure
-
-* public        - any static content served directly by nginx
- * public/css    - stylesheets
- * public/media  - images, sounds, etc.
+The resulting mission operations software aims to achieve a modular front-end (allowing users to develop application specific widgets), and an REST API based backend (allowing users to drive displays from their specific data source). The user interface will be browser based, using the MEAN technology stack, incorporating rapid maintenance and upgradability while operating in a mission critical environment. 
 
 ## Prerequisite Tools
 
@@ -19,10 +12,7 @@ This is the repository for the Quindar UX (GUI) code. Quindar is a real-time spa
 * Docker
   * Installation: https://docs.docker.com/engine/installation/
   
-## Running Quindar UI on Local Developer Environment  
-
-* Clone the repositories
-* Build and Run docker container
+## Running Quindar on Local Environment  
 
 ### Clone the Repositories
 There are two repositories needed to deploy the Quindar project locally. 
@@ -44,53 +34,16 @@ Follow steps to build and deploy the container on localhost.
     docker build -t "quindar-qux" .
     cd ../../quindar-ux
     npm install
-    docker run -d -t --name qux --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /sys:/host/sys:ro -v $(pwd):/node/ -p 80:80 -p 443:443 quindar-qux
+    docker run -d -t --name qux --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /sys:/host/sys:ro -p 80:80 -p 443:443 quindar-qux
 
-Notes:
+The UI should be up and running on: http://localhost. Click on Login to get started.
 
-1. $(pwd) is the present working directory which over here is the path on your local machine to quindar-ux repository. Windows users can replace $(pwd) with the absolute path to the quindar-ux directory. 
+## Contributing
+We encourage you to contribute to Quindar! Please check out the file CONTRIBUTING.md for guidelines about how to proceed.
 
-2. For Windows users, enable Shared Drives in Docker settings to use the above docker run command.
+## About Us
+Audacy was launched in 2015 by Stanford graduates, SpaceX veterans, and NASA award winners. Audacy delivers anytime and effortless space connectivity, advancing humanity to a new age of commerce, exploration and discovery. Connect online at https://audacy.space.
 
-The UI should be up and running on: http://localhost
+## License
+Quindar is released under the MIT License. For license (terms of use), please refer to the file LICENSE.
 
-### Building new features for Quindar UX
-Using Git-Flow would be easier to maintain git branches. Follow the link below for documentation and getting started with Git-Flow.
-
-http://jeffkreeftmeijer.com/2010/why-arent-you-using-git-flow/
-
-Installation Instructions: https://github.com/nvie/gitflow/wiki/Installation
-
-A useful cheat-sheet: http://danielkummer.github.io/git-flow-cheatsheet/ 
-
-Naming convention for feature branches: 
-**A\<Ticket_Number\>_\<Ticket_Label\>**
-
-Example(using git-flow)
-
-1. Initiate git flow
-        
-        cd ~/repositories/quindar-ux
-        git flow init
-
-2. Create a new feature branch (Ticket #2964 with label Developer Environment)
-
-        git flow feature start A2964_Developer_Environment
-
-3. Publish the branch to the remote repo
-        
-        git flow feature publish A2964_Developer_Environment
-
-4. Make changes in your favorite editor.
-5. Test the code as changes would be reflected in the browser (http://localhost)
-6. Commit code in the feature branch and push it to the remote repo.
-        
-        git add <filename>
-        git commit -m "<commit message>"
-        git push origin feature/A2964_Developer_Environment
-
-7. Peer Review
-8. Merge the code to develop branch and switch to develop branch using the command below.
-
-        git flow feature finish A2964_Developer_Environment
- 
