@@ -24,7 +24,7 @@ app
         main: true,
 		settings: false,
 		saveLoad: false,
-		delete: false,
+		delete: false
     }, 
     {
         sizeY: 3,
@@ -40,7 +40,7 @@ app
         main: true,
 		settings: false,
 		saveLoad: false,
-		delete: false,
+		delete: false
     }, 
     {
         sizeY: 3,
@@ -56,7 +56,7 @@ app
         main: true,
 		settings: false,
 		saveLoad: false,
-		delete: false,
+		delete: false
     },
     {
         sizeY: 4,
@@ -72,14 +72,14 @@ app
         main: true,
 		settings: false,
 		saveLoad: false,
-		delete: false,
+		delete: false
     },
     {
         sizeY: 2,
         sizeX: 5,
         name: "Data Table",
         directive: "datatable",
-		directiveSettings: "samplesettings",
+		directiveSettings: "datatablesettings",
         id: "datatable",
         icon: {
             id: "d-table",
@@ -88,7 +88,8 @@ app
         main: true,
 		settings: false,
 		saveLoad: false,
-		delete: false,
+		delete: false
+
     }];
 
     var dashboards = {
@@ -102,7 +103,7 @@ app
                 sizeX: 5,
                 name: "Data Table",
                 directive: "datatable",
-				directiveSettings: "samplesettings",
+				directiveSettings: "datatablesettings",
                 id: "datatable",
                 icon: {
                     id: "d-table",
