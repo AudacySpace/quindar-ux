@@ -1,0 +1,135 @@
+<div ng-controller="lineController as vm" class="settingstop">
+	<div class="row settingsrightcol" style="display: table">
+		
+		<div class="col-sm-1" style="display: table-cell; float:none"></div>
+		
+		<div class="col-sm-5" style="display: table-cell; float:none">
+			<div class="row">
+				Source:
+			</div>		
+			
+			<div class="row settingsspace" style="display: table"></div>
+			
+			<div class="row">
+				<table class="table table-bordered table-responsive col-md-12 table-condensed cf">
+					<thead id="telehead" class="linetableheader">
+						<tr>
+						<th id="category" style="width:5%"></th>
+						<th id="id" style="text-align:left;width:20%" class="id">ID</th>
+						<th id="color" style="text-align:left;width:20%;" class="name">COLOR</th>
+						<th id="name" style="text-align:left;width:30%" class="name">NAME</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="row in table.rows.data">
+							<td class="categoryID-arrow">
+								<div class="btn-group selectmenu">
+									<a href="#" style="width:100%" class="btn btn-default arrowbtn" data-toggle="dropdown">  <span class="glyphicon glyphicon-menu-right side-arrow" id="side-arrow" style="font-weight:bolder"></span>
+									<span class="sr-only">Toggle Dropdown</span>
+									</a>
+									<ul class="dropdown-menu drpmenu" role="menu" id="drpmenu">
+										<li class="uldrpmenu"><a href="javascript:void;" class="cat-id">Select Category ID</a></li>
+										<li class="divider liner"></li>
+										<li><a href="#" class="row-above" ng-click="addRowAbove($index)">Add Row Above</a></li>
+										<li><a href="#" class="row-below" ng-click="addRowBelow($index)">Add Row Below</a></li>
+										<li><a href="#" class="move-up" ng-click="moveRowUp($index)">Move Row Up</a></li>
+										<li><a href="#" class="move-down" ng-click="moveRowDown($index)">Move Row Down</a></li>
+										<li><a href="#" class="delete-row" ng-click="deleteRow($index)">Delete Row</a></li>
+									</ul>
+								</div>
+							</td>
+							<td ng-repeat="cell in row" class="linecell" style="{{cell.style}}" colspan="{{cell.colspan}}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+		</div>
+		
+		<div class="col-sm-1" style="display: table-cell; float:none"></div>
+		
+		<div class="col-sm-4" style="display: table-cell; float:none">
+	
+			<div class="row">
+				Livestream:	
+			</div>
+			
+			<div class="row settingsspace"></div>
+			
+			<div class="row">
+					<div class="col-sm-6" style="padding-left:0">
+						<button class="btn btn-primary setbtn" ng-click="stream()"><span class="linebtnlabel pull-left">PLAY</span>
+							<span class="pull-right"><img class="lineplay" ng-src="/icons/line-plot-widget/aud_lineplot_play.svg">
+								</img></span></button>	
+					</div>
+					<div class="col-sm-6" style="padding-right:0">
+						<button" class="btn btn-primary setbtn" ng-click="pause()"><span class="linebtnlabel pull-left">PAUSE</span>
+							<span class="pull-right"><img class="linepause" ng-src="/icons/line-plot-widget/aud_lineplot_pause.svg">
+								</img></span></button>	
+					</div>
+			</div>
+			
+			<div class="row settingssection"></div>
+			
+			<div class="row">							
+				Custom Range:			
+			</div>	
+			
+			<div class="row settingsspace"></div>			
+			
+			<div class="row">
+				<div class="col-sm-6 dropdown" style="padding-left:0">
+					<a class="dropdown-toggle" id="dropdownstart"  role="button" data-toggle="dropdown" data-target="#" href="#">
+						<div class="input-group setbtn">
+							<input type="text" class="form-control linebtnlabel" data-ng-model="dateRangeStart">
+							<span class="input-group-addon"><img class="linerange" ng-src="/icons/line-plot-widget/aud_lineplot_customrange.svg">
+								</img></span>							
+						</div>	
+					</a>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="color:#000000; border-radius: 0px">
+                        <datetimepicker data-ng-model="dateRangeStart"
+                                        data-datetimepicker-config="{ dropdownSelector: '#dropdownstart' }"></datetimepicker>
+                    </ul>
+				</div>
+				
+				<div class="col-sm-6 dropdown" style="padding-right:0">
+					<a class="dropdown-toggle" id="dropdownend"  role="button" data-toggle="dropdown" data-target="#" href="#">
+						<div class="input-group setbtn">
+							<input type="text" class="form-control linebtnlabel" data-ng-model="dateRangeEnd">
+							<span class="input-group-addon"><img class="linerange" ng-src="/icons/line-plot-widget/aud_lineplot_customrange.svg">
+								</img></span>							
+						</div>	
+					</a>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="color:#000000; border-radius: 0px">
+                        <datetimepicker data-ng-model="dateRangeEnd"
+                                        data-datetimepicker-config="{ dropdownSelector: '#dropdownend' }"></datetimepicker>
+                    </ul>
+				</div>
+
+			</div>	
+			
+		</div>	
+
+		<div class="col-sm-1" style="display: table-cell; float:none"></div>
+		
+	</div>		
+	
+	<div class="row settingsbottom">
+		<div class="row">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-10">
+				<hr>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-1"></div>
+			<div class="col-sm-1">
+				<button type="submit" class="btn btn-primary sbtns" ng-click="saveWidget(widget)">SAVE</button>
+			</div>
+			<div class="col-sm-1">
+				<button type="submit" class="btn btn-primary sbtns" ng-click="closeWidget(widget)">CLOSE</button>	
+			</div>
+		</div>	
+
+	</div>		
+</div>

@@ -1,0 +1,67 @@
+<!--Right Side Nav -->
+<md-toolbar>
+    <h1 class="md-toolbar-tools">Configuration Menu</h1>
+</md-toolbar>
+<md-content flex role="navigation" id="right">
+    <md-list>
+        <md-subheader class="md-no-sticky show-hide">Hi {{ $ctrl.name }}</md-subheader>
+        <md-divider class="show-hide"></md-divider>
+        <md-list-item ng-click="$ctrl.showQwidgetMenu()">
+            <span class="glyphicon glyphicon-modal-window" id="qwidgets"></span>Qwidgets
+            <span flex></span>
+            <span class="glyphicon glyphicon-menu-down"></span>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-list class="md-dense" flex ng-show="$ctrl.QwidgetMenu">
+            <md-list-item ng-click="$ctrl.showAddMenu()" id="list2">
+                <span class="glyphicon glyphicon-plus" id="qwidgetPlus"></span>Add Qwidget
+                <span flex></span>
+                <span class="glyphicon glyphicon-menu-down pull-right" id="qwidget-add">
+            </md-list-item>
+            <md-list ng-show="$ctrl.addMenu">
+            <md-divider></md-divider>
+                <md-list-item ng-repeat="widget in $ctrl.widgetDefinitions" ng-click="$ctrl.addWidgets(widget)" id="list3">
+                    <i class="fa {{widget.icon.type}}" aria-hidden="true" id="{{widget.icon.id}}" ></i>{{widget.name}}
+                </md-list-item>
+            </md-list>
+            <md-divider></md-divider>
+            <md-list-item ng-click="$ctrl.save()" id="list2">
+                <span class="glyphicon glyphicon-save-file" id="save-layout"></span>Save Layout
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item ng-click="$ctrl.load()" id="list2">
+                <span class="glyphicon glyphicon-open-file" id="load-layout"></span>Load Layout
+                <span flex></span>
+                <span class="glyphicon glyphicon-menu-down pull-right" id="layout-arrow"></span>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item ng-click="$ctrl.clear()" id="list2">
+                <span class="glyphicon glyphicon-trash" id="clear-layout"></span>Clear
+            </md-list-item>
+            <md-divider></md-divider>
+        </md-list>
+        <md-list-item ng-click="$ctrl.user()">
+            <span class="glyphicon glyphicon-user" id="user-admin"></span>User Administration
+            <span flex></span>
+            <span class="glyphicon glyphicon-menu-down"></span>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-list-item ng-click="$ctrl.server()">
+            <i class="fa fa-server" aria-hidden="true" id="server-admin"></i></span>Server Administration
+            <span flex></span>
+            <span class="glyphicon glyphicon-menu-down"></span>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-list-item ng-click="$ctrl.document()">
+            <i class="fa fa-file-text-o" aria-hidden="true" id="docs"></i>Documentation
+            <span flex></span>
+            <span class="glyphicon glyphicon-menu-down"></span>
+        </md-list-item>
+        <md-divider></md-divider>
+        <md-list-item ng-href="/logout" class="show-flex">
+            <p>Logout</p>
+        </md-list-item>
+        <md-divider class="show-hide"></md-divider>
+    </md-list>
+</md-content>
+<!--End of Right Side Nav -->
