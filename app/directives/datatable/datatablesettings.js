@@ -1,9 +1,6 @@
 app.directive('datatablesettings', function() { 
   return { 
     restrict: 'E',
-    // bindings: {
-    //     widget: '='
-    // },
     templateUrl:'./directives/datatable/datatablesettings.html', 
     controller: function(datatableSettingsService,$scope){
 

@@ -1,11 +1,11 @@
 app.directive('datatable',function() { 
   return { 
     restrict: 'E', 
-    // scope: {},
+    scope: {},
     templateUrl:'./directives/datatable/datatable.html',
     controller: 'DataTableCtrl',
-    // controllerAs: 'vm',
-    // bindToController: true              
+    controllerAs: 'vm',
+    bindToController: true              
   	}; 
 });
 
@@ -357,11 +357,11 @@ app.controller('DataTableCtrl',function ($scope,datatableSettingsService) {
 
 
   $scope.addRowAbove = function($index){
-    $scope.table.rows.data.splice($index,0,[{"value":"","checked":"true","style":"text-align:left"},{"value":"","checked":"true","style":"text-align:left"},{"value":"","checked":"true","style":"text-align:right"},{"value":"","checked":"true","style":"text-align:right"},{"value":"","checked":"true","style":"text-align:right"},{"value":"","checked":"true","style":"text-align:right"},{"value":"","checked":"true","style":"text-align:right"},{"value":"","checked":"true","style":"text-align:left"},{"value":"","checked":"true","style":"text-align:left"}]);
+    $scope.table.rows.data.splice($index,0,[{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes"}]);
   }
 
   $scope.addRowBelow = function($index){
-    $scope.table.rows.data.splice($index+1,0,[{"value":"","checked":"true","style":"text-align:left"},{"value":"","checked":"true","style":"text-align:left"},{"value":"","checked":"true","style":"text-align:right"},{"value":"","checked":"true","style":"text-align:right"},{"value":"","checked":"true","style":"text-align:right"},{"value":"","checked":"true","style":"text-align:right"},{"value":"","checked":"true","style":"text-align:right"},{"value":"","checked":"true","style":"text-align:left"},{"value":"","checked":"true","style":"text-align:left"}]);
+    $scope.table.rows.data.splice($index+1,0,[{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes"}]);
   }
 
   $scope.deleteRow = function($index){
@@ -377,7 +377,7 @@ app.controller('DataTableCtrl',function ($scope,datatableSettingsService) {
   }
 
   $scope.convertHeader = function($index){
-    $scope.table.rows.data[$index] = [{"value":"","checked":"false","style":"text-align:right;background-color:#1072A4;","colspan":"9","class":"header","placeholder":"Click here to edit"}];
+    $scope.table.rows.data[$index] = [{"value":"","checked":"false","style":"text-align:right;background-color:#1072A4;","colshow":"true","colspan":"9","class":"header","placeholder":"Click here to edit"}];
   }
 
   $scope.convertToReadonly = function($index){
