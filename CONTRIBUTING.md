@@ -9,7 +9,7 @@ Outlined in this file are:
 ## Reporting an Issue
 Quindar uses GitHub Issue Tracking to track issues (primarily bugs and contributions of new code). 
 If you found a bug,
-* Ensure that the bug was not previously reported by searching on Github usder [Issues](https://github.com/quindar/quindar-ux/issues).
+* Ensure that the bug was not previously reported by searching on Github under [Issues](https://github.com/quindar/quindar-ux/issues).
 * If you are unable to find an existing open issue, open a new issue. It should have a clear and descriptive title, steps to reproduce the issue, expected and actual behavior. Include code samples, screenshots wherever needed.
 
 ## Contributing to the Quindar code
