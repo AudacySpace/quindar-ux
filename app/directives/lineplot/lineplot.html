@@ -1,5 +1,13 @@
 <div ng-controller="lineController" id="lpmain">
 	<div class="svg-container" id="divlp"></div>
-	<button type="button" class="homeicon fa fa-home" ng-click="goHome()"></button>
 	<p ng-class="{'liveDisp':disp=='off', 'liveDispOn':disp=='on'}">LIVE</p>
+	<button type="button" class="playicon " ng-click="play()" ng-disabled="disbtn">
+		<img class="linehome" ng-src="/icons/line-plot-widget/lineplot_play.svg"></img>
+	</button>
+	<button type="button" class="pauseicon" ng-click="pause()">
+		<img class="linehome" ng-src="/icons/line-plot-widget/lineplot_pause.svg"></img>
+	</button>
+	<button type="button" class="homeicon" ng-click="goHome()">
+		<img class="linehome" ng-src="/icons/line-plot-widget/lineplot_home.svg"></img>
+	</button>
 </div>
