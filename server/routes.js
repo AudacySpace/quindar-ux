@@ -130,20 +130,37 @@ var Config = require('./models/configuration');
     //Get Configuration contents for the source name passed as a parameter
     app.get('/getConfig', function(req, res){
         var source = req.query.source;
-        var contents = [];
+        var contents;
+        var flags = [];
+        var configuration = [];
 
         Config.findOne({ 'source.name' : source }, { '_id': 0 }, function(err, config) {
             if(err){
                 console.log(err);
             }
 
-            for (var item in config.contents){
+            for (var item in config.contents){   
                 if(config.contents[item].category != "ground station" && 
                     config.contents[item].category != "vehicle") {
-                    contents.push(item);
+
+                    var category = config.contents[item].category;
+
+                    if( flags[category]) {
+                        for(var j=0; j<configuration.length; j++){
+                            if(configuration[j].category == category){
+                                configuration[j].values.push(item);
+                            }
+                        }
+                    } else {
+                        contents = {category:"", values:[]};
+                        contents.category = category;
+                        contents.values.push(item);
+                        flags[category] = true;
+                        configuration.push(contents);
+                    }
                 }
             }
-            res.send(contents);
+            res.send(configuration);
         });
     });
 
