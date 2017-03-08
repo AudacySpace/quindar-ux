@@ -12,8 +12,12 @@ app
             vm.vehicleMenu = !vm.vehicleMenu;
         }
 
-        vm.showTelemetryMenu = function(vehicle){
+        vm.showCategoryMenu = function(vehicle){
             vehicle.active = !vehicle.active;
+        }
+
+        vm.showTelemetryMenu = function(config){
+            config.active = !config.active;
         }
 
   		vm.selectConfig = function(vehicle, data){
@@ -25,7 +29,11 @@ app
   			sidebarService.getConfig()
   			.then(function(response) {
   				vm.config = response.data;
-
+                for(var j=0; j<vm.config.length; j++){
+                    vm.config[j].active = false;
+                    vm.config[j].category = initCaps(vm.config[j].category);
+                }
+                
   				vm.vehicles = [ {
 					name : "Audacy1",
 					config : vm.config,
@@ -45,6 +53,17 @@ app
 
        		});
   		}
+
+        function initCaps(str){
+            words = str.toLowerCase().split(' ');
+
+             for(var i = 0; i < words.length; i++) {
+                  var letters = words[i].split('');
+                  letters[0] = letters[0].toUpperCase();
+                  words[i] = letters.join('');
+             }
+             return words.join(' ');
+        }
         
 	}
 })
