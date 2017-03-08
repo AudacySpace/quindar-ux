@@ -19,16 +19,23 @@
         </md-list-item>
         <md-divider></md-divider>
         <md-list class="md-dense" flex ng-show="$ctrl.vehicleMenu" ng-repeat = "vehicle in $ctrl.vehicles">
-            <md-list-item ng-click="$ctrl.showTelemetryMenu(vehicle)" id="list2">
+            <md-list-item ng-click="$ctrl.showCategoryMenu(vehicle)" id="list2">
                 <md-icon class="md-icon" md-svg-icon="/icons/aud_sat.svg"></md-icon>
                 <p>{{ vehicle.name }}</p>
             </md-list-item>
-            <md-list class="md-dense" flex ng-show="vehicle.active">
+            <md-list class="md-dense" flex ng-show="vehicle.active" ng-repeat="data in vehicle.config">
                 <md-divider></md-divider>
-                <md-list-item ng-repeat="data in vehicle.config" ng-click="$ctrl.selectConfig(vehicle,data)" id="list3" >
+                <md-list-item id="list3" ng-click="$ctrl.showTelemetryMenu(data)">
                     <md-icon class="md-icon small" md-svg-icon="/icons/aud_target.svg"></md-icon>
-                    <p>{{ data }}</p>
+                    <p>{{ data.category }}</p>
                 </md-list-item>
+                <md-list class="md-dense" flex ng-show="data.active">
+                    <md-divider></md-divider>
+                    <md-list-item ng-repeat="value in data.values" ng-click="$ctrl.selectConfig(vehicle,value)" id="list4" >
+                        <md-icon class="md-icon smaller" md-svg-icon="/icons/aud_arrow_01-2.svg"></md-icon>
+                        <p>{{ value }}</p>
+                    </md-list-item>
+                </md-list>
             </md-list>
             <md-divider></md-divider>
         </md-list>
