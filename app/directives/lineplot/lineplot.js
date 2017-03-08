@@ -8,6 +8,8 @@ app
 			
 			scope.disp = "off";
 			
+			telemetry = lineService.telemetry;
+	
 			var parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%S.%L%Z");
 			var plotData = [];
 			var delay = 1000;	// [milisecond]
@@ -30,7 +32,7 @@ app
 					.attr("preserveAspectRatio", "xMidYMin meet")
                     .attr("viewBox", "0 0 "+(width+margin.left)+" "+height+"")
                     .classed("svg-content", true),
-			g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");; 
+			g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 			// Grids //
 			transHeight = height*.87;
@@ -64,14 +66,118 @@ app
 			g.selectAll("line")
 				.attr("opacity", 0.1);
 			// End Grids //
+					
+			// Stream
+			scope.play = function(){
+				scope.stream = $interval(updatePlot, delay);		
+				scope.disp = "on";
+				scope.disbtn = true;
+			}
 
-			lineService.elem = g;
-			lineService.disp = scope.disp;
-			lineService.transWidth = transWidth;
-			lineService.transHeight = transHeight;
+			// Pause
+			scope.pause = function(){
+				$interval.cancel(scope.stream);
+				plotData=[];
+				scope.disp = "off";
+				scope.disbtn = false;
+			}
 			
-			//console.log(lineService.elem)
+			// Home
+			scope.goHome = function(){
+				alert("HOME")
+			}
+	
+			function updatePlot() {
+				
+				g.selectAll("g.axis").remove();
+				g.selectAll("path").remove();
+				g.selectAll("line").remove();
+				g.selectAll("circle").remove();
+				g.selectAll("text").remove();
+				
+				var tTemp = parseTime(telemetry[vehicle][paramX].value);
+				var xTemp = telemetry[vehicle][paramY].value;
+				xUnits = telemetry[vehicle][paramY].units;
+	
+				plotData.push({x:tTemp, y:xTemp});
+				
+				if (plotData.length > ptNum) {
+					plotData.splice(0,1);
+				};
+
+				data = plotData;
+				
+				var x = d3.scaleTime()
+					.domain(d3.extent(data, function(d) { return d.x; }))
+					.rangeRound([margin.left, transWidth+margin.left]);
+				var y = d3.scaleLinear()
+					.domain(d3.extent(data, function(d) { return d.y; }))
+					.rangeRound([transHeight, 0]);
+				var line = d3.line()
+					.x(function(d) { return x(d.x); })
+					.y(function(d) { return y(d.y); });		
+				var xMap = function(d) { return x(d.x);};
+				var yMap = function(d) { return y(d.y);} 
+				
+				g.append("g")
+				.attr("transform", "translate("+margin.left+",0)")
+				.attr("class", "axis")
+				.call(d3.axisLeft(y).tickSize(-transWidth));
+
+				// text label for the y axis
+				g.append("text")
+				.attr("transform", "rotate(-90)")
+				.attr("y", -10 )
+				.attr("x",0 - (transHeight / 2))
+				.attr("class", "linelabel")
+				.text(paramY+ " [" + xUnits + "]");  
+	  
+				g.append("g")
+				.attr("transform", "translate(0,"+ transHeight + ")")
+				.attr("class", "axis")
+				.call(d3.axisBottom(x).tickSize(-transHeight));		
+					
+				// text label for the x axis
+				g.append("text")             
+				.attr("transform","translate(" + (transWidth/2) + " ," + (transHeight+margin.bottom) + ")")
+				.attr("class","linelabel")
+				.text(paramX);
+	  
+				g.selectAll("path")
+				.attr("opacity", 0.1);
 			
+				g.selectAll("line")
+				.attr("opacity", 0.1);
+
+				g.append("path")
+				.datum(data)
+				.attr("class","lineplot")
+				.attr("stroke", "#172168")
+				.attr("d", line);	
+
+				g.selectAll("dot")
+				.data(data)
+				.enter().append("circle")
+				.attr("r", 2)
+				.attr("cx", xMap)
+				.attr("cy", yMap)
+				.attr("stroke", "#172168")
+				.attr("fill", "#172168");		
+			
+				g.append("rect")
+				.attr("transform","translate(" + (margin.left+10) + " ,10)")
+				.attr("height", rectHeight)
+				.attr("width", rectWidth)
+				.style("fill","#172168");
+				
+				g.append("text")
+				.attr("transform","translate(" + (margin.left+20+rectWidth) + " ,"+ (margin.top+10) +")")
+				.attr("class","linelabel")
+				.text(vehicle);				
+				
+				return this;
+			}			
+	
 		}
-  	}; 
-}])
+  	} 
+}]);

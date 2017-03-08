@@ -19,12 +19,12 @@
 	position:absolute;
 	font-family: "Open Sans", Sans-serif;	
 	font-weight: bold;
-	right:75px;
+	right:135px;
 	top:80px;
-	font-size:12px;
+	font-size:13px;
 	color: #8B8C94;
 	border-style: solid;
-	border-width: 2px;
+	border-width: 1.5px;
 	padding: 3px 3px;	
 	padding-top: 2px;
 	padding-bottom: 2px;
@@ -33,12 +33,12 @@
 	position:absolute;
 	font-family: "Open Sans", Sans-serif;	
 	font-weight: bold;
-	right:75px;
+	right:135px;
 	top:80px;
-	font-size:12px;
+	font-size:13px;
 	color: #ff0000;
 	border-style: solid;
-	border-width: 2px;
+	border-width: 1.5px;
 	padding: 3px 3px;	
 	padding-top: 2px;
 	padding-bottom: 2px;
@@ -47,12 +47,31 @@
 	position:absolute;
 	right:45px;
 	top:80px;
-	font-size:20px;
 	color: #8B8C94;
-	background-color: #CFCFD5;
-	border-color: #CFCFD5;
-	border: 0px;
-	padding: 2px 2px;	
+	background-color: #FFFFFF;
+	padding: 0px 0px;
+	boarder: 0px 0px;
+	width: 25 px;
+}
+.playicon{
+	position:absolute;
+	right:75px;
+	top:80px;
+	color: #8B8C94;
+	background-color: #FFFFFF;
+	padding: 0px 0px;
+	border-width: 0px;
+	width: 25 px;
+}
+.pauseicon{
+	position:absolute;
+	right:105px;
+	top:80px;
+	color: #8B8C94;
+	background-color: #FFFFFF;
+	padding: 0px 0px;
+	border-width: 0px;
+	width: 25 px;
 }
 .lineplot{
 	fill: none;
@@ -98,11 +117,6 @@
 	height: 5%;
 	font-family: "Open Sans", Sans-serif;	
 }
-.settingssection{
-	width: 100%;
-	height: 10%;
-	font-family: "Open Sans", Sans-serif;	
-}
 .setbtn{
 	width: 100%;
 	border-radius:0px;
@@ -110,26 +124,8 @@
 	background-color:#ffffff;
 	color:#020613;
 }
-.setbtn2{
-	width: 100%;
-	border-radius:0px;
-	overflow:hidden;
-	background-color:#07D1EA;
-	color:#fff;
-	font-family: "Open Sans", Sans-serif;	
-	font-size: 12px;
-	padding-left: 0;
-	padding-right: 0;
-}
-.lineplay{
-	top:6px;
-	right:6px;
-	width:12px;
-}
-.linepause{
-	top:6px;
-	right:6px;
-	width:8px;
+.linehome{
+	width:25px;
 }
 .linerange{
 	top:6px;
