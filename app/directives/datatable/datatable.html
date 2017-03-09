@@ -17,11 +17,12 @@
         <tr ng-repeat="row in table.rows.data">
             <td class="categoryID-arrow">
                 <div class="btn-group selectmenu">
-  			       <a href="#" style="width:100%" class="btn btn-default arrowbtn" data-toggle="dropdown">  <span class="glyphicon glyphicon-menu-right side-arrow" id="side-arrow" style="font-weight:bolder"></span>
+  			       <a href="#" style="width:100%" class="btn btn-default arrowbtn" data-toggle="dropdown"><span class="glyphicon glyphicon-menu-right side-arrow" id="side-arrow" style="font-weight:bolder"></span>
     		          <span class="sr-only">Toggle Dropdown</span>
   		            </a>
   			        <ul class="dropdown-menu drpmenu" role="menu" id="drpmenu">
-    			       <li ng-click="changeCol()" class="uldrpmenu"><a href="javascript:void;" class="cat-id">Select Category ID</a></li>
+    			       <li class="uldrpmenu"><a href="#" class="cat-id" ng-click="getTelemetrydata($event,$index)">Select Telemetry Id</a></li>
+                        <li><a href="#" class="cat-id" ng-click="getValue($event,$index)">Apply Telemetry Id</a></li>
                        <li class="divider liner"></li>
     		           <li><a href="#" class="row-above" ng-click="addRowAbove($index)">Add Row Above</a></li>
     			       <li><a href="#" class="row-below" ng-click="addRowBelow($index)">Add Row Below</a></li>
@@ -32,8 +33,10 @@
     		        </ul>
     	        </div>
             </td>
-            <td ng-repeat="cell in row" class="rowcell" style="{{cell.style}}" colspan="{{cell.colspan}}" ng-show="{{cell.colshow}}"><input class="rowinput {{cell.class}}" type="text" ng-readonly="{{cell.checked}}" value="{{cell.value}}" ng-blur="convertToReadonly($index)" placeholder="{{cell.placeholder}}" aria-label="Readonly field" />
+            <td ng-repeat="cell in row" class="rowcell" style="{{cell.style}}"
+           colspan="{{cell.colspan}}" ng-show="{{cell.colshow}}"><input class="rowinput {{cell.class}}" type="text" ng-readonly="{{cell.checked}}" value="{{cell.value}}" ng-blur="convertToReadonly($index)" placeholder="{{cell.placeholder}}" aria-label="Readonly field" />
             </td>
         </tr>
 	</tbody>
 </table>
+

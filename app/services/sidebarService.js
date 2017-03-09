@@ -1,7 +1,10 @@
 app
 .factory('sidebarService', ['$http', function($http) { 
-    var vehicle = 'Audacy1';
-    var id = 'x';
+
+    var vehicleInfo = {
+        vehicle : '',
+        id : ''
+    }
 
     function getConfig(config) {
         return $http({
@@ -11,27 +14,19 @@ app
             });
     }
 
-    function setVehicle(name) {
-        vehicle = name;
+    function setVehicleInfo(name,data) {
+        vehicleInfo.vehicle = name;
+        vehicleInfo.id = data;
     }
 
-    function setId(data) {
-        id = data;
-    }
-
-    function getVehicle(name) {
-        return vehicle;
-    }
-
-    function getId(data) {
-        return id;
+    function getVehicleInfo(){
+        return vehicleInfo;
     }
 
 	return {
         getConfig : getConfig,
-        setVehicle : setVehicle,
-        setId : setId,
-        getVehicle : getVehicle,
-        getId : getId
+        setVehicleInfo : setVehicleInfo,
+        vehicleInfo : vehicleInfo,
+        getVehicleInfo : getVehicleInfo
 	}
 }]);
