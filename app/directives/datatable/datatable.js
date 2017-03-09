@@ -9,7 +9,7 @@ app.directive('datatable',function() {
   	}; 
 });
 
-app.controller('DataTableCtrl',function ($scope,datatableSettingsService) {
+app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,datatableSettingsService,dashboardService,sidebarService) {    
 
     $scope.checkedValues = datatableSettingsService.getValues();
 
@@ -71,7 +71,7 @@ app.controller('DataTableCtrl',function ($scope,datatableSettingsService) {
                                         "colshow":"checkedValues.checkedNotes"
                                     }
                                 ],
-                                [
+                                 [
                                     {   
                                         "value":"",
                                         "checked":"true",
@@ -355,34 +355,65 @@ app.controller('DataTableCtrl',function ($scope,datatableSettingsService) {
                         }
                     };
 
+    $scope.getTelemetrydata = function($event,$index){
+        var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
+        arrow.style.color = "red";
 
-  $scope.addRowAbove = function($index){
-    $scope.table.rows.data.splice($index,0,[{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes"}]);
-  }
+        if ($window.innerWidth < 1400){
+            $mdSidenav('left').open();
+        } else {
+            $scope.lock = dashboardService.getLock();
+            $scope.lock.lockLeft = !$scope.lock.lockLeft;
+            dashboardService.setLeftLock($scope.lock.lockLeft);
+        }
+    }
 
-  $scope.addRowBelow = function($index){
-    $scope.table.rows.data.splice($index+1,0,[{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes"}]);
-  }
+    $scope.getValue = function($event,$index){
 
-  $scope.deleteRow = function($index){
-    $scope.table.rows.data.splice($index, 1);
-  }
+        var vehicle = sidebarService.getVehicleInfo();
+        var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
 
-  $scope.moveRowUp = function($index){
-    $scope.table.rows.data[$index-1] = $scope.table.rows.data.splice($index, 1, $scope.table.rows.data[$index-1])[0];
-  }
+        $scope.table.rows.data[$index][0].value = vehicle.id ;
 
-  $scope.moveRowDown = function($index){
-    $scope.table.rows.data[$index+1] = $scope.table.rows.data.splice($index, 1, $scope.table.rows.data[$index+1])[0];
-  }
+        if ($window.innerWidth >= 1400){
+            $scope.lock.lockLeft = !$scope.lock.lockLeft;
+            dashboardService.setLeftLock($scope.lock.lockLeft);          
+        } 
 
-  $scope.convertHeader = function($index){
-    $scope.table.rows.data[$index] = [{"value":"","checked":"false","style":"text-align:right;background-color:#1072A4;","colshow":"true","colspan":"9","class":"header","placeholder":"Click here to edit"}];
-  }
+        if(vehicle.id === '') {
+            arrow.style.color = "red";
+        } else {
+            arrow.style.color = "#b3b3b3";  
+        } 
+    }
 
-  $scope.convertToReadonly = function($index){
-    $scope.table.rows.data[$index]["checked"] = "true";
-  }
+    $scope.addRowAbove = function($index){
+        $scope.table.rows.data.splice($index,0,[{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes"}]);
+    }
+
+    $scope.addRowBelow = function($index){
+        $scope.table.rows.data.splice($index+1,0,[{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes"}]);
+    }
+
+    $scope.deleteRow = function($index){
+        $scope.table.rows.data.splice($index, 1);
+    }
+
+    $scope.moveRowUp = function($index){
+        $scope.table.rows.data[$index-1] = $scope.table.rows.data.splice($index, 1, $scope.table.rows.data[$index-1])[0];
+    }
+
+    $scope.moveRowDown = function($index){
+        $scope.table.rows.data[$index+1] = $scope.table.rows.data.splice($index, 1, $scope.table.rows.data[$index+1])[0];
+    }
+
+    $scope.convertHeader = function($index){
+        $scope.table.rows.data[$index] = [{"value":"","checked":"false","style":"text-align:right;background-color:#1072A4;","colshow":"true","colspan":"9","class":"header","placeholder":"Click here to edit"}];
+    } 
+
+    $scope.convertToReadonly = function($index){
+        $scope.table.rows.data[$index]["checked"] = "true";
+    }
 
 });
 

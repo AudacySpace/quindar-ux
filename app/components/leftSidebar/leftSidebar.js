@@ -21,8 +21,7 @@ app
         }
 
   		vm.selectConfig = function(vehicle, data){
-  			sidebarService.setVehicle(vehicle.name);
-  			sidebarService.setId(data);
+            sidebarService.setVehicleInfo(vehicle.name,data);
   		}
 
   		function getData(){
