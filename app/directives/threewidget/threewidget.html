@@ -1,0 +1,18 @@
+<div class="container" ng-view="">
+<div class="hero-unit">
+	<p>AngularJS + ThreeJS</p>
+
+	<p>Loading WebGL content with AngularJS</p>
+
+	<div ng-controller="threeController">
+
+		<threewidget assimp-url="assimpModelUrl"></threewidget>
+
+	<button ng-click="changeModel()">change model</button>
+		<input ng-model="assimpModelUrl"/>
+
+    </div>
+</div>
+</div>
+<!-- assimpModelUrl cont--->
+

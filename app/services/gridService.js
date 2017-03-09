@@ -89,7 +89,23 @@ app
 		settings: false,
 		saveLoad: false,
 		delete: false,
-    }];
+    },
+        {
+            sizeY: 2,
+            sizeX: 5,
+            name: "3D Widget",
+            directive: "qwidget",
+            directiveSettings: "samplesettings",
+            id: "threewidget",
+            icon: {
+                id: "three-widget",
+                type: "fa-cube"
+            },
+            main: true,
+            settings: false,
+            saveLoad: false,
+            delete: false,
+        }];
 
     var dashboards = {
         '1': {

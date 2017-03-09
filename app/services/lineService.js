@@ -25,7 +25,7 @@ app
 		disp: disp,
 		telemetry: telemetry,
 		setElem: setElem,
-		getElem: getElem,
+		getElem: getElem
 	}
 
 }]);
