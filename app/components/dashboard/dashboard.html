@@ -1,7 +1,7 @@
 <div layout-fill layout="vertical">
     <section flex layout="horizontal">
         <!--Left Sidenav-->
-        <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="lockLeft">
+        <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$ctrl.locks.lockLeft">
             <left-sidebar></left-sidebar>
         </md-sidenav>
         <!--End Left Sidenav-->
@@ -65,7 +65,7 @@
         </md-content>
         <!--End Main Dashboard Navigation-->
         <!--Right Sidenav-->
-        <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right" md-is-locked-open="lockRight">
+        <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right" md-is-locked-open="$ctrl.locks.lockRight">
             <right-sidebar></right-sidebar>
         </md-sidenav>
         <!--End Right Sidenav-->
