@@ -1,5 +1,10 @@
 app
-.factory('dashboardService', ['$interval', '$http', function($interval, $http) { 
+.factory('dashboardService', ['$interval', '$http', function($interval, $http) {
+    var locks = {
+        lockLeft : false,
+        lockRight : false
+    };
+
 	function checkTime(i) {
         if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
         return i;
@@ -34,10 +39,26 @@ app
         return clock;
     }
 
+    function getLock(){
+        return locks;
+    }
+
+    function setLeftLock(lock){
+        locks.lockLeft = lock;
+    }
+
+    function setRightLock(lock){
+       locks.lockRight = lock; 
+    }
+
 	return {
 		getTelemetry : getTelemetry,
 		name : username,
 		email : usermail,
-		startTime : startTime
+		startTime : startTime,
+        locks : locks,
+        getLock : getLock,
+        setLeftLock : setLeftLock,
+        setRightLock : setRightLock
 	}
 }]);
