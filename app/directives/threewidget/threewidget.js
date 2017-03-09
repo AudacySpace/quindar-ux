@@ -13,11 +13,11 @@ app
 
 			// init scene
 			init();
-			console.log(scope.assimpUrl);
+
+			//console.log(scope.assimpUrl);
 			// Load jeep model using the AssimpJSONLoader
 
 			var loader1 = new THREE.AssimpJSONLoader();
-			console.log(loader1);
 
 			 scope.$watch("assimpUrl", function(newValue, oldValue) {
 			 	if (newValue != oldValue) loadModel(newValue);
@@ -99,6 +99,4 @@ app.controller('threeController', function ($scope) {
 			$scope.assimpModelUrl = "../directives/threewidget/models/interior.3ds.json";
 		}
 	};
-
-	//return $scope.assimpModelUrl;
 });
