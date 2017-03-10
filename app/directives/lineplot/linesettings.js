@@ -10,9 +10,11 @@ app
 	}
 });	
 
-app.controller('lineController', ['$scope', 'd3Service', 'datatableSettingsService','$mdSidenav','$window','dashboardService','sidebarService', function($scope, d3, datatableSettingsService, $mdSidenav, $window, dashboardService, sidebarService){
-
+app.controller('lineController', ['$scope', 'd3Service', 'datatableSettingsService','$mdSidenav','$window','dashboardService','sidebarService', 'lineService', function($scope, d3, datatableSettingsService, $mdSidenav, $window, dashboardService, sidebarService, lineService){
+	lineService.settingsId = $scope.$id;
+	lineService.setIdStore(lineService.mainId, lineService.settingsId);
 	$scope.vehicle =[];
+	$scope.telemetry = dashboardService.telemetry;
 	
 	// Table
 	$scope.checkedValues = datatableSettingsService.getValues();
@@ -31,12 +33,6 @@ app.controller('lineController', ['$scope', 'd3Service', 'datatableSettingsServi
                                         "checked":"true",
                                         "style":"text-align:left",
                                         "colshow":"checkedValues.checkedName"
-                                    },
-                                    {   
-                                        "value":"",
-                                        "checked":"true",
-                                        "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedAlow"
                                     }
 								]
 							]
@@ -60,8 +56,19 @@ app.controller('lineController', ['$scope', 'd3Service', 'datatableSettingsServi
 
         var vehicle = sidebarService.getVehicleInfo();
         var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
-		console.log($scope.$id)
+		var tempStore = lineService.getIdStore();
+
+		for (i=0; i < tempStore.length; i++){
+					
+			if (tempStore[i].settings == $scope.$id){
+
+				// Identify the index
+				lineService.setParam(tempStore[i].main, $scope.$id, vehicle.vehicle, vehicle.id);;
+			} 				
+		}
+		
         $scope.table.rows.data[$index][0].value = vehicle.id;
+		$scope.table.rows.data[$index][1].value = $scope.telemetry[vehicle.vehicle][vehicle.id].name;
 		$scope.vehicle = vehicle.vehicle;
 		
         if ($window.innerWidth >= 1400){

@@ -16,8 +16,8 @@
 						<tr>
 						<th id="category" style="width:5%"></th>
 						<th id="id" style="text-align:left;width:20%" class="id">ID</th>
-						<th id="color" style="text-align:left;width:20%;" class="name">COLOR</th>
 						<th id="name" style="text-align:left;width:30%" class="name">NAME</th>
+						<th id="color" style="text-align:left;width:20%;" class="name">COLOR</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -42,6 +42,7 @@
 							<td ng-repeat="cell in row" class="linecell" style="{{cell.style}}" colspan="{{cell.colspan}}" ng-show="{{cell.colshow}}">
 								<input class="rowinput {{cell.class}}" type="text" ng-readonly="{{cell.checked}}" value="{{cell.value}}" ng-blur="convertToReadonly($index)" placeholder="{{cell.placeholder}}" aria-label="Readonly field" />
 							</td>
+							<td class="linecell"><img src="../icons/line-plot-widget/aud_box_blue.svg" class="img_alow"/></td>
 						</tr>
 					</tbody>
 				</table>
