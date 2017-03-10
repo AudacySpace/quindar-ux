@@ -1,5 +1,5 @@
 app
-.directive('lineplot', ['d3Service','dashboardService','$interval', 'sidebarService', function(d3,db,$interval) { 
+.directive('lineplot', ['d3Service','dashboardService','$interval', 'sidebarService', 'lineService', function(d3,db,$interval,sidebarService,lineService) { 
 
   	return { 
     	restrict: 'EA', 
@@ -11,9 +11,9 @@ app
 		link: function(scope, element, attributes) {
 			
 			scope.disp = "off";
-			
+			lineService.mainId = scope.$id;
 			telemetry = db.telemetry;
-	
+
 			var parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%S.%L%Z");
 			var plotData = [];
 			var delay = 1000;	// [milisecond]
@@ -67,18 +67,28 @@ app
 			g.selectAll("line")
 				.attr("opacity", 0.1);
 			// End Grids //
-				console.log(scope.$id)	
+
 			// Stream
 			scope.play = function(){
-				 console.log(scope.$id)	
-				var vehicleObj = sidebarService.getVehicleInfo();
-				var vehicle = vehicleObj.vehicle;
-				var paramY = vehicleObj.id;
-				var paramX = "timestamp";
-				console.log(vehicleObj)
-				if (vehicleObj.vehicle == ""){
+				
+				var tempParam = lineService.getParam();	
+				var idNum = "none";
+				
+				for (i=0; i < tempParam.length; i++){
+					
+					if (tempParam[i].main == scope.$id){
+						
+						// Identify the index
+						idNum = i;
+					} 				
+				}
+
+				if (idNum == "none"){
 					alert("Select Data!")
 				}else{
+					var vehicle = tempParam[idNum].name;
+					var paramY = tempParam[idNum].id;
+					var paramX = "timestamp";
 					scope.stream = $interval(updatePlot, delay, 0, false, [vehicle, paramY, paramX]);		
 					scope.disp = "on";
 					scope.disbtn = true;
