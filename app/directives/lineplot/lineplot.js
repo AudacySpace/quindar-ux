@@ -1,5 +1,5 @@
 app
-.directive('lineplot', ['d3Service','dashboardService','$interval','lineService', function(d3,db,$interval,lineService) { 
+.directive('lineplot', ['d3Service','dashboardService','$interval', function(d3,db,$interval) { 
   	return { 
     	restrict: 'EA', 
 		scope: {},
@@ -8,7 +8,7 @@ app
 			
 			scope.disp = "off";
 			
-			telemetry = lineService.telemetry;
+			telemetry = db.telemetry;
 	
 			var parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%S.%L%Z");
 			var plotData = [];
