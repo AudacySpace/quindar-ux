@@ -1,8 +1,11 @@
 app
-.directive('lineplot', ['d3Service','dashboardService','$interval','lineService', function(d3,db,$interval,lineService) { 
+.directive('lineplot', ['d3Service','dashboardService','$interval','lineService','sidebarService', function(d3,db,$interval,lineService,sidebarService) { 
   	return { 
     	restrict: 'EA', 
-		scope: {},
+		scope: {
+			vehicle: '&',
+		},
+		controller: 'lineController',
     	templateUrl: './directives/lineplot/lineplot.html', 
 		link: function(scope, element, attributes) {
 			
@@ -15,9 +18,6 @@ app
 			var delay = 1000;	// [milisecond]
 			var ptNum = 100;	// Number of points in a plot
 			var xUnits;			
-			var vehicle = "Audacy2";
-			var paramY = "y";
-			var paramX = "timestamp";
 			var rectHeight = 10;
 			var rectWidth = 10;
 
@@ -66,12 +66,22 @@ app
 			g.selectAll("line")
 				.attr("opacity", 0.1);
 			// End Grids //
-					
+				console.log(scope.$id)	
 			// Stream
 			scope.play = function(){
-				scope.stream = $interval(updatePlot, delay);		
-				scope.disp = "on";
-				scope.disbtn = true;
+				 console.log(scope.$id)	
+				var vehicleObj = sidebarService.getVehicleInfo();
+				var vehicle = vehicleObj.vehicle;
+				var paramY = vehicleObj.id;
+				var paramX = "timestamp";
+				console.log(vehicleObj)
+				if (vehicleObj.vehicle == ""){
+					alert("Select Data!")
+				}else{
+					scope.stream = $interval(updatePlot, delay, 0, false, [vehicle, paramY, paramX]);		
+					scope.disp = "on";
+					scope.disbtn = true;
+				}
 			}
 
 			// Pause
@@ -87,8 +97,12 @@ app
 				alert("HOME")
 			}
 	
-			function updatePlot() {
+			function updatePlot(vehicleObj) {
 				
+				var vehicle = vehicleObj[0];
+				var paramY = vehicleObj[1];
+				var paramX = vehicleObj[2];
+
 				g.selectAll("g.axis").remove();
 				g.selectAll("path").remove();
 				g.selectAll("line").remove();
