@@ -89,6 +89,7 @@ app
 					var vehicle = tempParam[idNum].name;
 					var paramY = tempParam[idNum].id;
 					var paramX = "timestamp";
+
 					scope.stream = $interval(updatePlot, delay, 0, false, [vehicle, paramY, paramX]);		
 					scope.disp = "on";
 					scope.disbtn = true;
