@@ -9,7 +9,7 @@ app.directive('datatable',function() {
   	}; 
 });
 
-app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,datatableSettingsService,dashboardService,sidebarService) {    
+app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,datatableSettingsService,dashboardService,sidebarService) {    
 
     $scope.checkedValues = datatableSettingsService.getValues();
 
@@ -368,22 +368,42 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,datatableSett
         }
     }
 
-    $scope.getValue = function($event,$index){
-
-        var vehicle = sidebarService.getVehicleInfo();
+    $scope.getValue = function($event, row){
+        var vehicleInfo = sidebarService.getVehicleInfo();
+        var vehicle = vehicleInfo.vehicle;
+        var id = vehicleInfo.id;
+        var telemetry = dashboardService.telemetry;
         var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
 
-        $scope.table.rows.data[$index][0].value = vehicle.id ;
+        if(vehicle !== "" && id !== "") {
+            if(telemetry !== null) {
+                $interval(function(){
+                    row[0].value = id ;
+                    row[1].value = telemetry[vehicle][id].name;
+                    row[2].value = telemetry[vehicle][id].alarm_low;
+                    row[3].value = telemetry[vehicle][id].warn_low;
+                    if(typeof telemetry[vehicle][id].value === "number"){
+                        row[4].value = Math.round(telemetry[vehicle][id].value * 10000)/10000;
+                    } else {
+                        row[4].value = telemetry[vehicle][id].value
+                    }
+                    row[5].value = telemetry[vehicle][id].warn_high;
+                    row[6].value = telemetry[vehicle][id].alarm_high;
+                    row[7].value = telemetry[vehicle][id].units;
+                    row[8].value = telemetry[vehicle][id].notes;            
+                }, 1000);
+            } else {
+                alert("Telemetry data not available");
+            }
+            arrow.style.color = "#b3b3b3";  
+        } else {
+            arrow.style.color = "red";
+            alert("Vehicle data not set. Please select from Data Menu");
+        }
 
         if ($window.innerWidth >= 1400){
             $scope.lock.lockLeft = !$scope.lock.lockLeft;
             dashboardService.setLeftLock($scope.lock.lockLeft);          
-        } 
-
-        if(vehicle.id === '') {
-            arrow.style.color = "red";
-        } else {
-            arrow.style.color = "#b3b3b3";  
         } 
     }
 
