@@ -3,40 +3,39 @@
         <tr>
             <th id="category" style="width:1%"></th>
             <th id="id" style="text-align:left;width:10%" class="id" ng-show="checkedValues.checkedId">ID</th>
-            <th id="name" style="text-align:left;width:20%;" class="name" ng-show="checkedValues.checkedName">NAME</th>
-            <th id="alarm_low" style="text-align:center;width:5%" class="alarm_low numeric" ng-show="checkedValues.checkedAlow"><img src="../icons/data_table_cat_ALARMLOW.svg" class="img_alow"/></th>
-            <th id="warn_low" style="text-align:center;width:5%" class="warn_low numerice" ng-show="checkedValues.checkedWlow"><img src="../icons/data_table_cat_WARNLOW.svg" class="img_alow"/></th>
-            <th id="value" style="text-align:center;width:5%" class="value numeric" ng-show="checkedValues.checkedValue"><img src="../icons/data_table_cat_VALUE.svg" class="img_alow"/></th>
-            <th id="warn_high" style="text-align:center;width:5%" class="warn_high numeric" ng-show="checkedValues.checkedWhigh"><img src="../icons/data_table_cat_WARNHIGH.svg" class="img_alow"/></th>
-            <th id="alarm_high" style="text-align:center;width:5%" class="alarm_high numeric" ng-show="checkedValues.checkedAhigh"><img src="../icons/data_table_cat_ALARMHIGH.svg" class="img_alow"/></th>
+            <th id="name" style="text-align:left;width:15%;" class="name" ng-show="checkedValues.checkedName">NAME</th>
+            <th id="alarm_low" style="text-align:center;width:10%" class="alarm_low numeric" ng-show="checkedValues.checkedAlow"><img src="../icons/data_table_cat_ALARMLOW.svg" class="img_alow"/></th>
+            <th id="warn_low" style="text-align:center;width:10%" class="warn_low numerice" ng-show="checkedValues.checkedWlow"><img src="../icons/data_table_cat_WARNLOW.svg" class="img_alow"/></th>
+            <th id="value" style="text-align:center;width:15%" class="value numeric" ng-show="checkedValues.checkedValue"><img src="../icons/data_table_cat_VALUE.svg" class="img_alow"/></th>
+            <th id="warn_high" style="text-align:center;width:10%" class="warn_high numeric" ng-show="checkedValues.checkedWhigh"><img src="../icons/data_table_cat_WARNHIGH.svg" class="img_alow"/></th>
+            <th id="alarm_high" style="text-align:center;width:10%" class="alarm_high numeric" ng-show="checkedValues.checkedAhigh"><img src="../icons/data_table_cat_ALARMHIGH.svg" class="img_alow"/></th>
             <th id="units" style="text-align:left;width:5%" class="units" ng-show="checkedValues.checkedUnits">UNITS</th>
-            <th id="notes" style="text-align:left;width:39%" class="notes" ng-show="checkedValues.checkedNotes">NOTES</th>
+            <th id="notes" style="text-align:left;width:14%" class="notes" ng-show="checkedValues.checkedNotes">NOTES</th>
         </tr>
     </thead>
     <tbody>
         <tr ng-repeat="row in table.rows.data">
             <td class="categoryID-arrow">
                 <div class="btn-group selectmenu">
-  			       <a href="#" style="width:100%" class="btn btn-default arrowbtn" data-toggle="dropdown"><span class="glyphicon glyphicon-menu-right side-arrow" id="side-arrow" style="font-weight:bolder"></span>
-    		          <span class="sr-only">Toggle Dropdown</span>
-  		            </a>
-  			        <ul class="dropdown-menu drpmenu" role="menu" id="drpmenu">
-    			       <li class="uldrpmenu"><a href="#" class="cat-id" ng-click="getTelemetrydata($event,$index)">Select Telemetry Id</a></li>
-                        <li><a href="#" class="cat-id" ng-click="getValue($event,$index)">Apply Telemetry Id</a></li>
-                       <li class="divider liner"></li>
-    		           <li><a href="#" class="row-above" ng-click="addRowAbove($index)">Add Row Above</a></li>
-    			       <li><a href="#" class="row-below" ng-click="addRowBelow($index)">Add Row Below</a></li>
-    			       <li><a href="#" class="move-up" ng-click="moveRowUp($index)">Move Row Up</a></li>
-    			       <li><a href="#" class="move-down" ng-click="moveRowDown($index)">Move Row Down</a></li>
-    			       <li><a href="#" class="delete-row" ng-click="deleteRow($index)">Delete Row</a></li>
-                       <li><a href="#" class="make-header" ng-click="convertHeader($index)">Convert to Header</a></li>
-    		        </ul>
-    	        </div>
+                   <a href="#" style="width:100%" class="btn btn-default arrowbtn" data-toggle="dropdown"><span class="glyphicon glyphicon-menu-right side-arrow" id="side-arrow" style="font-weight:bolder"></span>
+                      <span class="sr-only">Toggle Dropdown</span>
+                    </a>
+                    <ul class="dropdown-menu drpmenu" role="menu" id="drpmenu">
+                        <li class="uldrpmenu"><a href="#" class="cat-id" ng-click="getTelemetrydata($event)">Select Telemetry Id</a></li>
+                        <li><a href="#" class="cat-id" ng-click="getValue($event,row)">Apply Telemetry Id</a></li>
+                        <li class="divider liner"></li>
+                        <li><a href="#" class="row-above" ng-click="addRowAbove($index)">Add Row Above</a></li>
+                        <li><a href="#" class="row-below" ng-click="addRowBelow($index)">Add Row Below</a></li>
+                        <li><a href="#" class="move-up" ng-click="moveRowUp($index)">Move Row Up</a></li>
+                        <li><a href="#" class="move-down" ng-click="moveRowDown($index)">Move Row Down</a></li>
+                        <li><a href="#" class="delete-row" ng-click="deleteRow($index)">Delete Row</a></li>
+                        <li><a href="#" class="make-header" ng-click="convertHeader($index)">Convert to Header</a></li>
+                    </ul>
+                </div>
             </td>
             <td ng-repeat="cell in row" class="rowcell" style="{{cell.style}}"
-           colspan="{{cell.colspan}}" ng-show="{{cell.colshow}}"><input class="rowinput {{cell.class}}" type="text" ng-readonly="{{cell.checked}}" value="{{cell.value}}" ng-blur="convertToReadonly($index)" placeholder="{{cell.placeholder}}" aria-label="Readonly field" />
+           colspan="{{cell.colspan}}" ng-show="{{cell.colshow}}">{{cell.value}}<input ng-show="{{cell.active}}" class="rowinput {{cell.class}}" type="text" ng-readonly="{{cell.checked}}" value="{{cell.value}}" ng-blur="convertToReadonly($index)" placeholder="{{cell.placeholder}}" aria-label="Readonly field" />
             </td>
         </tr>
-	</tbody>
+    </tbody>
 </table>
-
