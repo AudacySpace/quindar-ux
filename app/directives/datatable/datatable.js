@@ -13,8 +13,9 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dat
 
     $scope.checkedValues = datatableSettingsService.getValues();
 
-    $scope.table = {"rows":{
-                    "data":[
+    $scope.table = {"rows": {
+                    "data": [{
+                                contents:
                                 [
                                     {   
                                         "value":"",
@@ -80,6 +81,10 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dat
                                         "active": "false"
                                     }
                                 ],
+                                disabled: false
+                            },
+                            {
+                                contents:
                                 [
                                     {   
                                         "value":"",
@@ -145,6 +150,10 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dat
                                         "active": "false"
                                     }
                                 ],
+                                disabled: false
+                            },
+                            {
+                                contents:
                                 [
                                     {   
                                         "value":"",
@@ -210,6 +219,10 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dat
                                         "active": "false"
                                     }
                                 ],
+                                disabled: false
+                            },
+                            {
+                                contents:
                                 [
                                     {   
                                         "value":"",
@@ -275,6 +288,10 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dat
                                         "active": "false"
                                     }
                                 ],
+                                disabled: false
+                            },
+                            {
+                                contents:
                                 [
                                     {   
                                         "value":"",
@@ -340,6 +357,10 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dat
                                         "active": "false"
                                     }
                                 ],
+                                disabled: false
+                            },
+                            {
+                                contents:
                                 [
                                     {   
                                         "value":"",
@@ -404,8 +425,9 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dat
                                         "colshow":"checkedValues.checkedNotes",
                                         "active": "false"
                                     }
-                                ]
-                            ]
+                                ],
+                                disabled: false
+                            }]
                         }
                     };
 
@@ -431,20 +453,21 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dat
 
         if(vehicle !== "" && id !== "") {
             if(telemetry !== null) {
-                $interval(function(){
-                    row[0].value = id ;
-                    row[1].value = telemetry[vehicle][id].name;
-                    row[2].value = telemetry[vehicle][id].alarm_low;
-                    row[3].value = telemetry[vehicle][id].warn_low;
+                if(row.flag) $interval.cancel(row.flag);
+                row.flag = $interval(function(){
+                    row.contents[0].value = id ;
+                    row.contents[1].value = telemetry[vehicle][id].name;
+                    row.contents[2].value = telemetry[vehicle][id].alarm_low;
+                    row.contents[3].value = telemetry[vehicle][id].warn_low;
                     if(typeof telemetry[vehicle][id].value === "number"){
-                        row[4].value = Math.round(telemetry[vehicle][id].value * 10000)/10000;
+                        row.contents[4].value = Math.round(telemetry[vehicle][id].value * 10000)/10000;
                     } else {
-                        row[4].value = telemetry[vehicle][id].value;
+                        row.contents[4].value = telemetry[vehicle][id].value;
                     }
-                    row[5].value = telemetry[vehicle][id].warn_high;
-                    row[6].value = telemetry[vehicle][id].alarm_high;
-                    row[7].value = telemetry[vehicle][id].units;
-                    row[8].value = telemetry[vehicle][id].notes;            
+                    row.contents[5].value = telemetry[vehicle][id].warn_high;
+                    row.contents[6].value = telemetry[vehicle][id].alarm_high;
+                    row.contents[7].value = telemetry[vehicle][id].units;
+                    row.contents[8].value = telemetry[vehicle][id].notes;
                 }, 1000);
             } else {
                 alert("Telemetry data not available");
@@ -461,11 +484,11 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dat
     }
 
     $scope.addRowAbove = function($index){
-        $scope.table.rows.data.splice($index,0,[{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}]);
+        $scope.table.rows.data.splice($index,0,{contents :[{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false });
     }
 
     $scope.addRowBelow = function($index){
-        $scope.table.rows.data.splice($index+1,0,[{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}]);
+        $scope.table.rows.data.splice($index+1,0,{contents :[{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false });
     }
 
     $scope.deleteRow = function($index){
@@ -481,11 +504,11 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dat
     }
 
     $scope.convertHeader = function($index){
-        $scope.table.rows.data[$index] = [{"value":"","checked":"false","style":"text-align:right;background-color:#1072A4;","colshow":"true","colspan":"9","class":"header","placeholder":"Click here to edit", "active":"true"}];
+        $scope.table.rows.data[$index] = {contents:[{"value":"","checked":"false","style":"text-align:right;background-color:#1072A4;","colshow":"true","colspan":"9","class":"header","placeholder":"Click here to edit", "active":"true"}], disabled: true};
     } 
 
-    $scope.convertToReadonly = function($index){
-        $scope.table.rows.data[$index]["checked"] = "true";
+    $scope.convertToReadonly = function(cell){
+        cell.checked = "true";
     }
 
 });

@@ -26,7 +26,6 @@ app.directive('datatablesettings', function() {
         };
 
         $scope.closeDataTableSettings = function(widget){
-            console.log("hi");
             widget.main = true;
             widget.settings = false;
             widget.saveLoad = false;
