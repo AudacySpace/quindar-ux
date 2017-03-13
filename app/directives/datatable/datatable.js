@@ -20,111 +20,64 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dat
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedId"
+                                        "colshow":"checkedValues.checkedId",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedName"
+                                        "colshow":"checkedValues.checkedName",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedAlow"
+                                        "colshow":"checkedValues.checkedAlow",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedWlow"
+                                        "colshow":"checkedValues.checkedWlow",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedValue"
+                                        "colshow":"checkedValues.checkedValue",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedWhigh"
+                                        "colshow":"checkedValues.checkedWhigh",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedAhigh"
+                                        "colshow":"checkedValues.checkedAhigh",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedUnits"
+                                        "colshow":"checkedValues.checkedUnits",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedNotes"
-                                    }
-                                ],
-                                 [
-                                    {   
-                                        "value":"",
-                                        "checked":"true",
-                                        "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedId"
-                                    },
-                                    {   
-                                        "value":"",
-                                        "checked":"true",
-                                        "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedName"
-                                    },
-                                    {   
-                                        "value":"",
-                                        "checked":"true",
-                                        "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedAlow"
-                                    },
-                                    {   
-                                        "value":"",
-                                        "checked":"true",
-                                        "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedWlow"
-                                    },
-                                    {   
-                                        "value":"",
-                                        "checked":"true",
-                                        "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedValue"
-                                    },
-                                    {   
-                                        "value":"",
-                                        "checked":"true",
-                                        "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedWhigh"
-                                    },
-                                    {   
-                                        "value":"",
-                                        "checked":"true",
-                                        "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedAhigh"
-                                    },
-                                    {   
-                                        "value":"",
-                                        "checked":"true",
-                                        "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedUnits"
-                                    },
-                                    {   
-                                        "value":"",
-                                        "checked":"true",
-                                        "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedNotes"
+                                        "colshow":"checkedValues.checkedNotes",
+                                        "active": "false"
                                     }
                                 ],
                                 [
@@ -132,55 +85,64 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dat
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedId"
+                                        "colshow":"checkedValues.checkedId",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedName"
+                                        "colshow":"checkedValues.checkedName",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedAlow"
+                                        "colshow":"checkedValues.checkedAlow",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedWlow"
+                                        "colshow":"checkedValues.checkedWlow",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedValue"
+                                        "colshow":"checkedValues.checkedValue",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedWhigh"
+                                        "colshow":"checkedValues.checkedWhigh",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedAhigh"
+                                        "colshow":"checkedValues.checkedAhigh",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedUnits"
+                                        "colshow":"checkedValues.checkedUnits",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedNotes"
+                                        "colshow":"checkedValues.checkedNotes",
+                                        "active": "false"
                                     }
                                 ],
                                 [
@@ -188,55 +150,64 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dat
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedId"
+                                        "colshow":"checkedValues.checkedId",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedName"
+                                        "colshow":"checkedValues.checkedName",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedAlow"
+                                        "colshow":"checkedValues.checkedAlow",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedWlow"
+                                        "colshow":"checkedValues.checkedWlow",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedValue"
+                                        "colshow":"checkedValues.checkedValue",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedWhigh"
+                                        "colshow":"checkedValues.checkedWhigh",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedAhigh"
+                                        "colshow":"checkedValues.checkedAhigh",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedUnits"
+                                        "colshow":"checkedValues.checkedUnits",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedNotes"
+                                        "colshow":"checkedValues.checkedNotes",
+                                        "active": "false"
                                     }
                                 ],
                                 [
@@ -244,55 +215,64 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dat
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedId"
+                                        "colshow":"checkedValues.checkedId",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedName"
+                                        "colshow":"checkedValues.checkedName",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedAlow"
+                                        "colshow":"checkedValues.checkedAlow",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedWlow"
+                                        "colshow":"checkedValues.checkedWlow",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedValue"
+                                        "colshow":"checkedValues.checkedValue",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedWhigh"
+                                        "colshow":"checkedValues.checkedWhigh",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedAhigh"
+                                        "colshow":"checkedValues.checkedAhigh",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedUnits"
+                                        "colshow":"checkedValues.checkedUnits",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedNotes"
+                                        "colshow":"checkedValues.checkedNotes",
+                                        "active": "false"
                                     }
                                 ],
                                 [
@@ -300,55 +280,129 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dat
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedId"
+                                        "colshow":"checkedValues.checkedId",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedName"
+                                        "colshow":"checkedValues.checkedName",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedAlow"
+                                        "colshow":"checkedValues.checkedAlow",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedWlow"
+                                        "colshow":"checkedValues.checkedWlow",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedValue"
+                                        "colshow":"checkedValues.checkedValue",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedWhigh"
+                                        "colshow":"checkedValues.checkedWhigh",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:right",
-                                        "colshow":"checkedValues.checkedAhigh"
+                                        "colshow":"checkedValues.checkedAhigh",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedUnits"
+                                        "colshow":"checkedValues.checkedUnits",
+                                        "active": "false"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedNotes"
+                                        "colshow":"checkedValues.checkedNotes",
+                                        "active": "false"
+                                    }
+                                ],
+                                [
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedId",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedName",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedAlow",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedWlow",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedValue",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedWhigh",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedAhigh",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedUnits",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedNotes",
+                                        "active": "false"
                                     }
                                 ]
                             ]
@@ -385,7 +439,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dat
                     if(typeof telemetry[vehicle][id].value === "number"){
                         row[4].value = Math.round(telemetry[vehicle][id].value * 10000)/10000;
                     } else {
-                        row[4].value = telemetry[vehicle][id].value
+                        row[4].value = telemetry[vehicle][id].value;
                     }
                     row[5].value = telemetry[vehicle][id].warn_high;
                     row[6].value = telemetry[vehicle][id].alarm_high;
@@ -395,24 +449,23 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dat
             } else {
                 alert("Telemetry data not available");
             }
-            arrow.style.color = "#b3b3b3";  
+            arrow.style.color = "#b3b3b3";
+            if ($window.innerWidth >= 1400){
+                $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                dashboardService.setLeftLock($scope.lock.lockLeft);
+            }
         } else {
             arrow.style.color = "red";
             alert("Vehicle data not set. Please select from Data Menu");
         }
-
-        if ($window.innerWidth >= 1400){
-            $scope.lock.lockLeft = !$scope.lock.lockLeft;
-            dashboardService.setLeftLock($scope.lock.lockLeft);          
-        } 
     }
 
     $scope.addRowAbove = function($index){
-        $scope.table.rows.data.splice($index,0,[{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes"}]);
+        $scope.table.rows.data.splice($index,0,[{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}]);
     }
 
     $scope.addRowBelow = function($index){
-        $scope.table.rows.data.splice($index+1,0,[{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes"}]);
+        $scope.table.rows.data.splice($index+1,0,[{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}]);
     }
 
     $scope.deleteRow = function($index){
@@ -428,7 +481,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dat
     }
 
     $scope.convertHeader = function($index){
-        $scope.table.rows.data[$index] = [{"value":"","checked":"false","style":"text-align:right;background-color:#1072A4;","colshow":"true","colspan":"9","class":"header","placeholder":"Click here to edit"}];
+        $scope.table.rows.data[$index] = [{"value":"","checked":"false","style":"text-align:right;background-color:#1072A4;","colshow":"true","colspan":"9","class":"header","placeholder":"Click here to edit", "active":"true"}];
     } 
 
     $scope.convertToReadonly = function($index){

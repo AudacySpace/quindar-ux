@@ -100,7 +100,7 @@ app
                 col: 0,
                 row: 0,
                 sizeY: 2,
-                sizeX: 5,
+                sizeX: 6,
                 name: "Data Table",
                 directive: "datatable",
 				directiveSettings: "datatablesettings",

@@ -21,20 +21,20 @@
                       <span class="sr-only">Toggle Dropdown</span>
                     </a>
                     <ul class="dropdown-menu drpmenu" role="menu" id="drpmenu">
-                       <li class="uldrpmenu"><a href="#" class="cat-id" ng-click="getTelemetrydata($event)">Select Telemetry Id</a></li>
+                        <li class="uldrpmenu"><a href="#" class="cat-id" ng-click="getTelemetrydata($event)">Select Telemetry Id</a></li>
                         <li><a href="#" class="cat-id" ng-click="getValue($event,row)">Apply Telemetry Id</a></li>
-                       <li class="divider liner"></li>
-                       <li><a href="#" class="row-above" ng-click="addRowAbove($index)">Add Row Above</a></li>
-                       <li><a href="#" class="row-below" ng-click="addRowBelow($index)">Add Row Below</a></li>
-                       <li><a href="#" class="move-up" ng-click="moveRowUp($index)">Move Row Up</a></li>
-                       <li><a href="#" class="move-down" ng-click="moveRowDown($index)">Move Row Down</a></li>
-                       <li><a href="#" class="delete-row" ng-click="deleteRow($index)">Delete Row</a></li>
-                       <li><a href="#" class="make-header" ng-click="convertHeader($index)">Convert to Header</a></li>
+                        <li class="divider liner"></li>
+                        <li><a href="#" class="row-above" ng-click="addRowAbove($index)">Add Row Above</a></li>
+                        <li><a href="#" class="row-below" ng-click="addRowBelow($index)">Add Row Below</a></li>
+                        <li><a href="#" class="move-up" ng-click="moveRowUp($index)">Move Row Up</a></li>
+                        <li><a href="#" class="move-down" ng-click="moveRowDown($index)">Move Row Down</a></li>
+                        <li><a href="#" class="delete-row" ng-click="deleteRow($index)">Delete Row</a></li>
+                        <li><a href="#" class="make-header" ng-click="convertHeader($index)">Convert to Header</a></li>
                     </ul>
                 </div>
             </td>
             <td ng-repeat="cell in row" class="rowcell" style="{{cell.style}}"
-           colspan="{{cell.colspan}}" ng-show="{{cell.colshow}}"><input class="rowinput {{cell.class}}" type="text" ng-readonly="{{cell.checked}}" value="{{cell.value}}" ng-blur="convertToReadonly($index)" placeholder="{{cell.placeholder}}" aria-label="Readonly field" />
+           colspan="{{cell.colspan}}" ng-show="{{cell.colshow}}">{{cell.value}}<input ng-show="{{cell.active}}" class="rowinput {{cell.class}}" type="text" ng-readonly="{{cell.checked}}" value="{{cell.value}}" ng-blur="convertToReadonly($index)" placeholder="{{cell.placeholder}}" aria-label="Readonly field" />
             </td>
         </tr>
     </tbody>
