@@ -30,12 +30,13 @@
 									<ul class="dropdown-menu drpmenu" role="menu" id="drpmenu">
 										<li class="uldrpmenu"><a href="#" class="cat-id" ng-click="getTelemetrydata($event,$index)">Select Telemetry Id</a></li>
 										<li><a href="#" class="cat-id" ng-click="getValue($event,$index)">Apply Telemetry Id</a></li>
-										<li class="divider liner"></li>
+										<!--<li class="divider liner"></li>
 										<li><a href="#" class="row-above" ng-click="addRowAbove($index)">Add Row Above</a></li>
 										<li><a href="#" class="row-below" ng-click="addRowBelow($index)">Add Row Below</a></li>
 										<li><a href="#" class="move-up" ng-click="moveRowUp($index)">Move Row Up</a></li>
 										<li><a href="#" class="move-down" ng-click="moveRowDown($index)">Move Row Down</a></li>
 										<li><a href="#" class="delete-row" ng-click="deleteRow($index)">Delete Row</a></li>
+										-->
 									</ul>
 								</div>
 							</td>
@@ -105,9 +106,9 @@
 		</div>
 		<div class="row">
 			<div class="col-sm-1"></div>
-			<div class="col-sm-10">
-				<button type="submit" class="btn btn-primary sbtns" ng-click="saveWidget(widget)">SAVE</button>
-				<button type="submit" class="btn btn-primary sbtns" ng-click="closeWidget(widget)">CLOSE</button>	
+			<div class="col-sm-10 btndivider">
+				<button type="submit" class="btn btn-primary col-sm-2 savebtns" ng-click="saveWidget(widget)">SAVE</button>
+				<button type="submit" class="btn btn-primary col-sm-2 savebtns" ng-click="closeWidget(widget)">CLOSE</button>	
 			</div>
 		</div>	
 
