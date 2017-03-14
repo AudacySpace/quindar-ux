@@ -1,4 +1,4 @@
-#Contributing to Quindar
+# Contributing to Quindar
 
 This guide covers ways in which you can become a part of the ongoing development of Quindar.
 
