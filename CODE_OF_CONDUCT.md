@@ -1,4 +1,4 @@
-#Code of Conduct
+# Code of Conduct
 
 Quindar is committed to fostering a welcoming, collaborative and passionate community. If you encounter any unacceptable behavior, follow these steps to report the issue to the Quindar team. We are here to help. 
 
