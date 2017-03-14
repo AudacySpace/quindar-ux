@@ -4,13 +4,14 @@ app
         lockLeft : false,
         lockRight : false
     };
-
-	function checkTime(i) {
-        if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
-        return i;
+    var telemetry = {};
+    var time = {
+        timestamp : ""
     }
 
-    function getTelemetry(telemetry) {
+    getTelemetry();
+
+    function getTelemetry() {
         $interval(function () { 
             $http({
                 url: "/getTelemetry", 
@@ -19,24 +20,10 @@ app
             }).then(function(response) {
                 for(var item in response.data){
                     telemetry[item] = response.data[item];
+                    time.timestamp = startTime(telemetry[item].timestamp.value);
                 }
             })
         },1000);
-    }
-
-    function startTime() {
-        var today = new Date();
-        var start = new Date(today.getUTCFullYear(), 0, 0);
-        var diff = today - start;
-        var h = today.getUTCHours();
-        var m = today.getUTCMinutes();
-        var s = today.getUTCSeconds();
-        var days = Math.floor(diff/(1000*60*60*24));
-        h = checkTime(h);
-        m = checkTime(m);
-        s = checkTime(s);
-        clock = days + "." + h + ":" + m + ":" + s + " " + "UTC";
-        return clock;
     }
 
     function getLock(){
@@ -51,12 +38,32 @@ app
        locks.lockRight = lock; 
     }
 
+    function startTime(time) {
+        var today = new Date(time);
+        var start = new Date(today.getUTCFullYear(), 0, 0);
+        var diff = today - start;
+        var h = today.getUTCHours();
+        var m = today.getUTCMinutes();
+        var s = today.getUTCSeconds();
+        var days = Math.floor(diff/(1000*60*60*24));
+        h = checkTime(h);
+        m = checkTime(m);
+        s = checkTime(s);
+        clock = days + "." + h + ":" + m + ":" + s + " " + "UTC";
+        return clock;
+    }
+
+    function checkTime(i) {
+        if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+        return i;
+    }
+
 	return {
-		getTelemetry : getTelemetry,
+        locks : locks,
+        telemetry : telemetry,
+        time : time,
 		name : username,
 		email : usermail,
-		startTime : startTime,
-        locks : locks,
         getLock : getLock,
         setLeftLock : setLeftLock,
         setRightLock : setRightLock

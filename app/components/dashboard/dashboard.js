@@ -8,16 +8,8 @@ angular.module('app')
   		var vm = this;
 		
 		vm.locks = dashboardService.getLock();
-
-  		//getTelemetry function usage (dashboardService) 
-  		vm.telemetry = {};
-  		dashboardService.getTelemetry(vm.telemetry);
-
-  		var theInterval = $interval(function(){
-	    	vm.clock = dashboardService.startTime();
-	   	}.bind(vm), 1000); 
-
-  		vm.clock = dashboardService.startTime();
+		vm.telemetry = dashboardService.telemetry;
+  		vm.clock = dashboardService.time;
   		vm.name = dashboardService.name;
   		vm.email = dashboardService.email;
 

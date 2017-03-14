@@ -134,3 +134,7 @@ span.header-span{
     padding:2px;
 }
 
+.disabled {
+    color: gray !important;
+}
+

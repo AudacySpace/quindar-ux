@@ -10,13 +10,12 @@ var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
-var md      = require('md');
 
 var configDB = require('./server/config/database.js');
 
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/app'));
-//app.use(express.static(__dirname + '/'));
+app.use(express.static(__dirname + '/'));
 
 mongoose.connect(configDB.url); // connect to our database
 

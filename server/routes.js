@@ -35,14 +35,6 @@ var Config = require('./models/configuration');
         res.redirect('/');
     });
 
-    //DOCUMENTATION
-    // app.get('/readme', isLoggedIn, function(req, res) {
-    //
-    //     res.render('/README.md', {
-    //         user : req.user
-    //     });
-    // });
-
     // google ---------------------------------
 
     // send to google to do the authentication

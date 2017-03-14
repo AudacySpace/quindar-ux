@@ -1,9 +1,7 @@
-<<<<<<< HEAD
 # Quindar UX
 Updated: Dec 01,2016
 =======
 # Welcome to Quindar
->>>>>>> 6f17b9337611b24c794d609108b9b9d58eac9769
 
 Quindar is a real-time space mission operations application supported by Audacy (https://audacy.space). This project aims to create a modern, browser based, real time data visualization platform to monitor and operate complex engineering systems in a spaceflight mission operations setting. While other FOSS (Free Open Source Software) projects of this nature exist, this particular project is commercially backed by Audacy (http://audacy.space), who is fully committed to maintain it as free (no cost, open source) to the growing worldwide community of spacecraft operators of all sizes, now and in perpetuity.
 
@@ -38,7 +36,7 @@ Follow steps to build and deploy the container on localhost.
     cd quindar-deploy/qux-frontend
     docker build -t "quindar-qux" .
     cd ../../quindar-ux
-<<<<<<< HEAD
+
     docker run -d -t --name qux --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /sys:/host/sys:ro -v $(pwd):/node/ -p 80:80 -p 443:443 quindar-qux
 
 The UI should be up and running on: http://localhost
@@ -67,7 +65,6 @@ Example(using git-flow)
 =======
     npm install
     docker run -d -t --name qux --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /sys:/host/sys:ro -p 80:80 -p 443:443 quindar-qux
->>>>>>> 6f17b9337611b24c794d609108b9b9d58eac9769
 
 The UI should be up and running on: http://localhost. Click on Login to get started.
 
@@ -83,8 +80,6 @@ Audacy was launched in 2015 by Stanford graduates, SpaceX veterans, and NASA awa
 ## License
 Quindar is released under the MIT License. For license (terms of use), please refer to the file LICENSE.
 
-<<<<<<< HEAD
         git flow feature finish A2964_Developer_Environment
  
-=======
->>>>>>> 6f17b9337611b24c794d609108b9b9d58eac9769
+

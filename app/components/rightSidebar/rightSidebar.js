@@ -34,19 +34,19 @@ app
         };
 
 
-        // vm.readme = function() {
-        //     ModalService.showModal({
-        //         templateUrl: "./components/rightSidebar/documentation.html",
-        //         controller: "docController"
-        //     })
-        // };
+        vm.readme = function() {
+            ModalService.showModal({
+                templateUrl: "./components/rightSidebar/documentation.html",
+                controller: "docController"
+            })
+        };
 
   	}
 
 });
 
-// app.controller('docController', ['$scope', 'close', function($scope, close) {
-//     console.log("showing the doc");
-//     $scope.close = close;
-//
-// }]);
+app.controller('docController', ['$scope', 'close', function($scope, close) {
+    console.log("showing the doc");
+    $scope.close = close;
+
+}]);

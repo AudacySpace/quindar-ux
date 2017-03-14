@@ -1,23 +1,24 @@
 app
-.directive('lineplot', ['d3Service','dashboardService','$interval','lineService', function(d3,db,$interval,lineService) { 
+.directive('lineplot', ['d3Service','dashboardService','$interval', 'sidebarService', 'lineService', function(d3,db,$interval,sidebarService,lineService) { 
+
   	return { 
     	restrict: 'EA', 
-		scope: {},
+		scope: {
+			vehicle: '&',
+		},
+		controller: 'lineController',
     	templateUrl: './directives/lineplot/lineplot.html', 
 		link: function(scope, element, attributes) {
 			
 			scope.disp = "off";
-			
-			telemetry = lineService.telemetry;
-	
+			lineService.mainId = scope.$id;
+			telemetry = db.telemetry;
+
 			var parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%S.%L%Z");
 			var plotData = [];
 			var delay = 1000;	// [milisecond]
 			var ptNum = 100;	// Number of points in a plot
 			var xUnits;			
-			var vehicle = "Audacy2";
-			var paramY = "y";
-			var paramX = "timestamp";
 			var rectHeight = 10;
 			var rectWidth = 10;
 
@@ -66,12 +67,33 @@ app
 			g.selectAll("line")
 				.attr("opacity", 0.1);
 			// End Grids //
-					
+
 			// Stream
 			scope.play = function(){
-				scope.stream = $interval(updatePlot, delay);		
-				scope.disp = "on";
-				scope.disbtn = true;
+				
+				var tempParam = lineService.getParam();	
+				var idNum = "none";
+				
+				for (i=0; i < tempParam.length; i++){
+					
+					if (tempParam[i].main == scope.$id){
+						
+						// Identify the index
+						idNum = i;
+					} 				
+				}
+
+				if (idNum == "none"){
+					alert("Select Data!")
+				}else{
+					var vehicle = tempParam[idNum].name;
+					var paramY = tempParam[idNum].id;
+					var paramX = "timestamp";
+
+					scope.stream = $interval(updatePlot, delay, 0, false, [vehicle, paramY, paramX]);		
+					scope.disp = "on";
+					scope.disbtn = true;
+				}
 			}
 
 			// Pause
@@ -87,8 +109,12 @@ app
 				alert("HOME")
 			}
 	
-			function updatePlot() {
+			function updatePlot(vehicleObj) {
 				
+				var vehicle = vehicleObj[0];
+				var paramY = vehicleObj[1];
+				var paramX = vehicleObj[2];
+
 				g.selectAll("g.axis").remove();
 				g.selectAll("path").remove();
 				g.selectAll("line").remove();
