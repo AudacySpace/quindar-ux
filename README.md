@@ -4,39 +4,18 @@ Quindar is a real-time space mission operations application supported by Audacy 
 
 The resulting mission operations software aims to achieve a modular front-end (allowing users to develop application specific widgets), and an REST API based backend (allowing users to drive displays from their specific data source). The user interface will be browser based, using the MEAN technology stack, incorporating rapid maintenance and upgradability while operating in a mission critical environment. 
 
-## Prerequisite Tools
+## Vision
+Quindar's vision is to make mission operation accessible to anyone who is pursuing space exploration. Every mission needs an operations solution but not every team can afford to access mission operations platforms.
 
-* Git
-  * Documentation: http://git-scm.com/doc 
-  * Installation: https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
-* Docker
-  * Installation: https://docs.docker.com/engine/installation/
-  
-## Running Quindar on Local Environment  
+The rapidly falling cost of launching a satellite has resulted in near exponential growth in the number of spacecraft being deployed and operated. Most often, each spacecraft owner/operator conducts Mission Operations using specialized software developed in house. Mission Operations centers can range in size from something as modest as a single laptop connected to a backyard radio antenna, to multiple rooms housing dozens of consoles each equipped with as many as 10 displays and/or combined with very large projection systems at the front of the room. Due to its specialized nature, the software powering these displays is often developed in house by the user, and frequently does not have the benefits of a modern software design architecture, mainstream libraries, and graphical capabilities.
 
-### Clone the Repositories
-There are two repositories needed to deploy the Quindar project locally. 
-* Quindar-deploy
-* Quindar-ux
+You can use Quindar for your own mission operations, deployed on your own metal, customized to suit your mission needs. Then give back and contribute to the development community on GitHub.
 
-Clone the two repositories in a single folder, such as ~/repositories
+## Installation
+For installing Quindar, follow the instructions mentioned in [quindar-deploy](https://github.com/quindar/quindar-deploy/blob/master/README.md) under **qux Install**.
 
-    cd ~
-    mkdir repositories
-    cd repositories
-    git clone https://github.com/quindar/quindar-deploy.git
-    git clone https://github.com/quindar/quindar-ux.git
-    
-### Build and Run Docker container for Quindar GUI
-Follow steps to build and deploy the container on localhost.
-
-    cd quindar-deploy/qux-frontend
-    docker build -t "quindar-qux" .
-    cd ../../quindar-ux
-    npm install
-    docker run -d -t --name qux --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /sys:/host/sys:ro -p 80:80 -p 443:443 quindar-qux
-
-The UI should be up and running on: http://localhost. Click on Login to get started.
+## How to Use Quindar
+Please check out the file [How_To_Use](docs/How_To_Use.md) to learn about navigating around Quindar application.
 
 ## Contributing
 We encourage you to contribute to Quindar! Please check out the file [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines about how to proceed.
@@ -48,5 +27,5 @@ Everyone contributing to the repositories under Quindar organization, issue trac
 Audacy was launched in 2015 by Stanford graduates, SpaceX veterans, and NASA award winners. Audacy delivers anytime and effortless space connectivity, advancing humanity to a new age of commerce, exploration and discovery. Connect online at https://audacy.space.
 
 ## License
-Quindar is released under the MIT License. For license (terms of use), please refer to the file LICENSE.
+Quindar is released under the MIT License. For license (terms of use), please refer to the file [LICENSE](LICENSE).
 
