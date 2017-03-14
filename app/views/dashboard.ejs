@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="dashboard for mission operations platform, Quindar">
+    <meta name="author" content="Chavi Malhotra">
+    <meta name="author" content="Taruni Gattu">
+    <title>Quindar Dashboard</title>
+    <link href="/css/bootstrap-min.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/css/dashboardstyles.css" rel="stylesheet">
+    <link href="/css/widgetstyles.css" rel="stylesheet">
+    <link href="/css/positions.css" rel="stylesheet"> 
+	<link href="/directives/lineplot/lineplot.css" rel="stylesheet">
+    <link href="/css/widgetsettingsstyles.css" rel="stylesheet">
+    <link href="/directives/datatable/datatable.css" rel="stylesheet">
+	<link href="/css/datetimepicker.css" rel="stylesheet">
+
+    <!-- scripts for AngularJS and UI Bootstrap -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+    <script src="https://code.angularjs.org/1.4.8/angular-route.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.0.0/ui-bootstrap-tpls.min.js"></script>
+
+    <!-- Angular Gridster Script and Stylesheet -->
+    <script src="/scripts/gridster/angular-gridster.js"></script>
+    <link href="/css/gridster/angular-gridster.min.css" rel="stylesheet" >
+    <link href="/css/gridster/grid.css" rel="stylesheet" >
+    <link href="/css/paneliconstyles.css" rel="stylesheet" >    
+    
+    <!-- AngularJS Material CSS -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.7/angular-material.min.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.7/angular-material.css">
+    
+    <!-- AngularJS Material Dependencies -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+
+    <!-- AngularJS Material Javascript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.0.7/angular-material.min.js"></script>
+
+    <!-- Angular application -->
+    <script src="/app.js"></script>
+
+    <!-- components -->
+    <script src="/components/dashboard/dashboard.js"></script>
+    <script src="/components/grid/grid.js"></script>
+    <script src="/components/rightSidebar/rightSidebar.js"></script>
+    <script src="/components/leftSidebar/leftSidebar.js"></script>
+    <script src="/components/deleteMenu/deleteMenu.js"></script>
+    <script src="/components/saveMenu/saveMenu.js"></script>
+    <link href="/components/rightSidebar/right_sidebar.css" rel="stylesheet">
+    <link href="/components/leftSidebar/left_sidebar.css" rel="stylesheet">
+
+    <!-- services -->
+    <script src="/services/dashboardService.js"></script>
+    <script src="/services/gridService.js"></script>
+	<script src="/services/d3Service.js"></script>
+    <script src="/services/sidebarService.js"></script>
+	<script src="/services/lineService.js"></script>
+    <script src="/services/datatableSettingsService.js"></script>
+    <script src="/services/lineService.js"></script>
+    <script src="/services/angular-modal-service.min.js"></script>
+
+    <!--directives -->
+    <script src="/directives/widget.js"></script>
+    <script src="/directives/searchtable.js"></script>
+    <script src="/directives/table.js"></script>
+    <script src="/directives/groundtrack.js"></script>
+    <script src="/directives/datatable/datatable.js"></script>
+    <script src="/directives/lineplot/lineplot.js"></script>
+	<script src="/directives/lineplot/linesettings.js"></script>
+	<script src="/directives/lineplot/samplesettings.js"></script>	
+    <script src="/directives/datatable/datatablesettings.js"></script>
+
+    <!-- script to get user details from backend -->
+    <script>
+        var username = "<%= user.google.name %>";
+        var usermail = "<%= user.google.email %>";
+    </script>
+</head>
+
+<body ng-app="app">
+    
+    <dashboard></dashboard>
+
+    <!-- jQuery -->
+    <script src="/scripts/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.0/jquery-ui.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/scripts/bootstrap.min.js"></script>
+    <!-- Side Navigation -->
+    <script src="/scripts/side-navigation.js"></script>
+    <!-- D3 -->
+    <script src="/scripts/d3.min.js"></script>
+    <!-- topojson-client -->
+    <script src="/scripts/topojson-client.min.js"></script>
+	<!-- Calendar datetimepicker -->
+	<script src="/scripts/moment.js"></script>
+	<script src="/scripts/datetimepicker.js"></script>
+	<script src="/scripts/datetimepicker.templates.js"></script>
+    <!-- angular md -->
+    <script src="/scripts/angular-md.js"></script>
+    <script src="/scripts/marked.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+<div gridster="$ctrl.gridsterOptions">
+	<ul>
+		<li gridster-item="widget" ng-repeat="widget in $ctrl.dashboard.widgets">
+			<div class="box">
+				<div class="box-header">
+					<a><img class="drag-menu" ng-src="../../public/icons/panel-icons/dragIcon.svg"/></a>
+					<h4>{{ widget.name }}</h4>
+					<div class="box-header-btns pull-right">
+						<a title="Settings" ng-click="$ctrl.openSettings(widget)">			
+							<img class="cog-menu" ng-src="../../public/icons/panel-icons/cog.svg"/>
+						</a>
+						<a title="Save or Load Widget" ng-click="$ctrl.openSaveLoadSettings(widget)">
+							<img class="save-load-menu" ng-src="../../public/icons/panel-icons/save-load.svg"/>
+						</a>
+						<a title="Remove widget" ng-click="$ctrl.remove(widget)">
+							<img class="trash-menu" ng-src="../../public/icons/panel-icons/trash.svg"/>
+						</a>
+					</div>
+				</div>
+				<div class="box-content">
+					<div ng-show="widget.main" quindarwidget = "{{ widget.directive }}" widget="widget"></div>
+					<div ng-show="widget.settings" class="settingsMenu" quindarwidget = "{{ widget.directiveSettings }}" widget="widget"></div>
+					<save-menu widget="widget" ng-show="widget.saveLoad"></save-menu>
+					<delete-menu widget="widget" ng-show="widget.delete"></delete-menu>
+				</div>
+			</div>
+		</li>
+	</ul>
+</div>

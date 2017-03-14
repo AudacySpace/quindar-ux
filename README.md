@@ -1,22 +1,13 @@
+<<<<<<< HEAD
 # Quindar UX
 Updated: Dec 01,2016
+=======
+# Welcome to Quindar
+>>>>>>> 6f17b9337611b24c794d609108b9b9d58eac9769
 
-This is the repository for the Quindar UX (GUI) code. Quindar is a real-time space mission operations application supported by Audacy (http://audacy.space). The application is develpoed on the MEAN technology stack.
+Quindar is a real-time space mission operations application supported by Audacy (https://audacy.space). This project aims to create a modern, browser based, real time data visualization platform to monitor and operate complex engineering systems in a spaceflight mission operations setting. While other FOSS (Free Open Source Software) projects of this nature exist, this particular project is commercially backed by Audacy (http://audacy.space), who is fully committed to maintain it as free (no cost, open source) to the growing worldwide community of spacecraft operators of all sizes, now and in perpetuity.
 
-
-
-## Folder Structure
-
-* public        - any static content served directly by nginx
- * public/css    - stylesheets
- * public/media  - images, sounds, etc.
-
-* app           - the NodeJS application files
- * app/dashboard     - files for the main Quindar application
- * app/qwidgets      - files for Quindar widgets (in individual subfolders)
-
-* docs          - project documentation
-
+The resulting mission operations software aims to achieve a modular front-end (allowing users to develop application specific widgets), and an REST API based backend (allowing users to drive displays from their specific data source). The user interface will be browser based, using the MEAN technology stack, incorporating rapid maintenance and upgradability while operating in a mission critical environment. 
 
 ## Prerequisite Tools
 
@@ -26,10 +17,7 @@ This is the repository for the Quindar UX (GUI) code. Quindar is a real-time spa
 * Docker
   * Installation: https://docs.docker.com/engine/installation/
   
-## Running Quindar UI on Local Developer Environment  
-
-* Clone the repositories
-* Build and Run docker container
+## Running Quindar on Local Environment  
 
 ### Clone the Repositories
 There are two repositories needed to deploy the Quindar project locally. 
@@ -45,11 +33,12 @@ Clone the two repositories in a single folder, such as ~/repositories
     git clone https://github.com/quindar/quindar-ux.git
     
 ### Build and Run Docker container for Quindar GUI
-Follow steps to build and deploy the container on localhost
+Follow steps to build and deploy the container on localhost.
 
     cd quindar-deploy/qux-frontend
     docker build -t "quindar-qux" .
     cd ../../quindar-ux
+<<<<<<< HEAD
     docker run -d -t --name qux --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /sys:/host/sys:ro -v $(pwd):/node/ -p 80:80 -p 443:443 quindar-qux
 
 The UI should be up and running on: http://localhost
@@ -75,25 +64,27 @@ Example(using git-flow)
         
         cd ~/repositories/quindar-ux
         git flow init
+=======
+    npm install
+    docker run -d -t --name qux --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /sys:/host/sys:ro -p 80:80 -p 443:443 quindar-qux
+>>>>>>> 6f17b9337611b24c794d609108b9b9d58eac9769
 
-2. Create a new feature branch (Ticket #2964 with label Developer Environment)
+The UI should be up and running on: http://localhost. Click on Login to get started.
 
-        git flow feature start A2964_Developer_Environment
+## Contributing
+We encourage you to contribute to Quindar! Please check out the file [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines about how to proceed.
 
-3. Publish the branch to the remote repo
-        
-        git flow feature publish A2964_Developer_Environment
+## Code of Conduct
+Everyone contributing to the repositories under Quindar organization, issue trackers and mailing lists is expected to follow the Quindar [Code of Conduct](CODE_OF_CONDUCT.md). 
 
-4. Make changes in your favorite editor.
-5. Test the code as changes would be reflected in the browser (http://localhost)
-6. Commit code in the feature branch and push it to the remote repo.
-        
-        git add <filename>
-        git commit -m "<commit message>"
-        git push origin feature/A2964_Developer_Environment
+## About Us
+Audacy was launched in 2015 by Stanford graduates, SpaceX veterans, and NASA award winners. Audacy delivers anytime and effortless space connectivity, advancing humanity to a new age of commerce, exploration and discovery. Connect online at https://audacy.space.
 
-7. Peer Review
-8. Merge the code to develop branch and switch to develop branch using the command below.
+## License
+Quindar is released under the MIT License. For license (terms of use), please refer to the file LICENSE.
 
+<<<<<<< HEAD
         git flow feature finish A2964_Developer_Environment
  
+=======
+>>>>>>> 6f17b9337611b24c794d609108b9b9d58eac9769

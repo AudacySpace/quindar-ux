@@ -1,0 +1,83 @@
+/* table qwidget styles */
+
+.form-group{
+   margin-top:0px; 
+   margin-bottom:0px;
+   height: 35px;
+
+}
+.searchicon{
+    position: relative;
+    top: -25px;
+    right: -14px;
+}
+#myInput {
+    font-size: 16px; /* Increase font-size */
+    padding: 2px 20px 2px 40px; /* Add some padding */
+    border: 1px solid #ddd; /* Add a grey border */
+    margin-top: 2px;
+    margin-bottom: 2px; /* Add some space below the input */
+}
+#myTable {
+    border-collapse: collapse; /* Collapse borders */
+    width: 100%; /* Full-width */
+   /* border: 1px solid #fff;*/ /* Add a grey border */
+}
+#myTable th{
+    text-align: left; /* Left-align text */
+    padding: 12px; /* Add padding */
+}
+#header th{
+     text-align: center; /* Center-align text */
+     padding: 12px; /* Add padding */
+}
+#myTable tr {
+    /* Add a bottom border to all table rows */
+    border-bottom: 1px solid #ddd; 
+}
+#myTable td{
+   /* padding:5px;*/
+    text-align: center;
+    line-height:1.0;
+    padding-top:0;
+    padding-bottom:0;
+}
+#myTable tr.header, #myTable tr:hover, #teletable tr.telerow, #teletable tr:hover{
+    /* Add a grey background color to the table header and on hover */
+    background-color: #f1f1f1;
+}
+#teletable td{
+    line-height:1.0;
+    padding-top:8px;
+    padding-bottom:8px;
+}
+th.nameid{
+    /*height:5%;*/
+    text-align:left;
+    /*font-size:18px;*/
+}
+th.catVal{
+      text-align:left;
+}
+#tbody {
+    display:block;
+    height:254px;
+    overflow-y:auto;
+    border-bottom:0px;
+}
+#thead, #tbody tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;
+}
+#thead {
+    width:100%; 
+}
+
+
+
+
+
+
+
+
