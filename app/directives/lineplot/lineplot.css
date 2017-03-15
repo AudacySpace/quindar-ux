@@ -15,63 +15,48 @@
 	top: 0;
 	left: 0;
 }
-.liveDisp{
-	position:absolute;
-	font-family: "Open Sans", Sans-serif;	
-	font-weight: bold;
-	right:135px;
-	top:80px;
-	font-size:13px;
-	color: #8B8C94;
-	border-style: solid;
-	border-width: 1.5px;
-	padding: 3px 3px;	
-	padding-top: 2px;
-	padding-bottom: 2px;
-}
-.liveDispOn{
-	position:absolute;
-	font-family: "Open Sans", Sans-serif;	
-	font-weight: bold;
-	right:135px;
-	top:80px;
-	font-size:13px;
-	color: #ff0000;
-	border-style: solid;
-	border-width: 1.5px;
-	padding: 3px 3px;	
-	padding-top: 2px;
-	padding-bottom: 2px;
-}
 .homeicon{
 	position:absolute;
-	right:45px;
-	top:80px;
+	right:30px;
+	top:60px;
 	color: #8B8C94;
 	background-color: #FFFFFF;
 	padding: 0px 0px;
-	boarder: 0px 0px;
-	width: 25 px;
+	border: 0px;
+	width: 20 px;
+	line-height:0px;
 }
 .playicon{
 	position:absolute;
-	right:75px;
-	top:80px;
+	right:55px;
+	top:60px;
 	color: #8B8C94;
 	background-color: #FFFFFF;
 	padding: 0px 0px;
 	border-width: 0px;
-	width: 25 px;
+	width: 20 px;
+	line-height:0px;
 }
 .pauseicon{
 	position:absolute;
-	right:105px;
-	top:80px;
+	right:80px;
+	top:60px;
 	color: #8B8C94;
 	background-color: #FFFFFF;
 	padding: 0px 0px;
 	border-width: 0px;
-	width: 25 px;
+	width: 20 px;
+	line-height:0px;
+}
+.liveicon{
+	position:absolute;
+	right:105px;
+	top:60px;
+	color: #8B8C94;
+	background-color: #FFFFFF;
+	padding: 0px 0px;
+	border: 0px;
+	line-height:0px;
 }
 .lineplot{
 	fill: none;
@@ -85,7 +70,7 @@
 }
 .settingstop{
 	width: 100%;
-	height: 80%;
+	height: 70%;
 	margin: auto;
 	top: 0;
 	left: 0;
@@ -103,7 +88,7 @@
 }
 .settingsrightcol{
 	width: 100%;
-	height: 80%;
+	height: 70%;
 	margin: 0;
 	top: 0;
 	margin: 0;
@@ -124,8 +109,11 @@
 	background-color:#ffffff;
 	color:#020613;
 }
+.linelive{
+	height:20px;
+}
 .linehome{
-	width:25px;
+	width:20px;
 }
 .linerange{
 	top:6px;

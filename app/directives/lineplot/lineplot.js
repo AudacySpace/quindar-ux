@@ -10,7 +10,9 @@ app
     	templateUrl: './directives/lineplot/lineplot.html', 
 		link: function(scope, element, attributes) {
 			
-			scope.disp = "off";
+			scope.imageUrl = "/icons/line-plot-widget/LIVE_off.svg";
+			scope.playImg = "/icons/line-plot-widget/lineplot_play.svg";
+			scope.pauseImg = "/icons/line-plot-widget/lineplot_pause_click.svg";
 			lineService.mainId = scope.$id;
 			telemetry = db.telemetry;
 
@@ -37,7 +39,7 @@ app
 
 			// Grids //
 			transHeight = height*.87;
-			transWidth = width*.9;
+			transWidth = width*.87;
 
 			var x = d3.scaleLinear()
 						.domain([0, 1])
@@ -89,10 +91,15 @@ app
 					var vehicle = tempParam[idNum].name;
 					var paramY = tempParam[idNum].id;
 					var paramX = "timestamp";
-
-					scope.stream = $interval(updatePlot, delay, 0, false, [vehicle, paramY, paramX]);		
-					scope.disp = "on";
-					scope.disbtn = true;
+					if (paramY == "timestamp"){
+						alert("Select a different parameter")
+					} else{
+						scope.stream = $interval(updatePlot, delay, 0, false, [vehicle, paramY, paramX]);		
+						scope.disbtn = true;
+						scope.imageUrl = "/icons/line-plot-widget/LIVE_on.svg";
+						scope.playImg = "/icons/line-plot-widget/lineplot_play_click.svg";
+						scope.pauseImg = "/icons/line-plot-widget/lineplot_pause.svg";
+					}
 				}
 			}
 
@@ -100,8 +107,10 @@ app
 			scope.pause = function(){
 				$interval.cancel(scope.stream);
 				plotData=[];
-				scope.disp = "off";
 				scope.disbtn = false;
+				scope.imageUrl = "/icons/line-plot-widget/LIVE_off.svg";
+				scope.playImg = "/icons/line-plot-widget/lineplot_play.svg";
+				scope.pauseImg = "/icons/line-plot-widget/lineplot_pause_click.svg";
 			}
 			
 			// Home

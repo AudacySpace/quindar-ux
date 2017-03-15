@@ -3,7 +3,6 @@ app
   	return { 
     	restrict: 'EA', 
 		templateUrl: './directives/lineplot/linesettings.html',
-		controller: 'lineController',
 		link: function(scope, element, attributes) {
 
 		}
