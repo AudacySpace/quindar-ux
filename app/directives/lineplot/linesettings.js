@@ -114,12 +114,12 @@ app.controller('lineController', ['$scope', 'd3Service', 'datatableSettingsServi
 	// Close
 	$scope.closeWidget = function(widget){
 		widget.main = true;
-		widget.settings = false;
+		widget.settings.active = false;
 	}
 	
 	// Save
 	$scope.saveWidget = function(widget){
 		widget.main = true;
-		widget.settings = false;
+		widget.settings.active = false;
 }	
 }]);

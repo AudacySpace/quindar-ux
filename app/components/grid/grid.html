@@ -19,7 +19,7 @@
 				</div>
 				<div class="box-content">
 					<div ng-show="widget.main" quindarwidget = "{{ widget.directive }}" widget="widget"></div>
-					<div ng-show="widget.settings" class="settingsMenu" quindarwidget = "{{ widget.directiveSettings }}" widget="widget"></div>
+					<div ng-show="widget.settings.active" class="settingsMenu" quindarwidget = "{{ widget.directiveSettings }}" widget="widget"></div>
 					<save-menu widget="widget" ng-show="widget.saveLoad"></save-menu>
 					<delete-menu widget="widget" ng-show="widget.delete"></delete-menu>
 				</div>

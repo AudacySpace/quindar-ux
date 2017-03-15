@@ -1,7 +1,6 @@
 app.directive('datatable',function() { 
   return { 
     restrict: 'E', 
-    scope: {},
     templateUrl:'./directives/datatable/datatable.html',
     controller: 'DataTableCtrl',
     controllerAs: 'vm',
@@ -9,9 +8,9 @@ app.directive('datatable',function() {
   	}; 
 });
 
-app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,datatableSettingsService,dashboardService,sidebarService) {    
+app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dashboardService,sidebarService) {    
 
-    $scope.checkedValues = datatableSettingsService.getValues();
+    $scope.checkedValues = $scope.widget.settings.checkedValues;
 
     $scope.table = {"rows": {
                     "data": [{
