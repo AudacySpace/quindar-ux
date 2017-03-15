@@ -16,7 +16,6 @@ Delete Menu Styles
 	bottom: 0;
 	position: absolute;
 }
-
 label{
 	font-weight: 200;
 }
@@ -62,6 +61,15 @@ label{
 	color:#fff;
 }
 
+.savebtns{
+	position: relative;
+	border-radius:0px;
+	background-color:#07D1EA;
+	color:#fff;
+	margin-right: 10 px;
+
+}
+
 div.settingsMenu{
 	background-color:#242833;
 	height:100%;
@@ -84,3 +92,7 @@ div.saveloaddatatable{
 	color:#fff;
 	position:relative;
 }
+
+.btndivider button{
+	margin-right: 10px;
+} 

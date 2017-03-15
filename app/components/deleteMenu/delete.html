@@ -1,22 +1,35 @@
 <div class="deldatatable">
-	<div class="savestyles">
-		<form class="form-inline savestyles" >
+	<div class="settingstop">
+		<div class="row settingsrightcol" style="display: table">
+		
+			<div class="col-sm-1" style="display: table-cell; float:none"></div>
+			
+			<div class="col-sm-10" style="display: table-cell; float:none">
+				<div class="row">
+						<label for="DeleteWidget">Delete Widget?</label>
+				</div>
+			</div>	
+			
+			<div class="col-sm-1" style="display: table-cell; float:none"></div>
+		</div>
+		
+		<div class="row settingsbottom" style="display: table">
+
 			<div class="row">
-  				<div class="col-sm-11">
-  					<label for="DeleteWidget">Delete Widget?</label>
-  				</div>
-  			</div>
-			<div class="row">
-  				<div class="col-sm-11">
-					<hr/>
+				<div class="col-sm-1"></div>
+				<div class="col-sm-10">
+					<hr>
 				</div>
 			</div>
-	 		<div class="row">
-				<div class="col-sm-11">
-	  				<button type="submit" class="btn btn-primary sbtns" ng-click="$ctrl.deleteWidget($ctrl.widget)">YES</button>
-	  				<button type="submit" class="btn btn-primary sbtns" ng-click="$ctrl.closedeleteWidget($ctrl.widget)">NO</button>
-	  			</div>
-	  		</div>
-		</form>
+				
+			<div class="row">
+				<div class="col-sm-1"></div>
+
+				<div class="col-sm-10 btndivider">
+					<button type="submit" class="btn btn-primary col-sm-2 savebtns" ng-click="$ctrl.deleteWidget($ctrl.widget)">YES</button>
+					<button type="submit" class="btn btn-primary col-sm-2 savebtns" ng-click="$ctrl.closedeleteWidget($ctrl.widget)">NO</button>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>

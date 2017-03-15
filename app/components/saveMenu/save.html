@@ -1,21 +1,32 @@
 <div class="saveloaddatatable">
-	<div class="savestyles">
-		<form class="form-inline savestyles" >
-			<div class="row">
-  				<div class="col-sm-5">
-  					<label for="SaveWidget">Save Widget</label>
+	<div class="settingstop">
+		<div class="row settingsrightcol" style="display: table">
+			
+			<div class="col-sm-1" style="display: table-cell; float:none"></div>
+		
+			<div class="col-sm-4" style="display: table-cell; float:none">
+				<div class="row">
+					<label for="SaveWidget">Save Widget</label>
   				</div>
-   				<div class="col-sm-1"></div>
-    			<div class="col-sm-5">
+				
+				<div class="row settingsspace" style="display: table"></div>
+				
+				<div>
+ 					<input type="text" class="form-control save-widget-styles " id="inlineFormInput" placeholder="Enter Name">
+  				</div>			
+  			</div>
+			
+			<div class="col-sm-2" style="display: table-cell; float:none"></div>
+			
+			<div class="col-sm-4" style="display: table-cell; float:none">
+
+				<div class="row">
     				<label for="LoadWidget">Load Widget</label>
   				</div>
-  			</div>
-  			<div class="row">
-  				<div class="col-sm-5">
- 					<input type="text" class="form-control save-widget-styles " id="inlineFormInput" placeholder="Enter Name">
-  				</div>
-   				<div class="col-sm-1"></div>
-    			<div class="col-sm-5">
+				
+				<div class="row settingsspace" style="display: table"></div>
+				
+				<div class="row">
     				<div class="dropdown">
                    		<button type="button" class="btn dropdown-toggle load-widget-styles" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     		<span class="pull-left">Widget</span> 
@@ -23,18 +34,29 @@
         				</button>
     				</div>
   				</div>
-  		    </div>
+  			</div>
+			
+			<div class="col-sm-1" style="display: table-cell; float:none"></div>
+			
+		</div>
+
+
+		<div class="row settingsbottom" style="display: table">
+
 			<div class="row">
-  				<div class="col-sm-11">
-					<hr/>
+				<div class="col-sm-1"></div>
+				<div class="col-sm-10">
+					<hr>
 				</div>
 			</div>
- 			<div class="row">
-		        <div class="col-sm-11">
-  					<button type="submit" class="btn btn-primary sbtns">SAVE</button>
-  					<button type="submit" class="btn btn-primary sbtns" ng-click="$ctrl.closeSaveLoadSettings($ctrl.widget)">CLOSE</button>
-  				</div>
-  			</div>
-		</form>
+			
+			<div class="row">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-10 btndivider">
+					<button type="submit" class="btn btn-primary col-sm-2 savebtns" ng-click="$ctrl.closeSaveLoadSettings($ctrl.widget)">SAVE</button>
+					<button type="submit" class="btn btn-primary col-sm-2 savebtns" ng-click="$ctrl.closeSaveLoadSettings($ctrl.widget)">CLOSE</button>
+				</div>
+			</div>	
+		</div>		
 	</div>
 </div>
