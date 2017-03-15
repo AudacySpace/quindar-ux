@@ -21,6 +21,15 @@ If you found a bug,
 * If you are unable to find an existing open issue, open a new issue. It should have a clear and descriptive title, steps to reproduce the issue, expected and actual behavior. Include code samples, screenshots wherever needed.
 
 ## Contributing to the Quindar code
+
+### Style Guides
+We're not super strict on style guides yet, but as Quindar grows and we increasingly automate the DevOps / QA processes, consistent coding style is increasingly important. To future proof your code, please consult the following guidelines:
+
+* [Angular v1 Guide](https://github.com/johnpapa/angular-styleguide/blob/master/a1/README.md)
+* [Javascript Guide](https://google.github.io/styleguide/jsguide.html)
+* [CSS+JS Guide](https://github.com/airbnb/javascript/tree/master/css-in-javascript)
+* [HTML5 Guide](https://www.w3schools.com/html/html5_syntax.asp)
+
 ### Folder Structure
 * /app - AngularJS folder 
   * /app/components - stores all AngularJS components like Dashboard, Widget Grid, Left and Right Sidebar
