@@ -39,7 +39,7 @@ app
 
 			// Grids //
 			transHeight = height*.87;
-			transWidth = width*.9;
+			transWidth = width*.87;
 
 			var x = d3.scaleLinear()
 						.domain([0, 1])
