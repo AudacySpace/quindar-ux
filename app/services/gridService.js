@@ -147,7 +147,23 @@ app
                 },
 				saveLoad: false,
 				delete: false,
-            }]
+            },
+			{
+        sizeY: 3,
+        sizeX: 4,
+        name: "Line Plot",
+        directive: "lineplot",
+		directiveSettings: "linesettings",
+        id: "addLine",
+        icon: {
+            id: "l-plot",
+            type: "fa-line-chart"
+        },
+        main: true,
+		settings: false,
+		saveLoad: false,
+		delete: false
+    }]
         }
     };
 
