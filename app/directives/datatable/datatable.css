@@ -20,7 +20,7 @@ a.arrowbtn{
 }
 a.arrowbtn:focus{
     border:0px;
-    outline: none
+    outline: none;
 }
 
 a.arrowbtn:hover{
@@ -37,7 +37,6 @@ a.arrowbtn:visited{
     font-size:14px;
 
 }
-
 
 div.btn-group.selectmenu.open > a{
  /*   color:#1072A4;*/

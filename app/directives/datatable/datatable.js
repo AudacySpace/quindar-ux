@@ -504,7 +504,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
     }
 
     $scope.moveRowDown = function($index){
-        if(($index) !== ($scope.table.rows.data.length-1)){
+        if(($index) !== (($scope.table.rows.data.length)-1)){
         $scope.table.rows.data[$index+1] = $scope.table.rows.data.splice($index, 1, $scope.table.rows.data[$index+1])[0];
         }
         else{
