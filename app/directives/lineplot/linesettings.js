@@ -40,7 +40,7 @@ app.controller('lineController', ['$scope', 'd3Service', 'datatableSettingsServi
 
 	$scope.getTelemetrydata = function($event,$index){
         var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
-        arrow.style.color = "red";
+        arrow.style.color = "#07D1EA";
 
         if ($window.innerWidth < 1400){
             $mdSidenav('left').open();
