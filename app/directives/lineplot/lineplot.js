@@ -23,14 +23,13 @@ app
 			var xUnits;			
 			var rectHeight = 10;
 			var rectWidth = 10;
-
 			var margin = {top: 10, right: 30, bottom: 30, left: 30};
 				
 			var temp = element[0].getElementsByTagName("div")[0];
 			var el = temp.getElementsByTagName("div")[0];
 			
-			var width = temp.clientWidth;
-			var height = temp.clientHeight;
+			var width = 580; 
+			var height = 380; 
 			var svg = d3.select(el).append("svg")
 					.attr("preserveAspectRatio", "xMidYMin meet")
                     .attr("viewBox", "0 0 "+(width+margin.left)+" "+height+"")
