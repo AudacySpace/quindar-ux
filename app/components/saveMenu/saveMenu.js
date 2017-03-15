@@ -9,7 +9,7 @@ app
 
 		vm.closeSaveLoadSettings = function(widget){
 			widget.main = true;
-			widget.settings = false;
+			widget.settings.active = false;
 			widget.saveLoad = false;
 			widget.delete = false;
 		}

@@ -2,32 +2,21 @@ app.directive('datatablesettings', function() {
   return { 
     restrict: 'E',
     templateUrl:'./directives/datatable/datatablesettings.html', 
-    controller: function(datatableSettingsService,$scope){
+    controller: function($scope){
 
-        $scope.checkedValues ={
-            checkedId: true,
-            checkedName: true,
-            checkedAlow: true,
-            checkedWlow: true,
-            checkedValue: true,
-            checkedWhigh: true,
-            checkedAhigh: true,
-            checkedUnits: true,
-            checkedNotes: true
-        };
+        $scope.checkedValues = $scope.widget.settings.checkedValues;
     	
         $scope.saveDataTableSettings = function(widget){
             var val = $scope.checkedValues;
             widget.main = true;
-            widget.settings = false;
+            widget.settings.active = false;
             widget.saveLoad = false;
             widget.delete = false;
-            datatableSettingsService.setCheckedValues(val);
         };
 
         $scope.closeDataTableSettings = function(widget){
             widget.main = true;
-            widget.settings = false;
+            widget.settings.active = false;
             widget.saveLoad = false;
             widget.delete = false;
         }

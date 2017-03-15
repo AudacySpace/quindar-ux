@@ -11,21 +11,21 @@ angular.module('app')
 
 		vm.remove = function(widget) {
 			widget.main = false;
-			widget.settings = false;
+			widget.settings.active = false;
 			widget.saveLoad = false;
 			widget.delete = true;
 		};
 
 		vm.openSettings = function(widget) {
 			widget.main = false;
-			widget.settings = true;
+			widget.settings.active = true;
 			widget.saveLoad = false;		
 			widget.delete = false;
 		};
 
 		vm.openSaveLoadSettings = function(widget) {
 			widget.main = false;
-			widget.settings = false;
+			widget.settings.active = false;
 			widget.saveLoad = true;
 			widget.delete = false;			
 		};

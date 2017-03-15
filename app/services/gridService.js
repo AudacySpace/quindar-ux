@@ -22,7 +22,9 @@ app
             type: "fa-globe"
         },
         main: true,
-		settings: false,
+		settings: {
+            active: false
+        },
 		saveLoad: false,
 		delete: false
     }, 
@@ -38,7 +40,9 @@ app
             type: "fa-table"
         },
         main: true,
-		settings: false,
+		settings: {
+            active: false
+        },
 		saveLoad: false,
 		delete: false
     }, 
@@ -54,7 +58,9 @@ app
             type: "fa-search"
         },
         main: true,
-		settings: false,
+		settings: {
+            active: false
+        },
 		saveLoad: false,
 		delete: false
     },
@@ -70,7 +76,9 @@ app
             type: "fa-line-chart"
         },
         main: true,
-		settings: false,
+		settings: {
+            active: false
+        },
 		saveLoad: false,
 		delete: false
     },
@@ -86,7 +94,20 @@ app
             type: "fa-table"
         },
         main: true,
-		settings: false,
+		settings: {
+            active: false,
+            checkedValues:{
+                checkedId: true,
+                checkedName: true,
+                checkedAlow: true,
+                checkedWlow: true,
+                checkedValue: true,
+                checkedWhigh: true,
+                checkedAhigh: true,
+                checkedUnits: true,
+                checkedNotes: true
+            }
+        },
 		saveLoad: false,
 		delete: false
 
@@ -110,7 +131,20 @@ app
                     type: "fa-table"
                 }, 
                 main: true,
-				settings: false,
+				settings: {
+                    active: false,
+                    checkedValues:{
+                        checkedId: true,
+                        checkedName: true,
+                        checkedAlow: true,
+                        checkedWlow: true,
+                        checkedValue: true,
+                        checkedWhigh: true,
+                        checkedAhigh: true,
+                        checkedUnits: true,
+                        checkedNotes: true
+                    }
+                },
 				saveLoad: false,
 				delete: false,
             }]
@@ -150,22 +184,8 @@ app
     };
 
     function addWidgets(widget) {
-        dashboards[selectedDashboardId].widgets.push({
-            name: widget.name,
-            sizeX: widget.sizeX,
-            sizeY: widget.sizeY,
-            directive: widget.directive,
-			directiveSettings: widget.directiveSettings,
-            id: widget.id,
-            icon: {
-                id: widget.icon.id,
-                type: widget.icon.type
-            },
-			main: widget.main,
-			settings: widget.settings,
-			saveLoad: widget.saveLoad,
-			delete: widget.delete
-        });
+        var widgetdef = angular.copy(widget);
+        dashboards[selectedDashboardId].widgets.push(widgetdef);
     }
 
     function remove(widget) {
