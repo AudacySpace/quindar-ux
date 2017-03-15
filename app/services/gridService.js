@@ -149,20 +149,24 @@ app
 				delete: false,
             },
 			{
-        sizeY: 3,
-        sizeX: 4,
-        name: "Line Plot",
-        directive: "lineplot",
-		directiveSettings: "linesettings",
-        id: "addLine",
-        icon: {
-            id: "l-plot",
-            type: "fa-line-chart"
-        },
-        main: true,
-		settings: false,
-		saveLoad: false,
-		delete: false
+				col: 0,
+                row: 3,
+				sizeY: 3,
+				sizeX: 4,
+				name: "Line Plot",
+				directive: "lineplot",
+				directiveSettings: "linesettings",
+				id: "addLine",
+				icon: {
+					id: "l-plot",
+					type: "fa-line-chart"
+				},
+				main: true,
+				settings: {
+					active: false
+				},
+				saveLoad: false,
+				delete: false
     }]
         }
     };
