@@ -9,10 +9,6 @@ div.btn-group.selectmenu .btn {
 img.arrow-right-img{
     width:15px;
 }
-
-a.btn.btn-default.arrowbtn{
-    background-color:#F2F3F4;
-}
 a.arrowbtn{
     border:0px;
     background-color:#F2F3F4;
@@ -20,26 +16,29 @@ a.arrowbtn{
 }
 a.arrowbtn:focus{
     border:0px;
+    background-color:#F2F3F4;
     outline: none
 }
 
 a.arrowbtn:hover{
     border:0px;
+    background-color:#F2F3F4;
     color:#07D1EA;
 }
 a.arrowbtn:active{
     border:0px;
     background-color:#F2F3F4;
-    box-shadow:none;
+    /*color:#07D1EA;*/
 }
 a.arrowbtn:visited{
     border:0px;
     background-color:#F2F3F4;
+    /*color:#07D1EA;*/
     font-size:14px;
 }
 
 div.btn-group.selectmenu.open > a{
-    /*color:#1072A4;*/
+    color:#1072A4;
 }
 
 .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th{
