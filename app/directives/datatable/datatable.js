@@ -430,10 +430,9 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
                         }
                     };
 
-    
     $scope.getTelemetrydata = function($event,$index){
         var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
-        arrow.style.color = "#07D1EA";
+        arrow.style.color = "red";
 
         if ($window.innerWidth < 1400){
             $mdSidenav('left').open();
@@ -478,7 +477,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
                 dashboardService.setLeftLock($scope.lock.lockLeft);
             }
         } else {
-            arrow.style.color = "#07D1EA";
+            arrow.style.color = "red";
             alert("Vehicle data not set. Please select from Data Menu");
         }
     }
@@ -496,22 +495,11 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
     }
 
     $scope.moveRowUp = function($index){
-        if($index !== 0)
-        {
         $scope.table.rows.data[$index-1] = $scope.table.rows.data.splice($index, 1, $scope.table.rows.data[$index-1])[0];
-        }
-        else{
-            alert("Row cannot be moved more up!");
-        }
     }
 
     $scope.moveRowDown = function($index){
-        if(($index) !== ($scope.table.rows.data.length)-1 ){
         $scope.table.rows.data[$index+1] = $scope.table.rows.data.splice($index, 1, $scope.table.rows.data[$index+1])[0];
-        }
-        else{
-            alert("Row cannot be moved more down!");
-        }
     }
 
     $scope.convertHeader = function($index){
