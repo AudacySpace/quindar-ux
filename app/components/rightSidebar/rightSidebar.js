@@ -1,9 +1,11 @@
 app
 .component('rightSidebar', {
   	templateUrl: "./components/rightSidebar/right_sidebar.html",
-  	controller: function(gridService, dashboardService, $controller) {
+  	controller: function(gridService, dashboardService, prompt) {
         var vm = this;
   		vm.name = dashboardService.name;
+        vm.email = dashboardService.email;
+
         vm.addWidget = function() {
             gridService.addWidget();
         };
@@ -26,6 +28,22 @@ app
 
         vm.showAddMenu = function(){
             vm.addMenu = !vm.addMenu;
+        }
+
+        vm.save = function(){
+            prompt({
+                title: 'Save Layout',
+                input: true,
+                label: 'Layout Name',
+                value: ''
+            }).then(function(name){
+                gridService.save(vm.email, name)
+                .then(function(response) {
+                    if(response.status == 200){
+                        alert("Layout Saved succcessfully for " + vm.name);
+                    }
+                });
+            });
         }
 	}
 })

@@ -1,5 +1,5 @@
 app
-.factory('gridService', function() { 
+.factory('gridService', ['$http', function($http) { 
     var gridsterOptions = {
         margins: [20, 20],
         columns: 8,
@@ -212,6 +212,15 @@ app
         dashboard.widgets.splice(dashboard.widgets.indexOf(widget), 1);
     }
 
+    function save(email, dName) {
+        dashboard.name = dName;
+        return $http({
+            url: "/saveLayout", 
+            method: "POST",
+            data: {"email" : email, "dashboard" : dashboard}
+        });
+    }
+
 	return {
         gridsterOptions : gridsterOptions,
         dashboards : dashboards,
@@ -223,6 +232,7 @@ app
         setDashboardId : setDashboardId,
         addWidgets : addWidgets,
         widgetDefinitions : widgetDefinitions,
-        remove : remove
+        remove : remove, 
+        save : save
 	}
-});
+}]);
