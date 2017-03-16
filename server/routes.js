@@ -83,24 +83,24 @@ var Config = require('./models/configuration');
         });
     });
   
-  //Save Layout to layouts collection of Quindar database
-    app.post('/savelayout',function(req,res){
-        var email = req.body.emailaddress;
-        var gridarray = req.body.grid;
-        console.log(req.body.emailaddress);
+    //Save Layout to User collection of Quindar database
+    app.post('/saveLayout',function(req,res){
+        var email = req.body.email;
+        var dashboard = req.body.dashboard;
+        console.log(dashboard);
 
-        //Insert the grid layout into the user table
-
+        //Insert the layout into the user collection
         User.findOne({ 'google.email' : email }, function(err, user) {
             if(err){
                 console.log(err);
             }
-            user.grid = gridarray;
+
+            user.grid.push(dashboard);
             user.save(function(err) {
                 if (err) throw err;
-                    console.log("Layout data updated successfully for " + email);
-                }); 
-
+                    
+                res.send(user);
+            });
         });
 
     });

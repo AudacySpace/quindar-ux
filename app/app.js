@@ -1,1 +1,1 @@
-var app = angular.module('app', ['gridster', 'ui.bootstrap', 'ngMaterial', 'ui.bootstrap.datetimepicker']);
+var app = angular.module('app', ['gridster', 'ui.bootstrap', 'ngMaterial', 'ui.bootstrap.datetimepicker','cgPrompt']);
