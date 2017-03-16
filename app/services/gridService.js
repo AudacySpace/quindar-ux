@@ -114,8 +114,7 @@ app
     }];
 
     var dashboards = {
-        '1': {
-            id: '1',
+        'Home': {
             name: 'Home',
             widgets: [{
                 col: 0,
@@ -171,16 +170,16 @@ app
         }
     };
 
-    var dashboard = dashboards[1];
+    var dashboard = {"current" : dashboards['Home']};
 
-    var selectedDashboardId = '1';
+    var selectedDashboardId = 'Home';
 
     function getDashboard() {
         return dashboard;
     }
 
     function setDashboard(d1) {
-        dashboard = d1;
+        dashboard["current"] = d1;
     }
 
     function getDashboardId() {
@@ -209,16 +208,34 @@ app
     }
 
     function remove(widget) {
-        dashboard.widgets.splice(dashboard.widgets.indexOf(widget), 1);
+        dashboard["current"].widgets.splice(dashboard["current"].widgets.indexOf(widget), 1);
     }
 
     function save(email, dName) {
-        dashboard.name = dName;
+        dashboard["current"].name = dName;
         return $http({
             url: "/saveLayout", 
             method: "POST",
-            data: {"email" : email, "dashboard" : dashboard}
+            data: {"email" : email, "dashboard" : dashboard["current"]}
         });
+    }
+
+    function load(email) {
+        return $http({
+            url: "/loadLayout", 
+            method: "GET",
+            params: {"email" : email}
+        });
+    }
+
+    function showLayout(layouts, layout) {
+        for(var i=0; i<layouts.length; i++){
+            var name = layouts[i].name;
+            dashboards[name] = layouts[i];
+        }
+        
+        dashboard["current"] = dashboards[layout.name];
+        selectedDashboardId = layout.name;
     }
 
 	return {
@@ -233,6 +250,8 @@ app
         addWidgets : addWidgets,
         widgetDefinitions : widgetDefinitions,
         remove : remove, 
-        save : save
+        save : save,
+        load : load,
+        showLayout : showLayout
 	}
 }]);

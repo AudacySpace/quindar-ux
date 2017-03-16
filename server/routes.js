@@ -66,20 +66,19 @@ var Config = require('./models/configuration');
     });
 
 
-// -------------------Save and Load Grid Layout ---------------------------------
+    // -------------------Save and Load Grid Layout ---------------------------------
 
-    //Load Layout from layouts collection of Quindar database
-    app.get('/loadlayout', function(req,res){
-        var email = req.query.emailaddress;
+    //Load Layout from User collection of Quindar database
+    app.get('/loadLayout', function(req,res){
+        var email = req.query.email;
 
-        //----------------load from user table------------------------------------
-
-          User.findOne({ 'google.email' : email }, function(err, user) {
+        //Load the layout from the User collection
+        User.findOne({ 'google.email' : email }, function(err, user) {
             if(err){
                 console.log(err);
             }
-            res.send(user.grid);
 
+            res.send(user.grid);
         });
     });
   
@@ -87,7 +86,7 @@ var Config = require('./models/configuration');
     app.post('/saveLayout',function(req,res){
         var email = req.body.email;
         var dashboard = req.body.dashboard;
-        console.log(dashboard);
+        var count = 0;
 
         //Insert the layout into the user collection
         User.findOne({ 'google.email' : email }, function(err, user) {
@@ -95,10 +94,25 @@ var Config = require('./models/configuration');
                 console.log(err);
             }
 
-            user.grid.push(dashboard);
+            //Check if there are layouts stored
+            if(user.grid.length != 0){
+                for(var i=0; i<user.grid.length; i++){
+                    if(dashboard.name == user.grid[i].name){
+                        user.grid[i] = dashboard;
+                        count ++;
+                    }
+                }
+                //If the new name does not exist in the layout, push the new layout
+                if(count == 0){
+                    user.grid.push(dashboard);
+                }
+            } else {
+                user.grid.push(dashboard);
+            }
+            user.markModified('grid');
             user.save(function(err) {
                 if (err) throw err;
-                    
+                
                 res.send(user);
             });
         });
@@ -162,22 +176,6 @@ var Config = require('./models/configuration');
             }
             res.send(configuration);
         });
-    });
-
-    //get data for table text widget
-    app.get('/addtablewidget',function(req,res){
-        //Query to get the latest document from the position collection
-        Telemetry.findOne({'vehicleId.value':'Audacy1'}, {}, { sort: { '_id' : -1 } }, function(err, post) {
-           if(err) throw err;
-            res.send(post);
-        });
-    });
-
-    //get data for ground track widget
-    app.get('/getposition',function(req,res){
-        Telemetry.find({'vehicleId.value':'Audacy1'},{},{sort:{'_id':-1},limit:1},function(e,docs){
-            res.send(docs);
-       });
     });
    
 };
