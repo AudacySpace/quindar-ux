@@ -33,13 +33,24 @@ app
             vm.Doc = !vm.Doc;
         }
 		
-		vm.showAModal = function() {
+		vm.showReadme = function() {
 
 			// Just provide a template url, a controller and call 'showModal'.
 			ModalService.showModal({
 				templateUrl: "./components/rightSidebar/documentation.html",
 				controller: "docController",
-			})
+			});
+			
+		};
+		
+		vm.showContributing = function() {
+
+			// Just provide a template url, a controller and call 'showModal'.
+			ModalService.showModal({
+				templateUrl: "./components/rightSidebar/contributing.html",
+				controller: "docController",
+			});
+			
 		};
   
 	}

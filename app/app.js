@@ -1,1 +1,1 @@
-var app = angular.module('app', ['gridster', 'ui.bootstrap', 'ngMaterial', 'ui.bootstrap.datetimepicker', 'angularModalService', 'yaru22.md']);
+var app = angular.module('app', ['gridster', 'ui.bootstrap', 'ngMaterial', 'ui.bootstrap.datetimepicker', 'angularModalService', 'hc.marked']);
