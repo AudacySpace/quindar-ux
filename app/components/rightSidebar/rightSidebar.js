@@ -1,7 +1,7 @@
 app
 .component('rightSidebar', {
   	templateUrl: "./components/rightSidebar/right_sidebar.html",
-  	controller: function(gridService, dashboardService, prompt) {
+  	controller: function(gridService, dashboardService, prompt, $window, $mdSidenav) {
         var vm = this;
   		vm.name = dashboardService.name;
         vm.email = dashboardService.email;
@@ -57,6 +57,14 @@ app
 
         vm.showLayout = function(layout){
             gridService.showLayout(vm.layouts, layout);
+            $window.document.title = "Quindar - " + layout.name;
+            if ($window.innerWidth < 1400){
+                $mdSidenav('right').close();
+            } else {
+                var locks = dashboardService.getLock();
+                locks.lockRight = !locks.lockRight;
+                dashboardService.setRightLock(locks.lockRight); 
+            }
         }
     
 	}
