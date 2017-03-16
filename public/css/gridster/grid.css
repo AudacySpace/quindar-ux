@@ -32,8 +32,11 @@ ul {
 .box-content {
     /*padding:10px;*/
     height:calc(100% - 35px);
-    overflow:hidden;
+    /*overflow:hidden;*/ /*This makes the box content hidden all the time*/
 
+    /*Adds scroll bar to the right and bottom when the widget size decreases*/
+    overflow-x:auto;  
+    overflow-y:auto;
 }
 .box-content h5 {
     font-size:1.0em;
@@ -45,7 +48,6 @@ ul {
     position: absolute;
     display: inline;
 }
-
 a {
     color: #ccc;
 }
