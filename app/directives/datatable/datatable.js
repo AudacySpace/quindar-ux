@@ -463,10 +463,22 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
                     } else {
                         row.contents[4].value = telemetry[vehicle][id].value;
                     }
-                    row.contents[5].value = telemetry[vehicle][id].warn_high;
-                    row.contents[6].value = telemetry[vehicle][id].alarm_high;
+                    if(telemetry[vehicle][id].warn_high !== null){
+                        row.contents[5].value = telemetry[vehicle][id].warn_high;
+                    }else {
+                        row.contents[5].value = 'N/A';   
+                    }
+                    if(telemetry[vehicle][id].alarm_high !== null){
+                        row.contents[6].value = telemetry[vehicle][id].alarm_high;
+                    }else {
+                        row.contents[6].value = 'N/A';   
+                    }
                     row.contents[7].value = telemetry[vehicle][id].units;
-                    row.contents[8].value = telemetry[vehicle][id].notes;
+                    if(telemetry[vehicle][id].notes !== ''){
+                        row.contents[8].value = telemetry[vehicle][id].notes;
+                    }else {
+                        row.contents[8].value = 'N/A';    
+                    }
                 }, 1000);
             } else {
                 alert("Telemetry data not available");
@@ -491,12 +503,16 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
     }
 
     $scope.deleteRow = function($index){
-        $scope.table.rows.data.splice($index, 1);
+        if(($index === 0) && ($scope.table.rows.data.length) === 1){
+            alert("Please do not delete this row!Add row above to delete this row.");
+        }else {
+            $scope.table.rows.data.splice($index, 1);
+        }
     }
 
     $scope.moveRowUp = function($index){
         if($index !== 0){
-        $scope.table.rows.data[$index-1] = $scope.table.rows.data.splice($index, 1, $scope.table.rows.data[$index-1])[0];
+            $scope.table.rows.data[$index-1] = $scope.table.rows.data.splice($index, 1, $scope.table.rows.data[$index-1])[0];
         }
         else{
             alert("This row cannot be moved further up!");
@@ -505,7 +521,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
 
     $scope.moveRowDown = function($index){
         if(($index) !== (($scope.table.rows.data.length)-1)){
-        $scope.table.rows.data[$index+1] = $scope.table.rows.data.splice($index, 1, $scope.table.rows.data[$index+1])[0];
+            $scope.table.rows.data[$index+1] = $scope.table.rows.data.splice($index, 1, $scope.table.rows.data[$index+1])[0];
         }
         else{
             alert("This row cannot be moved further down!You have reached the end of the table.");
