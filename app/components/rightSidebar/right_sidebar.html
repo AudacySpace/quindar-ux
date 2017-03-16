@@ -34,6 +34,13 @@
                 <span flex></span>
                 <span class="glyphicon glyphicon-menu-down pull-right" id="layout-arrow"></span>
             </md-list-item>
+            <md-list ng-show="$ctrl.layoutMenu">
+            <md-divider></md-divider>
+                <md-list-item ng-repeat="layout in $ctrl.layouts" ng-click="$ctrl.showLayout(layout)" id="list3">
+                    <md-icon class="md-icon smaller" md-svg-icon="/icons/aud_arrow_01-2.svg"></md-icon>
+                    <p>{{ layout.name }}</p>
+                </md-list-item>
+            </md-list>
             <md-divider></md-divider>
             <md-list-item ng-click="$ctrl.clear()" id="list2">
                 <span class="glyphicon glyphicon-trash" id="clear-layout"></span>Clear

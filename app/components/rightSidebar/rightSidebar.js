@@ -5,6 +5,7 @@ app
         var vm = this;
   		vm.name = dashboardService.name;
         vm.email = dashboardService.email;
+        var dashboard = gridService.getDashboard();
 
         vm.addWidget = function() {
             gridService.addWidget();
@@ -35,15 +36,28 @@ app
                 title: 'Save Layout',
                 input: true,
                 label: 'Layout Name',
-                value: ''
+                value: dashboard["current"].name
             }).then(function(name){
                 gridService.save(vm.email, name)
                 .then(function(response) {
                     if(response.status == 200){
-                        alert("Layout Saved succcessfully for " + vm.name);
+                        alert("Layout saved succcessfully -- " + name);
                     }
                 });
             });
         }
+
+        vm.load = function(){
+            gridService.load(vm.email)
+            .then(function(response) {
+                vm.layouts = response.data;
+                vm.layoutMenu = !vm.layoutMenu;
+            })
+        }
+
+        vm.showLayout = function(layout){
+            gridService.showLayout(vm.layouts, layout);
+        }
+    
 	}
 })
