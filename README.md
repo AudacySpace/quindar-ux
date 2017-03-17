@@ -15,14 +15,14 @@ You can use Quindar for your own mission operations, deployed on your own metal,
 For installing Quindar, follow the instructions mentioned in [quindar-deploy](https://github.com/quindar/quindar-deploy/blob/master/README.md) under **qux Install**.
 
 ## How to Use Quindar
-Please check out the file [How_To_Use](docs/How_To_Use.md) to learn about navigating around Quindar application.
+Please check out the file [How_To_Use](https://github.com/quindar/quindar-ux/blob/develop/docs/How_To_Use.md) to learn about navigating around Quindar application.
 
 ## Contributing
-We encourage you to contribute to Quindar! Please check out the file [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines about how to proceed.
+We encourage you to contribute to Quindar! Please check out the file [CONTRIBUTING.md](https://github.com/quindar/quindar-ux/blob/develop/CONTRIBUTING.md) for guidelines about how to proceed.
 
 ## About Us
 Audacy was launched in 2015 by Stanford graduates, SpaceX veterans, and NASA award winners. Audacy delivers anytime and effortless space connectivity, advancing humanity to a new age of commerce, exploration and discovery. Connect online at https://audacy.space.
 
 ## License
-Quindar is released under the MIT License. For license (terms of use), please refer to the file [LICENSE](LICENSE).
+Quindar is released under the MIT License. For license (terms of use), please refer to the file [LICENSE](https://github.com/quindar/quindar-ux/blob/develop/LICENSE).
 
