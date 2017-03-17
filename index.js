@@ -13,18 +13,6 @@ var session      = require('express-session');
 
 var configDB = require('./server/config/database.js');
 
-var fs = require('fs-extra');
-
-fs.copy('./README.md', './app/doc/read.md', function (err) {
-	if (err) return console.error(err)
-	console.log('success!')
-}); 
-
-fs.copy('./CONTRIBUTING.md', './app/doc/contribute.md', function (err) {
-	if (err) return console.error(err)
-	console.log('success!')
-}); 
-
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/app'));
 
