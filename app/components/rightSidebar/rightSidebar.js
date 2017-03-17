@@ -1,11 +1,7 @@
 app
 .component('rightSidebar', {
   	templateUrl: "./components/rightSidebar/right_sidebar.html",
-<<<<<<< bb7d28ad30498db5acfc1d9b3457a32e138bb779
-  	controller: function(gridService, dashboardService, prompt, $window, $mdSidenav, ModalService) {
-=======
-  	controller: function(gridService, dashboardService, $controller, ModalService) {
->>>>>>> temp
+  	controller: function(gridService, dashboardService, prompt, $window, $mdSidenav, ModalService, ModalService) {
         var vm = this;
   		vm.name = dashboardService.name;
         vm.email = dashboardService.email;
@@ -35,7 +31,6 @@ app
         vm.showAddMenu = function(){
             vm.addMenu = !vm.addMenu;
         }
-<<<<<<< bb7d28ad30498db5acfc1d9b3457a32e138bb779
 
         vm.save = function(){
             prompt({
@@ -73,20 +68,28 @@ app
             }
         }
     	
-=======
-		
->>>>>>> temp
 		vm.showDoc = function(){
             vm.Doc = !vm.Doc;
         }
 		
-		vm.showAModal = function() {
+		vm.showReadme = function() {
 
 			// Just provide a template url, a controller and call 'showModal'.
 			ModalService.showModal({
 				templateUrl: "./components/rightSidebar/documentation.html",
 				controller: "docController",
-			})
+			});
+			
+		};
+		
+		vm.showContributing = function() {
+
+			// Just provide a template url, a controller and call 'showModal'.
+			ModalService.showModal({
+				templateUrl: "./components/rightSidebar/contributing.html",
+				controller: "docController",
+			});
+			
 		};
   
 	}
