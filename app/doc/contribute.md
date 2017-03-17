@@ -66,7 +66,7 @@ Follow steps to build and deploy the container on localhost. Shared Drives featu
     npm install
     docker run -d -t --name qux --cap-add SYS_PTRACE -v /proc:/host/proc:ro -v /sys:/host/sys:ro -v $(pwd):/node/ -p 80:80 -p 443:443 quindar-qux
 
-The UI should be up and running on: http://localhost. Click on Login to get started.
+The UI should be up and running on: http://<span></span>localhost. Click on Login to get started.
 
 Notes:
 
@@ -80,7 +80,7 @@ Notes:
 		git checkout -b <your_branch_name>
 
 2. Write/Edit the code in your own branch.
-3. Manually test the code as changes would be reflected in the browser (https://localhost).
+3. Manually test the code as changes would be reflected in the browser (https://<span></span>localhost).
 4. Commit the changes using a descriptive commit message.
         
         git add <filename(s)>
