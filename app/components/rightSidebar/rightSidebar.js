@@ -1,7 +1,7 @@
 app
 .component('rightSidebar', {
   	templateUrl: "./components/rightSidebar/right_sidebar.html",
-  	controller: function(gridService, dashboardService, prompt, $window, $mdSidenav) {
+  	controller: function(gridService, dashboardService, prompt, $window, $mdSidenav, ModalService) {
         var vm = this;
   		vm.name = dashboardService.name;
         vm.email = dashboardService.email;
@@ -22,6 +22,7 @@ app
         vm.widgetDefinitions = gridService.widgetDefinitions;
         vm.QwidgetMenu =  false;
         vm.addMenu = false;
+		vm.Doc = false;
 
         vm.showQwidgetMenu = function(){
             vm.QwidgetMenu = !vm.QwidgetMenu;
@@ -66,6 +67,19 @@ app
                 dashboardService.setRightLock(locks.lockRight); 
             }
         }
-    
+    	
+		vm.showDoc = function(){
+            vm.Doc = !vm.Doc;
+        }
+		
+		vm.showAModal = function() {
+
+			// Just provide a template url, a controller and call 'showModal'.
+			ModalService.showModal({
+				templateUrl: "./components/rightSidebar/documentation.html",
+				controller: "docController",
+			})
+		};
+  
 	}
 })

@@ -59,12 +59,22 @@
             <span class="glyphicon glyphicon-menu-down"></span>
         </md-list-item>
         <md-divider></md-divider>
-        <md-list-item ng-click="$ctrl.document()">
+        <md-list-item ng-click="$ctrl.showDoc()">
             <i class="fa fa-file-text-o" aria-hidden="true" id="docs"></i>Documentation
             <span flex></span>
             <span class="glyphicon glyphicon-menu-down"></span>
         </md-list-item>
         <md-divider></md-divider>
+		<md-list class="md-dense" flex ng-show="$ctrl.Doc">
+			<md-list-item ng-click="$ctrl.showAModal()" id="list2">
+                <span class="fa fa-file-text-o" id="qwidgetPlus"></span>README
+                <span flex></span>
+            </md-list-item>
+			<md-list-item ng-click="$ctrl.showAModal()" id="list2">
+                <span class="fa fa-file-text-o" id="qwidgetPlus"></span>CONTRIBUTING
+                <span flex></span>
+            </md-list-item>			
+		</md-list>
         <md-list-item ng-href="/logout" class="show-flex">
             <p>Logout</p>
         </md-list-item>
