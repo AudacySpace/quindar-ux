@@ -1,7 +1,7 @@
 app
 .component('rightSidebar', {
   	templateUrl: "./components/rightSidebar/right_sidebar.html",
-  	controller: function(gridService, dashboardService, prompt, $window, $mdSidenav) {
+  	controller: function(gridService, dashboardService, prompt, $window, $mdSidenav, ModalService) {
         var vm = this;
   		vm.name = dashboardService.name;
         vm.email = dashboardService.email;
@@ -58,14 +58,50 @@ app
         vm.showLayout = function(layout){
             gridService.showLayout(vm.layouts, layout);
             $window.document.title = "Quindar - " + layout.name;
-            if ($window.innerWidth < 1400){
-                $mdSidenav('right').close();
+			closeSidebar();
+        }
+		
+		vm.showDoc = function(){
+            vm.Doc = !vm.Doc;
+		}
+
+		vm.showReadme = function() {
+
+			// Just provide a template url, a controller and call 'showModal'.
+			ModalService.showModal({
+				templateUrl: "./components/rightSidebar/documentation.html",
+				controller: "docController",
+			});
+			closeSidebar();	
+		};
+		
+		vm.showContributing = function() {
+
+			// Just provide a template url, a controller and call 'showModal'.
+			ModalService.showModal({
+				templateUrl: "./components/rightSidebar/contributing.html",
+				controller: "docController",
+			});
+			closeSidebar();		
+		};
+		
+		function closeSidebar(){
+			if ($window.innerWidth < 1400){
+				$mdSidenav('right').close();
             } else {
                 var locks = dashboardService.getLock();
                 locks.lockRight = !locks.lockRight;
                 dashboardService.setRightLock(locks.lockRight); 
             }
-        }
+		}
     
 	}
 })
+
+app.controller('docController', ['$scope', 'close', function($scope, close) {
+	
+	$scope.close = function(result) {
+		close(result); // close
+	};
+
+}]);

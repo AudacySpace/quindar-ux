@@ -13,6 +13,8 @@ var session      = require('express-session');
 
 var configDB = require('./server/config/database.js');
 
+var fs = require('fs-extra');
+
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/app'));
 
@@ -46,7 +48,29 @@ app.listen(app.get('port'), function() {
   console.log("Node app is running at port " + app.get('port'));
 });
 
+function copyFile(src, dest){
+    if(!fs.existsSync(dest)){
+        fs.copy(src, dest, function (err) {
+            if (err) return console.error(err);
 
+            console.log('Success!');
+        });
+    } else {
+        var newFile = fs.readFileSync(src);
+        var oldFile = fs.readFileSync(dest);
+
+        if(newFile.toString() !== oldFile.toString()) {
+            fs.copy(src, dest, function (err) {
+                if (err) return console.error(err);
+
+                console.log('Success!');
+            });
+        }
+    }
+}
+
+copyFile('./README.md', './app/doc/read.md');
+copyFile('./CONTRIBUTING.md', './app/doc/contribute.md');
 
 
 
