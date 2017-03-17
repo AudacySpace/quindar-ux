@@ -10,9 +10,8 @@ app
 });	
 
 app.controller('lineController', ['$scope', 'd3Service', 'datatableSettingsService','$mdSidenav','$window','dashboardService','sidebarService', 'lineService', function($scope, d3, datatableSettingsService, $mdSidenav, $window, dashboardService, sidebarService, lineService){
-
-	setTimeout(waitForMain, 300);
-		
+	lineService.settingsId = $scope.$id;
+	lineService.setIdStore(lineService.mainId, lineService.settingsId);
 	$scope.vehicle =[];
 	$scope.telemetry = dashboardService.telemetry;
 	
@@ -67,24 +66,20 @@ app.controller('lineController', ['$scope', 'd3Service', 'datatableSettingsServi
 			} 				
 		}
 		
-		if (vehicle.id == ""){
-			alert("Select Data!")
-		}else{
-			$scope.table.rows.data[$index][0].value = vehicle.id;
-			$scope.table.rows.data[$index][1].value = $scope.telemetry[vehicle.vehicle][vehicle.id].name;
-			$scope.vehicle = vehicle.vehicle;
+        $scope.table.rows.data[$index][0].value = vehicle.id;
+		$scope.table.rows.data[$index][1].value = $scope.telemetry[vehicle.vehicle][vehicle.id].name;
+		$scope.vehicle = vehicle.vehicle;
 		
-			if ($window.innerWidth >= 1400){
-				$scope.lock.lockLeft = !$scope.lock.lockLeft;
-				dashboardService.setLeftLock($scope.lock.lockLeft);          
-			} 
+        if ($window.innerWidth >= 1400){
+            $scope.lock.lockLeft = !$scope.lock.lockLeft;
+            dashboardService.setLeftLock($scope.lock.lockLeft);          
+        } 
 
-			if(vehicle.id === '') {
-				arrow.style.color = "red";
-			} else {
-				arrow.style.color = "#b3b3b3";  
-			} 
-		}
+        if(vehicle.id === '') {
+            arrow.style.color = "red";
+        } else {
+            arrow.style.color = "#b3b3b3";  
+        } 
     }
 	
     $scope.addRowAbove = function($index){
@@ -126,15 +121,5 @@ app.controller('lineController', ['$scope', 'd3Service', 'datatableSettingsServi
 	$scope.saveWidget = function(widget){
 		widget.main = true;
 		widget.settings.active = false;
-	}	
-	
-	// functions
-	function waitForMain(){
-		if (typeof lineService.mainId === "undefined"){
-		
-		} else{
-			lineService.settingsId = $scope.$id;
-			lineService.setIdStore(lineService.mainId, lineService.settingsId);
-		}
-	}
+}	
 }]);
