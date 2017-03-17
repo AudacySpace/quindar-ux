@@ -74,9 +74,8 @@ app
 				
 				var tempParam = lineService.getParam();	
 				var idNum = "none";
-				
+
 				for (i=0; i < tempParam.length; i++){
-					
 					if (tempParam[i].main == scope.$id){
 						
 						// Identify the index

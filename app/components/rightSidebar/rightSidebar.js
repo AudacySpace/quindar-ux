@@ -59,13 +59,7 @@ app
         vm.showLayout = function(layout){
             gridService.showLayout(vm.layouts, layout);
             $window.document.title = "Quindar - " + layout.name;
-            if ($window.innerWidth < 1400){
-                $mdSidenav('right').close();
-            } else {
-                var locks = dashboardService.getLock();
-                locks.lockRight = !locks.lockRight;
-                dashboardService.setRightLock(locks.lockRight); 
-            }
+			closeSidebar();
         }
     	
 		vm.showDoc = function(){
@@ -79,6 +73,7 @@ app
 				templateUrl: "./components/rightSidebar/documentation.html",
 				controller: "docController",
 			});
+			closeSidebar();
 			
 		};
 		
@@ -89,8 +84,28 @@ app
 				templateUrl: "./components/rightSidebar/contributing.html",
 				controller: "docController",
 			});
+			closeSidebar();
 			
 		};
+		
+		function closeSidebar(){
+			if ($window.innerWidth < 1400){
+				$mdSidenav('right').close();
+            } else {
+                var locks = dashboardService.getLock();
+                locks.lockRight = !locks.lockRight;
+                dashboardService.setRightLock(locks.lockRight); 
+            }
+		}
+		
   
 	}
 })
+
+app.controller('docController', ['$scope', 'close', function($scope, close) {
+	
+	$scope.close = function(result) {
+		close(result); // close
+	};
+
+}]);
