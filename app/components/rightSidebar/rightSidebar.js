@@ -1,7 +1,7 @@
 app
 .component('rightSidebar', {
   	templateUrl: "./components/rightSidebar/right_sidebar.html",
-  	controller: function(gridService, dashboardService, prompt, $window, $mdSidenav, ModalService, ModalService) {
+  	controller: function(gridService, dashboardService, prompt, $window, $mdSidenav, ModalService) {
         var vm = this;
   		vm.name = dashboardService.name;
         vm.email = dashboardService.email;
