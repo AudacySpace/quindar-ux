@@ -68,7 +68,7 @@ app
 			// Stream
 			scope.play = function(){
 				if (!scope.widget.vehicle_name && !scope.widget.vehicle_id){
-					alert("Select Data!")
+					alert("Select Data and Save using Settings Menu!")
 				}else{
 					var vehicle = scope.widget.vehicle_name;
 					var paramY = scope.widget.vehicle_id;
