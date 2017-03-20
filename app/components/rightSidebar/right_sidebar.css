@@ -1,105 +1,105 @@
 .md-sidenav-right {
-  background-color: #020613;
+    background-color: #020613;
 }
 
 md-list .md-subheader { 
-  height: 40px !important;
-  min-height: 40px !important;
-  background-color: #020613 !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    background-color: #020613 !important;
 }
 
 .md-subheader .md-subheader-inner {
-  padding: 12px;
-  color: #ccc;
+    padding: 12px;
+    color: #ccc;
 }
 
 md-toolbar {
-  background-color: #020613 !important;
-  border-bottom: 3px solid #07D1EA;
+    background-color: #020613 !important;
+    border-bottom: 3px solid #07D1EA;
 }
 
 md-content#right {
-  color: #ccc;
-  background-color: #020613;
+    color: #ccc;
+    background-color: #020613;
 }
 
 md-list-item, md-list-item .md-list-item-inner { 
-  font-size: 16px;
-  height: 40px !important;
-  min-height: 40px !important;
+    font-size: 16px;
+    height: 40px !important;
+    min-height: 40px !important;
 }
 
 md-list {
-  padding: 0px 0px 0px 0px !important;
+    padding: 0px 0px 0px 0px !important;
 }
 
 md-list-item#list2 {
-  font-size: 15px;
-  padding-left: 16px;
+    font-size: 15px;
+    padding-left: 16px;
 }
 
 md-list-item#list2 .md-list-item-inner {
-  font-size: 15px;
+    font-size: 15px;
 }
 
 md-list-item#list3 .md-list-item-inner {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 md-list-item#list3 {
-  font-size: 14px;
-  padding-left: 34px;
+    font-size: 14px;
+    padding-left: 34px;
 }
 
 md-list-item#list3:hover {
-  background-color: #242833 !important;
+    background-color: #242833 !important;
 }
 
 md-list-item#list3 .md-list-item-inner:hover {
-  background-color: #242833 !important;
+    background-color: #242833 !important;
 }
 
 md-list-item#list2:hover {
-  background-color: #242833 !important;
+    background-color: #242833 !important;
 }
 
 md-list-item#list2 .md-list-item-inner:hover {
-  background-color: #242833 !important;
+    background-color: #242833 !important;
 }
 
 md-list-item:hover {
-  color: #fff;
-  border-left: 4px solid #07D1EA;
+    color: #fff;
+    border-left: 4px solid #07D1EA;
 }
 
 .md-button:not([disabled]):hover {
-  background-color: #242833;
+    background-color: #242833;
 }
 
 md-divider {
-  border-top-width: 2px;
-  background-color: #4d4d4d;
+    border-top-width: 2px;
+    background-color: #4d4d4d;
 }
 
 .show-hide {
-  display: none;
+    display: none;
 }
 
 .show-flex {
-  display: none;
+    display: none;
 }
 
 md-content.main {
-  overflow-x: hidden; 
+    overflow-x: hidden; 
 }
 
 @media only screen and (max-width: 736px) {
   .show-hide {
-    display: block;
+        display: block;
   }
 
   .show-flex {
-    display: flex;
+        display: flex;
   }
 }
 

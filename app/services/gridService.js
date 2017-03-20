@@ -10,60 +10,24 @@ app
     };
 
     var widgetDefinitions = [
-    {
-        sizeY: 3,
-        sizeX: 3,
-        name: "Ground Track",
-        directive: "groundtrack",
-		directiveSettings: "samplesettings",
-        id: "addGround",
-        icon: {
-            id: "g-track",
-            type: "fa-globe"
-        },
-        main: true,
-		settings: {
-            active: false
-        },
-		saveLoad: false,
-		delete: false
-    }, 
-    {
-        sizeY: 3,
-        sizeX: 3,
-        name: "Telemetry Table",
-        directive: "tabletext",
-		directiveSettings: "samplesettings",
-        id: "addtablewidget",
-        icon: {
-            id: "t-table",
-            type: "fa-table"
-        },
-        main: true,
-		settings: {
-            active: false
-        },
-		saveLoad: false,
-		delete: false
-    }, 
-    {
-        sizeY: 3,
-        sizeX: 3,
-        name: "Search By Id",
-        directive: "searchtable",
-		directiveSettings: "samplesettings",
-        id: "searchId",
-        icon: {
-            id: "s-table",
-            type: "fa-search"
-        },
-        main: true,
-		settings: {
-            active: false
-        },
-		saveLoad: false,
-		delete: false
-    },
+  //   {
+  //       sizeY: 3,
+  //       sizeX: 3,
+  //       name: "Ground Track",
+  //       directive: "groundtrack",
+		// directiveSettings: "samplesettings",
+  //       id: "addGround",
+  //       icon: {
+  //           id: "g-track",
+  //           type: "fa-globe"
+  //       },
+  //       main: true,
+		// settings: {
+  //           active: false
+  //       },
+		// saveLoad: false,
+		// delete: false
+  //   }, 
     {
         sizeY: 3,
         sizeX: 4,
