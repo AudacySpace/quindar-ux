@@ -30,7 +30,7 @@ body.image6 {
 }
 .logo img {
 /*  margin-top: 200px;*/
-  /*  width: 200px;*/
+/*  width: 200px;*/
     width: 430px;
     max-width: 86%;
     display: block;
@@ -64,33 +64,33 @@ body.image6 {
     -o-transition: all,.3s,ease-in-out;
     transition: all .3s ease-in-out;
     height: 100%;
-/*    margin: 0 0 0 40px;*/
+/*  margin: 0 0 0 40px;*/
     position: relative;
     top: 0;
-/*    width: 400px;*/
+/*  width: 400px;*/
     z-index: 100;
     padding-top: 160px;
 }
 #login-page .login-with-google button {
-  font-family: "Open Sans", sans-serif;
-  text-transform: uppercase;
-  outline: 0;
-  border: none;
-  background: #07d1ea;
-  width: 430px;
-  max-width: 86%;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-  cursor: pointer;
-  display: block;
-  margin: 1rem auto 0;
+    font-family: "Open Sans", sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    border: none;
+    background: #07d1ea;
+    width: 430px;
+    max-width: 86%;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+    display: block;
+    margin: 1rem auto 0;
 }
 
 #login-page .login-with-google .button:hover,.form button:active,.form button:focus {
-  background: #1072A4;
+    background: #1072A4;
 }
 
 #login-page .content .footer-logos {
