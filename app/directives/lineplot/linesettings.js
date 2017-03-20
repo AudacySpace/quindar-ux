@@ -53,12 +53,9 @@ app.controller('lineController', ['$scope', 'd3Service', 'datatableSettingsServi
         var vehicle = sidebarService.getVehicleInfo();
         var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
         
-        $scope.widget.vehicle_name = vehicle.vehicle;
-        $scope.widget.vehicle_id = vehicle.id;
-        
         $scope.table.rows.data[$index][0].value = vehicle.id;
         $scope.table.rows.data[$index][1].value = $scope.telemetry[vehicle.vehicle][vehicle.id].name;
-        $scope.vehicle = vehicle.vehicle;
+        $scope.vehicle = vehicle;
         
         if ($window.innerWidth >= 1400){
             $scope.lock.lockLeft = !$scope.lock.lockLeft;
@@ -109,6 +106,8 @@ app.controller('lineController', ['$scope', 'd3Service', 'datatableSettingsServi
     
     // Save
     $scope.saveWidget = function(widget){
+        $scope.widget.vehicle_name = $scope.vehicle.vehicle;
+        $scope.widget.vehicle_id = $scope.vehicle.id;
         widget.main = true;
         widget.settings.active = false;
 }   
