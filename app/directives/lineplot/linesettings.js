@@ -4,31 +4,29 @@ app
         restrict: 'EA', 
         templateUrl: './directives/lineplot/linesettings.html',
         link: function(scope, element, attributes) {
-
         }
     }
 }); 
 
-app.controller('lineController', ['$scope', 'd3Service', 'datatableSettingsService','$mdSidenav','$window','dashboardService','sidebarService', function($scope, d3, datatableSettingsService, $mdSidenav, $window, dashboardService, sidebarService){
-    $scope.telemetry = dashboardService.telemetry;
-    
-    // Table
-    $scope.checkedValues = datatableSettingsService.getValues();
-        
-    $scope.table = {"rows":{
+app.controller('lineController', ['$scope', 'd3Service','$mdSidenav','$window','dashboardService','sidebarService', function($scope, d3, $mdSidenav, $window, dashboardService, sidebarService){
+	
+	$scope.telemetry = dashboardService.telemetry;
+	
+	// Table		
+	$scope.table = {"rows":{
                     "data":[
                                 [
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedId"
+                                        "colshow":"true"
                                     },
                                     {   
                                         "value":"",
                                         "checked":"true",
                                         "style":"text-align:left",
-                                        "colshow":"checkedValues.checkedName"
+                                        "colshow":"true"
                                     }
                                 ]
                             ]
@@ -71,11 +69,11 @@ app.controller('lineController', ['$scope', 'd3Service', 'datatableSettingsServi
     }
     
     $scope.addRowAbove = function($index){
-        $scope.table.rows.data.splice($index,0,[{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow"}]);
+        $scope.table.rows.data.splice($index,0,[{"value":"","checked":"true","style":"text-align:left","colshow":"true"},{"value":"","checked":"true","style":"text-align:left","colshow":"true"},{"value":"","checked":"true","style":"text-align:right","colshow":"true"}]);
     }
 
     $scope.addRowBelow = function($index){
-        $scope.table.rows.data.splice($index+1,0,[{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow"}]);
+        $scope.table.rows.data.splice($index+1,0,[{"value":"","checked":"true","style":"text-align:left","colshow":"true"},{"value":"","checked":"true","style":"text-align:left","colshow":"true"},{"value":"","checked":"true","style":"text-align:right","colshow":"true"}]);
     }
 
     $scope.deleteRow = function($index){

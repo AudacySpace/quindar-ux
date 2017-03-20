@@ -1,19 +1,19 @@
 #input-search {
-  background-color: #242833;
-  border: #242833;
-  border-radius: 0px;
-  color: #FFFFFF;
+    background-color: #242833;
+    border: #242833;
+    border-radius: 0px;
+    color: #FFFFFF;
 }
 
 #group-search {
-  border-radius:0px;     
-  background-color: #464954;
-  border: #464954;
-  color: #FFFFFF;
+    border-radius:0px;     
+    background-color: #464954;
+    border: #464954;
+    color: #FFFFFF;
 }
 
 .md-sidenav-left {
-  background-color: #020613;
+    background-color: #020613;
 }
 
 md-icon {
@@ -40,23 +40,23 @@ md-icon.smaller {
 }
 
 md-content#left {
-  color: #ccc;
-  background-color: #020613;
+    color: #ccc;
+    background-color: #020613;
 }
 
 md-list-item#list4 .md-list-item-inner {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 md-list-item#list4 {
-  font-size: 14px;
-  padding-left: 52px;
+    font-size: 14px;
+    padding-left: 52px;
 }
 
 md-list-item#list4:hover {
-  background-color: #242833 !important;
+    background-color: #242833 !important;
 }
 
 md-list-item#list4 .md-list-item-inner:hover {
-  background-color: #242833 !important;
+    background-color: #242833 !important;
 }
