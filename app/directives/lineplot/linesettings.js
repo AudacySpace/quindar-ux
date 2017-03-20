@@ -49,24 +49,25 @@ app.controller('lineController', ['$scope', 'd3Service', 'datatableSettingsServi
     }
 
     $scope.getValue = function($event,$index){
-
-        var vehicle = sidebarService.getVehicleInfo();
+        $scope.vehicle = sidebarService.getVehicleInfo();
         var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
         
-        $scope.table.rows.data[$index][0].value = vehicle.id;
-        $scope.table.rows.data[$index][1].value = $scope.telemetry[vehicle.vehicle][vehicle.id].name;
-        $scope.vehicle = vehicle;
-        
-        if ($window.innerWidth >= 1400){
-            $scope.lock.lockLeft = !$scope.lock.lockLeft;
-            dashboardService.setLeftLock($scope.lock.lockLeft);          
-        } 
-
-        if(vehicle.id === '') {
-            arrow.style.color = "red";
+        if($scope.vehicle.vehicle !== "" && $scope.vehicle.id !== "") {
+            if(telemetry !== null) {
+                $scope.table.rows.data[$index][0].value = $scope.vehicle.id;
+                $scope.table.rows.data[$index][1].value = $scope.telemetry[$scope.vehicle.vehicle][$scope.vehicle.id].name;
+            } else {
+                alert("Telemetry data not available");
+            }
+            arrow.style.color = "#b3b3b3";
+            if ($window.innerWidth >= 1400){
+                $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                dashboardService.setLeftLock($scope.lock.lockLeft);
+            }
         } else {
-            arrow.style.color = "#b3b3b3";  
-        } 
+            arrow.style.color = "#07D1EA";
+            alert("Vehicle data not set. Please select from Data Menu");
+        }
     }
     
     $scope.addRowAbove = function($index){
@@ -102,12 +103,19 @@ app.controller('lineController', ['$scope', 'd3Service', 'datatableSettingsServi
     $scope.closeWidget = function(widget){
         widget.main = true;
         widget.settings.active = false;
+        if(!widget.vehicle_name && !widget.vehicle_id) {
+            for(var i=0; i<$scope.table.rows.data.length; i++){
+                for(var j=0; j<$scope.table.rows.data[i].length; j++){
+                    $scope.table.rows.data[i][j].value = "";
+                }
+            }
+        }
     }
     
     // Save
     $scope.saveWidget = function(widget){
-        $scope.widget.vehicle_name = $scope.vehicle.vehicle;
-        $scope.widget.vehicle_id = $scope.vehicle.id;
+        widget.vehicle_name = $scope.vehicle.vehicle;
+        widget.vehicle_id = $scope.vehicle.id;
         widget.main = true;
         widget.settings.active = false;
 }   
