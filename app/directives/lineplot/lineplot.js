@@ -101,7 +101,6 @@ app
 			}
 	
 			function updatePlot(vehicleObj) {
-				console.log("Hello");
 				var vehicle = vehicleObj[0];
 				var paramY = vehicleObj[1];
 				var paramX = vehicleObj[2];
