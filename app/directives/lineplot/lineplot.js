@@ -1,11 +1,8 @@
 app
-.directive('lineplot', ['d3Service','dashboardService','$interval', 'sidebarService', 'lineService', function(d3,db,$interval,sidebarService,lineService) { 
+.directive('lineplot', ['d3Service','dashboardService','$interval', 'sidebarService', function(d3,db,$interval,sidebarService) { 
 
   	return { 
     	restrict: 'EA', 
-		scope: {
-			vehicle: '&',
-		},
 		controller: 'lineController',
     	templateUrl: './directives/lineplot/lineplot.html', 
 		link: function(scope, element, attributes) {
@@ -13,7 +10,6 @@ app
 			scope.imageUrl = "/icons/line-plot-widget/LIVE_off.svg";
 			scope.playImg = "/icons/line-plot-widget/lineplot_play.svg";
 			scope.pauseImg = "/icons/line-plot-widget/lineplot_pause_click.svg";
-			lineService.mainId = scope.$id;
 			telemetry = db.telemetry;
 
 			var parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%S.%L%Z");
@@ -71,24 +67,11 @@ app
 
 			// Stream
 			scope.play = function(){
-				
-				var tempParam = lineService.getParam();	
-				var idNum = "none";
-				
-				for (i=0; i < tempParam.length; i++){
-					
-					if (tempParam[i].main == scope.$id){
-						
-						// Identify the index
-						idNum = i;
-					} 				
-				}
-
-				if (idNum == "none"){
+				if (!scope.widget.vehicle_name && !scope.widget.vehicle_id){
 					alert("Select Data!")
 				}else{
-					var vehicle = tempParam[idNum].name;
-					var paramY = tempParam[idNum].id;
+					var vehicle = scope.widget.vehicle_name;
+					var paramY = scope.widget.vehicle_id;
 					var paramX = "timestamp";
 					if (paramY == "timestamp"){
 						alert("Select a different parameter")
@@ -118,7 +101,7 @@ app
 			}
 	
 			function updatePlot(vehicleObj) {
-				
+				console.log("Hello");
 				var vehicle = vehicleObj[0];
 				var paramY = vehicleObj[1];
 				var paramX = vehicleObj[2];

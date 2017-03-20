@@ -1,25 +1,21 @@
 app
 .directive('linesettings', function() { 
-  	return { 
-    	restrict: 'EA', 
-		templateUrl: './directives/lineplot/linesettings.html',
-		link: function(scope, element, attributes) {
+    return { 
+        restrict: 'EA', 
+        templateUrl: './directives/lineplot/linesettings.html',
+        link: function(scope, element, attributes) {
 
-		}
-	}
-});	
+        }
+    }
+}); 
 
-app.controller('lineController', ['$scope', 'd3Service', 'datatableSettingsService','$mdSidenav','$window','dashboardService','sidebarService', 'lineService', function($scope, d3, datatableSettingsService, $mdSidenav, $window, dashboardService, sidebarService, lineService){
-	
-	setTimeout(waitForMain, 300);
-	
-	$scope.vehicle =[];
-	$scope.telemetry = dashboardService.telemetry;
-	
-	// Table
-	$scope.checkedValues = datatableSettingsService.getValues();
-		
-	$scope.table = {"rows":{
+app.controller('lineController', ['$scope', 'd3Service', 'datatableSettingsService','$mdSidenav','$window','dashboardService','sidebarService', function($scope, d3, datatableSettingsService, $mdSidenav, $window, dashboardService, sidebarService){
+    $scope.telemetry = dashboardService.telemetry;
+    
+    // Table
+    $scope.checkedValues = datatableSettingsService.getValues();
+        
+    $scope.table = {"rows":{
                     "data":[
                                 [
                                     {   
@@ -34,12 +30,12 @@ app.controller('lineController', ['$scope', 'd3Service', 'datatableSettingsServi
                                         "style":"text-align:left",
                                         "colshow":"checkedValues.checkedName"
                                     }
-								]
-							]
-						}
-					}
+                                ]
+                            ]
+                        }
+                    }
 
-	$scope.getTelemetrydata = function($event,$index){
+    $scope.getTelemetrydata = function($event,$index){
         var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
         arrow.style.color = "#07D1EA";
 
@@ -56,37 +52,26 @@ app.controller('lineController', ['$scope', 'd3Service', 'datatableSettingsServi
 
         var vehicle = sidebarService.getVehicleInfo();
         var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
-		var tempStore = lineService.getIdStore();
+        
+        $scope.widget.vehicle_name = vehicle.vehicle;
+        $scope.widget.vehicle_id = vehicle.id;
+        
+        $scope.table.rows.data[$index][0].value = vehicle.id;
+        $scope.table.rows.data[$index][1].value = $scope.telemetry[vehicle.vehicle][vehicle.id].name;
+        $scope.vehicle = vehicle.vehicle;
+        
+        if ($window.innerWidth >= 1400){
+            $scope.lock.lockLeft = !$scope.lock.lockLeft;
+            dashboardService.setLeftLock($scope.lock.lockLeft);          
+        } 
 
-		for (i=0; i < tempStore.length; i++){
-					
-			if (tempStore[i].settings == $scope.$id){
-
-				// Identify the index
-				lineService.setParam(tempStore[i].main, $scope.$id, vehicle.vehicle, vehicle.id);;
-			} 				
-		}
-		
-		if (vehicle.id == ""){
-			alert("Select Data!")
-		}else{
-			$scope.table.rows.data[$index][0].value = vehicle.id;
-			$scope.table.rows.data[$index][1].value = $scope.telemetry[vehicle.vehicle][vehicle.id].name;
-			$scope.vehicle = vehicle.vehicle;
-		
-			if ($window.innerWidth >= 1400){
-				$scope.lock.lockLeft = !$scope.lock.lockLeft;
-				dashboardService.setLeftLock($scope.lock.lockLeft);          
-			} 
-
-			if(vehicle.id === '') {
-				arrow.style.color = "red";
-			} else {
-				arrow.style.color = "#b3b3b3";  
-			} 
-		}
+        if(vehicle.id === '') {
+            arrow.style.color = "red";
+        } else {
+            arrow.style.color = "#b3b3b3";  
+        } 
     }
-	
+    
     $scope.addRowAbove = function($index){
         $scope.table.rows.data.splice($index,0,[{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow"}]);
     }
@@ -114,29 +99,17 @@ app.controller('lineController', ['$scope', 'd3Service', 'datatableSettingsServi
     $scope.convertToReadonly = function($index){
         $scope.table.rows.data[$index]["checked"] = "true";
     }
-	// End of Table
-	
-	// Close
-	$scope.closeWidget = function(widget){
-		widget.main = true;
-		widget.settings.active = false;
-	}
-	
-	// Save
-	$scope.saveWidget = function(widget){
-		widget.main = true;
-		widget.settings.active = false;
-		
-	}
-
-	// functions
-	function waitForMain(){
-		if (typeof lineService.mainId === "undefined"){
-		
-		} else{
-			lineService.settingsId = $scope.$id;
-			lineService.setIdStore(lineService.mainId, lineService.settingsId);
-		}
-}
-	
+    // End of Table
+    
+    // Close
+    $scope.closeWidget = function(widget){
+        widget.main = true;
+        widget.settings.active = false;
+    }
+    
+    // Save
+    $scope.saveWidget = function(widget){
+        widget.main = true;
+        widget.settings.active = false;
+}   
 }]);
