@@ -12,6 +12,8 @@ app
 			scope.pauseImg = "/icons/line-plot-widget/lineplot_pause_click.svg";
 			telemetry = db.telemetry;
 
+			scope.widget.stream = new Array();
+
 			var parseTime = d3.timeParse("%Y-%m-%dT%H:%M:%S.%L%Z");
 			var plotData = [];
 			var delay = 1000;	// [milisecond]
@@ -76,18 +78,23 @@ app
 					if (paramY == "timestamp"){
 						alert("Select a different parameter")
 					} else{
-						scope.stream = $interval(updatePlot, delay, 0, false, [vehicle, paramY, paramX]);		
+						var stream = $interval(updatePlot, delay, 0, false, [vehicle, paramY, paramX]);		
 						scope.disbtn = true;
 						scope.imageUrl = "/icons/line-plot-widget/LIVE_on.svg";
 						scope.playImg = "/icons/line-plot-widget/lineplot_play_click.svg";
 						scope.pauseImg = "/icons/line-plot-widget/lineplot_pause.svg";
+						scope.widget.stream.push(stream);
 					}
 				}
 			}
 
 			// Pause
 			scope.pause = function(){
-				$interval.cancel(scope.stream);
+				if(scope.widget.stream){
+					for(var i=0; i<scope.widget.stream.length; i++){
+						$interval.cancel(scope.widget.stream[i]);
+					}
+				}
 				plotData=[];
 				scope.disbtn = false;
 				scope.imageUrl = "/icons/line-plot-widget/LIVE_off.svg";

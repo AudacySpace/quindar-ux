@@ -11,6 +11,7 @@ app.directive('datatable',function() {
 app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dashboardService,sidebarService) {    
 
     $scope.checkedValues = $scope.widget.settings.checkedValues;
+    $scope.widget.stream = new Array();
 
     $scope.table = {"rows": {
                     "data": [{
@@ -480,6 +481,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
                         row.contents[8].value = 'N/A';    
                     }
                 }, 1000);
+                $scope.widget.stream.push(row.flag);
             } else {
                 alert("Telemetry data not available");
             }
@@ -506,6 +508,9 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
         if(($index === 0) && ($scope.table.rows.data.length) === 1){
             alert("Please do not delete this row!Add row above to delete this row.");
         }else {
+            if($scope.table.rows.data[$index].flag) {
+                $interval.cancel($scope.table.rows.data[$index].flag);
+            }
             $scope.table.rows.data.splice($index, 1);
         }
     }
