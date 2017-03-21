@@ -2,7 +2,7 @@ app.directive('datatablesettings', function() {
   return { 
     restrict: 'E',
     templateUrl:'./directives/datatable/datatablesettings.html', 
-    controller: function($scope,datatableService){
+    controller: function($scope){
 
         $scope.checkedValues = $scope.widget.settings.checkedValues;
         var values = angular.copy($scope.checkedValues);
@@ -21,7 +21,19 @@ app.directive('datatablesettings', function() {
             widget.settings.active = false;
             widget.saveLoad = false;
             widget.delete = false;
-            datatableService.setCheckedValues(widget,values);
+            setCheckedValues(widget,values);
+        }
+
+        function setCheckedValues(widget,val){
+            widget.settings.checkedValues.checkedId = val.checkedId;
+            widget.settings.checkedValues.checkedName = val.checkedName;
+            widget.settings.checkedValues.checkedAlow = val.checkedAlow;
+            widget.settings.checkedValues.checkedWlow = val.checkedWlow;
+            widget.settings.checkedValues.checkedValue = val.checkedValue;
+            widget.settings.checkedValues.checkedWhigh = val.checkedWhigh;
+            widget.settings.checkedValues.checkedAhigh = val.checkedAhigh;
+            widget.settings.checkedValues.checkedUnits = val.checkedUnits;
+            widget.settings.checkedValues.checkedNotes = val.checkedNotes;
         }
     }
   	}; 
