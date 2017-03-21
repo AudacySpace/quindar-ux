@@ -12,43 +12,43 @@ body {
     margin-left:0;
     margin-right:0;
 }
-button#editwidget.glyphicon.glyphicon-edit {
+/*button#editwidget.glyphicon.glyphicon-edit {
     position:absolute;
     right:29px;
     top:0px;
     font-size:19px;
     color: #07D1EA;
     background-color: #000000;
-}
-.settings-menu {
+}*/
+/*.settings-menu {
     position:absolute;
     right:30px;
     top:0px;
     font-size:19px;
     color: #07D1EA;
-}
-button#removespan {
+}*/
+/*button#removespan {
     top:2px;
     padding: 2px 2px;
-}
-button#removespan:hover {
+}*/
+/*button#removespan:hover {
     background-color:#ccc;
-}
-.id-settings-menu {
+}*/
+/*.id-settings-menu {
     position:absolute;
     right:30px;
     top:0px;
     font-size:19px;
     color: #07D1EA;
-}
-button.glyphicon.glyphicon-cog.pull-right.settings:focus {
+}*/
+/*button.glyphicon.glyphicon-cog.pull-right.settings:focus {
     outline:0;
 }
 button.glyphicon.glyphicon-cog.pull-right.settings:active {
     background-color: #000000;
     box-shadow: 0 2px #ccc;
     transform: translateY(1px);
-}
+}*/
 #qwidgetMenu {
     list-style-type: none;
     padding-left:0px;
@@ -88,7 +88,7 @@ span#qwidgetPlus,i#g-track,i#t-table,i#s-table,i#d-table,i#l-plot,span#save-layo
     top: 0px;
     right: 5px;
 }
-.panel-primary>.panel-heading {
+/*.panel-primary>.panel-heading {
     background-color: #000000;
     border-color: #000000;
 }
@@ -97,8 +97,8 @@ span#qwidgetPlus,i#g-track,i#t-table,i#s-table,i#d-table,i#l-plot,span#save-layo
 }
 .panel-heading {
     height:30px;
-}
-button#settings.glyphicon.glyphicon-cog {
+}*/
+/*button#settings.glyphicon.glyphicon-cog {
     position:absolute;
     right:4px;
     top:4px;
@@ -127,8 +127,8 @@ button.settings.glyphicon.glyphicon-cog:active {
 button.settings.glyphicon.glyphicon-cog:focus {
     border-color: #000000;
     border: 0px;
-}
-button#data-menu { 
+}*/
+/*button#data-menu { 
     position:absolute;
     left:0px;
     top:0px;
@@ -138,10 +138,10 @@ button#data-menu {
     border-color: #000000;
     border: 0px;
     padding: 1px 4px;
-}
-#container {
+}*/
+/*#container {
     background-color: #F2F3F4;
-}
+}*/
 .navbar {
     border: 0 none;  
     padding-top: 7px;
@@ -159,8 +159,6 @@ button#data-menu {
 }
 .navbar-form {
   margin-top: 0px;
-  /*  padding-bottom:5px;
-  border-bottom:3px solid #07D1EA;*/
 }
 .navbar-brand>img {
    height: 100%;
@@ -176,19 +174,19 @@ button#data-menu {
    background-color: #07D1EA;
    color: white;
 }
-#input-search {
+/*#input-search {
    background-color: #242833;
    border: #242833;
    border-radius: 0px;
-}
-#group-search {
+}*/
+/*#group-search {
    border-radius:0px;     
    background-color: #464954;
    border: #464954;
    color: #FFFFFF;
-}
+}*/
 #wrapper {
-   padding-left: 250px;
+/*   padding-left: 250px;
    -webkit-transition: all 0.5s ease;
    -moz-transition: all 0.5s ease;
    -o-transition: all 0.5s ease;
@@ -196,11 +194,11 @@ button#data-menu {
    overflow: hidden;
    padding-right: 0;
    height: 100%;
-   width:100%;
-/* position: absolute;*/
+   width:100%;*/
+   /*position: absolute;*/
 }
 #wrapper.toggled {
-  padding-left: 0px;
+ /* padding-left: 0px;*/
 }
 .status-icon {
    float: left;
