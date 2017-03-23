@@ -48,7 +48,7 @@ app
     },
     {
         sizeY: 2,
-        sizeX: 6,
+        sizeX: 4,
         name: "Data Table",
         directive: "datatable",
 		directiveSettings: "datatablesettings",
@@ -84,7 +84,7 @@ app
                 col: 0,
                 row: 0,
                 sizeY: 2,
-                sizeX: 6,
+                sizeX: 4,
                 name: "Data Table",
                 directive: "datatable",
 				directiveSettings: "datatablesettings",

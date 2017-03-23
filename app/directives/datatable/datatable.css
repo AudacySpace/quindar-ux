@@ -1,3 +1,5 @@
+/*Custom styles for data table qwidget*/
+
 div.btn-group.selectmenu { 
     white-space: nowrap;              
 }
@@ -5,8 +7,7 @@ div.btn-group.selectmenu .btn {
     float: none;
     display: inline-block;
 }
-
-img.arrow-right-img{
+img.arrow-right-img {
     width:15px;
 }
 a.btn.btn-default.arrowbtn{
@@ -22,7 +23,6 @@ a.arrowbtn:focus{
     border:0px;
     outline: none;
 }
-
 a.arrowbtn:hover{
     border:0px;
     background-color:#F2F3F4;
@@ -31,17 +31,10 @@ a.arrowbtn:hover{
 a.arrowbtn:active{
     border:0px;
 }
-
 a.arrowbtn:visited{
     border:0px;
     font-size:14px;
-
 }
-
-div.btn-group.selectmenu.open > a{
- /*   color:#1072A4;*/
-}
-
 .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th{
     border: 1px solid #999;
     vertical-align:baseline;
@@ -50,23 +43,18 @@ div.btn-group.selectmenu.open > a{
 .datatableheader{
     border: 1px solid #999;
 }
-
 .datatableheader{
     background-color: #bfbfbf;
 }
-
 .toedit {
     opacity:0;
 }
-
 .header-row{
     text-align:center;
 }
-
 .img_alow{
     width:30px;
 }
-
 ul.drpmenu {
     top: -22%;
     left: 114%;
@@ -76,7 +64,6 @@ ul.drpmenu {
     box-shadow:none;
     background-color:#f1f2f4;
 }
-
 .drpmenu>li>a{
     padding:1px 20px;
 }
@@ -86,7 +73,6 @@ ul.drpmenu {
 li.uldrpmenu{
     margin:5px 0;
 }
-
 span.namestyle{
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -94,11 +80,9 @@ span.namestyle{
     display: block;
     overflow: hidden
 }
-
 td.categoryID-arrow{
     background-color: #F2F3F4;
 }
-
 span.header-span{
     float:left;
     color:#fff;
@@ -113,6 +97,10 @@ span.header-span{
 }
 .table-bordered>tbody>tr>td{
     border: 1px solid #ccc;
+}
+.table.table-bordered.table-responsive.col-md-12.table-condensed.cf{
+    height:100%;
+    margin-bottom:0px;
 }
 
 /*Data Table Settings Styles*/
@@ -134,7 +122,6 @@ span.header-span{
     display:block;
     padding:2px;
 }
-
 .disabled {
     color: gray !important;
 }
