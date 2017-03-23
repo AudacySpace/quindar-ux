@@ -30,7 +30,7 @@ body.image6 {
 }
 .logo img {
 /*  margin-top: 200px;*/
-  /*  width: 200px;*/
+/*  width: 200px;*/
     width: 430px;
     max-width: 86%;
     display: block;
@@ -64,33 +64,33 @@ body.image6 {
     -o-transition: all,.3s,ease-in-out;
     transition: all .3s ease-in-out;
     height: 100%;
-/*    margin: 0 0 0 40px;*/
+/*  margin: 0 0 0 40px;*/
     position: relative;
     top: 0;
-/*    width: 400px;*/
+/*  width: 400px;*/
     z-index: 100;
     padding-top: 160px;
 }
 #login-page .login-with-google button {
-  font-family: "Open Sans", sans-serif;
-  text-transform: uppercase;
-  outline: 0;
-  border: none;
-  background: #07d1ea;
-  width: 430px;
-  max-width: 86%;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-  cursor: pointer;
-  display: block;
-  margin: 1rem auto 0;
+    font-family: "Open Sans", sans-serif;
+    text-transform: uppercase;
+    outline: 0;
+    border: none;
+    background: #07d1ea;
+    width: 430px;
+    max-width: 86%;
+    padding: 15px;
+    color: #FFFFFF;
+    font-size: 14px;
+    -webkit-transition: all 0.3 ease;
+    transition: all 0.3 ease;
+    cursor: pointer;
+    display: block;
+    margin: 1rem auto 0;
 }
 
 #login-page .login-with-google .button:hover,.form button:active,.form button:focus {
-  background: #1072A4;
+    background: #1072A4;
 }
 
 #login-page .content .footer-logos {
@@ -98,11 +98,18 @@ body.image6 {
     width: 100%;
     position: absolute;
     bottom: 30px;
+    left: 0;
+    padding-left: 30px;
+    padding-right: 30px;
 }
+
 #login-page .content .footer-logos .row {
     max-width: 100%;
     margin-bottom: 5px;
+    margin-right: 0px;
+    margin-left: 0px;
 }
+
 #login-page .content .footer-logos img {
     max-width: 100%;
 }
@@ -111,12 +118,14 @@ img#qlogo {
 	width : 100%;
 	margin-bottom : 2vh;
 }
+
 div#image_credit_container {
 
 	height   : 100vh;
 	color    : white;
 	position : relative;
 }
+
 div#image_credit_container p {
 	position : absolute;
 	bottom	 : 2vh;
@@ -124,4 +133,9 @@ div#image_credit_container p {
 	font-style : italic;
 	max-width : 20vw;
 	text-align:right;
+}
+
+.sign-in {
+  padding-left: 45px;
+  padding-right: 45px;
 }

@@ -1,0 +1,41 @@
+<table class="table table-bordered table-responsive col-md-12 table-condensed cf">
+    <thead id="telehead" class="datatableheader">
+        <tr>
+            <th id="category" style="width:1%"></th>
+            <th id="id" style="text-align:left;width:10%" class="id" ng-show="checkedValues.checkedId" title="Telemetry Id">ID</th>
+            <th id="name" style="text-align:left;width:15%;" class="name" ng-show="checkedValues.checkedName" title="Telemetry Name">NAME</th>
+            <th id="alarm_low" style="text-align:center;width:10%" class="alarm_low numeric" ng-show="checkedValues.checkedAlow"><img src="../icons/datatable-widget/data_table_cat_ALARMLOW.svg" class="img_alow" title="Alarm low value"/></th>
+            <th id="warn_low" style="text-align:center;width:10%" class="warn_low numerice" ng-show="checkedValues.checkedWlow"><img src="../icons/datatable-widget/data_table_cat_WARNLOW.svg" class="img_alow" title="Warn low value"/></th>
+            <th id="value" style="text-align:center;width:15%" class="value numeric" ng-show="checkedValues.checkedValue"><img src="../icons/datatable-widget/data_table_cat_VALUE.svg" class="img_alow" title="Value"/></th>
+            <th id="warn_high" style="text-align:center;width:10%" class="warn_high numeric" ng-show="checkedValues.checkedWhigh"><img src="../icons/datatable-widget/data_table_cat_WARNHIGH.svg" class="img_alow" title="Warn high value"/></th>
+            <th id="alarm_high" style="text-align:center;width:10%" class="alarm_high numeric" ng-show="checkedValues.checkedAhigh"><img src="../icons/datatable-widget/data_table_cat_ALARMHIGH.svg" class="img_alow" title="Alarm high value"/></th>
+            <th id="units" style="text-align:left;width:5%" class="units" ng-show="checkedValues.checkedUnits" title="Units">UNITS</th>
+            <th id="notes" style="text-align:left;width:14%" class="notes" ng-show="checkedValues.checkedNotes" title="Notes">NOTES</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="row in table.rows.data">
+            <td class="categoryID-arrow">
+                <div class="btn-group selectmenu">
+                   <a href="#" style="width:100%" class="btn btn-default arrowbtn" data-toggle="dropdown"><span class="glyphicon glyphicon-menu-right side-arrow" id="side-arrow" style="font-weight:bolder"></span>
+                      <span class="sr-only">Toggle Dropdown</span>
+                    </a>
+                    <ul class="dropdown-menu drpmenu" role="menu" id="drpmenu">
+                        <li class="uldrpmenu"><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || getTelemetrydata($event)">Select Telemetry Id</a></li>
+                        <li><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || getValue($event,row)">Apply Telemetry Id</a></li>
+                        <li class="divider liner"></li>
+                        <li><a href="#" class="row-above" ng-click="addRowAbove($index)">Add Row Above</a></li>
+                        <li><a href="#" class="row-below" ng-click="addRowBelow($index)">Add Row Below</a></li>
+                        <li><a href="#" class="move-up" ng-click="moveRowUp($index)">Move Row Up</a></li>
+                        <li><a href="#" class="move-down" ng-click="moveRowDown($index)">Move Row Down</a></li>
+                        <li><a href="#" class="delete-row" ng-click="deleteRow($index)">Delete Row</a></li>
+                        <li><a href="#" class="make-header" ng-click="convertHeader($index)">Convert to Header</a></li>
+                    </ul>
+                </div>
+            </td>
+            <td ng-repeat="cell in row.contents" class="rowcell" style="{{cell.style}}"
+           colspan="{{cell.colspan}}" ng-show="{{cell.colshow}}">{{cell.value}}<input ng-show="{{cell.active}}" class="rowinput {{cell.class}}" type="text" ng-readonly="{{cell.checked}}" value="{{cell.value}}" ng-blur="convertToReadonly(cell)" placeholder="{{cell.placeholder}}" aria-label="Readonly field" />
+            </td>
+        </tr>
+    </tbody>
+</table>
