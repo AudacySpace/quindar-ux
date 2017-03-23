@@ -427,6 +427,627 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
                                     }
                                 ],
                                 disabled: false
+                            },
+                            {
+                                contents:
+                                [
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedId",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedName",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedAlow",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedWlow",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedValue",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedWhigh",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedAhigh",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedUnits",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedNotes",
+                                        "active": "false"
+                                    }
+                                ],
+                                disabled: false
+                            },
+                            {
+                                contents:
+                                [
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedId",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedName",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedAlow",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedWlow",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedValue",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedWhigh",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedAhigh",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedUnits",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedNotes",
+                                        "active": "false"
+                                    }
+                                ],
+                                disabled: false
+                            },
+                            {
+                                contents:
+                                [
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedId",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedName",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedAlow",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedWlow",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedValue",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedWhigh",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedAhigh",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedUnits",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedNotes",
+                                        "active": "false"
+                                    }
+                                ],
+                                disabled: false
+                            },
+                            {
+                                contents:
+                                [
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedId",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedName",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedAlow",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedWlow",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedValue",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedWhigh",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedAhigh",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedUnits",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedNotes",
+                                        "active": "false"
+                                    }
+                                ],
+                                disabled: false
+                            },
+                            {
+                                contents:
+                                [
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedId",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedName",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedAlow",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedWlow",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedValue",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedWhigh",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedAhigh",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedUnits",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedNotes",
+                                        "active": "false"
+                                    }
+                                ],
+                                disabled: false
+                            },
+                            {
+                                contents:
+                                [
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedId",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedName",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedAlow",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedWlow",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedValue",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedWhigh",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedAhigh",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedUnits",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedNotes",
+                                        "active": "false"
+                                    }
+                                ],
+                                disabled: false
+                            },
+                            {
+                                contents:
+                                [
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedId",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedName",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedAlow",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedWlow",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedValue",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedWhigh",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedAhigh",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedUnits",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedNotes",
+                                        "active": "false"
+                                    }
+                                ],
+                                disabled: false
+                            },
+                            {
+                                contents:
+                                [
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedId",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedName",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedAlow",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedWlow",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedValue",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedWhigh",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedAhigh",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedUnits",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedNotes",
+                                        "active": "false"
+                                    }
+                                ],
+                                disabled: false
+                            },
+                            {
+                                contents:
+                                [
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedId",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedName",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedAlow",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedWlow",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedValue",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedWhigh",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:right",
+                                        "colshow":"checkedValues.checkedAhigh",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedUnits",
+                                        "active": "false"
+                                    },
+                                    {   
+                                        "value":"",
+                                        "checked":"true",
+                                        "style":"text-align:left",
+                                        "colshow":"checkedValues.checkedNotes",
+                                        "active": "false"
+                                    }
+                                ],
+                                disabled: false
                             }]
                         }
                     };
