@@ -59,6 +59,10 @@ form {
   z-index: 1050 !important;
 }
 
+div.mainWidget{
+    height:100%;
+}
+
 /*
 
 Settings Menu outer Div styles
