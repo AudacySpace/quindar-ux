@@ -74,10 +74,13 @@ Notes:
 
 2. For Windows users, enable Shared Drives in Docker settings to use the above docker run command.
 
+3. Update callbackURL in /server/config/auth.js to 'https://localhost/auth/google/callback'.
+
+
 ### Building new features/bug fixes for Quindar UX
 1. Create your own branch
 
-		git checkout -b <your_branch_name>
+        git checkout -b <your_branch_name>
 
 2. Write/Edit the code in your own branch.
 3. Manually test the code as changes would be reflected in the browser (https://<span></span>localhost).
@@ -98,6 +101,38 @@ Notes:
 7. Issue a pull request for your code changes to be merged with the Quindar repository. Refer this [link](https://help.github.com/articles/creating-a-pull-request-from-a-fork/) for the documentation.
 
 
+### Creating a sample widget
+To create a sample widget, /app/directives/sample folder will be used. Steps below show how to add a sample widget to a list of widgets in the Configuration Menu.
+
+1. In /app/services/gridService.js, update the array variable **widgetDefinitions** to include the following object in it.
+
+        {
+            sizeY: 2,
+            sizeX: 3,
+            name: "Sample",
+            directive: "sample",
+            directiveSettings: "samplesettings",
+            id: "sample",
+            icon: {
+                id: "g-track",
+                type: "fa-globe"
+            },
+            main: true,
+            settings: {
+                active: false
+            },
+            saveLoad: false,
+            delete: false
+        }
+
+2. Add the scripts in /app/views/dashboard.ejs
+
+        <script src="/directives/sample/sample.js"></script>
+        <script src="/directives/sample/samplesettings.js"></script>
+
+Also, to add the widget on current dashboard, update variable **dashboards** in /app/services/gridService.js to include the object defined in Step 1 above, in **widgets** property of 'Home' dashboard.
+
+
 ### To Do
 
 * improve documentation (README and CONTRIBUTING files) by adding linked images
@@ -111,6 +146,3 @@ Notes:
 * Live video feed qwidget
 * security hardening
 * additional login authentication options
-
-
-
