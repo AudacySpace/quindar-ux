@@ -10,24 +10,6 @@ app
     };
 
     var widgetDefinitions = [
-  //   {
-  //       sizeY: 3,
-  //       sizeX: 3,
-  //       name: "Ground Track",
-  //       directive: "groundtrack",
-		// directiveSettings: "samplesettings",
-  //       id: "addGround",
-  //       icon: {
-  //           id: "g-track",
-  //           type: "fa-globe"
-  //       },
-  //       main: true,
-		// settings: {
-  //           active: false
-  //       },
-		// saveLoad: false,
-		// delete: false
-  //   }, 
     {
         sizeY: 3,
         sizeX: 4,
@@ -130,7 +112,7 @@ app
 				},
 				saveLoad: false,
 				delete: false
-    }]
+            }]
         }
     };
 
