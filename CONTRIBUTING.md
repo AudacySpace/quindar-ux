@@ -74,7 +74,7 @@ Notes:
 
 2. For Windows users, enable Shared Drives in Docker settings to use the above docker run command.
 
-3. Update callbackURL in /server/config/auth.js to 'https://localhost/auth/google/callback'.
+3. Update callbackURL in /server/config/auth.js to **https://<span></span>localhost/auth/google/callback**.
 
 
 ### Building new features/bug fixes for Quindar UX
