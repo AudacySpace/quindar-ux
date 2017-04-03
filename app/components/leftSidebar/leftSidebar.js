@@ -3,7 +3,7 @@ app
   	templateUrl: "./components/leftSidebar/left_sidebar.html",
   	controller: function(sidebarService, $interval) {
   		var vm = this;
-        vm.post = {id: null};
+        vm.post = {id: null}; //object to store the input id value
 
   		getData();
 
@@ -18,38 +18,44 @@ app
         }
 
         vm.showTelemetryMenu = function(config){
-            config.active = !config.active;            
+            config.active = !config.active;
         }
 
   		vm.selectConfig = function(vehicle, data){
             sidebarService.setVehicleInfo(vehicle.name,data);
   		}
 
+        //Function to search data menu using id
         vm.searchData = function(id){
-
-            var vehs = angular.copy(vm.vehicles);
-            var vehMenu = angular.copy(vm.vehicleMenu);
+     
+            
+            var vehs = angular.copy(vm.vehicles);//creates a copy of the vehicles object
+            var vehMenu = angular.copy(vm.vehicleMenu);//creates a copy of vehicle menu status
             var newObj = {};
 
+            //loops through the vehicles and its configuration data and 
+            //closes any open list
             for(var i=0;i<vehs.length;i++){
                 for(var j=0;j<vehs[i].config.length;j++){
                     for(var k=0;k<vehs[i].config[j].values.length;k++){
-                    if(vehs[i].config[j].active = true){
-                        vehs[i].config[j].active = false;
-                        vehs[i].config[j].datastatus[k] = false;
-                        vm.vehicleMenu = false;
-                    }else {
-                        vehs[i].config[j].active;
-                        vm.vehicleMenu = false;
+                        if(vehs[i].config[j].active = true){
+                            vehs[i].config[j].active = false;
+                            vehs[i].config[j].datastatus[k] = false;
+                            vm.vehicleMenu = false;
+                        }else {
+                            vehs[i].config[j].active;
+                            vm.vehicleMenu = false;
+                        }
                     }
                 }
             }
-            }
 
+            //loops through the vehicles and its configuration data and 
+            //finds match to show
             for(var i=0;i<vehs.length;i++){
                 for(var j=0;j<vehs[i].config.length;j++){
                     for(var k=0;k<vehs[i].config[j].values.length;k++){
-                        if(id != undefined && id !== '' && id != ''){
+                        if(id != undefined && id !== '' && id != '' && id.length > 0){
                             if(vehs[i].config[j].values[k].match(id)){
                                 vehMenu = true;
                                 vehs[i].active = true;
@@ -59,15 +65,25 @@ app
                                 vm.vehicleMenu = vehMenu;
                                 vm.vehicles = JSON.parse(newObj);
                             }
-                            else{
-                                vehs[i].config[j].datastatus[k] = false;
-                            }
-                        }
-                    }
+                        }else {
 
+                                vehMenu = false;
+                                vehs[i].active = false;
+                                vehs[i].config[j].active = false;
+                                vehs[i].config[j].datastatus[k] = true;
+                                newObj = JSON.stringify(vehs);
+                                vm.vehicleMenu = vehMenu;
+                                vm.vehicles = JSON.parse(newObj);
+
+                                if(k === vehs[i].config[j].values.length-1 && j === vehs[i].config.length-1 && i === vehs.length-1  ){
+                                    alert("You should enter an input value to search!");
+                                }
+                        } 
+                    }
                 }             
             }
         }
+        //End of searchData function
 
   		function getData(){
   			sidebarService.getConfig()
@@ -84,8 +100,6 @@ app
                     vm.config[j].category = initCaps(vm.config[j].category);
                     }
                 }
-
-                console.log(vm.config);
                 
   				vm.vehicles = [ {
 					name : "Audacy1",

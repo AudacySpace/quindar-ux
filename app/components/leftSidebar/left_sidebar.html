@@ -3,9 +3,9 @@
     <div class="md-toolbar-tools">
         <form>
             <div class="input-group">
-                <input type="text" class="form-control" id="input-search" placeholder="Search" ng-model="post.id">
+                <input type="text" class="form-control" id="input-search" placeholder="Search Telemetry Id" ng-model="post.id">
                 <span class="input-group-addon" id="group-search">
-                    <img ng-src="/icons/search.svg" ng-click="$ctrl.searchData(post.id)"/>
+                    <img ng-src="/icons/search.svg" ng-click="$ctrl.searchData(post.id)" class="search-icon"/>
                 </span>
             </div>
         </form>
@@ -18,7 +18,7 @@
             <p>GMAT</p>
         </md-list-item>
         <md-divider></md-divider>
-        <md-list class="md-dense" flex ng-show="$ctrl.vehicleMenu" ng-repeat = "vehicle in $ctrl.vehicles | filter:filterSearch">
+        <md-list class="md-dense" flex ng-show="$ctrl.vehicleMenu" ng-repeat = "vehicle in $ctrl.vehicles">
             <md-list-item ng-click="$ctrl.showCategoryMenu(vehicle)" id="list2">
                 <md-icon class="md-icon" md-svg-icon="/icons/aud_sat.svg" style="color:#ccc;"></md-icon>
                 <p>{{ vehicle.name }}</p>

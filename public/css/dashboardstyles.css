@@ -92,6 +92,12 @@ span#qwidgetPlus,i#g-track,i#t-table,i#s-table,i#d-table,i#l-plot,span#save-layo
    width: auto;
    display: inline-block;
 }
+img#main-img:focus{
+  outline:auto 0px;
+}
+img.search-icon:focus{
+  outline:auto 0px;
+}
 .status-bar {
    padding-left:10px;
    padding-right:10px;
