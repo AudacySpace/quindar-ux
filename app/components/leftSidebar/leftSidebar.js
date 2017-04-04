@@ -52,18 +52,25 @@ app
 
             //loops through the vehicles and its configuration data and 
             //finds match to show
-            for(var i=0;i<vehs.length;i++){
+            var matchStatus = false;
+            for(var i=0;i<vehs.length;i++){ 
+                console.log("i"+ i);
                 for(var j=0;j<vehs[i].config.length;j++){
+                    console.log("j"+ j);
                     for(var k=0;k<vehs[i].config[j].values.length;k++){
+                        console.log("k"+ k);
                         if(id != undefined && id !== '' && id != '' && id.length > 0){
-                            if(vehs[i].config[j].values[k].match(id)){
+                             if(vehs[i].config[j].values[k].search(id) !== -1 ){
                                 vehMenu = true;
                                 vehs[i].active = true;
                                 vehs[i].config[j].active = true;
                                 vehs[i].config[j].datastatus[k] = true;
                                 newObj = JSON.stringify(vehs);
                                 vm.vehicleMenu = vehMenu;
-                                vm.vehicles = JSON.parse(newObj);
+                                vm.vehicles = JSON.parse(newObj)
+                                matchStatus = true;
+                            } else if(matchStatus === false && i === vehs.length-1 && j=== vehs[i].config.length-1 && k===vehs[i].config[j].values.length-1 )  {
+                                     alert("No match found!");
                             }
                         }else {
 
