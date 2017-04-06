@@ -67,6 +67,10 @@ ul.drpmenu {
 .drpmenu>li>a{
     padding:1px 20px;
 }
+.drpmenu>li>a:focus, .drpmenu>li>a:hover {
+    color: #8B8C94;
+    background-color: #f1f2f4; 
+}
 .categoryID-arrow{
     padding:0px;
 }
