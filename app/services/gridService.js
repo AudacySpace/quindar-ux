@@ -56,7 +56,24 @@ app
         },
 		saveLoad: false,
 		delete: false
-
+    },    
+    {
+        sizeY: 3,
+        sizeX: 3,
+        name: "3D Model",
+        directive: "satellite",
+        directiveSettings: "satellitesettings",
+        id: "satellite",
+        icon: {
+            id: "l-plot",
+            type: "fa-cube"
+        },
+        main: true,
+        settings: {
+            active: false
+        },
+        saveLoad: false,
+        delete: false,
     }];
 
     var dashboards = {

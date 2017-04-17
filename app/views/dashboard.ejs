@@ -13,13 +13,19 @@
     <link href="/css/dashboardstyles.css" rel="stylesheet">
 	<link href="/directives/lineplot/lineplot.css" rel="stylesheet">
     <link href="/directives/datatable/datatable.css" rel="stylesheet">
+    <link href="/directives/satellite/satellite.css" rel="stylesheet">
 	<link href="/css/datetimepicker.css" rel="stylesheet">
     <link href="/css/paneliconstyles.css" rel="stylesheet">
 
     <!-- scripts for AngularJS and UI Bootstrap -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
     <script src="https://code.angularjs.org/1.4.8/angular-route.min.js"></script>
+    <script src="https://code.angularjs.org/1.6.1/angular-sanitize.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.0.0/ui-bootstrap-tpls.min.js"></script>
+
+    <!-- Angular UI Select Script and Stylesheet -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.20.0/select.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.20.0/select.min.css" rel="stylesheet" >
 
     <!-- Angular Gridster Script and Stylesheet -->
     <script src="/scripts/gridster/angular-gridster.js"></script>
@@ -65,11 +71,16 @@
     <script src="/directives/lineplot/lineplot.js"></script>
 	<script src="/directives/lineplot/linesettings.js"></script>
     <script src="/directives/datatable/datatablesettings.js"></script>
+    <script src="/directives/satellite/satellite.js"></script>
+    <script src="/directives/satellite/model.js"></script>
+    <script src="/directives/satellite/satellitesettings.js"></script>
 
     <!-- script to get user details from backend -->
     <script>
         var username = "<%= user.google.name %>";
         var usermail = "<%= user.google.email %>";
+
+
     </script>
 </head>
 
@@ -91,6 +102,9 @@
 	<!-- angular md -->
 	<script src="/scripts/angular-marked.min.js"></script>
 	<script src="/scripts/marked.js"></script>
-	<script src="/scripts/angular-modal-service.min.js"></script>	
+	<script src="/scripts/angular-modal-service.min.js"></script>
+    <!-- THREE.js files -->
+    <script src="/scripts/three.js"></script>
+    <script src="/scripts/AssimpJSONLoader.js"></script>	
 </body>
 </html>
