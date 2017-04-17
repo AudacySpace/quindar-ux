@@ -9,6 +9,58 @@ app
         }
     };
 
+    var orbitDisplay = [];
+    var iconDisplay = [];
+    for(var i=0;i<3;i++){
+        orbitDisplay[i] = true;
+        iconDisplay[i] = true;
+    }
+
+    var groundtracktableCols = [];
+    for (var i = 1; i < 4; i++) {
+        groundtracktableCols.push({
+                            contents:   [
+                                            {   
+                                                "value": i,
+                                                "style":"text-align:left;background-color:#fff;color:#000;font-size:14px;margin-left:2px",
+                                                "active": "false"
+                                            },
+                                            {   
+                                                "value":"Audacy"+i,
+                                                "style":"text-align:left;background-color:#fff;color:#000;font-size:14px",
+                                                "active": "false"
+                                            },
+                                            {   
+                                                "value":"",
+                                                "style":"text-align:left;background-color:#fff;color:#000;margin-top:0px",
+                                                "active": "true"
+                                            },
+                                            {   
+                                                "value":"",
+                                                "style":"text-align:left;background-color:#fff;color:#000",
+                                                "active": "true"
+                                            },
+                                            {   
+                                                "value":"",
+                                                "style":"text-align:left;background-color:#fff;color:#000",
+                                                "active": "true"
+                                            },
+                                            {   
+                                                "value":"",
+                                                "style":"text-align:left;background-color:#fff;color:#000",
+                                                "active": "false"
+                                            }
+                                        ],
+                                        status: [
+                                        idStatus = false,
+                                        nameStatus = false,
+                                        dataStatus = true,
+                                        orbitStatus = true,
+                                        iconStatus = true,
+                                        detailsStatus = false]
+                       }); 
+    }                        
+
     var widgetDefinitions = [
     {
         sizeY: 3,
@@ -73,7 +125,30 @@ app
             active: false
         },
         saveLoad: false,
-        delete: false,
+        delete: false
+    },
+    {
+        sizeY: 4,
+        sizeX: 6,
+        name: "Ground Track",
+        directive: "groundtrack",
+        directiveSettings: "groundtracksettings",
+        id: "groundtrack",
+        icon: {
+            id: "g-track",
+            type: "fa-globe"
+        },
+        main: true,
+        settings: {
+            active: false,
+            contents : groundtracktableCols,
+            vehName :[],
+            scHolder :{},
+            orbitHolder :[],
+            iconHolder :[]
+        },
+        saveLoad: false,
+        delete: false
     }];
 
     var dashboards = {
