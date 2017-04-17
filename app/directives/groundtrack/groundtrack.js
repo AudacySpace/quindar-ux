@@ -240,61 +240,6 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
                                        .append("svg:title").text("Audacy 3");
                     }
                 }
-
-                // if(vehs[i] === "Audacy1" && $scope.widget.settings.contents[i].contents[1].value === 'Audacy1'){
-                //    if(orbits[i] === true){
-                //         var route1 = g.append("path")
-                //                       .datum({type: "LineString", coordinates: scH[i]})  
-                //                       .attr("class", "route1")
-                //                       .attr("d", path);
-                //    }
-                //     if(satIcons[i] === true){
-                //         var  craft1 = g.append("svg:image")
-                //                        .attr("xlink:href", "./directives/groundtrack/one.svg")
-                //                        .attr("id", "craft1")
-                //                        .attr("x",sat_coord[0])
-                //                        .attr("y",sat_coord[1]-15)
-                //                        .attr("width",30)
-                //                        .attr("height",30)
-                //                        .append("svg:title").text("Audacy 1");
-                //     }
-
-                // } else if(vehs[i] === "Audacy2" && $scope.widget.settings.contents[i].contents[1].value === 'Audacy2'){
-                //     if(orbits[i] === true){
-                //         var route2 = g.append("path")
-                //                       .datum({type: "LineString", coordinates: scH[i]})  
-                //                       .attr("class", "route2")
-                //                       .attr("d", path);
-                //     }
-                //     if(satIcons[i] === true){
-                //         var  craft2 = g.append("svg:image")
-                //                        .attr("xlink:href", "./directives/groundtrack/two.svg")
-                //                        .attr("id", "craft2")
-                //                        .attr("x",sat_coord[0])
-                //                        .attr("y",sat_coord[1]-15)
-                //                        .attr("width",30)
-                //                        .attr("height",30)
-                //                        .append("svg:title").text("Audacy 2");
-                //     }
-
-                // } else if(vehs[i] === "Audacy3" && $scope.widget.settings.contents[i].contents[1].value === 'Audacy3'){
-                //     if(orbits[i] === true){
-                //         var route3 = g.append("path")
-                //                       .datum({type: "LineString", coordinates: scH[i]})  
-                //                       .attr("class", "route3")
-                //                       .attr("d", path); 
-                //     }
-                //     if(satIcons[i] === true){
-                //         var  craft3 = g.append("svg:image")
-                //                        .attr("xlink:href", "./directives/groundtrack/three.svg")
-                //                        .attr("id", "craft3")
-                //                        .attr("x",sat_coord[0])
-                //                        .attr("y",sat_coord[1]-15)
-                //                        .attr("width",30)
-                //                        .attr("height",30)
-                //                        .append("svg:title").text("Audacy 3");
-                //     }
-                // }
             }
         }   
     }               
