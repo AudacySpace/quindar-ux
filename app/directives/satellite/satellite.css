@@ -1,0 +1,14 @@
+.ui-select-toggle {
+    border-radius: 0px;
+}
+
+.ui-select-search {
+    width: auto;
+    height: auto;
+    border-radius: 0px;
+}
+
+#container {
+	width: inherit; 
+	height: 100%;
+}

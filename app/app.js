@@ -1,4 +1,4 @@
-var app = angular.module('app', ['gridster', 'ui.bootstrap', 'ngMaterial', 'ui.bootstrap.datetimepicker','cgPrompt', 'angularModalService', 'hc.marked']);
+var app = angular.module('app', ['gridster', 'ui.bootstrap', 'ngMaterial', 'ui.bootstrap.datetimepicker','cgPrompt', 'angularModalService', 'hc.marked', 'ui.select']);
 
 app.config(['markedProvider', function (markedProvider) {
   markedProvider.setRenderer({
