@@ -3,7 +3,7 @@
     .gtbtns{
         background-color: rgba(255,255,255,0.1);
         text-transform: uppercase;
-        margin-top:4px;
+      /*  margin-top:4px;*/
         display: inline-block;
         padding: 6px 7px;
         margin-bottom: 0;

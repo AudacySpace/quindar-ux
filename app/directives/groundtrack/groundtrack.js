@@ -63,16 +63,19 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
     var rEarth = 6378.16;   //Earth radius [km]
     var gsAng = 85;
     var temptime = new Date;
-    var width = 960,height = 580;
+    // var width = 960,height = 580;
     var π = Math.PI,radians = π / 180,degrees = 180 / π;
     var projection = d3Service.geoEquirectangular().precision(.1);
     var path = d3Service.geoPath().projection(projection);
-    var color = d3.scaleOrdinal(d3.schemeCategory10);
+    var color = d3Service.scaleOrdinal(d3Service.schemeCategory10);
     var graticule = d3Service.geoGraticule();
     var circle = d3Service.geoCircle();
+    // var zoom = d3Service.zoom()
+    //                     .scaleExtent([1, 8])
+    //                     .translateExtent([[-20,0],[1000,500]])
+    //                     .on("zoom", zoomed);
     var zoom = d3Service.zoom()
                         .scaleExtent([1, 8])
-                        .translateExtent([[-20,0],[1000,500]])
                         .on("zoom", zoomed);
     var svg = d3Service.select(el)
                 .append("svg")
@@ -81,12 +84,15 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
                 .attr('width', '100%')
                 .classed("svg-content", true);
 
-    svg.call(zoom);
+    var transform = d3Service.zoomTransform(svg.node()); 
     var g = svg.append("g");
 
     g.attr("id","g")
      .attr("x",0)
      .attr("y",0);
+
+    svg.call(zoom);
+
 
     var transform = d3Service.zoomTransform(svg.node());   
            
@@ -415,7 +421,28 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
                 
     function zoomed(){
         g.attr("transform", d3Service.event.transform);
+        //projection.translateExtent(d3Service.event.translate).scaleExtent(d3Service.event.scale);
     };
+
+  //     function zoomed() {
+  //  projection.translate(d3Service.event.translate).scale(d3Service.event.scale);
+  // g.selectAll("path").attr("d", path)
+  // }
+
+    $scope.resetted = function() {
+
+        svg.transition()
+      .duration(750)
+      .call(zoom.transform, d3Service.zoomIdentity);
+    }
+
+    $scope.zoomIn = function(){
+        zoom.scaleBy(g, 2);
+    }
+
+    $scope.zoomOut = function(){
+        zoom.scaleBy(g, 0.5);
+    }
 
     $scope.showCoverage = function(checkedVal){
         if(checkedVal === true){
