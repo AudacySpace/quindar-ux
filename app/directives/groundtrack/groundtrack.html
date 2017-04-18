@@ -1,14 +1,28 @@
-<div class="gtmain">
+<div class="gtmain" style="overflow:hidden">
     <div class="row">
     <span class="button-checkbox gtspans">
        <!--  <button type="button" class="btn gtbtns">Coverage</button> -->
        <span class="gtbtns">Coverage</span>
-        <input type="checkbox" style="float:right;margin:12px;height:15px;width:15px" ng-model="checkboxModel.value1" ng-click="showCoverage(checkboxModel.value1)"/>
+        <input type="checkbox" style="float:right;margin:8px;height:15px;width:15px" ng-model="checkboxModel.value1" ng-click="showCoverage(checkboxModel.value1)"/>
     </span>
+
+    <span class="button-checkbox gtspans">
+        <button type="button" class="btn gtbtns" ng-click="zoomOut()">Zoom out</button>
+    </span>
+
+    <span class="button-checkbox gtspans">
+        <button type="button" class="btn gtbtns" ng-click="zoomIn()">Zoom in</button>
+    </span>
+
+    <span class="button-checkbox gtspans">
+        <button type="button" class="btn gtbtns" ng-click="resetted()">Reset</button>
+    </span>
+
 <!--     <span class="button-checkbox gtspans" ng-show="linkspan.active">
         <button type="button" class="btn gtbtns">Links</button>
         <input type="checkbox" style="float:right;margin:10px;padding:10px;height:20px;width:20px" ng-model="checkboxModel.value2" ng-click="showLinks(checkboxModel.value2)"/>
     </span> -->
     </div>
+   <!--  <button ng-click="resetted()">Reset</button> -->
 	<div class="svg-container divgt" id="divgt"></div>
 </div>
