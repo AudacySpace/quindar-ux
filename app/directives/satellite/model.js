@@ -3,14 +3,15 @@ app
   	return { 
     	restrict: 'E',
 		scope: {
-			modelUrl: "=modelUrl"
+			modelUrl: "=modelUrl",
+			widget: "=widget"
 		},
 		controller: 'SatelliteCtrl'
   	}; 
 });
 
 app
-.controller('SatelliteCtrl',function ($scope, $element) {
+.controller('SatelliteCtrl',function ($scope, $element, dashboardService) {
 	var container = $element.parent()[0];
 	var width = $(container).width();
 	var height = $(container).height();
@@ -20,6 +21,8 @@ app
 	var angle = 45;
 	var previous;
 	var loader = new THREE.AssimpJSONLoader();
+	var telemetry = dashboardService.telemetry;
+	$scope.widget.settings.quaternion = new Object();
 
 	var createRenderer = function(){
     	var renderer =  new THREE.WebGLRenderer();
@@ -50,7 +53,7 @@ app
 	
 	function loadModel(modelUrl) {
 		loader.load(modelUrl, function (assimpjson) {
-			assimpjson.scale.x = assimpjson.scale.y = assimpjson.scale.z = 0.2;
+			assimpjson.scale.x = assimpjson.scale.y = assimpjson.scale.z = 1;
 			assimpjson.updateMatrix();
 			if (previous) $scope.scene.remove(previous);
 			$scope.scene.add(assimpjson);
@@ -62,9 +65,18 @@ app
 
 	var render = function(){
 		requestAnimationFrame(render);
-		if($scope.cube){
-	 		// $scope.cube.rotation.x += 0.05;
-	 		$scope.cube.rotation.y += 0.02;
+		if($scope.cube && $scope.widget.settings.vehicle){
+			//set quaternion values for rotation
+			$scope.cube.quaternion.x = telemetry[$scope.widget.settings.vehicle].q1.value;
+			$scope.cube.quaternion.y = telemetry[$scope.widget.settings.vehicle].q2.value;
+			$scope.cube.quaternion.z = telemetry[$scope.widget.settings.vehicle].q3.value;
+			$scope.cube.quaternion.w = telemetry[$scope.widget.settings.vehicle].qc.value;
+
+			//set quaternion values for displaying on widget
+			$scope.widget.settings.quaternion.q1 = telemetry[$scope.widget.settings.vehicle].q1.value.toFixed(4);
+			$scope.widget.settings.quaternion.q2 = telemetry[$scope.widget.settings.vehicle].q2.value.toFixed(4);
+			$scope.widget.settings.quaternion.q3 = telemetry[$scope.widget.settings.vehicle].q3.value.toFixed(4);
+			$scope.widget.settings.quaternion.qc = telemetry[$scope.widget.settings.vehicle].qc.value.toFixed(4);
 	 	}
 	   	$scope.renderer.render($scope.scene,$scope.camera);
 	}
@@ -79,6 +91,7 @@ app
 	loadModel($scope.modelUrl);
 	$scope.scene.add($scope.cube);
 	$scope.scene.add(new THREE.AxisHelper(100));
+	$scope.scene.add(new THREE.GridHelper(100,2));
 
 	render();	
 	container.appendChild($scope.renderer.domElement);
