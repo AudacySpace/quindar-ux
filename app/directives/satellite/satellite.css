@@ -12,3 +12,31 @@
 	width: inherit; 
 	height: 100%;
 }
+
+#vehicle {
+	position: absolute;
+    display: block;
+    top: 45px;
+    left: 10px;
+    border: 1px solid #ccc;
+    background-color: #f2f3f4;
+}
+
+#axis {
+	position: absolute;
+    float: right;
+    right: 10px;
+    top: 45px;
+    display: block;
+    border: 1px solid #ccc;
+    background-color: #f2f3f4;
+}
+
+#canvas-box {
+	padding: 5px 5px;
+	width: 120px;
+}
+
+#box {
+	padding-left: 0px;
+}

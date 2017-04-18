@@ -10,7 +10,14 @@ app
 				widget.settings.active = false;
 				widget.saveLoad = false;
 				widget.delete = false;
-				//alert($scope.selected.vehicle.value);
+			}
+
+			$scope.saveSettings = function(widget){
+				widget.main = true;
+				widget.settings.active = false;
+				widget.saveLoad = false;
+				widget.delete = false;
+				widget.settings.vehicle = $scope.selected.vehicle.value;
 			}
 
 			$scope.selected = {};
