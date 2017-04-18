@@ -4,17 +4,49 @@
         background-color: rgba(255,255,255,0.1);
         text-transform: uppercase;
         margin-top:4px;
+        display: inline-block;
+        padding: 6px 7px;
+        margin-bottom: 0;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
     }
     .gtmain{
         height:100%;
     }
-/*    .divgt,.gtmain{
+    button.btn.gtbtns:focus{
+        outline:none;
+    }
+/*  .divgt,.gtmain{
         background-color: #F1F1F5;
         background-image: linear-gradient(90deg, transparent 50%, rgba(255,255,255,.5) 50%);
         background-size: 50px 50px;
-    }*/
+    } */
+    .link {
+        stroke: #FFFF00; 
+        fill: none  ;
+        stroke-width: 2px;
+    }
+
+    .gslink {
+        stroke: #FF6D00; 
+        fill: none  ;
+        stroke-width: 2px;
+    }
     .divgt{
-         height:calc(100% - 57px);
+        height:calc(100% - 57px);
     }
     .gtcbox{
         height:20px;

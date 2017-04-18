@@ -14,16 +14,24 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
     var el = temp.getElementsByTagName("div")[1];
     $scope.checkboxModel = {
         value1 : true
+        // value2 : false
     };
+    // $scope.linkspan = {
+    //     active : false
+    // };
     $scope.vals =  $scope.widget.settings.vehName;
     $scope.scHo = $scope.widget.settings.scHolder;
+    $scope.scSt = $scope.widget.settings.scStates;
+    $scope.dataH = $scope.widget.settings.dataHolder;
     $scope.orbitHo = $scope.widget.settings.orbitHolder;
     $scope.iconHo = $scope.widget.settings.iconHolder;
 
     var vehName;
     var vehs = [];
     var scH = {};
+    var scS = {};
     var prevVehs = [];
+    var datastatus = [];
     var orbits = [];
     var satIcons = [];
 
@@ -35,6 +43,15 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
         scH = newVal; 
     },true);
 
+    $scope.$watch('scSt',function(newVal,oldVal){
+        scS = newVal; 
+    },true);
+
+    $scope.$watch('dataH',function(newVal,oldVal){
+        datastatus = newVal; 
+        console.log(datastatus);
+    },true);
+
     $scope.$watch('orbitHo',function(newVal,oldVal){
         orbits = newVal; 
     },true);
@@ -43,8 +60,6 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
         satIcons = newVal; 
     },true);
 
-    // Initialize gsHoldar
-    var gsHolder={}
     var rEarth = 6378.16;   //Earth radius [km]
     var gsAng = 85;
     var temptime = new Date;
@@ -147,7 +162,10 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
         g.selectAll("path.route3").remove();
         g.selectAll("#craft1").remove();
         g.selectAll("#craft2").remove();
-        g.selectAll("#craft3").remove(); 
+        g.selectAll("#craft3").remove();
+        g.selectAll("path.link").remove();
+        g.selectAll("line").remove();
+        g.selectAll("path.gslink").remove(); 
       
         var telemetry = dashboardService.telemetry;
 
@@ -176,11 +194,14 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
                         
                 // Remove data when the length of scHolder reaches a certain value
                 if(scH[i].length > 600) {
-                    scH[i].splice(0,1);                            
+                    scH[i].splice(0,1);
+                    scS[i].splice(0,1);                            
                 }
 
                 // add longitude and latitude to data_plot
-                scH[i].push([longitude, latitude]); 
+                scH[i].push([longitude, latitude]);
+                scS[i].push([x,y,z]);
+
                 if(vehs[i] === "Audacy1" ){
                     if(orbits[i] === true){
                    
@@ -199,6 +220,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
                                        .attr("width",30)
                                        .attr("height",30)
                                        .append("svg:title").text("Audacy 1");
+
                     }
                     
 
@@ -241,7 +263,37 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
                     }
                 }
             }
-        }   
+
+        }
+
+        for (k=0; k<datastatus.length-1; k++) {
+            if (datastatus[k] === true && satIcons[k] === true) {
+                for (kk=k+1; kk<datastatus.length; kk++) {
+                    if (datastatus[kk] === true && satIcons[kk] === true) {
+                        $scope.checkboxModel.value2 = true;
+                        commlink(scS[k][scS[k].length-1],scS[kk][scS[kk].length-1],scH[k][scH[k].length-1],scH[kk][scH[kk].length-1]); 
+                    }       
+                }
+            }
+        }
+
+        for (k=0; k<datastatus.length; k++) {
+            if(datastatus[k] === true && satIcons[k] === true) {
+                for (kk=0; kk<gs.length; kk++) {
+                    $scope.checkboxModel.value2 = true;
+                    gsCommLink(station[kk], scH[k][scH[k].length-1], scS[k][scS[k].length-1], gsAng);           
+                }  
+            }
+        }
+
+        // if(vehs.length>1 && satIcons.length > 1){
+        //     $scope.linkspan.active = true;
+        //     $scope.checkboxModel.value2 = true;
+        // }
+        // else{
+        //     $scope.linkspan.active = false;
+        // }
+
     }               
         
     function plotGsCover(coord){
@@ -251,7 +303,76 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
                                .datum(circle.center(coord).radius(covAng))
                                .attr("class", "gslos")
                                .attr("d", path);           
-    };   
+    }; 
+
+
+    // Comm between satellites
+    function commlink(a,b,c,d){
+        //a: Satellite A [x,y,z] [km]
+        //b: Satellite B [x,y,z] [km]
+        //c: Satellite A [longitude, latitude] [deg]
+        //d: Satellite B [longitude, latitude] [deg]
+            
+        // Half angles [radians]
+        var th1 = Math.acos(rEarth/Math.sqrt(a[0]*a[0]+a[1]*a[1]+a[2]*a[2]));
+        var th2 = Math.acos(rEarth/Math.sqrt(b[0]*b[0]+b[1]*b[1]+b[2]*b[2]));
+
+        // Angle between a and b
+        var th = Math.acos(dotProd(a,b)/(mag(a)*mag(b)));
+
+        if (th < th1+th2){
+            var comm = g.append("path")
+                        .datum({type: "LineString", coordinates: [[c[0]+6,c[1]-2], [d[0]+6,d[1]-2]]})   
+                        .attr("class", "link")
+                        .attr("d", path);
+        } else {
+        }
+    }; 
+
+    // Comm between satellite and ground station
+    function gsCommLink(a,b,c,ang){
+        // a: Ground station [longitude, latitude] [deg]
+        // b: Satellite [longitude, latitude] [deg]
+        // c: Satellite [x,y,z] [km]
+        // ang: Ground station coverage angle [deg]
+            
+        // Convert Ground station location //
+        // Calculate z
+        var gs_z = rEarth*Math.sin(a[1]*radians);
+            
+        // Project ground station location on xy plane
+        var rp = rEarth*Math.cos(a[1]*radians);
+            
+        var gs_y = rp*Math.sin(a[0]*radians);
+        var gs_x = rp*Math.cos(a[0]*radians);
+            
+        var gs_state = [gs_x,gs_y,gs_z];
+        // End convert gound station location //
+            
+        // Vector from ground station to satellite
+        var r_gs2sat = [c[0]-gs_state[0], c[1]-gs_state[1], c[2]-gs_state[2]];
+            
+        // Angle ground station to satellite
+        var th = Math.acos(dotProd(r_gs2sat,gs_state)/(mag(r_gs2sat)*mag(gs_state)));
+
+        if (th*degrees < ang) {
+            var comm = g.append("path")
+                        .datum({type: "LineString", coordinates: [[a[0],a[1]], [b[0]+6,b[1]-2]]})   
+                        .attr("class", "gslink")
+                        .attr("d", path);               
+        }
+    };
+         
+
+    // Calculate a dot product
+    function dotProd(a,b){
+        return a[0]*b[0] + a[1]*b[1] + a[2]*b[2];
+    }
+        
+    // Calculate a magnitude
+    function mag(a){
+        return Math.sqrt(a[0]*a[0] + a[1]*a[1] + a[2]*a[2]);
+    }
 
     // Ground station coverage area based on the sat's altitude
     function gsCoverage(r, gsAng){
@@ -279,7 +400,6 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
         d3Service.select(this).classed('selected', true);
     }
         
-
     function plotgs(coord,name){
             var gs_coord = projGround(coord);   //convert to px
             var gs = svg.select("#g")
@@ -298,18 +418,24 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
     };
 
     $scope.showCoverage = function(checkedVal){
-            if(checkedVal === true){
-                 g.selectAll("path.gslos").remove();
-                for (j=0; j<gs.length;j++) {
-                    plotGsCover(station[j]);      
-
-                }
-            }else{
-                g.selectAll("path.gslos").remove();
+        if(checkedVal === true){
+            g.selectAll("path.gslos").remove();
+            for (j=0; j<gs.length;j++) {
+                plotGsCover(station[j]);      
             }
-
+        } else {
+                g.selectAll("path.gslos").remove();
+        }
      }
-  
+
+    // $scope.showLinks = function(checkedVal){
+    //     if(checkedVal === true){
+    //         g.selectAll("path.link").attr("visibility", "visible");
+
+    //     } else {
+    //         g.selectAll("path.link").attr("visibility", "hidden");
+    //     }
+    //  }
 
     //d3Service.select(self.frameElement).style("height", height + "px");
                 

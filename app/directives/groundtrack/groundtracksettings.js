@@ -31,6 +31,10 @@ app.directive('groundtracksettings', function() {
                 while(widget.settings.iconHolder.length > 0) {
                     widget.settings.iconHolder.pop();
                 }
+
+                while(widget.settings.dataHolder.length > 0) {
+                    widget.settings.dataHolder.pop();
+                }
                 
                 for(var i=0;i<3;i++){
                 //     try{
@@ -56,6 +60,7 @@ app.directive('groundtracksettings', function() {
                 try{
                     if(widget.settings.contents[i].status[2] === true){
                         widget.settings.vehName.push(widget.settings.contents[i].contents[1].value);
+                        widget.settings.dataHolder.push(widget.settings.contents[i].status[2]);
                         widget.settings.orbitHolder.push(widget.settings.contents[i].status[3]);
                         widget.settings.iconHolder.push(widget.settings.contents[i].status[4]);
                     }
@@ -68,6 +73,8 @@ app.directive('groundtracksettings', function() {
                 for (j=0; j< widget.settings.vehName.length;j++) {
                 widget.settings.scHolder[j] = [[0.,0.]];
                 widget.settings.scHolder[j].pop();
+                widget.settings.scStates[j] = [[0.,0.,0.]];
+                widget.settings.scStates[j].pop();
 
             }; 
             }

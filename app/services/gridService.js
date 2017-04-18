@@ -144,6 +144,8 @@ app
             contents : groundtracktableCols,
             vehName :[],
             scHolder :{},
+            scStates :{},
+            dataHolder :[],
             orbitHolder :[],
             iconHolder :[]
         },
