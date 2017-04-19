@@ -65,7 +65,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
     var circle = d3Service.geoCircle();
     var zoom = d3Service.zoom()
                         .scaleExtent([1, 10])
-                        .translateExtent([[0,0], [900, 700]])
+                        .translateExtent([[0,0], [900, 600]])
                         .on("zoom", zoomed);
     var svg = d3Service.select(el)
                 .append("svg")
