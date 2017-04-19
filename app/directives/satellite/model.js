@@ -53,7 +53,7 @@ app
 	
 	function loadModel(modelUrl) {
 		loader.load(modelUrl, function (assimpjson) {
-			assimpjson.scale.x = assimpjson.scale.y = assimpjson.scale.z = 1;
+			assimpjson.scale.x = assimpjson.scale.y = assimpjson.scale.z = 0.8;
 			assimpjson.updateMatrix();
 			if (previous) $scope.scene.remove(previous);
 			$scope.scene.add(assimpjson);
@@ -78,12 +78,15 @@ app
 			$scope.widget.settings.quaternion.q3 = telemetry[$scope.widget.settings.vehicle].q3.value.toFixed(4);
 			$scope.widget.settings.quaternion.qc = telemetry[$scope.widget.settings.vehicle].qc.value.toFixed(4);
 	 	}
+	 	$scope.camera.fov = fov * $scope.widget.settings.zoom;
+	 	$scope.camera.updateProjectionMatrix();
 	   	$scope.renderer.render($scope.scene,$scope.camera);
 	}
 
 	$scope.cube = new THREE.Object3D();
 	$scope.scene = createScene();
 	$scope.camera = createCamera();
+	var fov = $scope.camera.fov;
 	$scope.light = createLight();
 	$scope.renderer = createRenderer();
 
