@@ -153,7 +153,7 @@ img.search-icon:focus{
    font-size:22px;
 }
 a#username.dropdown-toggle {
-   font-size:22px;/*18px*/
+   font-size:18px;/*22px*/
    color:black;
    display:inline-block;
 }

@@ -44,20 +44,20 @@ app
                                                 "value":"",
                                                 "style":"text-align:left;background-color:#fff;color:#000",
                                                 "active": "true"
-                                            },
-                                            {   
-                                                "value":"",
-                                                "style":"text-align:left;background-color:#fff;color:#000",
-                                                "active": "false"
                                             }
+                                            // {   
+                                            //     "value":"",
+                                            //     "style":"text-align:left;background-color:#fff;color:#000",
+                                            //     "active": "false"
+                                            // }
                                         ],
                                         status: [
                                         idStatus = false,
                                         nameStatus = false,
                                         dataStatus = true,
                                         orbitStatus = true,
-                                        iconStatus = true,
-                                        detailsStatus = false]
+                                        iconStatus = true]
+                                        // detailsStatus = false]
                        }); 
     }                        
 
@@ -159,53 +159,49 @@ app
             widgets: [{
                 col: 0,
                 row: 0,
-                sizeY: 2,
-                sizeX: 4,
-                name: "Data Table",
-                directive: "datatable",
-				directiveSettings: "datatablesettings",
-                id: "datatable",
+                sizeY: 4,
+                sizeX: 6,
+                name: "Ground Track",
+                directive: "groundtrack",
+                directiveSettings: "groundtracksettings",
+                id: "groundtrack",
                 icon: {
-                    id: "d-table",
-                    type: "fa-table"
-                }, 
-                main: true,
-				settings: {
-                    active: false,
-                    checkedValues:{
-                        checkedId: true,
-                        checkedName: true,
-                        checkedAlow: true,
-                        checkedWlow: true,
-                        checkedValue: true,
-                        checkedWhigh: true,
-                        checkedAhigh: true,
-                        checkedUnits: true,
-                        checkedNotes: true
-                    }
+                    id: "g-track",
+                    type: "fa-globe"
                 },
-				saveLoad: false,
-				delete: false,
+                main: true,
+                settings: {
+                    active: false,
+                    contents : groundtracktableCols,
+                    vehName :[],
+                    scHolder :{},
+                    scStates :{},
+                    dataHolder :[],
+                    orbitHolder :[],
+                    iconHolder :[]
+                },
+                saveLoad: false,
+                delete: false
             },
-			{
-				col: 0,
-                row: 3,
-				sizeY: 3,
-				sizeX: 4,
-				name: "Line Plot",
-				directive: "lineplot",
-				directiveSettings: "linesettings",
-				id: "addLine",
-				icon: {
-					id: "l-plot",
-					type: "fa-line-chart"
-				},
-				main: true,
-				settings: {
-					active: false
-				},
-				saveLoad: false,
-				delete: false
+            {
+                col: 0,
+                row: 4,
+                sizeY: 3,
+                sizeX: 3,
+                name: "3D Model",
+                directive: "satellite",
+                directiveSettings: "satellitesettings",
+                id: "satellite",
+                icon: {
+                    id: "l-plot",
+                    type: "fa-cube"
+                },
+                main: true,
+                settings: {
+                    active: false
+                },
+                saveLoad: false,
+                delete: false
             }]
         }
     };
