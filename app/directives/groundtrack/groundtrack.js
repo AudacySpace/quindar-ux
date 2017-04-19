@@ -8,17 +8,14 @@ app.directive('groundtrack',function() {
     }; 
 });
 
-app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardService,gridService) { 
+app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,dashboardService,gridService) { 
   
     var temp = $element[0].getElementsByTagName("div")[0];
     var el = temp.getElementsByTagName("div")[1];
+    $scope.widget.stream = new Array();
     $scope.checkboxModel = {
         value1 : true
-        // value2 : false
     };
-    // $scope.linkspan = {
-    //     active : false
-    // };
     $scope.vals =  $scope.widget.settings.vehName;
     $scope.scHo = $scope.widget.settings.scHolder;
     $scope.scSt = $scope.widget.settings.scStates;
@@ -30,7 +27,6 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
     var vehs = [];
     var scH = {};
     var scS = {};
-    var prevVehs = [];
     var datastatus = [];
     var orbits = [];
     var satIcons = [];
@@ -49,7 +45,6 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
 
     $scope.$watch('dataH',function(newVal,oldVal){
         datastatus = newVal; 
-        console.log(datastatus);
     },true);
 
     $scope.$watch('orbitHo',function(newVal,oldVal){
@@ -63,33 +58,33 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
     var rEarth = 6378.16;   //Earth radius [km]
     var gsAng = 85;
     var temptime = new Date;
-    var width = 960,height = 580;
     var π = Math.PI,radians = π / 180,degrees = 180 / π;
     var projection = d3Service.geoEquirectangular().precision(.1);
     var path = d3Service.geoPath().projection(projection);
-    var color = d3.scaleOrdinal(d3.schemeCategory10);
     var graticule = d3Service.geoGraticule();
     var circle = d3Service.geoCircle();
     var zoom = d3Service.zoom()
-                        .scaleExtent([1, 8])
-                        .translateExtent([[-20,0],[1000,500]])
+                        .scaleExtent([1, 10])
+                        .translateExtent([[0,0], [900, 600]])
                         .on("zoom", zoomed);
     var svg = d3Service.select(el)
                 .append("svg")
                 .attr("preserveAspectRatio", "xMinYMin meet")
-                .attr("viewBox", "-20 0 1000 500")
+                .attr("viewBox", "-20 10 1000 500")
                 .attr('width', '100%')
+                .attr('height', '100%')
                 .classed("svg-content", true);
 
-    svg.call(zoom);
+    var transform = d3Service.zoomTransform(svg.node()); 
     var g = svg.append("g");
 
     g.attr("id","g")
      .attr("x",0)
      .attr("y",0);
 
-    var transform = d3Service.zoomTransform(svg.node());   
-           
+   svg.call(zoom);
+
+    var transform = d3Service.zoomTransform(svg.node());          
     var sat = 1; //Default satellite
     var gs = [];
     var station = [[-122.4, 37.7],[103.8, 1.4]];
@@ -136,7 +131,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
                      .attr("d", path);
                                
         redraw();
-        setInterval(redraw, 1000);
+        $interval(redraw, 1000);
 
         function redraw() {
             night.datum(circle.center(antipode(solarPosition(temptime))).radius(90)).attr("d", path);
@@ -152,11 +147,13 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
         plotGsCover(station[j]);      
     }
 
-    setInterval(updatePlot, 1000);
+    //setInterval(updatePlot, 1000);
+    var stream = $interval(updatePlot, 1000);
+    $scope.widget.stream.push(stream);
 
     // Function to update data to be plotted
     function updatePlot() {
-        // sat = ['Audacy1','Audacy2','Audacy3'];
+   
         g.selectAll("path.route1").remove(); 
         g.selectAll("path.route2").remove();
         g.selectAll("path.route3").remove();
@@ -213,7 +210,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
                     
                     if(satIcons[i] === true){
                         var  craft1 = g.append("svg:image")
-                                       .attr("xlink:href", "./directives/groundtrack/one.svg")
+                                       .attr("xlink:href", "/icons/groundtrack-widget/one.svg")
                                        .attr("id", "craft1")
                                        .attr("x",sat_coord[0])
                                        .attr("y",sat_coord[1]-15)
@@ -234,7 +231,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
 
                     if(satIcons[i] === true){
                         var  craft2 = g.append("svg:image")
-                                       .attr("xlink:href", "./directives/groundtrack/two.svg")
+                                       .attr("xlink:href", "/icons/groundtrack-widget/two.svg")
                                        .attr("id", "craft2")
                                        .attr("x",sat_coord[0])
                                        .attr("y",sat_coord[1]-15)
@@ -253,7 +250,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
 
                     if(satIcons[i] === true){
                         var  craft3 = g.append("svg:image")
-                                       .attr("xlink:href", "./directives/groundtrack/three.svg")
+                                       .attr("xlink:href", "/icons/groundtrack-widget/three.svg")
                                        .attr("id", "craft3")
                                        .attr("x",sat_coord[0])
                                        .attr("y",sat_coord[1]-15)
@@ -270,7 +267,6 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
             if (datastatus[k] === true && satIcons[k] === true) {
                 for (kk=k+1; kk<datastatus.length; kk++) {
                     if (datastatus[kk] === true && satIcons[kk] === true) {
-                        $scope.checkboxModel.value2 = true;
                         commlink(scS[k][scS[k].length-1],scS[kk][scS[kk].length-1],scH[k][scH[k].length-1],scH[kk][scH[kk].length-1]); 
                     }       
                 }
@@ -280,33 +276,24 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
         for (k=0; k<datastatus.length; k++) {
             if(datastatus[k] === true && satIcons[k] === true) {
                 for (kk=0; kk<gs.length; kk++) {
-                    $scope.checkboxModel.value2 = true;
                     gsCommLink(station[kk], scH[k][scH[k].length-1], scS[k][scS[k].length-1], gsAng);           
                 }  
             }
         }
-
-        // if(vehs.length>1 && satIcons.length > 1){
-        //     $scope.linkspan.active = true;
-        //     $scope.checkboxModel.value2 = true;
-        // }
-        // else{
-        //     $scope.linkspan.active = false;
-        // }
-
     }               
-        
+    
+    //Displays Ground station coverage area    
     function plotGsCover(coord){
         covAng = gsCoverage(satRadius, gsAng); // Coverage angle [deg]
         var gslos = svg.select('#g')
-                               .append("path")
-                               .datum(circle.center(coord).radius(covAng))
-                               .attr("class", "gslos")
-                               .attr("d", path);           
+                        .append("path")
+                        .datum(circle.center(coord).radius(covAng))
+                        .attr("class", "gslos")
+                        .attr("d", path);           
     }; 
 
 
-    // Comm between satellites
+    // Communication link between satellites
     function commlink(a,b,c,d){
         //a: Satellite A [x,y,z] [km]
         //b: Satellite B [x,y,z] [km]
@@ -329,7 +316,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
         }
     }; 
 
-    // Comm between satellite and ground station
+    // Communication between satellite and ground station
     function gsCommLink(a,b,c,ang){
         // a: Ground station [longitude, latitude] [deg]
         // b: Satellite [longitude, latitude] [deg]
@@ -386,37 +373,43 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
         return  180 - (180-gsAng) - alpha*degrees;
     }   
 
-    function showTooltip(d) {
-        label = d.properties.name;
-        var mouse = d3Service.mouse(svg.node())
-                      .map( function(d) { return parseInt(d); } );
-        tooltip.classed("hidden", false)
-               .attr("style", "left:"+(mouse[0]+offsetL)+"px;top:"+(mouse[1]+offsetT)+"px")
-               .html(label);
-    }
-
-    function selected() {
-        d3Service.select('.selected').classed('selected', false);
-        d3Service.select(this).classed('selected', true);
-    }
-        
+    //Plots ground station and display's name on hover
     function plotgs(coord,name){
             var gs_coord = projGround(coord);   //convert to px
             var gs = svg.select("#g")
                         .append("svg:image")
-                        .attr("xlink:href", "./directives/groundtrack/aud_target_02_orange.svg")
+                        .attr("xlink:href", "/icons/groundtrack-widget/aud_target_02_orange.svg")
                         .attr("id", "gs")
                         .attr("x",gs_coord[0]-10)
                         .attr("y",gs_coord[1]-16)
                         .attr("width",30)
                         .attr("height",30)
                         .append("svg:title").text(name);
-            }
-                
+    }
+     
+    //Function to zoom in using mouse scroll or touch events           
     function zoomed(){
-        g.attr("transform", d3Service.event.transform);
+        g.attr("transform", d3Service.event.transform);   
     };
 
+    //Function to reset the map
+    $scope.resetted = function() {
+        svg.transition()
+           .duration(500)
+           .call(zoom.transform, d3Service.zoomIdentity);
+    }
+
+    //Function to zoom in using button
+    $scope.zoomIn = function(){
+        zoom.scaleBy(svg, 2);
+    }
+
+    //Function to zoom out using button
+    $scope.zoomOut = function(){
+        zoom.scaleBy(svg,0.5);
+    }
+
+    //Function to show enable or disable ground station coverage area.
     $scope.showCoverage = function(checkedVal){
         if(checkedVal === true){
             g.selectAll("path.gslos").remove();
@@ -424,21 +417,10 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,dashboardSe
                 plotGsCover(station[j]);      
             }
         } else {
-                g.selectAll("path.gslos").remove();
+            g.selectAll("path.gslos").remove();
         }
-     }
-
-    // $scope.showLinks = function(checkedVal){
-    //     if(checkedVal === true){
-    //         g.selectAll("path.link").attr("visibility", "visible");
-
-    //     } else {
-    //         g.selectAll("path.link").attr("visibility", "hidden");
-    //     }
-    //  }
-
-    //d3Service.select(self.frameElement).style("height", height + "px");
-                
+    }
+            
     function projGround(d){
         return projection(d);
     }; 
