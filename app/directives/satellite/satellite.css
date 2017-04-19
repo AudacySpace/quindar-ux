@@ -40,3 +40,9 @@
 #box {
 	padding-left: 0px;
 }
+
+#slider {
+	position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
