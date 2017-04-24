@@ -34,6 +34,7 @@ app
 	var createCamera = function(){
 	    var camera = new THREE.PerspectiveCamera(angle, aspect, near, far);    
 	    camera.position.set( 8, 8, 8 );
+	    camera.up = new THREE.Vector3( 0, 0, 1 );
 	    camera.lookAt(new THREE.Vector3( 0, 0, 0 ));
 	    return camera;
 	}
@@ -46,9 +47,21 @@ app
 	var createLight = function(){
 	    var light = new THREE.PointLight(0xbfbfbf);
 	    light.position.x=0;
-	    light.position.y=0;
-	    light.position.z=300;
+	    light.position.y=300;
+	    light.position.z=0;
 	    return light;
+	}
+
+	var createGrid = function(){
+		var gridXY = new THREE.GridHelper(100, 50, new THREE.Color( 0x989898 ), new THREE.Color( 0xbfbfbf ));
+		gridXY.rotation.x = Math.PI/2;
+		return gridXY;
+	}
+
+	var createAxis = function(){
+		var axis = new THREE.AxisHelper(20);
+		axis.material.linewidth = 2;
+		return axis;
 	}
 	
 	function loadModel(modelUrl) {
@@ -65,6 +78,7 @@ app
 
 	var render = function(){
 		requestAnimationFrame(render);
+		controls.update();
 		if($scope.cube && $scope.widget.settings.vehicle){
 			//set quaternion values for rotation
 			$scope.cube.quaternion.x = telemetry[$scope.widget.settings.vehicle].q1.value;
@@ -89,12 +103,18 @@ app
 	var fov = $scope.camera.fov;
 	$scope.light = createLight();
 	$scope.renderer = createRenderer();
+	$scope.grid = createGrid();
+	$scope.axis = createAxis();
 
 	$scope.scene.add($scope.light);
 	loadModel($scope.modelUrl);
 	$scope.scene.add($scope.cube);
-	$scope.scene.add(new THREE.AxisHelper(100));
-	$scope.scene.add(new THREE.GridHelper(100,2));
+	$scope.scene.add($scope.axis);
+	$scope.scene.add($scope.grid);
+
+	var controls = new THREE.OrbitControls($scope.camera, $scope.renderer.domElement);
+	controls.enableZoom = false;
+	controls.enablePan = false;
 
 	render();	
 	container.appendChild($scope.renderer.domElement);
