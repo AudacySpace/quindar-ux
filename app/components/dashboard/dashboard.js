@@ -12,25 +12,195 @@ angular.module('app')
   		vm.clock = dashboardService.time;
   		vm.name = dashboardService.name;
   		vm.email = dashboardService.email;
+  		vm.sIcon = dashboardService.sIcon;
+  		vm.gIcon = dashboardService.gIcon;
+  		vm.pIcon = dashboardService.pIcon;
+  		vm.dIcon = dashboardService.dIcon;
 
 	  	vm.icons = [
 	  		{
-			    image:"/media/icons/status_icons-05.png",
+			    image:"/media/icons/aud_status_sat_green.svg",
 			   	id: "i5"
 			},
 			{
-		    	image:"/media/icons/status_icons-06.png",
+		    	image:"/media/icons/aud_status_gs_green.svg",
 		    	id: "i6"
 		    },
 		    {
-		    	image:"/media/icons/status_icons-07.png",
+		    	image:"/media/icons/aud_status_proxy_green.svg",
 		    	id: "i7"
 		    },
 		    {
-		    	image:"/media/icons/status_icons-08.png",
+		    	image:"/media/icons/aud_status_db_green.svg",
 		    	id:"i8"
 		    }
 	    ];
+
+	    $interval(function(){
+	    	 console.log("S-ICON" + vm.sIcon.sic);
+             console.log("GS-ICON" + vm.gIcon.gic);
+	    	 console.log("P-ICON" + vm.pIcon.pic);
+             console.log("D-ICON" + vm.dIcon.dic);
+	    if(vm.sIcon.sic === "grey" && vm.gIcon.gic === "green" && vm.pIcon.pic === "green" && vm.dIcon.dic === "red"){
+	    	vm.icons = [
+	  		{
+			    image:"/media/icons/aud_status_sat_grey.svg",
+			   	id: "i5"
+			},
+			{
+		    	image:"/media/icons/aud_status_gs_green.svg",
+		    	id: "i6"
+		    },
+		    {
+		    	image:"/media/icons/aud_status_proxy_green.svg",
+		    	id: "i7"
+		    },
+		    {
+		    	image:"/media/icons/aud_status_db_red.svg",
+		    	id:"i8"
+		    }
+	    ];
+	    }else if(vm.sIcon.sic === "grey" && vm.gIcon.gic === "green" && vm.pIcon.pic === "red" && vm.dIcon.dic === "red"){
+	    	vm.icons = [
+	  		{
+			    image:"/media/icons/aud_status_sat_grey.svg",
+			   	id: "i5"
+			},
+			{
+		    	image:"/media/icons/aud_status_gs_green.svg",
+		    	id: "i6"
+		    },
+		    {
+		    	image:"/media/icons/aud_status_proxy_red.svg",
+		    	id: "i7"
+		    },
+		    {
+		    	image:"/media/icons/aud_status_db_red.svg",
+		    	id:"i8"
+		    }
+	    ];
+	    }
+	    else if(vm.sIcon.sic === "grey" && vm.gIcon.gic === "grey" && vm.pIcon.pic === "red" && vm.dIcon.dic === "red"){
+	    	vm.icons = [
+	  		{
+			    image:"/media/icons/aud_status_sat_grey.svg",
+			   	id: "i5"
+			},
+			{
+		    	image:"/media/icons/aud_status_gs_grey.svg",
+		    	id: "i6"
+		    },
+		    {
+		    	image:"/media/icons/aud_status_proxy_red.svg",
+		    	id: "i7"
+		    },
+		    {
+		    	image:"/media/icons/aud_status_db_red.svg",
+		    	id:"i8"
+		    }
+	    ];
+	    }
+	    else if(vm.sIcon.sic === "grey" && vm.gIcon.gic === "red" && vm.pIcon.pic === "red" && vm.dIcon.dic === "red"){
+	    	vm.icons = [
+	  		{
+			    image:"/media/icons/aud_status_sat_grey.svg",
+			   	id: "i5"
+			},
+			{
+		    	image:"/media/icons/aud_status_gs_red.svg",
+		    	id: "i6"
+		    },
+		    {
+		    	image:"/media/icons/aud_status_proxy_red.svg",
+		    	id: "i7"
+		    },
+		    {
+		    	image:"/media/icons/aud_status_db_red.svg",
+		    	id:"i8"
+		    }
+	    ];
+	    }
+	    else if(vm.sIcon.sic === "red" && vm.gIcon.gic === "red" && vm.pIcon.pic === "red" && vm.dIcon.dic === "red"){
+	    	vm.icons = [
+	  		{
+			    image:"/media/icons/aud_status_sat_red.svg",
+			   	id: "i5"
+			},
+			{
+		    	image:"/media/icons/aud_status_gs_red.svg",
+		    	id: "i6"
+		    },
+		    {
+		    	image:"/media/icons/aud_status_proxy_red.svg",
+		    	id: "i7"
+		    },
+		    {
+		    	image:"/media/icons/aud_status_db_red.svg",
+		    	id:"i8"
+		    }
+	    ];
+	    }else if(vm.sIcon.sic === "green" && vm.gIcon.gic === "green" && vm.pIcon.pic === "green" && vm.dIcon.dic === "green"){
+	    	vm.icons = [
+	  		{
+			    image:"/media/icons/aud_status_sat_green.svg",
+			   	id: "i5"
+			},
+			{
+		    	image:"/media/icons/aud_status_gs_green.svg",
+		    	id: "i6"
+		    },
+		    {
+		    	image:"/media/icons/aud_status_proxy_green.svg",
+		    	id: "i7"
+		    },
+		    {
+		    	image:"/media/icons/aud_status_db_green.svg",
+		    	id:"i8"
+		    }
+	    ];
+	    }
+	  //   else if(vm.pIcon.pic === "red" && vm.dIcon.dic === "green"){
+	  //   	    	vm.icons = [
+	  // 		{
+			//     image:"/media/icons/aud_status_sat_grey.svg",
+			//    	id: "i5"
+			// },
+			// {
+		 //    	image:"/media/icons/aud_status_gs_green.svg",
+		 //    	id: "i6"
+		 //    },
+		 //    {
+		 //    	image:"/media/icons/aud_status_proxy_red.svg",
+		 //    	id: "i7"
+		 //    },
+		 //    {
+		 //    	image:"/media/icons/aud_status_db_green.svg",
+		 //    	id:"i8"
+		 //    }
+	  //   ];	
+	  //   }
+	  //   else if(vm.pIcon.pic === "green" && vm.dIcon.dic === "green" && vm.sIcon.sic === "green" && vm.gIcon.gic === "green"){
+	  //   	vm.icons = [
+	  // 		{
+			//     image:"/media/icons/aud_status_sat_green.svg",
+			//    	id: "i5"
+			// },
+			// {
+		 //    	image:"/media/icons/aud_status_gs_green.svg",
+		 //    	id: "i6"
+		 //    },
+		 //    {
+		 //    	image:"/media/icons/aud_status_proxy_green.svg",
+		 //    	id: "i7"
+		 //    },
+		 //    {
+		 //    	image:"/media/icons/aud_status_db_green.svg",
+		 //    	id:"i8"
+		 //    }
+	  //   ];
+	  //   }
+	},1000);
+
 
 	    vm.openLeftNav = function(){
 	    
