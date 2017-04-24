@@ -67,6 +67,14 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                         .scaleExtent([1, 10])
                         .translateExtent([[0,0], [900, 600]])
                         .on("zoom", zoomed);
+
+                        if($(window).width() >= screen.width){
+                        zoom = d3Service.zoom()
+                        .scaleExtent([1, 10])
+                        .translateExtent([[0,0], [1300, 1000]])
+                        .on("zoom", zoomed);
+                        }
+                        
     var svg = d3Service.select(el)
                 .append("svg")
                 .attr("preserveAspectRatio", "xMinYMin meet")
