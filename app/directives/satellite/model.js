@@ -184,7 +184,7 @@ app
 	dir.normalize();
 
 	var origin = new THREE.Vector3( 0, 0, 0 );
-	var arrowLength = 10;
+	var arrowLength = 8;
 	var hex = 0x111950;
 
 	$scope.arrowHelper = new THREE.ArrowHelper( dir, origin, arrowLength, hex );
