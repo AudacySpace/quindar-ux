@@ -137,12 +137,13 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
         var night = g.append("path")                
                      .attr("class", "night")
                      .attr("d", path);
-                               
+        
+		$scope.solTime = temptime;
         redraw();
         $interval(redraw, 1000);
 
         function redraw() {
-            night.datum(circle.center(antipode(solarPosition(temptime))).radius(90)).attr("d", path);
+            night.datum(circle.center(antipode(solarPosition($scope.solTime))).radius(90)).attr("d", path);
         }               
         
     });
@@ -207,6 +208,11 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                 scH[i].push([longitude, latitude]);
                 scS[i].push([x,y,z]);
 
+				// if a vehicle is selected, update time for night shadow
+				if(i === 0){
+					$scope.solTime = new Date(latestdata.timestamp.value);
+				}
+				
                 if(vehs[i] === "Audacy1" ){
                     if(orbits[i] === true){
                    
