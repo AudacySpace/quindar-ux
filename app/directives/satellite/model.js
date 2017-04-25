@@ -162,13 +162,12 @@ app
 			$scope.solLongRad = $scope.solCoords[0]*radians;
 			$scope.solLatRad = $scope.solCoords[1]*radians;
 
-			console.log(tempTime)
 			// Sun in ECEF [x,y,z]
 			$scope.solECEF = longLat2ECEF($scope.solLongRad,$scope.solLatRad);
 
 			// Sun in ECI [x,y,z]
 			$scope.sunECI = ECEF2ECI($scope.solECEF[0], $scope.solECEF[1], $scope.solECEF[2]);
-			console.log($scope.sunECI)
+
 			var dir = new THREE.Vector3(-$scope.earthECI[0], -$scope.earthECI[1], -$scope.earthECI[2]);
 			var dirSun = new THREE.Vector3($scope.sunECI[0], $scope.sunECI[1], $scope.sunECI[2]);
 			
