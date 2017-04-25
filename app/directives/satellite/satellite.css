@@ -11,6 +11,7 @@
 #container {
 	width: inherit; 
 	height: 100%;
+    overflow: hidden;
 }
 
 #vehicle {
