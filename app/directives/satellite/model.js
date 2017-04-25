@@ -55,7 +55,12 @@ app
 	}
 
 	var createGrid = function(){
-		var gridXY = new THREE.GridHelper(100, 50, new THREE.Color( 0x989898 ), new THREE.Color( 0xbfbfbf ));
+		var radius = 100;
+		var radials = 16;
+		var circles = 50;
+		var divisions = 64;
+
+		var gridXY = new THREE.PolarGridHelper( radius, radials, circles, divisions, new THREE.Color( 0x989898 ), new THREE.Color( 0xbfbfbf ) );
 		gridXY.rotation.x = Math.PI/2;
 		return gridXY;
 	}
