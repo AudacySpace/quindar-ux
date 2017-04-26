@@ -8,7 +8,6 @@ app
     var time = {
         timestamp : {}
     }
-
     var docIds = [];
     var pIcon = {pic:""};
     var dIcon = {dic:""};
@@ -29,12 +28,10 @@ app
                 }
                 docIds.push(telemetry[item]._id);
                 if(docIds[docIds.length-1] === docIds[docIds.length-2]){
-                    //checkServerStatus();
-                     //ServerPing();
                     sIcon.sic = "grey";
                     gIcon.gic = "green";
                     pIcon.pic = "green";
-                    dIcon.dic = "red";
+                    dIcon.dic = "green";
                 }
                 else{
                     sIcon.sic = "green";
@@ -42,93 +39,16 @@ app
                     pIcon.pic = "green";
                     dIcon.dic = "green";
                 }
-
             },function error(response){
-                console.log(response);
-                if(response.status === -1){ 
-                    sIcon.sic = "grey";
-                    gIcon.gic = "green";
-                    pIcon.pic = "red";
-                    dIcon.dic = "red";
-                }else if(response.status === 500){ //proxy
-                    sIcon.sic = "grey";
-                    gIcon.gic = "grey";
-                    pIcon.pic = "red";
-                    dIcon.dic = "red";
-                }
-                else if(response.status === 502 || response.status === 504){ //gs
-                    sIcon.sic = "grey";
-                    gIcon.gic = "red";
-                    pIcon.pic = "red";
-                    dIcon.dic = "red";
-                }
-                else {
-                    gIcon.gic = "red";
-                    pIcon.pic = "red";
-                    sIcon.sic = "red";
-                    dIcon.dic = "red";
-                }
-
+                sIcon.sic = "grey";
+                gIcon.gic = "green";
+                pIcon.pic = "green";
+                dIcon.dic = "red";
             });
 
         },1000);
 
     }
-
-    // function checkServerStatus(){
-    //     $http({
-    //             url: "//qsvr.quindar.space", 
-    //             method: "GET",
-    //             params: ''
-    //         }).then(function success(response) {
-    //             if(response.statusCode === 200){
-    //                 console.log("Running");
-    //             }
-
-    //         },function error(response){
-    //             console.log(response.statusCode);
-    //             console.log("Server Down");
-
-    //         });
-
-    // }
-
-    function ServerPing(){       
-  var url = "https://qsvr.quindar.space";
-  if (window.XMLHttpRequest){ 
-    reqXML = new XMLHttpRequest();           
-    reqXML.onreadystatechange = HandlePing;   
-    reqXML.open("GET", url, true);         
-    reqXML.send(null);                        
-  }
-  else if(window.ActiveXObject){ 
-    reqXML = new ActiveXObject("Microsoft.XMLHTTP"); 
-    if(reqXML){ 
-      reqXML.onreadystatechange = HandlePing;   
-      reqXML.open("GET", url, true);         
-      reqXML.send(null);                     
-    }
-  }
-  else{  
-     window.location.href = url;
-  }       
-}
-     
-function HandlePing(){
-  window.status = "Pinging Server - state: " + reqXML.readyState;
-  if(reqXML.readyState == 4){
-    var strDate = new Date().toString();
-    if(reqXML.status == 200){
-         console.log("Running");
-      window.status = "Sucessfull Ping at " + strDate;
-    }
-    else{
-         console.log("Server Down");
-
-      window.status = "Failed Ping at " + strDate;
-    }
-  }
-}
 
     function getLock(){
         return locks;
