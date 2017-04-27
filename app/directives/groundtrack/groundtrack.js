@@ -8,7 +8,7 @@ app.directive('groundtrack',function() {
     }; 
 });
 
-app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,dashboardService,gridService) { 
+app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,dashboardService,gridService,solarService) { 
   
     var temp = $element[0].getElementsByTagName("div")[0];
     var el = temp.getElementsByTagName("div")[1];
@@ -76,21 +76,21 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                         }
                         
     var svg = d3Service.select(el)
-                .append("svg")
-                .attr("preserveAspectRatio", "xMinYMin meet")
-                .attr("viewBox", "-20 10 1000 500")
-                .attr('width', '100%')
-                .attr('height', '100%')
-                .classed("svg-content", true);
+                        .append("svg")
+                        .attr("preserveAspectRatio", "xMinYMin meet")
+                        .attr("viewBox", "-20 10 1000 500")
+                        .attr('width', '100%')
+                        .attr('height', '100%')
+                        .classed("svg-content", true);
 
     var transform = d3Service.zoomTransform(svg.node()); 
     var g = svg.append("g");
 
     g.attr("id","g")
-     .attr("x",0)
-     .attr("y",0);
+        .attr("x",0)
+        .attr("y",0);
 
-   svg.call(zoom);
+    svg.call(zoom);
 
     var transform = d3Service.zoomTransform(svg.node());          
     var sat = 1; //Default satellite
@@ -99,34 +99,36 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
     var satRadius = 10000;//7000;
 
     var stationNames = ['Ground Station 01 - San Francisco ','Ground Station 02 - Singapore'];
-        
+    sat = ['Audacy1','Audacy2','Audacy3'];
+    gs = ['GS1','GS2']; 
+
     // Plot world map
     d3Service.json("./directives/groundtrack/d3-maps/world-50m.json", function(error, world) {
         if (error) throw error;  
 
         // Show graticule
         g.append("path")
-         .datum(graticule)
-         .attr("d", path)
-         .attr("class","graticule"); 
+            .datum(graticule)
+            .attr("d", path)
+            .attr("class","graticule"); 
 
         // Show land
         g.append("path")
-         .datum(topojson.feature(world, world.objects.land))
-         .attr("class", "land")
-         .style("fill","#fff")
-         .attr("d", path);
+            .datum(topojson.feature(world, world.objects.land))
+            .attr("class", "land")
+            .style("fill","#fff")
+            .attr("d", path);
 
         //countries
         g.append("g")
-         .attr("class", "boundary")
-         .selectAll("boundary")
-         .data(topojson.feature(world, world.objects.countries).features)
-         .enter().append("path")
-         .style("fill","#ccc")
-         .attr("name", function(d) {return d.properties.name;})
-         .attr("id", function(d) { return d.id;})
-         .attr("d", path);
+            .attr("class", "boundary")
+            .selectAll("boundary")
+            .data(topojson.feature(world, world.objects.countries).features)
+            .enter().append("path")
+            .style("fill","#ccc")
+            .attr("name", function(d) {return d.properties.name;})
+            .attr("id", function(d) { return d.id;})
+            .attr("d", path);
 
 
         for (j=0; j<station.length; j++) {
@@ -135,34 +137,57 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 
         // Show dark region (night time)
         var night = g.append("path")                
-                     .attr("class", "night")
-                     .attr("d", path);
+                        .attr("class", "night")
+                        .attr("d", path);
         
 		$scope.solTime = temptime;
         redraw();
         $interval(redraw, 1000);
 
         function redraw() {
-            night.datum(circle.center(antipode(solarPosition($scope.solTime))).radius(90)).attr("d", path);
-        }               
-        
+            night.datum(circle.center(antipode(solarService.solarPosition($scope.solTime))).radius(90)).attr("d", path);
+        }                   
     });
     
-    sat = ['Audacy1','Audacy2','Audacy3']
-    gs = ['GS1','GS2'];
-
     //Plot ground station coverage
     for (j=0; j<gs.length;j++) {
         plotGsCover(station[j]);      
     }
 
-    //setInterval(updatePlot, 1000);
     var stream = $interval(updatePlot, 1000);
     $scope.widget.stream.push(stream);
 
+    //Function to reset the map
+    $scope.resetted = function() {
+        svg.transition()
+            .duration(500)
+            .call(zoom.transform, d3Service.zoomIdentity);
+    }
+
+    //Function to zoom in using button
+    $scope.zoomIn = function(){
+        zoom.scaleBy(svg, 2);
+    }
+
+    //Function to zoom out using button
+    $scope.zoomOut = function(){
+        zoom.scaleBy(svg,0.5);
+    }
+
+    //Function to show enable or disable ground station coverage area.
+    $scope.showCoverage = function(checkedVal){
+        if(checkedVal === true){
+            g.selectAll("path.gslos").remove();
+            for (j=0; j<gs.length;j++) {
+                plotGsCover(station[j]);      
+            }
+        } else {
+            g.selectAll("path.gslos").remove();
+        }
+    }
+
     // Function to update data to be plotted
     function updatePlot() {
-   
         g.selectAll("path.route1").remove(); 
         g.selectAll("path.route2").remove();
         g.selectAll("path.route3").remove();
@@ -181,7 +206,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
   
             // Check if the latestdata is available for the selected s/c
             if (latestdata == null) {
-                                
+                //alert("Latest data not available.");         
             }
             else {
                 // update latestdata                                      
@@ -233,8 +258,6 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                                        .append("svg:title").text("Audacy 1");
 
                     }
-                    
-
                 } else if(vehs[i] === "Audacy2"){
                     if(orbits[i] === true){
                         var route2 = g.append("path")
@@ -253,7 +276,6 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                                        .attr("height",30)
                                        .append("svg:title").text("Audacy 2");
                     }
-
                 } else if(vehs[i] === "Audacy3"){
                     if(orbits[i] === true){
                         var route3 = g.append("path")
@@ -274,7 +296,6 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                     }
                 }
             }
-
         }
 
         for (k=0; k<datastatus.length-1; k++) {
@@ -405,36 +426,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
     function zoomed(){
         g.attr("transform", d3Service.event.transform);   
     };
-
-    //Function to reset the map
-    $scope.resetted = function() {
-        svg.transition()
-           .duration(500)
-           .call(zoom.transform, d3Service.zoomIdentity);
-    }
-
-    //Function to zoom in using button
-    $scope.zoomIn = function(){
-        zoom.scaleBy(svg, 2);
-    }
-
-    //Function to zoom out using button
-    $scope.zoomOut = function(){
-        zoom.scaleBy(svg,0.5);
-    }
-
-    //Function to show enable or disable ground station coverage area.
-    $scope.showCoverage = function(checkedVal){
-        if(checkedVal === true){
-            g.selectAll("path.gslos").remove();
-            for (j=0; j<gs.length;j++) {
-                plotGsCover(station[j]);      
-            }
-        } else {
-            g.selectAll("path.gslos").remove();
-        }
-    }
-            
+      
     function projGround(d){
         return projection(d);
     }; 
@@ -442,70 +434,6 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
     function antipode(position) {
         return [position[0] + 180, -position[1]];
     }
-
-    function solarPosition(time) {
-        var centuries = (time - Date.UTC(2000, 0, 1, 12)) / 864e5 / 36525, // since J2000
-            longitude = (d3Service.utcDay.floor(time) - time) / 864e5 * 360 - 180;
-            return [
-                longitude - equationOfTime(centuries) * degrees,
-                solarDeclination(centuries) * degrees
-            ];
-    }
-
-    // Equations based on NOAA’s Solar Calculator; all angles in radians.
-    // http://www.esrl.noaa.gov/gmd/grad/solcalc/
-
-    function equationOfTime(centuries) {
-        var e = eccentricityEarthOrbit(centuries),
-            m = solarGeometricMeanAnomaly(centuries),
-            l = solarGeometricMeanLongitude(centuries),
-            y = Math.tan(obliquityCorrection(centuries) / 2);
-            y *= y;
-                return y * Math.sin(2 * l)
-                    - 2 * e * Math.sin(m)
-                    + 4 * e * y * Math.sin(m) * Math.cos(2 * l)
-                    - 0.5 * y * y * Math.sin(4 * l)
-                    - 1.25 * e * e * Math.sin(2 * m);
-    }
-
-    function solarDeclination(centuries) {
-        return Math.asin(Math.sin(obliquityCorrection(centuries)) * Math.sin(solarApparentLongitude(centuries)));
-    }
-
-    function solarApparentLongitude(centuries) {
-        return solarTrueLongitude(centuries) - (0.00569 + 0.00478 * Math.sin((125.04 - 1934.136 * centuries) * radians)) * radians;
-    }
-
-    function solarTrueLongitude(centuries) {
-        return solarGeometricMeanLongitude(centuries) + solarEquationOfCenter(centuries);
-    }
-
-    function solarGeometricMeanAnomaly(centuries) {
-        return (357.52911 + centuries * (35999.05029 - 0.0001537 * centuries)) * radians;
-    }
-
-    function solarGeometricMeanLongitude(centuries) {
-        var l = (280.46646 + centuries * (36000.76983 + centuries * 0.0003032)) % 360;
-            return (l < 0 ? l + 360 : l) / 180 * π;
-    }
-
-    function solarEquationOfCenter(centuries) {
-        var m = solarGeometricMeanAnomaly(centuries);
-            return (Math.sin(m) * (1.914602 - centuries * (0.004817 + 0.000014 * centuries))
-                    + Math.sin(m + m) * (0.019993 - 0.000101 * centuries)
-                    + Math.sin(m + m + m) * 0.000289) * radians;
-    }
-
-    function obliquityCorrection(centuries) {
-        return meanObliquityOfEcliptic(centuries) + 0.00256 * Math.cos((125.04 - 1934.136 * centuries) * radians) * radians;
-    }
-
-    function meanObliquityOfEcliptic(centuries) {
-        return (23 + (26 + (21.448 - centuries * (46.8150 + centuries * (0.00059 - centuries * 0.001813))) / 60) / 60) * radians;
-    }
-
-    function eccentricityEarthOrbit(centuries) {
-        return 0.016708634 - centuries * (0.000042037 + 0.0000001267 * centuries);
-    }  
+ 
 });
 
