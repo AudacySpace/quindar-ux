@@ -101,7 +101,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
     var stationNames = ['Ground Station 01 - San Francisco ','Ground Station 02 - Singapore'];
         
     // Plot world map
-    d3Service.json("./directives/groundtrack/world-50m.json", function(error, world) {
+    d3Service.json("./directives/groundtrack/d3-maps/world-50m.json", function(error, world) {
         if (error) throw error;  
 
         // Show graticule
