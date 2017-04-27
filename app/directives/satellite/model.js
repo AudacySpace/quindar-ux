@@ -11,7 +11,7 @@ app
 });
 
 app
-.controller('SatelliteCtrl',function ($scope, $element, dashboardService,d3Service) {
+.controller('SatelliteCtrl',function ($scope, $element, dashboardService, solarService) {
 	var container = $element.parent()[0];
 	var width = $(container).width();
 	var height = $(container).height();
@@ -70,6 +70,18 @@ app
 		axis.material.linewidth = 2;
 		return axis;
 	}
+
+	var createArrow = function(name, hex){
+		var dir = new THREE.Vector3( 1, 1, 0 );
+		var origin = new THREE.Vector3( 0, 0, 0 );
+		var arrowLength = 6;
+
+		dir.normalize();
+		var arrow = new THREE.ArrowHelper( dir, origin, arrowLength, hex );
+		arrow.name = name;
+		arrow.visible = false;
+		return arrow;
+	}
 	
 	function loadModel(modelUrl) {
 		loader.load(modelUrl, function (assimpjson) {
@@ -85,11 +97,10 @@ app
 
 	// Earth Centered Earth Fixed to Earth Centered Inertial
 	var ECEF2ECI = function(posX,posY,posZ){
-
 		// Calculat Greenwich Mean Sidereal Time //		
 		var time = new Date(telemetry[$scope.widget.settings.vehicle].timestamp.value);// Local time
 		
-		var jd = date2JulianDate(time);	// Julian date UTC
+		var jd = solarService.date2JulianDate(time);	// Julian date UTC
 		var jdcJ2000 = (jd - 2451545.0)/36525.0;	//Julian centuries since epoch J2000
 
 		// Calculate Greenwich Mean Sidereal Time in seconds
@@ -108,31 +119,18 @@ app
 		yECI = mat[1][0]*posX + mat[1][1]*posY + mat[1][2]*posZ;
 		zECI = mat[2][0]*posX + mat[2][1]*posY + mat[2][2]*posZ;
 		
-		return [xECI, yECI, zECI]
+		return [xECI, yECI, zECI];
+	}
 
-	}
-	
-	function longLat2ECEF(longitude, latitude){
-		var solX = Math.cos(longitude);
-		var solY = Math.sin(longitude);
-		var solZ = Math.sin(latitude);
-		
-		return [solX,solY,solZ];
-	}
-	
-	// Convert date to Julian date: 1900-2100
-	function date2JulianDate(d){
-		var yr=d.getUTCFullYear();
-		var mo=d.getUTCMonth()+1;
-		var day=d.getUTCDate();
-		var hr=d.getUTCHours();
-		var min=d.getUTCMinutes();
-		var sec=d.getUTCSeconds();
-		var a = 7*(yr+Math.floor((mo+9)/12));
-		var b = (sec/60+min)/60 + hr;
-		
-		var JDN = 367*yr - Math.floor(a/4) + Math.floor(275*mo/9) + day + 1721013.5 + b/24;
-		return JDN;
+	var solarCoords = function(time){
+		// Sun's coordinate [longitude, latitude]
+		var solCoords = solarService.solarPosition(time);
+		var solLongRad = solCoords[0]*radians;
+		var solLatRad = solCoords[1]*radians;
+
+		// Sun in ECEF [x,y,z]
+		var solECEF = solarService.longLat2ECEF(solLongRad,solLatRad);
+		return solECEF;
 	}
 
 	var render = function(){
@@ -153,112 +151,38 @@ app
 			$scope.widget.settings.quaternion.qc = telemetry[$scope.widget.settings.vehicle].qc.value.toFixed(4);
 			
 			//set direction to Earth
-			$scope.posX = telemetry[$scope.widget.settings.vehicle].x.value;
-			$scope.posY = telemetry[$scope.widget.settings.vehicle].y.value;
-			$scope.posZ = telemetry[$scope.widget.settings.vehicle].z.value;
+			var posX = telemetry[$scope.widget.settings.vehicle].x.value;
+			var posY = telemetry[$scope.widget.settings.vehicle].y.value;
+			var posZ = telemetry[$scope.widget.settings.vehicle].z.value;
 
 			//Transform position from ECEF to ECI
-			$scope.earthECI = ECEF2ECI($scope.posX,$scope.posY,$scope.posZ);
+			var earthECI = ECEF2ECI(posX,posY,posZ);
+
+			//Plot Satellite to Earth Arrow
+			var dirEarth = new THREE.Vector3(-earthECI[0], -earthECI[1], -earthECI[2]);
+			dirEarth.normalize();
+			$scope.arrowEarth.visible = true;
+			$scope.arrowEarth.setDirection(dirEarth);
 			
 			//Calculate direction to Sun //
-			var tempTime = new Date(telemetry[$scope.widget.settings.vehicle].timestamp.value);// Local time
-			// Sun's coordinate [longitude, latitude]
-			$scope.solCoords = solarPosition(tempTime);
-			$scope.solLongRad = $scope.solCoords[0]*radians;
-			$scope.solLatRad = $scope.solCoords[1]*radians;
-
-			// Sun in ECEF [x,y,z]
-			$scope.solECEF = longLat2ECEF($scope.solLongRad,$scope.solLatRad);
+			var time = new Date(telemetry[$scope.widget.settings.vehicle].timestamp.value);// Local time
+			var solECEF = solarCoords(time);
 
 			// Sun in ECI [x,y,z]
-			$scope.sunECI = ECEF2ECI($scope.solECEF[0], $scope.solECEF[1], $scope.solECEF[2]);
+			var sunECI = ECEF2ECI(solECEF[0], solECEF[1], solECEF[2]);
 
-			var dir = new THREE.Vector3(-$scope.earthECI[0], -$scope.earthECI[1], -$scope.earthECI[2]);
-			var dirSun = new THREE.Vector3($scope.sunECI[0], $scope.sunECI[1], $scope.sunECI[2]);
-			
-			//normalize the direction vector (convert to vector of length 1)
-			dir.normalize();
+			//Plot Earth to Sun Arrow
+			var dirSun = new THREE.Vector3(sunECI[0], sunECI[1], sunECI[2]);
 			dirSun.normalize();
-
-			$scope.arrowHelper.setLength(8);
-			$scope.arrowHelperSun.setLength(8);			
-			$scope.arrowHelper.setDirection(dir);
-			$scope.arrowHelperSun.setDirection(dirSun);
+			$scope.arrowSun.visible = true;		
+			$scope.arrowSun.setDirection(dirSun);
 	 	}
 	
 	 	$scope.camera.fov = fov * $scope.widget.settings.zoom;
 	 	$scope.camera.updateProjectionMatrix();
-	   	$scope.renderer.render($scope.scene,$scope.camera);
-
-
-		
+	   	$scope.renderer.render($scope.scene,$scope.camera);	
 	}
 
-	function solarPosition(time) {
-	var centuries = (time - Date.UTC(2000, 0, 1, 12)) / 864e5 / 36525, // since J2000
-		longitude = (d3Service.utcDay.floor(time) - time) / 864e5 * 360 - 180;
-		return [
-			longitude - equationOfTime(centuries) * degrees,
-			solarDeclination(centuries) * degrees
-		];
-	}
-
-    // Equations based on NOAA’s Solar Calculator; all angles in radians.
-    // http://www.esrl.noaa.gov/gmd/grad/solcalc/
-
-    function equationOfTime(centuries) {
-        var e = eccentricityEarthOrbit(centuries),
-            m = solarGeometricMeanAnomaly(centuries),
-            l = solarGeometricMeanLongitude(centuries),
-            y = Math.tan(obliquityCorrection(centuries) / 2);
-            y *= y;
-                return y * Math.sin(2 * l)
-                    - 2 * e * Math.sin(m)
-                    + 4 * e * y * Math.sin(m) * Math.cos(2 * l)
-                    - 0.5 * y * y * Math.sin(4 * l)
-                    - 1.25 * e * e * Math.sin(2 * m);
-    }
-
-    function solarDeclination(centuries) {
-        return Math.asin(Math.sin(obliquityCorrection(centuries)) * Math.sin(solarApparentLongitude(centuries)));
-    }
-
-    function solarApparentLongitude(centuries) {
-        return solarTrueLongitude(centuries) - (0.00569 + 0.00478 * Math.sin((125.04 - 1934.136 * centuries) * radians)) * radians;
-    }
-
-    function solarTrueLongitude(centuries) {
-        return solarGeometricMeanLongitude(centuries) + solarEquationOfCenter(centuries);
-    }
-
-    function solarGeometricMeanAnomaly(centuries) {
-        return (357.52911 + centuries * (35999.05029 - 0.0001537 * centuries)) * radians;
-    }
-
-    function solarGeometricMeanLongitude(centuries) {
-        var l = (280.46646 + centuries * (36000.76983 + centuries * 0.0003032)) % 360;
-            return (l < 0 ? l + 360 : l) / 180 * π;
-    }
-
-    function solarEquationOfCenter(centuries) {
-        var m = solarGeometricMeanAnomaly(centuries);
-            return (Math.sin(m) * (1.914602 - centuries * (0.004817 + 0.000014 * centuries))
-                    + Math.sin(m + m) * (0.019993 - 0.000101 * centuries)
-                    + Math.sin(m + m + m) * 0.000289) * radians;
-    }
-
-    function obliquityCorrection(centuries) {
-        return meanObliquityOfEcliptic(centuries) + 0.00256 * Math.cos((125.04 - 1934.136 * centuries) * radians) * radians;
-    }
-
-    function meanObliquityOfEcliptic(centuries) {
-        return (23 + (26 + (21.448 - centuries * (46.8150 + centuries * (0.00059 - centuries * 0.001813))) / 60) / 60) * radians;
-    }
-
-    function eccentricityEarthOrbit(centuries) {
-        return 0.016708634 - centuries * (0.000042037 + 0.0000001267 * centuries);
-    }  
-	
 	$scope.cube = new THREE.Object3D();
 	$scope.scene = createScene();
 	$scope.camera = createCamera();
@@ -267,42 +191,21 @@ app
 	$scope.renderer = createRenderer();
 	$scope.grid = createGrid();
 	$scope.axis = createAxis();
+	$scope.arrowEarth = createArrow('Earth', 0x111950);
+	$scope.arrowSun = createArrow('Sun', 0xFFAB00);
 
 	$scope.scene.add($scope.light);
 	loadModel($scope.modelUrl);
 	$scope.scene.add($scope.cube);
 	$scope.scene.add($scope.axis);
 	$scope.scene.add($scope.grid);
+	$scope.scene.add($scope.arrowEarth);
+	$scope.scene.add($scope.arrowSun);
 
 	var controls = new THREE.OrbitControls($scope.camera, $scope.renderer.domElement);
 	controls.enableZoom = false;
 	controls.enablePan = false;
 
-	// Add an arrow //
-	var dir = new THREE.Vector3( 1, 1, 0 );
-	//normalize the direction vector (convert to vector of length 1)
-	dir.normalize();
-
-	// Add an arrow //
-	var dirSun = new THREE.Vector3( 1, 1, 0 );
-	//normalize the direction vector (convert to vector of length 1)
-	dirSun.normalize();	
-	
-	var origin = new THREE.Vector3( 0, 0, 0 );
-	var arrowLength = 0.1;
-	var hex = 0x111950;
-	
-	var originSun = new THREE.Vector3( 0, 0, 0 );
-	var arrowLengthSun = 0.1;	
-	var hexSun = 0xFF6D00;
-
-	$scope.arrowHelper = new THREE.ArrowHelper( dir, origin, arrowLength, hex );
-	$scope.scene.add($scope.arrowHelper)
-	
-	$scope.arrowHelperSun = new THREE.ArrowHelper( dirSun, originSun, arrowLengthSun, hexSun );
-	$scope.scene.add($scope.arrowHelperSun)	
-	// End add an arrow //
-	
 	render();	
 	container.appendChild($scope.renderer.domElement);
 
