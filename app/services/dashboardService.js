@@ -13,6 +13,7 @@ app
     var dIcon = {dic:""};
     var gIcon = {gic:""};
     var sIcon = {sic:""};
+    var count = 0;
     getTelemetry();
 
     function getTelemetry() {
@@ -25,24 +26,38 @@ app
                 for(var item in response.data){
                     telemetry[item] = response.data[item];
                     time.timestamp = startTime(telemetry[item].timestamp.value);
+                      
                 }
-                docIds.push(telemetry[item]._id);
-                if(docIds[docIds.length-1] === docIds[docIds.length-2]){
-                    sIcon.sic = "grey";
-                    gIcon.gic = "green";
-                    pIcon.pic = "green";
-                    dIcon.dic = "green";
+                count++; 
+                if(Object.keys(response.data[item]).length > 0){//if data is not null
+                    docIds.push(telemetry[item]._id);
+                    if(docIds[docIds.length-1] === docIds[docIds.length-2]){
+                        docIds.pop();
+                        count--;
+                        if(docIds.length === count){
+                        sIcon.sic = "grey";
+                        gIcon.gic = "green";
+                        pIcon.pic = "green";
+                        dIcon.dic = "green";
+                    }
+                    }
+                    else{
+                        sIcon.sic = "green";
+                        gIcon.gic = "green";
+                        pIcon.pic = "green";
+                        dIcon.dic = "green";
+                    }
                 }
-                else{
-                    sIcon.sic = "green";
+                else { // if data is null
+                    sIcon.sic = "red";
                     gIcon.gic = "green";
                     pIcon.pic = "green";
                     dIcon.dic = "green";
                 }
             },function error(response){
                 sIcon.sic = "grey";
-                gIcon.gic = "green";
-                pIcon.pic = "green";
+                gIcon.gic = "grey";
+                pIcon.pic = "grey";
                 dIcon.dic = "red";
             });
 

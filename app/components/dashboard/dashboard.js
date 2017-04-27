@@ -37,7 +37,27 @@ angular.module('app')
 	    ];
 
 	    $interval(function(){
-	    	if(vm.sIcon.sic === "grey" && vm.gIcon.gic === "green" && vm.pIcon.pic === "green" && vm.dIcon.dic === "green"){
+
+	    	if(vm.sIcon.sic === "grey" && vm.gIcon.gic === "grey" && vm.pIcon.pic === "grey" &&vm.dIcon.dic === "red"){
+	    		vm.icons = [
+	  				{
+			    		image:"/media/icons/aud_status_sat_grey.svg",
+			   			id: "i5"
+					},
+					{
+		    			image:"/media/icons/aud_status_gs_grey.svg",
+		    			id: "i6"
+		    		},
+		    		{
+		    			image:"/media/icons/aud_status_proxy_grey.svg",
+		    			id: "i7"
+		    		},
+		    		{
+		    			image:"/media/icons/aud_status_db_red.svg",
+		    			id:"i8"
+		    		}
+	    		];
+	    	}else if(vm.sIcon.sic === "grey" && vm.gIcon.gic === "green" && vm.pIcon.pic === "green" && vm.dIcon.dic === "green"){
 	    		vm.icons = [
 	  				{
 			    		image:"/media/icons/aud_status_sat_grey.svg",
@@ -110,6 +130,25 @@ angular.module('app')
 			    	},
 			    	{
 			    		image:"/media/icons/aud_status_db_red.svg",
+			    		id:"i8"
+			    	}
+	    		];
+	    	}else if(vm.sIcon.sic === "red" && vm.gIcon.gic === "green" && vm.pIcon.pic === "green" && vm.dIcon.dic === "green"){
+		    	vm.icons = [
+		  			{
+				    	image:"/media/icons/aud_status_sat_red.svg",
+				   		id: "i5"
+					},
+					{
+			    		image:"/media/icons/aud_status_gs_green.svg",
+			    		id: "i6"
+			    	},
+			    	{
+			    		image:"/media/icons/aud_status_proxy_green.svg",
+			    		id: "i7"
+			    	},
+			    	{
+			    		image:"/media/icons/aud_status_db_green.svg",
 			    		id:"i8"
 			    	}
 	    		];
