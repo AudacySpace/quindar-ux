@@ -45,11 +45,6 @@ app
                                                 "style":"text-align:left;background-color:#fff;color:#000",
                                                 "active": "true"
                                             }
-                                            // {   
-                                            //     "value":"",
-                                            //     "style":"text-align:left;background-color:#fff;color:#000",
-                                            //     "active": "false"
-                                            // }
                                         ],
                                         status: [
                                         idStatus = false,
@@ -57,7 +52,6 @@ app
                                         dataStatus = true,
                                         orbitStatus = true,
                                         iconStatus = true]
-                                        // detailsStatus = false]
                        }); 
     }                        
 
@@ -157,54 +151,47 @@ app
         'Home': {
             name: 'Home',
             widgets: [{
-                col: 0,
-                row: 0,
-                sizeY: 4,
-                sizeX: 6,
-                name: "Ground Track",
-                directive: "groundtrack",
-                directiveSettings: "groundtracksettings",
-                id: "groundtrack",
-                icon: {
-                    id: "g-track",
-                    type: "fa-globe"
+                    col: 0,
+                    row: 0,
+                    sizeY: 3,
+                    sizeX: 4,
+                    name: "Line Plot",
+                    directive: "lineplot",
+                    directiveSettings: "linesettings",
+                    id: "addLine",
+                    icon: {
+                        id: "l-plot",
+                        type: "fa-line-chart"
+                    },
+                    main: true,
+                    settings: {
+                        active: false
+                    },
+                    saveLoad: false,
+                    delete: false
                 },
-                main: true,
-                settings: {
-                    active: false,
-                    contents : groundtracktableCols,
-                    vehName :[],
-                    scHolder :{},
-                    scStates :{},
-                    dataHolder :[],
-                    orbitHolder :[],
-                    iconHolder :[]
-                },
-                saveLoad: false,
-                delete: false
-            },
-            {
-                col: 0,
-                row: 4,
-                sizeY: 3,
-                sizeX: 3,
-                name: "3D Model",
-                directive: "satellite",
-                directiveSettings: "satellitesettings",
-                id: "satellite",
-                icon: {
-                    id: "l-plot",
-                    type: "fa-cube"
-                },
-                main: true,
-                settings: {
-                    active: false
-                },
-                saveLoad: false,
-                delete: false
-            }]
-        }
-    };
+                {
+                    col: 4,
+                    row: 0,
+                    sizeY: 3,
+                    sizeX: 3,
+                    name: "3D Model",
+                    directive: "satellite",
+                    directiveSettings: "satellitesettings",
+                    id: "satellite",
+                    icon: {
+                        id: "l-plot",
+                        type: "fa-cube"
+                    },
+                    main: true,
+                    settings: {
+                        active: false
+                    },
+                    saveLoad: false,
+                    delete: false
+                }]
+            }
+        };
 
     var dashboard = {"current" : dashboards['Home']};
 
