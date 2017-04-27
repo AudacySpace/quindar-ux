@@ -37,26 +37,6 @@ app.directive('groundtracksettings', function() {
                 }
                 
                 for(var i=0;i<3;i++){
-                //     try{
-                //     if(widget.settings.contents[i].status[2] === true && widget.settings.contents[i].status[3] === true && widget.settings.contents[i].status[4] === true){
-                //         widget.settings.vehName.push(widget.settings.contents[i].contents[1].value);
-                //     }
-                //     else if(widget.settings.contents[i].status[2] === true && widget.settings.contents[i].status[3] === false && widget.settings.contents[i].status[4] === true){
-                //         console.log("orbit of Audacy"+i+" are disabled ");
-                //         widget.settings.vehName = "";
-                //     }
-                //     else if(widget.settings.contents[i].status[2] === true && widget.settings.contents[i].status[3] === true && widget.settings.contents[i].status[4] === false){
-                //         console.log("icon of Audacy"+i+" is disabled ");
-                //         widget.settings.vehName = "";
-                //     }
-                //     else if(widget.settings.contents[i].status[2] === false && widget.settings.contents[i].status[3] === false && widget.settings.contents[i].status[4] === false){
-                //         console.log("Data,orbit and icon of Audacy"+i+" are disabled ");
-                //         widget.settings.vehName = "";
-                //     }
-                // }
-                // catch(e){
-                //     console.log(e instanceof TypeError);
-                // }
                 try{
                     if(widget.settings.contents[i].status[2] === true){
                         widget.settings.vehName.push(widget.settings.contents[i].contents[1].value);
