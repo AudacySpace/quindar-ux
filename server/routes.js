@@ -5,7 +5,10 @@ var mongoose = require('mongoose');
 var User = require('./models/user');
 
 var Telemetry = require('./models/telemetry');
+
 var Config = require('./models/configuration');
+
+var ProxyStatus = require('./models/proxystatus');
 
 // normal routes ===============================================================
 
@@ -177,6 +180,16 @@ var Config = require('./models/configuration');
             res.send(configuration);
         });
     });
+
+    //Get Proxy Status
+    app.get('/getProxyStatus', function(req, res){
+        ProxyStatus.findOne({},{ '_id': 0 ,'__v':0}).sort({_id:-1}).exec(function(err,doc){
+            if(err){
+                console.log(err);
+            }
+            res.send(doc);
+        });
+    }); 
    
 };
    
