@@ -9,14 +9,12 @@ app
         timestamp : {}
     }
     var docIds = [];
-    var pIcon = {pic:""};
-    var dIcon = {dic:""};
-    var gIcon = {gic:""};
-    var sIcon = {sic:""};
-    var count = 0;
+    var icons = {sIcon:"", gIcon:"", pIcon:"",dIcon:""};
     getTelemetry();
+    getProxyStatus();
 
     function getTelemetry() {
+        var prevId = "";
         $interval(function () { 
             $http({
                 url: "/getTelemetry", 
@@ -25,44 +23,34 @@ app
             }).then(function success(response) {
                 for(var item in response.data){
                     telemetry[item] = response.data[item];
-                    time.timestamp = startTime(telemetry[item].timestamp.value);
-                      
+                    time.timestamp = startTime(telemetry[item].timestamp.value);          
                 }
-                count++; 
-                if(Object.keys(response.data[item]).length > 0){//if data is not null
-                    docIds.push(telemetry[item]._id);
-                    if(docIds[docIds.length-1] === docIds[docIds.length-2]){
-                        docIds.pop();
-                        count--;
-                        if(docIds.length === count){
-                        sIcon.sic = "grey";
-                        gIcon.gic = "green";
-                        pIcon.pic = "green";
-                        dIcon.dic = "green";
-                    }
-                    }
-                    else{
-                        sIcon.sic = "green";
-                        gIcon.gic = "green";
-                        pIcon.pic = "green";
-                        dIcon.dic = "green";
-                    }
-                }
-                else { // if data is null
-                    sIcon.sic = "red";
-                    gIcon.gic = "green";
-                    pIcon.pic = "green";
-                    dIcon.dic = "green";
+                if(Object.keys(response.data[item]).length > 0){//if data is not empty
+                        if(prevId === telemetry[item]._id){ //  if proxy application is not receiving any data from ground station
+                            icons.sIcon = "grey";
+                            icons.gIcon = "red";
+                            icons.pIcon = "green";
+                            icons.dIcon = "blue";
+                        }else{
+                            icons.sIcon = "green";
+                            icons.gIcon = "green";
+                            icons.pIcon = "green";
+                            icons.dIcon = "green";
+                            prevId = telemetry[item]._id;
+                        }
+                }else{ // if data received is empty
+                    icons.sIcon = "red";
+                    icons.gIcon = "green";
+                    icons.pIcon = "green";
+                    icons.dIcon = "green";
                 }
             },function error(response){
-                sIcon.sic = "grey";
-                gIcon.gic = "grey";
-                pIcon.pic = "grey";
-                dIcon.dic = "red";
+                icons.sIcon = "grey";
+                icons.gIcon = "grey";
+                icons.pIcon = "grey";
+                icons.dIcon = "red";
             });
-
         },1000);
-
     }
 
     function getLock(){
@@ -103,6 +91,36 @@ app
         return i;
     }
 
+    //Function to get proxy application status 
+    function getProxyStatus(){
+        var prevTime = 0;
+        $interval(function () { 
+            $http({
+                url: "/getProxyStatus", 
+                method: "GET",
+                params: {}
+            }).then(function success(response) {
+                if(response.data !== ""){
+                    if(prevTime !== response.data.proxytimestamp){
+                        icons.pIcon = "green";
+                        prevTime = response.data.proxytimestamp;  
+                    }else {
+                        icons.sIcon = "grey";
+                        icons.gIcon = "grey";
+                        icons.pIcon = "red";
+                        icons.dIcon = "green";
+                    }
+                }else {
+                    icons.pIcon = "grey";
+                }
+            },function error(response){
+                icons.sIcon = "grey";
+                icons.gIcon = "grey";
+                icons.pIcon = "grey";
+                icons.dIcon = "red";
+            });
+        },5000);
+    }
 	return {
         locks : locks,
         telemetry : telemetry,
@@ -112,9 +130,6 @@ app
         getLock : getLock,
         setLeftLock : setLeftLock,
         setRightLock : setRightLock,
-        pIcon : pIcon,
-        dIcon : dIcon,
-        gIcon : gIcon,
-        sIcon : sIcon
+        icons : icons
 	}
 }]);
