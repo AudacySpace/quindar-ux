@@ -1,0 +1,59 @@
+<div layout="row" id="clock-row">
+	<div flex="30" class="md-title" id="left-header">
+		Name
+	</div>
+  	<div flex="5" class="md-title" id="center-header">
+		<md-icon class="md-icon delta" md-svg-icon="/icons/triangle.svg"></md-icon>    
+  	</div>
+  	<div flex="15" class="md-title" id="center-header">
+    	D
+  	</div>
+  	<div flex="5" class="md-title" id="center-header">
+    	.
+  	</div>
+  	<div flex="15" class="md-title" id="center-header">
+    	H
+  	</div>
+  	<div flex="5" class="md-title" id="center-header">
+    	:
+  	</div>
+  	<div flex="15" class="md-title" id="center-header">
+    	M
+  	</div>
+  	<div flex="5" class="md-title" id="center-header">
+    	:
+  	</div>
+  	<div flex="15" class="md-title" id="center-header">
+  		S
+  	</div>
+</div>
+<div layout="row" id="clock-row" ng-repeat="clock in clocks">
+  	<div flex="30" class="md-title" id="left-row">
+    	{{clock.name}}
+  	</div>
+  	<div flex="5" class="md-title" id="center-row">
+    	{{clock.delta}}
+  	</div>
+  	<div flex="15" class="md-title" id="center-row">
+    	{{clock.time.timestamp.days}}
+  	</div>
+  	<div flex="5" class="md-title" id="center-row">
+    	.
+  	</div>
+  	<div flex="15" class="md-title" id="center-row">
+    	{{clock.time.timestamp.hours}}
+  	</div>
+  	<div flex="5" class="md-title" id="center-row">
+    	:
+  	</div>
+  	<div flex="15" class="md-title" id="center-row">
+    	{{clock.time.timestamp.minutes}}
+  	</div>
+  	<div flex="5" class="md-title" id="center-row">
+    	:
+  	</div>
+  	<div flex="15" class="md-title" id="center-row">
+  		{{clock.time.timestamp.seconds}}
+  	</div>
+</div>
+

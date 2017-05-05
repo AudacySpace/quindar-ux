@@ -145,6 +145,24 @@ app
         },
         saveLoad: false,
         delete: false
+    },
+    {
+        sizeY: 3,
+        sizeX: 3,
+        name: "Clock",
+        directive: "clock",
+        directiveSettings: "clocksettings",
+        id: "clock",
+        icon: {
+            id: "l-plot",
+            type: "fa-clock-o"
+        },
+        main: true,
+        settings: {
+            active: false
+        },
+        saveLoad: false,
+        delete: false
     }];
 
     var dashboards = {
