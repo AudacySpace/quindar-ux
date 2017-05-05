@@ -8,21 +8,48 @@ app
     var time = {
         timestamp : {}
     }
-
+    var docIds = [];
+    var icons = {sIcon:"", gIcon:"", pIcon:"",dIcon:""};
     getTelemetry();
+    getProxyStatus();
 
     function getTelemetry() {
+        var prevId = "";
         $interval(function () { 
             $http({
                 url: "/getTelemetry", 
                 method: "GET",
                 params: {'vehicles' : ['Audacy1', 'Audacy2', 'Audacy3']}
-            }).then(function(response) {
+            }).then(function success(response) {
                 for(var item in response.data){
                     telemetry[item] = response.data[item];
-                    time.timestamp = startTime(telemetry[item].timestamp.value);
+                    time.timestamp = startTime(telemetry[item].timestamp.value);          
                 }
-            })
+                if(Object.keys(response.data[item]).length > 0){//if data is not empty
+                        if(prevId === telemetry[item]._id){ //  if proxy application is not receiving any data from ground station
+                            icons.sIcon = "grey";
+                            icons.gIcon = "red";
+                            icons.pIcon = "green";
+                            icons.dIcon = "blue";
+                        }else{
+                            icons.sIcon = "green";
+                            icons.gIcon = "green";
+                            icons.pIcon = "green";
+                            icons.dIcon = "green";
+                            prevId = telemetry[item]._id;
+                        }
+                }else{ // if data received is empty
+                    icons.sIcon = "red";
+                    icons.gIcon = "green";
+                    icons.pIcon = "green";
+                    icons.dIcon = "green";
+                }
+            },function error(response){
+                icons.sIcon = "grey";
+                icons.gIcon = "grey";
+                icons.pIcon = "grey";
+                icons.dIcon = "red";
+            });
         },1000);
     }
 
@@ -64,6 +91,36 @@ app
         return i;
     }
 
+    //Function to get proxy application status 
+    function getProxyStatus(){
+        var prevTime = 0;
+        $interval(function () { 
+            $http({
+                url: "/getProxyStatus", 
+                method: "GET",
+                params: {}
+            }).then(function success(response) {
+                if(response.data !== ""){
+                    if(prevTime !== response.data.proxytimestamp){
+                        icons.pIcon = "green";
+                        prevTime = response.data.proxytimestamp;  
+                    }else {
+                        icons.sIcon = "grey";
+                        icons.gIcon = "grey";
+                        icons.pIcon = "red";
+                        icons.dIcon = "green";
+                    }
+                }else {
+                    icons.pIcon = "grey";
+                }
+            },function error(response){
+                icons.sIcon = "grey";
+                icons.gIcon = "grey";
+                icons.pIcon = "grey";
+                icons.dIcon = "red";
+            });
+        },5000);
+    }
 	return {
         locks : locks,
         telemetry : telemetry,
@@ -72,6 +129,7 @@ app
 		email : usermail,
         getLock : getLock,
         setLeftLock : setLeftLock,
-        setRightLock : setRightLock
+        setRightLock : setRightLock,
+        icons : icons
 	}
 }]);

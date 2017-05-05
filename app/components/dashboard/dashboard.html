@@ -20,13 +20,7 @@
                         </div>
                         <ul class="nav navbar-nav">
                             <li class="statusicons">
-                                <ul class="nav navbar-nav status-bar" id="s-icons">
-                                    <li ng-repeat="icon in $ctrl.icons">
-                                        <a href="#" class="status-icon">
-                                            <img id="{{icon.id}}" ng-src="{{icon.image}}" alt="Quindar"/>
-                                        </a>
-                                    </li>
-                                </ul>
+                                <status-icons></status-icons> 
                             </li>
                             <li>
                                 <ul class="nav navbar-nav time">
