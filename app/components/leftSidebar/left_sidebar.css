@@ -16,7 +16,7 @@
     background-color: #020613;
 }
 
-md-icon {
+md-icon.large {
   	width: 16px !important;
     height: 16px;
     margin-right: 16px !important;

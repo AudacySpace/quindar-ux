@@ -1,0 +1,44 @@
+#clock-row {
+	margin-top: 2px;
+    margin-left: 2px;
+    margin-bottom: 2px;
+}
+
+#center-header {
+	margin-right: 2px;
+    background-color: #ccc;
+    text-align: center;
+}
+
+#left-header {
+	margin-right: 2px;
+    background-color: #ccc;
+    padding-left: 10px;
+}
+
+#center-row {
+	margin-right: 2px;
+    background-color: #F2F3F4;
+    text-align: center;
+    font-weight: 400;
+}
+
+#left-row {
+	margin-right: 2px;
+    background-color: #F2F3F4;
+    padding-left: 10px;
+    font-weight: 400;
+}
+
+md-icon.delta {
+	width: 16px;
+    height: 16px;
+    vertical-align: inherit;
+}
+
+#calendar {
+	color: #000000; 
+	border-radius: 0px; 
+	top: initial;
+    left: initial;
+}

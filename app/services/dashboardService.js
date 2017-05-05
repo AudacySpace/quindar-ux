@@ -6,7 +6,7 @@ app
     };
     var telemetry = {};
     var time = {
-        timestamp : ""
+        timestamp : {}
     }
 
     getTelemetry();
@@ -50,7 +50,13 @@ app
         m = checkTime(m);
         s = checkTime(s);
         clock = days + "." + h + ":" + m + ":" + s + " " + "UTC";
-        return clock;
+        return {
+            "days" : days,
+            "hours" : h,
+            "minutes" : m,
+            "seconds" : s,
+            "utc" : clock
+        };
     }
 
     function checkTime(i) {
