@@ -19,8 +19,19 @@ app.controller('ClockSettingsCtrl', function($scope){
 		widget.settings.active = false;
 		widget.saveLoad = false;
 		widget.delete = false;
-		//widget.settings.vehicle = $scope.selected.vehicle.value;
-		//console.log($scope.selected);
+		widget.settings.clocks.push({
+			name : $scope.selected.timezone.value,
+			delta : '',
+			time : {
+				timestamp: {
+					days : '00',
+					minutes : '00',
+					hours : '00',
+					seconds : '00'
+				}
+			},
+			timezone : $scope.selected.timezone.zone
+		});
 	}
 
 	$scope.selected = {};
