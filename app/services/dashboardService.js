@@ -6,7 +6,8 @@ app
     };
     var telemetry = {};
     var time = {
-        timestamp : {}
+        timestamp : {},
+        current : ""
     }
     var docIds = [];
     var icons = {sIcon:"", gIcon:"", pIcon:"",dIcon:""};
@@ -23,7 +24,8 @@ app
             }).then(function success(response) {
                 for(var item in response.data){
                     telemetry[item] = response.data[item];
-                    time.timestamp = startTime(telemetry[item].timestamp.value);          
+                    time.current = telemetry[item].timestamp.value;
+                    time.timestamp = getTime(0);         
                 }
                 if(Object.keys(response.data[item]).length > 0){//if data is not empty
                         if(prevId === telemetry[item]._id){ //  if proxy application is not receiving any data from ground station
@@ -65,20 +67,22 @@ app
        locks.lockRight = lock; 
     }
 
-    function startTime(time) {
-        var today = new Date(time);
-        var start = new Date(today.getUTCFullYear(), 0, 0);
-        var diff = today - start;
-        var h = today.getUTCHours();
-        var m = today.getUTCMinutes();
-        var s = today.getUTCSeconds();
+    function getTime(offset) {
+        var today = new Date(time.current);
+        var todayZone = new Date(today.getTime() + (3600000*offset) + (today.getTimezoneOffset() * 60000));
+        var start = new Date(todayZone.getFullYear(), 0, 0);
+        var diff = todayZone - start;
+        var h = todayZone.getHours();
+        var m = todayZone.getMinutes();
+        var s = todayZone.getSeconds();
         var days = Math.floor(diff/(1000*60*60*24));
+        days = checkDays(days);
         h = checkTime(h);
         m = checkTime(m);
         s = checkTime(s);
         clock = days + "." + h + ":" + m + ":" + s + " " + "UTC";
         return {
-            "days" : days,
+            "days" : days, 
             "hours" : h,
             "minutes" : m,
             "seconds" : s,
@@ -89,6 +93,15 @@ app
     function checkTime(i) {
         if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
         return i;
+    }
+
+    function checkDays(d) {
+        if (d < 10) {
+            d = "00" + d;
+        } else if (d < 100) {
+            d = "0" + d;
+        }
+        return d;
     }
 
     //Function to get proxy application status 
@@ -121,6 +134,7 @@ app
             });
         },5000);
     }
+    
 	return {
         locks : locks,
         telemetry : telemetry,
@@ -130,6 +144,7 @@ app
         getLock : getLock,
         setLeftLock : setLeftLock,
         setRightLock : setRightLock,
-        icons : icons
+        icons : icons,
+        getTime : getTime
 	}
 }]);
