@@ -104,6 +104,41 @@ app
         return d;
     }
 
+    function countdown(target) {
+        var sign = '';
+        var today = new Date(time.current);
+        var currentDate = new Date(today.getTime() + (today.getTimezoneOffset() * 60000));
+        var signedDiff = target - currentDate;
+
+        //remove sign to calculate individual numbers
+        var difference = Math.abs(signedDiff);
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+        // define sign
+        if (signedDiff < 0) {
+            sign = '+';
+        } else {
+            sign = '-';   
+        }
+
+        days = checkDays(days);
+        hours = checkTime(hours);
+        minutes = checkTime(minutes);
+        seconds = checkTime(seconds);
+
+        return {
+            "days" : days,
+            "hours" : hours,
+            "minutes" : minutes,
+            "seconds" : seconds,
+            "sign" : sign
+        };
+    }
+
     //Function to get proxy application status 
     function getProxyStatus(){
         var prevTime = 0;
@@ -145,6 +180,7 @@ app
         setLeftLock : setLeftLock,
         setRightLock : setRightLock,
         icons : icons,
-        getTime : getTime
+        getTime : getTime,
+        countdown : countdown
 	}
 }]);

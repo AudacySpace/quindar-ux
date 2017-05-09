@@ -14,6 +14,7 @@
             				<div ng-bind="type.value | highlight: $select.search"></div>
         				</ui-select-choices>
         			</ui-select>
+                    <span ng-hide="selected.type.value == 'Clock' || selected.type.value == 'Timer'"> Required </span>
                 </div>          
             </div>
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
@@ -30,9 +31,11 @@
                             <div ng-bind="timezone.value | highlight: $select.search"></div>
                         </ui-select-choices>
                     </ui-select>
+                    <span ng-hide="selected.timezone"> Required </span>
                 </div>
                 <div ng-show="selected.type.value == 'Timer'">
-                    <input type="text" class="form-control save-widget-styles " id="inlineFormInput" placeholder="Enter Name">
+                    <input type="text" class="form-control save-widget-styles" id="inlineFormInput" placeholder="Enter Name" ng-model="name" maxlength="20">
+                    <span ng-hide="name"> Required </span>
                 </div>
             </div> 
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
@@ -58,6 +61,7 @@
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="calendar">
                         <datetimepicker data-ng-model="reference" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
                     </ul>
+                    <span ng-hide="reference"> Required </span>
                 </div>
             </div>
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
