@@ -6,12 +6,20 @@ angular.module('app')
   	templateUrl: "./components/dashboard/dashboard.html",
   	controller: function(dashboardService, $interval, $mdSidenav,$window) {
   		var vm = this;
-		
+
+		vm.clock = {
+			utc : "000.00.00.00 UTC"
+		}
 		vm.locks = dashboardService.getLock();
 		vm.telemetry = dashboardService.telemetry;
-  		vm.clock = dashboardService.time;
   		vm.name = dashboardService.name;
   		vm.email = dashboardService.email;
+
+  		vm.interval = $interval(updateClock, 500);
+
+  		function updateClock(){
+  			vm.clock = dashboardService.getTime(0);
+  		}
   		
 	    vm.openLeftNav = function(){
 	    	if ($window.innerWidth < 1400){
