@@ -14,6 +14,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
     var tableCols = []; // table column data
     var tempRow = "";
     var telemetry = dashboardService.telemetry;
+    
 
     //Default table structure -contains 15 rows to best appear for small and large screens
     for (var i = 0; i < 15; i++) {
@@ -52,7 +53,8 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
                 "checked":"true",
                 "style":"text-align:right",
                 "colshow":"checkedValues.checkedValue",
-                "active": "false"
+                "active": "false",
+                "datacolor":""
             },
             {   
                 "value":"",
@@ -189,9 +191,11 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
     }
 
     updateRow();
-    $scope.interval = $interval(updateRow, 500);
+    var tempvalue = [];
+    $scope.interval = $interval(updateRow, 1000);
 
     function updateRow() {
+      
         for (var i=0; i<$scope.table.rows.length; i++){
             tempRow = $scope.table.rows[i];
             if(tempRow.vehicle && tempRow.id) {
@@ -200,9 +204,114 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
                 tempRow.contents[2].value = telemetry[tempRow.vehicle][tempRow.id].alarm_low;
                 tempRow.contents[3].value = telemetry[tempRow.vehicle][tempRow.id].warn_low;
                 if(typeof telemetry[tempRow.vehicle][tempRow.id].value === "number"){
-                    tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000;
+                    console.log(telemetry[tempRow.vehicle][tempRow.id].value);
+                    if(tempRow.contents[0].value === "qc" || tempRow.contents[0].value === "q1" || tempRow.contents[0].value === "q2" || tempRow.contents[0].value === "q3"){
+                        if(tempvalue[i] === telemetry[tempRow.vehicle][tempRow.id].value){
+                            tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
+                            tempRow.contents[4].datacolor = "color:#71A5BC";
+                       
+                        }else if(telemetry[tempRow.vehicle][tempRow.id].value < -1.1 || telemetry[tempRow.vehicle][tempRow.id].value > 1.1){
+                            //alarm threshold
+                            tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
+                            tempRow.contents[4].datacolor = "color:#ff0000";
+                            tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value;
+
+                        }else if(telemetry[tempRow.vehicle][tempRow.id].value < -1 || telemetry[tempRow.vehicle][tempRow.id].value > 1){
+                             //warn threshold
+                            tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
+                            tempRow.contents[4].datacolor = "color:#FF6D00";
+                            tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value;
+                        }else{
+                            tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
+                            tempRow.contents[4].datacolor = "color:#12C700";
+                            tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value;
+                        }
+                    }else if(tempRow.contents[0].value === "vx" || tempRow.contents[0].value === "vy" || tempRow.contents[0].value === "vz"){
+                        if(tempvalue[i] === telemetry[tempRow.vehicle][tempRow.id].value){
+                            tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
+                            tempRow.contents[4].datacolor = "color:#71A5BC";
+
+                        }else if(telemetry[tempRow.vehicle][tempRow.id].value < -14 || telemetry[tempRow.vehicle][tempRow.id].value > 14){
+                            //alarm threshold
+                            tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
+                            tempRow.contents[4].datacolor = "color:#ff0000";
+                            tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value;
+
+                        }else if(telemetry[tempRow.vehicle][tempRow.id].value < -10 || telemetry[tempRow.vehicle][tempRow.id].value){
+                             //warn threshold
+                            tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
+                            tempRow.contents[4].datacolor = "color:#FF6D00";
+                            tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value;
+                        }else{
+                            tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
+                            tempRow.contents[4].datacolor = "color:#12C700";
+                            tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value;
+                        }
+                    }else if(tempRow.contents[0].value === "x" || tempRow.contents[0].value === "y" || tempRow.contents[0].value === "z" || tempRow.contents[0].value === "r"){
+                        if(tempvalue[i] === telemetry[tempRow.vehicle][tempRow.id].value){
+                            tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
+                            tempRow.contents[4].datacolor = "color:#71A5BC";
+                       
+                        }else if(telemetry[tempRow.vehicle][tempRow.id].value < 6478){
+                            //alarm threshold
+                            if(telemetry[tempRow.vehicle][tempRow.id].value > 6378){
+                                tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
+                                tempRow.contents[4].datacolor = "color:#ff0000";
+                                //tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value;
+                            }else if(telemetry[tempRow.vehicle][tempRow.id].value < 6378){
+                            //warn threshold
+                            tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
+                            tempRow.contents[4].datacolor = "color:#FF6D00";
+                            
+                            }
+                             tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value;
+                        }
+                        // else if(telemetry[tempRow.vehicle][tempRow.id].value < 6378){
+                        //      //warn threshold
+                        //     tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
+                        //     tempRow.contents[4].datacolor = "color:#FF6D00";
+                        //     tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value;
+                        // }
+                        else{
+                            tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
+                            tempRow.contents[4].datacolor = "color:#12C700";
+                            tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value;
+                        }
+                    }else if(tempRow.contents[0].value === "v"){
+                        if(tempvalue[i] === telemetry[tempRow.vehicle][tempRow.id].value){
+                            tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
+                            tempRow.contents[4].datacolor = "color:#71A5BC";
+                       
+                        }else if(telemetry[tempRow.vehicle][tempRow.id].value < 0 || telemetry[tempRow.vehicle][tempRow.id].value > 14){
+                            //alarm threshold
+                            tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
+                            tempRow.contents[4].datacolor = "color:#ff0000";
+                            tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value;
+                        }else if(telemetry[tempRow.vehicle][tempRow.id].value < 0 || telemetry[tempRow.vehicle][tempRow.id].value > 10){
+                             //warn threshold
+                            tempRow.contents[4].value = telemetry[tempRow.vehicle][tempRow.id].value; 
+                            tempRow.contents[4].datacolor = "color:#FF6D00";
+                            tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value;
+                        }else{
+                            tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
+                            tempRow.contents[4].datacolor = "color:#12C700";
+                            tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value;
+                        }
+                    }
+                   
                 } else {
-                    tempRow.contents[4].value = telemetry[tempRow.vehicle][tempRow.id].value;
+                  
+                    console.log("Date");
+                   
+                    if(tempvalue[i] === telemetry[tempRow.vehicle][tempRow.id].value){
+                        tempRow.contents[4].value = telemetry[tempRow.vehicle][tempRow.id].value; 
+                        tempRow.contents[4].datacolor = "color:#71A5BC";
+                       
+                    }else {
+                        tempRow.contents[4].value = telemetry[tempRow.vehicle][tempRow.id].value; 
+                        tempRow.contents[4].datacolor = "color:#12C700";
+                        tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value;
+                    }
                 }
                 if(telemetry[tempRow.vehicle][tempRow.id].warn_high !== null){
                     tempRow.contents[5].value = telemetry[tempRow.vehicle][tempRow.id].warn_high;
@@ -220,6 +329,8 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
                 }else {
                     tempRow.contents[8].value = 'N/A';    
                 }
+            }else {
+                tempRow.contents[4].datacolor = "color:#CFCFD5";
             }
         }
     }
