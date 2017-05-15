@@ -89,6 +89,7 @@ app
         }
 
         return {
+            "today" : today,
             "days" : days, 
             "hours" : h,
             "minutes" : m,
