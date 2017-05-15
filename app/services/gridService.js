@@ -9,6 +9,21 @@ app
         }
     };
 
+    var satvehicles = [
+            {
+                'key': 1,
+                'value': 'Audacy1'
+            }, 
+            {
+                'key': 2,
+                'value': 'Audacy2'
+            }, 
+            {
+                'key': 3,
+                'value': 'Audacy3'
+            }
+    ];      
+
     var orbitDisplay = [];
     var iconDisplay = [];
     for(var i=0;i<3;i++){
@@ -69,7 +84,13 @@ app
         },
         main: true,
 		settings: {
-            active: false
+            active: false,
+            colors: ["#172168","#172168","#172168"],
+            vehicles : [],
+            linecolors : [],
+            plotData : {},
+            checkedValues : ["false","false","false"],
+            satvehicles : satvehicles
         },
 		saveLoad: false,
 		delete: false
@@ -168,7 +189,8 @@ app
     var dashboards = {
         'Home': {
             name: 'Home',
-            widgets: [{
+            widgets: [
+            {
                     col: 0,
                     row: 0,
                     sizeY: 3,
@@ -183,7 +205,13 @@ app
                     },
                     main: true,
                     settings: {
-                        active: false
+                        active: false,
+                        colors: ["#172168","#172168","#172168"],
+                        vehicles : [],
+                        linecolors : [],
+                        plotData : {},
+                        checkedValues : ["false","false","false"],
+                        satvehicles : satvehicles
                     },
                     saveLoad: false,
                     delete: false
@@ -207,7 +235,8 @@ app
                     },
                     saveLoad: false,
                     delete: false
-                }]
+                }
+                ]
             }
         };
 
