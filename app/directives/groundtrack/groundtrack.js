@@ -10,8 +10,18 @@ app.directive('groundtrack',function() {
 
 app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,dashboardService,gridService,solarService) { 
   
+    var telemetry = dashboardService.telemetry;
     var temp = $element[0].getElementsByTagName("div")[0];
     var el = temp.getElementsByTagName("div")[1];
+
+    var vehName;
+    var vehicles = [];
+    var scH = {};
+    var scS = {};
+    var datastatus = [];
+    var orbits = [];
+    var satIcons = [];
+
     $scope.widget.stream = new Array();
     $scope.checkboxModel = {
         value1 : true
@@ -23,16 +33,8 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
     $scope.orbitHo = $scope.widget.settings.orbitHolder;
     $scope.iconHo = $scope.widget.settings.iconHolder;
 
-    var vehName;
-    var vehs = [];
-    var scH = {};
-    var scS = {};
-    var datastatus = [];
-    var orbits = [];
-    var satIcons = [];
-
     $scope.$watch('vals', function(newVal,oldVal){
-        vehs = newVal; 
+        vehicles = newVal; 
     }, true);
 
     $scope.$watch('scHo',function(newVal,oldVal){
@@ -55,25 +57,18 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
         satIcons = newVal; 
     },true);
 
+    var time, solarTime, latestdata;
     var rEarth = 6378.16;   //Earth radius [km]
     var gsAng = 85;
-    var temptime = new Date;
     var π = Math.PI,radians = π / 180,degrees = 180 / π;
     var projection = d3Service.geoEquirectangular().precision(.1);
     var path = d3Service.geoPath().projection(projection);
     var graticule = d3Service.geoGraticule();
     var circle = d3Service.geoCircle();
     var zoom = d3Service.zoom()
-                        .scaleExtent([1, 10])
-                        .translateExtent([[0,0], [900, 600]])
-                        .on("zoom", zoomed);
-
-                        if($(window).width() >= screen.width){
-                        zoom = d3Service.zoom()
-                        .scaleExtent([1, 10])
-                        .translateExtent([[0,0], [1300, 1000]])
-                        .on("zoom", zoomed);
-                        }
+                .scaleExtent([1, 10])
+                .translateExtent([[0,0], [900, 600]])
+                .on("zoom", zoomed);
                         
     var svg = d3Service.select(el)
                         .append("svg")
@@ -85,6 +80,11 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 
     var transform = d3Service.zoomTransform(svg.node()); 
     var g = svg.append("g");
+    var sat = ['Audacy1','Audacy2','Audacy3'];
+    var gs = ['GS1','GS2'];
+    var station = [[-122.4, 37.7],[103.8, 1.4]];
+    var satRadius = 10000;//7000;
+    var stationNames = ['Ground Station 01 - San Francisco ','Ground Station 02 - Singapore'];
 
     g.attr("id","g")
         .attr("x",0)
@@ -92,15 +92,12 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 
     svg.call(zoom);
 
-    var transform = d3Service.zoomTransform(svg.node());          
-    var sat = 1; //Default satellite
-    var gs = [];
-    var station = [[-122.4, 37.7],[103.8, 1.4]];
-    var satRadius = 10000;//7000;
-
-    var stationNames = ['Ground Station 01 - San Francisco ','Ground Station 02 - Singapore'];
-    sat = ['Audacy1','Audacy2','Audacy3'];
-    gs = ['GS1','GS2']; 
+    if($(window).width() >= screen.width){
+        zoom = d3Service.zoom()
+                        .scaleExtent([1, 10])
+                        .translateExtent([[0,0], [1300, 1000]])
+                        .on("zoom", zoomed);
+    }
 
     // Plot world map
     d3Service.json("./directives/groundtrack/d3-maps/world-50m.json", function(error, world) {
@@ -130,32 +127,22 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
             .attr("id", function(d) { return d.id;})
             .attr("d", path);
 
-
+        //Plot ground stations
         for (j=0; j<station.length; j++) {
             plotgs(station[j],stationNames[j]);
         }
 
+        //Plot ground station coverage
+        for (j=0; j<gs.length;j++) {
+            plotGsCover(station[j]);
+        }
+
         // Show dark region (night time)
-        var night = g.append("path")                
+        $scope.night = g.append("path")
                         .attr("class", "night")
                         .attr("d", path);
-        
-		$scope.solTime = temptime;
-        redraw();
-        $interval(redraw, 1000);
-
-        function redraw() {
-            night.datum(circle.center(antipode(solarService.solarPosition($scope.solTime))).radius(90)).attr("d", path);
-        }                   
+        showDayNight();
     });
-    
-    //Plot ground station coverage
-    for (j=0; j<gs.length;j++) {
-        plotGsCover(station[j]);      
-    }
-
-    var stream = $interval(updatePlot, 1000);
-    $scope.widget.stream.push(stream);
 
     //Function to reset the map
     $scope.resetted = function() {
@@ -186,8 +173,17 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
         }
     }
 
+    $scope.interval = $interval(updatePlot, 1000);
+
+    $scope.$on("$destroy",
+        function(event) {
+            $interval.cancel($scope.interval);
+        }
+    );
+
     // Function to update data to be plotted
     function updatePlot() {
+        console.log("timer");
         g.selectAll("path.route1").remove(); 
         g.selectAll("path.route2").remove();
         g.selectAll("path.route3").remove();
@@ -197,12 +193,11 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
         g.selectAll("path.link").remove();
         g.selectAll("line").remove();
         g.selectAll("path.gslink").remove(); 
-      
-        var telemetry = dashboardService.telemetry;
 
-        for (i=0; i< vehs.length; i++){
-            latestdata = null;
-            latestdata = telemetry[vehs[i]];
+        showDayNight();
+
+        for (i=0; i< vehicles.length; i++){
+            latestdata = telemetry[vehicles[i]];
   
             // Check if the latestdata is available for the selected s/c
             if (latestdata == null) {
@@ -232,13 +227,8 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                 // add longitude and latitude to data_plot
                 scH[i].push([longitude, latitude]);
                 scS[i].push([x,y,z]);
-
-				// if a vehicle is selected, update time for night shadow
-				if(i === 0){
-					$scope.solTime = new Date(latestdata.timestamp.value);
-				}
 				
-                if(vehs[i] === "Audacy1" ){
+                if(vehicles[i] === "Audacy1" ){
                     if(orbits[i] === true){
                    
                         var route1 = g.append("path")
@@ -258,7 +248,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                                        .append("svg:title").text("Audacy 1");
 
                     }
-                } else if(vehs[i] === "Audacy2"){
+                } else if(vehicles[i] === "Audacy2"){
                     if(orbits[i] === true){
                         var route2 = g.append("path")
                                       .datum({type: "LineString", coordinates: scH[i]})  
@@ -276,7 +266,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                                        .attr("height",30)
                                        .append("svg:title").text("Audacy 2");
                     }
-                } else if(vehs[i] === "Audacy3"){
+                } else if(vehicles[i] === "Audacy3"){
                     if(orbits[i] === true){
                         var route3 = g.append("path")
                                       .datum({type: "LineString", coordinates: scH[i]})  
@@ -315,7 +305,14 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                 }  
             }
         }
-    }               
+    }
+
+    //Displays day and night regions on map according to time
+    function showDayNight() {
+        time = dashboardService.getTime(0);
+        solarTime = time.today;
+        $scope.night.datum(circle.center(antipode(solarService.solarPosition(solarTime))).radius(90)).attr("d", path);
+    }
     
     //Displays Ground station coverage area    
     function plotGsCover(coord){
