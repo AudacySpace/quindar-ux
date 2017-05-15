@@ -13,33 +13,15 @@ app.controller('lineController',
     function($scope, d3, $mdSidenav, $window, dashboardService, sidebarService){
 	
     	var telemetry = dashboardService.telemetry;
-    	
-    	// Table		
-    	$scope.table = {"rows":{
-                        "data":[
-                                    [
-                                        {   
-                                            "value":"",
-                                            "checked":"true",
-                                            "style":"text-align:left",
-                                            "colshow":"true"
-                                        },
-                                        {   
-                                            "value":"",
-                                            "checked":"true",
-                                            "style":"text-align:left",
-                                            "colshow":"true"
-                                        }
-                                    ]
-                                ]
-                            }
-                        }
-
-        var previous = angular.copy($scope.table.rows.data);
+        $scope.datainput = "";
+        $scope.colors = $scope.widget.settings.colors;
+        $scope.checkedValues = $scope.widget.settings.checkedValues;
+        $scope.satvehicles = $scope.widget.settings.satvehicles;
+        var vehicles = [];
+        var prevColors = angular.copy($scope.colors);
+        var prevCheckedValues = angular.copy($scope.checkedValues);
 
         $scope.getTelemetrydata = function($event,$index){
-            var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
-            arrow.style.color = "#07D1EA";
 
             if ($window.innerWidth < 1400){
                 $mdSidenav('left').open();
@@ -51,71 +33,97 @@ app.controller('lineController',
         }
 
         $scope.getValue = function($event,$index){
+
             $scope.vehicle = sidebarService.getVehicleInfo();
-            var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
-            previous = angular.copy($scope.table.rows.data);
-            
+
+            for(var i=0;i<$scope.checkedValues.length;i++){
+
+                if($scope.satvehicles[i].value === $scope.vehicle.vehicle){
+                    $scope.widget.settings.checkedValues[i] =true;
+                }
+                else{
+                    $scope.widget.settings.checkedValues[i] =false;
+                }
+            }
             if($scope.vehicle.vehicle !== "" && $scope.vehicle.id !== "") {
                 if(telemetry !== null) {
-                    $scope.table.rows.data[$index][0].value = $scope.vehicle.id;
-                    $scope.table.rows.data[$index][1].value = telemetry[$scope.vehicle.vehicle][$scope.vehicle.id].name;
+                    if($scope.vehicle.id !== "timestamp"){
+                    $scope.datainput = $scope.vehicle.id;
+                    }
+                    else{
+                        alert("Please select another data value other than timestamp!");
+                    }
                 } else {
                     alert("Telemetry data not available");
                 }
-                arrow.style.color = "#b3b3b3";
                 if ($window.innerWidth >= 1400){
                     $scope.lock.lockLeft = !$scope.lock.lockLeft;
                     dashboardService.setLeftLock($scope.lock.lockLeft);
                 }
             } else {
-                arrow.style.color = "#07D1EA";
                 alert("Vehicle data not set. Please select from Data Menu");
             }
         }
-        
-        $scope.addRowAbove = function($index){
-            $scope.table.rows.data.splice($index,0,[{"value":"","checked":"true","style":"text-align:left","colshow":"true"},{"value":"","checked":"true","style":"text-align:left","colshow":"true"},{"value":"","checked":"true","style":"text-align:right","colshow":"true"}]);
-        }
-
-        $scope.addRowBelow = function($index){
-            $scope.table.rows.data.splice($index+1,0,[{"value":"","checked":"true","style":"text-align:left","colshow":"true"},{"value":"","checked":"true","style":"text-align:left","colshow":"true"},{"value":"","checked":"true","style":"text-align:right","colshow":"true"}]);
-        }
-
-        $scope.deleteRow = function($index){
-            $scope.table.rows.data.splice($index, 1);
-        }
-
-        $scope.moveRowUp = function($index){
-            $scope.table.rows.data[$index-1] = $scope.table.rows.data.splice($index, 1, $scope.table.rows.data[$index-1])[0];
-        }
-
-        $scope.moveRowDown = function($index){
-            $scope.table.rows.data[$index+1] = $scope.table.rows.data.splice($index, 1, $scope.table.rows.data[$index+1])[0];
-        }
-
-        $scope.convertHeader = function($index){
-            $scope.table.rows.data[$index] = [{"value":"","checked":"false","style":"text-align:right;background-color:#1072A4;","colshow":"true","colspan":"9","class":"header","placeholder":"Click here to edit"}];
-        } 
-
-        $scope.convertToReadonly = function($index){
-            $scope.table.rows.data[$index]["checked"] = "true";
-        }
-        // End of Table
-        
+                
         // Close
         $scope.closeWidget = function(widget){
             widget.main = true;
             widget.settings.active = false;
-            $scope.table.rows.data = previous;
+            $scope.colors = prevColors;
+            $scope.checkedValues = prevCheckedValues
         }
         
         // Save
         $scope.saveWidget = function(widget){
-            widget.vehicle_name = $scope.vehicle.vehicle;
-            widget.vehicle_id = $scope.vehicle.id;
-            widget.main = true;
-            widget.settings.active = false;
-            previous = angular.copy($scope.table.rows.data);
+            if($scope.datainput !== ""){
+                if($scope.widget.settings.pausestatus !== false){
+
+                    while(widget.settings.vehicles.length > 0){
+                        widget.settings.vehicles.pop();
+                    }
+
+                    while(widget.settings.linecolors.length > 0){
+                        widget.settings.linecolors.pop();
+                    }
+
+                    widget.main = true;
+                    widget.settings.active = false;
+                    widget.settings.datainput = $scope.datainput;
+                    widget.settings.checkedValues = $scope.checkedValues;
+                    for(var i=0;i<widget.settings.checkedValues.length;i++){
+                        if(widget.settings.checkedValues[i] === true){
+                            widget.settings.vehicles.push( $scope.satvehicles[i].value);
+                            widget.settings.linecolors.push($scope.colors[i]);
+                        }
+                    }
+                    if(widget.settings.vehicles.length !== 0){
+                        for (j=0; j< widget.settings.vehicles.length;j++) {
+                            widget.settings.plotData[j] = [[0,0]];
+                            widget.settings.plotData[j].pop();  
+                        }; 
+                        prevColors = angular.copy($scope.colors);
+                        prevCheckedValues = angular.copy($scope.checkedValues);
+                    }else {
+                        alert("Please select atleast one vehicle and save!");
+                            widget.main = false;
+                            widget.settings.active = true;
+                            $scope.colors = prevColors;
+                            $scope.checkedValues = prevCheckedValues;
+                    }
+                }else{
+                    alert("Please pause the data before you save!");
+                    widget.main = true;
+                    widget.settings.active = false;
+                    $scope.colors = prevColors;
+                    $scope.checkedValues = prevCheckedValues;
+                }
+            }else{
+                alert("Please select data!");
+                widget.main = false;
+                widget.settings.active = true;
+                $scope.colors = prevColors;
+                $scope.checkedValues = prevCheckedValues;
+            }
         }
     }
 ]);

@@ -58,13 +58,40 @@
 	border: 0px;
 	line-height:0px;
 }
-.lineplot{
+.lineplot1{
 	fill: none;
 	stroke-linejoin: round;
 	stroke-linecap: round;
 	stroke-width: 1.5;
+	opacity:1;
+}
+.lineplot2{
+	fill: none;
+	stroke-linejoin: round;
+	stroke-linecap: round;
+	stroke-width: 1.5;
+	opacity:1;
+}
+.lineplot3{
+	fill: none;
+	stroke-linejoin: round;
+	stroke-linecap: round;
+	stroke-width: 1.5;
+	opacity:1;
 }
 .linelabel{
+	font-family: "Open Sans", Sans-serif;	
+	font-size:12px;
+}
+.linelabel1{
+	font-family: "Open Sans", Sans-serif;	
+	font-size:12px;
+}
+.linelabel2{
+	font-family: "Open Sans", Sans-serif;	
+	font-size:12px;
+}
+.linelabel3{
 	font-family: "Open Sans", Sans-serif;	
 	font-size:12px;
 }
@@ -132,4 +159,19 @@
 .linecell{
 	background-color: #ffffff;
 	color: #000000;
+}
+.colorpicker{
+	background-color: #ccc;
+	border:0;
+	padding:0;
+	width:20px;
+	height:20px;
+}
+.colorpicker:focus{
+	outline:none;
+}
+.applybtn{
+	border-radius:0px;
+	color:black;
+	line-height:1.45em;
 }
