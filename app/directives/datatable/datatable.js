@@ -8,12 +8,27 @@ app.directive('datatable',function() {
     }; 
 });
 
-app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dashboardService,sidebarService) {    
+app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dashboardService,sidebarService) {  
 
-    $scope.checkedValues = $scope.widget.settings.checkedValues;//Get values of the checkboxes in settings category display
+    //Get values of the checkboxes in settings category display
+    $scope.checkedValues = $scope.widget.settings.checkedValues;
     var tableCols = []; // table column data
     var tempRow = "";
     var telemetry = dashboardService.telemetry;
+    var tempvalue = [];
+    $scope.dataStatus = dashboardService.icons;
+    var dServiceObjVal = {};
+    var colorAlarm = "color:#FF0000"; //Color red for alarm
+    var colorCaution = "color:#FF6D00";// Color orange for caution
+    var colorHealthy = "color:#12C700";// Color green for healthy data
+    var colorStale = "color:#71A5BC";// Color staleblue for stale data
+    var colorDisconnected = "color:#CFCFD5";//Color grey for disconnected db
+    var colorDefault = "color:#000000";//Color black for default color
+
+    //watch to check the database icon color to know about database status
+    $scope.$watch('dataStatus',function(newVal,oldVal){
+        dServiceObjVal = newVal; 
+    },true);
 
     //Default table structure -contains 15 rows to best appear for small and large screens
     for (var i = 0; i < 15; i++) {
@@ -52,7 +67,8 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
                 "checked":"true",
                 "style":"text-align:right",
                 "colshow":"checkedValues.checkedValue",
-                "active": "false"
+                "active": "false",
+                "datacolor":""
             },
             {   
                 "value":"",
@@ -189,38 +205,236 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
     }
 
     updateRow();
-    $scope.interval = $interval(updateRow, 500);
+    $scope.interval = $interval(updateRow, 1000);
 
     function updateRow() {
+
         for (var i=0; i<$scope.table.rows.length; i++){
             tempRow = $scope.table.rows[i];
             if(tempRow.vehicle && tempRow.id) {
-                tempRow.contents[0].value = tempRow.id ;
+                tempRow.contents[0].value = tempRow.id;
                 tempRow.contents[1].value = telemetry[tempRow.vehicle][tempRow.id].name;
-                tempRow.contents[2].value = telemetry[tempRow.vehicle][tempRow.id].alarm_low;
-                tempRow.contents[3].value = telemetry[tempRow.vehicle][tempRow.id].warn_low;
-                if(typeof telemetry[tempRow.vehicle][tempRow.id].value === "number"){
-                    tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000;
-                } else {
-                    tempRow.contents[4].value = telemetry[tempRow.vehicle][tempRow.id].value;
+                if(telemetry[tempRow.vehicle][tempRow.id].alarm_low !== null){
+                    tempRow.contents[2].value = telemetry[tempRow.vehicle][tempRow.id].alarm_low;
+                }else {
+                    tempRow.contents[2].value = 'N/A';   
                 }
+
+                if(telemetry[tempRow.vehicle][tempRow.id].warn_low !== null){
+                    tempRow.contents[3].value = telemetry[tempRow.vehicle][tempRow.id].warn_low;
+                }else {
+                    tempRow.contents[3].value = 'N/A';   
+                }
+
+                if(typeof telemetry[tempRow.vehicle][tempRow.id].value === "number"){
+                    if(tempvalue[i] === telemetry[tempRow.vehicle][tempRow.id].value){
+                         //stale data
+                        updateNumberDataColor(tempRow.contents,telemetry[tempRow.vehicle][tempRow.id].value,telemetry[tempRow.vehicle][tempRow.id].alarm_low,telemetry[tempRow.vehicle][tempRow.id].alarm_high,telemetry[tempRow.vehicle][tempRow.id].warn_low,telemetry[tempRow.vehicle][tempRow.id].warn_high,colorStale);
+                        tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
+                    }else {
+                       //new data
+                        updateNumberDataColor(tempRow.contents,telemetry[tempRow.vehicle][tempRow.id].value,telemetry[tempRow.vehicle][tempRow.id].alarm_low,telemetry[tempRow.vehicle][tempRow.id].alarm_high,telemetry[tempRow.vehicle][tempRow.id].warn_low,telemetry[tempRow.vehicle][tempRow.id].warn_high,colorHealthy);
+                        tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
+                        tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value;
+                    }
+                } else {
+                    //timestamp or string
+                    var currentDate = new Date(telemetry[tempRow.vehicle][tempRow.id].value);
+                    var timestamp_alow = new Date(telemetry[tempRow.vehicle][tempRow.id].alarm_low);
+                    var timestamp_ahigh = new Date( telemetry[tempRow.vehicle][tempRow.id].alarm_high);
+                    var timestamp_wlow = new Date(telemetry[tempRow.vehicle][tempRow.id].warn_low);
+                    var timestamp_whigh = new Date(telemetry[tempRow.vehicle][tempRow.id].
+                        warn_high);
+
+                    if(tempvalue[i] === telemetry[tempRow.vehicle][tempRow.id].value){
+                        //stale data
+                        updateStringDataColor(tempRow.contents,currentDate,timestamp_alow,timestamp_ahigh,timestamp_wlow,timestamp_whigh,telemetry[tempRow.vehicle][tempRow.id].alarm_low,telemetry[tempRow.vehicle][tempRow.id].alarm_high,telemetry[tempRow.vehicle][tempRow.id].warn_low,telemetry[tempRow.vehicle][tempRow.id].warn_high,colorStale);
+            
+                        tempRow.contents[4].value = telemetry[tempRow.vehicle][tempRow.id].value; 
+                    }else {
+                        //new data
+                        updateStringDataColor(tempRow.contents,currentDate,timestamp_alow,timestamp_ahigh,timestamp_wlow,timestamp_whigh,telemetry[tempRow.vehicle][tempRow.id].alarm_low,telemetry[tempRow.vehicle][tempRow.id].alarm_high,telemetry[tempRow.vehicle][tempRow.id].warn_low,telemetry[tempRow.vehicle][tempRow.id].warn_high,colorHealthy);
+
+                        tempRow.contents[4].value = telemetry[tempRow.vehicle][tempRow.id].value; 
+                        tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value; 
+                    }
+                }
+
                 if(telemetry[tempRow.vehicle][tempRow.id].warn_high !== null){
                     tempRow.contents[5].value = telemetry[tempRow.vehicle][tempRow.id].warn_high;
                 }else {
                     tempRow.contents[5].value = 'N/A';   
                 }
+
                 if(telemetry[tempRow.vehicle][tempRow.id].alarm_high !== null){
                     tempRow.contents[6].value = telemetry[tempRow.vehicle][tempRow.id].alarm_high;
                 }else {
                     tempRow.contents[6].value = 'N/A';   
                 }
+
                 tempRow.contents[7].value = telemetry[tempRow.vehicle][tempRow.id].units;
+
                 if(telemetry[tempRow.vehicle][tempRow.id].notes !== ''){
                     tempRow.contents[8].value = telemetry[tempRow.vehicle][tempRow.id].notes;
                 }else {
                     tempRow.contents[8].value = 'N/A';    
                 }
+            }else {
+                if(dServiceObjVal.dIcon === "red"){
+                    //GUI Disconnected with Database 
+                    tempRow.contents[4].datacolor = colorDisconnected; 
+                }else {
+                    tempRow.contents[4].datacolor = colorDefault;  
+                }
             }
+        }
+    }
+
+    //Function to change the color of the number data based on the threshold values
+    function updateNumberDataColor(dataContents,dataVal,Alow,Ahigh,Wlow,Whigh,newColor){
+        
+        if(Alow !== null && Ahigh !== null && Wlow !== null && Whigh !== null){
+            if(dataVal<Alow || dataVal > Ahigh){
+                dataContents[4].datacolor  = colorAlarm;
+            }else if(dataVal < Wlow || dataVal >Whigh){
+                dataContents[4].datacolor = colorCaution;
+            }else {
+                dataContents[4].datacolor  = newColor;
+            }
+        }else if(Alow === null && Ahigh === null && Wlow === null && Whigh === null){
+            dataContents[4].datacolor  = newColor;
+        }else if(Alow === null || Ahigh === null || Wlow === null || Whigh === null){
+            if(Alow !== null && Ahigh === null && Wlow === null && Whigh === null){
+                if(dataVal < Alow ){
+                    dataContents[4].datacolor  = colorAlarm;
+                }else {
+                    dataContents[4].datacolor  = newColor;
+                }
+            } else if(Alow === null && Ahigh !== null && Wlow === null && Whigh === null){
+                if(dataVal > Ahigh ){
+                    dataContents[4].datacolor  = colorAlarm;
+                }else {
+                    dataContents[4].datacolor  = newColor;
+                }
+            } else if(Alow === null && Ahigh === null && Wlow !== null && Whigh === null){
+                if(dataVal < Wlow ){
+                    dataContents[4].datacolor  = colorCaution;
+                }else {
+                    dataContents[4].datacolor  = newColor;
+                }
+            }else if(Alow ===  null && Ahigh === null && Wlow === null && Whigh !== null){
+                if(dataVal > Whigh ){
+                    dataContents[4].datacolor  = colorCaution;
+                }else {
+                    dataContents[4].datacolor  = newColor;
+                }
+            }else if(Alow !==  null && Ahigh !== null && Wlow === null && Whigh === null){
+                if(dataVal < Alow || dataVal > Ahigh){
+                    dataContents[4].datacolor  = colorAlarm;
+                }else {
+                    dataContents[4].datacolor  = newColor;
+                }
+            }else if(Alow !==  null && Ahigh === null && Wlow !== null && Whigh === null){
+                if(dataVal < Alow){
+                    dataContents[4].datacolor  = colorAlarm;
+                }else if(dataVal< Wlow){
+                    dataContents[4].datacolor  = colorCaution;
+                }else {
+                    dataContents[4].datacolor  = newColor;
+                }
+            }else if(Alow ===  null && Ahigh !== null && Wlow === null && Whigh !== null){
+                if(dataVal > Ahigh){
+                    dataContents[4].datacolor  = colorAlarm;
+                }else if(dataVal > Whigh){
+                    dataContents[4].datacolor  = colorCaution;
+                }else {
+                    dataContents[4].datacolor  = newColor;
+                }
+            }else if(Alow === null && Ahigh === null && Wlow !== null && Whigh !== null){
+                if(dataVal < Wlow || dataVal > Whigh){
+                    dataContents[4].datacolor  = colorCaution;
+                }else {
+                    dataContents[4].datacolor  = newColor;
+                }
+            }else {
+                dataContents[4].datacolor  = newColor;
+                }
+        }else {
+            dataContents[4].datacolor  = newColor;
+        }
+    }
+
+    //Function to change the color of the string data based on the threshold values
+    function updateStringDataColor(dataContents,currentDate,timestamp_alow,timestamp_ahigh,timestamp_wlow,timestamp_whigh,Alow,Ahigh,Wlow,Whigh,newColor){
+
+        if(Alow !== null && Ahigh !== null && Wlow !== null && Whigh !== null){
+            if(currentDate < timestamp_alow || currentDate > timestamp_ahigh){
+                dataContents[4].datacolor = colorAlarm;
+            }else if(currentDate < timestamp_wlow || currentDate >timestamp_whigh){
+                dataContents[4].datacolor = colorCaution;
+            }else {
+                dataContents[4].datacolor = newColor;
+            }
+        }else if(Alow === null && Ahigh === null && Wlow === null && Whigh === null){
+            dataContents[4].datacolor = newColor;
+        }else if(Alow === null || Ahigh === null || Wlow === null || Whigh === null){
+            if(Alow !== null && Ahigh === null && Wlow === null && Whigh === null){
+                if(currentDate < timestamp_alow ){
+                    dataContents[4].datacolor = colorAlarm;
+                }else {
+                    dataContents[4].datacolor = newColor;
+                }
+            } else if(Alow === null && Ahigh !== null && Wlow === null && Whigh === null){
+                if(currentDate > timestamp_ahigh ){
+                    dataContents[4].datacolor = colorAlarm;
+                }else {
+                    dataContents[4].datacolor = newColor;
+                }
+            }else if(Alow === null && Ahigh === null && Wlow !== null && Whigh === null){
+                if(currentDate < timestamp_wlow ){
+                    dataContents[4].datacolor = colorCaution;
+                }else {
+                    dataContents[4].datacolor = newColor;
+                }
+            }else if(Alow ===  null && Ahigh === null && Wlow === null && Whigh !== null){
+                if(currentDate > timestamp_whigh ){
+                    dataContents[4].datacolor = colorCaution;
+                }else {
+                    dataContents[4].datacolor = newColor;
+                }
+            }else if(Alow !==  null && Ahigh !== null && Wlow === null && Whigh === null){
+                if(currentDate < timestamp_alow || currentDate > timestamp_ahigh){
+                    dataContents[4].datacolor = colorAlarm;
+                }else {
+                    dataContents[4].datacolor = newColor;
+                }
+            }else if(Alow !==  null && Ahigh === null && Wlow !== null && Whigh === null){
+                if(currentDate < timestamp_alow){
+                    dataContents[4].datacolor = colorAlarm;
+                }else if(currentDate< timestamp_wlow){
+                    dataContents[4].datacolor = colorCaution;
+                }else {
+                    dataContents[4].datacolor = newColor;
+                }
+            }else if(Alow ===  null && Ahigh !== null && Wlow === null && Whigh !== null){
+                if(currentDate > timestamp_ahigh){
+                    dataContents[4].datacolor = colorAlarm;
+                }else if(currentDate > timestamp_whigh){
+                    dataContents[4].datacolor = colorCaution;
+                }else {
+                    dataContents[4].datacolor = newColor;
+                }
+            }else if(Alow === null && Ahigh === null && Wlow !== null && Whigh !== null){
+                if(currentDate < timestamp_wlow || currentDate > timestamp_whigh){
+                    dataContents[4].datacolor = colorCaution;
+                }else {
+                    dataContents[4].datacolor = newColor;
+                }
+            }else {
+                dataContents[4].datacolor = newColor;
+            }
+        }else {
+            dataContents[4].datacolor = newColor;
         }
     }
 
