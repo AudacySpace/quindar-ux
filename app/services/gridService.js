@@ -84,13 +84,7 @@ app
         },
         main: true,
 		settings: {
-            active: false,
-            colors: ["#172168","#172168","#172168"],
-            vehicles : [],
-            linecolors : [],
-            plotData : {},
-            checkedValues : ["false","false","false"],
-            satvehicles : satvehicles
+            active: false
         },
 		saveLoad: false,
 		delete: false
