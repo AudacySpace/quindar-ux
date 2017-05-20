@@ -7,22 +7,7 @@ app
             enabled: true,
             handle: '.box-header'
         }
-    };
-
-    var satvehicles = [
-            {
-                'key': 1,
-                'value': 'Audacy1'
-            }, 
-            {
-                'key': 2,
-                'value': 'Audacy2'
-            }, 
-            {
-                'key': 3,
-                'value': 'Audacy3'
-            }
-    ];      
+    };     
 
     var orbitDisplay = [];
     var iconDisplay = [];
@@ -199,13 +184,7 @@ app
                     },
                     main: true,
                     settings: {
-                        active: false,
-                        colors: ["#172168","#172168","#172168"],
-                        vehicles : [],
-                        linecolors : [],
-                        plotData : {},
-                        checkedValues : ["false","false","false"],
-                        satvehicles : satvehicles
+                        active: false
                     },
                     saveLoad: false,
                     delete: false
