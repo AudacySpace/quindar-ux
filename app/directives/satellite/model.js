@@ -201,7 +201,7 @@ app
 	}
 
 	updateColors();
-	$scope.interval = $interval(updateColors,1000);
+	$scope.interval = $interval(updateColors,500);
 
 	function updateColors(){
 		if($scope.widget.settings.vehicle && $scope.cube){
@@ -217,7 +217,7 @@ app
 					$scope.widget.settings.colorq1 = colorHealthy;
 				}else {
 					$scope.widget.settings.colorq1 = colorStale;
-				}		
+				}	
 			}else{
 				var colorValq1 =  datastatesService.getDataColor(telemetry[$scope.widget.settings.vehicle].q1.alarm_low,telemetry[$scope.widget.settings.vehicle].q1.alarm_high,telemetry[$scope.widget.settings.vehicle].q1.value,telemetry[$scope.widget.settings.vehicle].q1.warn_low,telemetry[$scope.widget.settings.vehicle].q1.warn_high,valTypeq1); 
 				if(colorValq1 === "red"){
@@ -275,7 +275,6 @@ app
 				}else {
 					$scope.widget.settings.colorqc = colorStale;
 				}
-				
 			}else{
 				var colorValqc =  datastatesService.getDataColor(telemetry[$scope.widget.settings.vehicle].qc.alarm_low,telemetry[$scope.widget.settings.vehicle].qc.alarm_high,telemetry[$scope.widget.settings.vehicle].qc.value,telemetry[$scope.widget.settings.vehicle].qc.warn_low,telemetry[$scope.widget.settings.vehicle].qc.warn_high,valTypeqc);		
 				if(colorValqc === "red"){
