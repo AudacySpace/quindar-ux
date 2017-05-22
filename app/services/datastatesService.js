@@ -8,12 +8,12 @@ app
         };
 
     var colorValues = {
-        alarmcolor : "color:#FF0000",
-        cautioncolor : "color:#FF6D00",
-        stalecolor : "color:#71A5BC",
-        healthycolor : "color:#12C700",
-        disconnectedcolor :"color:#CFCFD5",
-        defaultcolor :"color:#000000"
+        alarmcolor : {color:'#FF0000'},
+        cautioncolor : {color:'#FF6D00'},
+        stalecolor : {color:'#71A5BC'},
+        healthycolor : {color:'#12C700'},
+        disconnectedcolor :{color:'#CFCFD5'},
+        defaultcolor :{color:'#000000'}
     }
 
    function getDataColor(alowValue,ahighValue,dataValue,wlowValue,whighValue,valueType){
