@@ -69,7 +69,6 @@ app.controller('ClockCtrl', function($scope, dashboardService, datastatesService
 			} else {
 				tempTime = dashboardService.countdown($scope.widget.settings.clocks[i].reference);
 				if(JSON.stringify(timertemp[i]) === JSON.stringify(tempTime)){
-					$scope.widget.settings.clocks[i].style = colorStale;
 					$scope.widget.settings.clocks[i].time = tempTime
 					$scope.widget.settings.clocks[i].delta = tempTime.sign;
 					if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green"){
