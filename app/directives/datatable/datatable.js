@@ -24,7 +24,8 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
     var colorStale = datastatesService.colorValues.stalecolor;// Color staleblue for stale data
     var colorDisconnected = datastatesService.colorValues.disconnectedcolor;//Color grey for disconnected db
     var colorDefault = datastatesService.colorValues.defaultcolor;//Color black for default color
-
+    var textLeft = {'text-align':'left'};
+    var textRight = {'text-align':'right'};
     //watch to check the database icon color to know about database status
     $scope.$watch('dataStatus',function(newVal,oldVal){
         dServiceObjVal = newVal; 
@@ -37,7 +38,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
             {   
                 "value":"",
                 "checked":"true",
-                "style":"text-align:left",
+                "style":textLeft,
                 "colshow":"checkedValues.checkedId",
                 "active": "false",
                 "datacolor":""
@@ -45,7 +46,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
             {   
                 "value":"",
                 "checked":"true",
-                "style":"text-align:left",
+                "style":textLeft,
                 "colshow":"checkedValues.checkedName",
                 "active": "false",
                 "datacolor":""
@@ -53,7 +54,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
             {   
                 "value":"",
                 "checked":"true",
-                "style":"text-align:right",
+                "style":textRight,
                 "colshow":"checkedValues.checkedAlow",
                 "active": "false",
                 "datacolor":""
@@ -61,7 +62,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
             {   
                 "value":"",
                 "checked":"true",
-                "style":"text-align:right",
+                "style":textRight,
                 "colshow":"checkedValues.checkedWlow",
                 "active": "false",
                 "datacolor":""
@@ -69,7 +70,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
             {   
                 "value":"",
                 "checked":"true",
-                "style":"text-align:right",
+                "style":textRight,
                 "colshow":"checkedValues.checkedValue",
                 "active": "false",
                 "datacolor":""
@@ -77,7 +78,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
             {   
                 "value":"",
                 "checked":"true",
-                "style":"text-align:right",
+                "style":textRight,
                 "colshow":"checkedValues.checkedWhigh",
                 "active": "false",
                 "datacolor":""
@@ -85,7 +86,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
             {   
                 "value":"",
                 "checked":"true",
-                "style":"text-align:right",
+                "style":textRight,
                 "colshow":"checkedValues.checkedAhigh",
                 "active": "false",
                 "datacolor":""
@@ -93,7 +94,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
             {   
                 "value":"",
                 "checked":"true",
-                "style":"text-align:left",
+                "style":textLeft,
                 "colshow":"checkedValues.checkedUnits",
                 "active": "false",
                 "datacolor":""
@@ -101,7 +102,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
             {   
                 "value":"",
                 "checked":"true",
-                "style":"text-align:left",
+                "style":textLeft,
                 "colshow":"checkedValues.checkedNotes",
                 "active": "false",
                 "datacolor":""
