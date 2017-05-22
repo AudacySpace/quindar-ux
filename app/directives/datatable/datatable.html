@@ -33,8 +33,8 @@
                     </ul>
                 </div>
             </td>
-            <td ng-repeat="cell in row.contents" class="rowcell" style="{{cell.style}}"
-           colspan="{{cell.colspan}}" ng-show="{{cell.colshow}}"><span style="{{cell.datacolor}}">{{cell.value}}</span><input ng-show="{{cell.active}}" class="rowinput {{cell.class}}" type="text" ng-readonly="{{cell.checked}}" value="{{cell.value}}" ng-blur="convertToReadonly(cell)" placeholder="{{cell.placeholder}}" aria-label="Readonly field" />
+            <td ng-repeat="cell in row.contents" class="rowcell" ng-style="cell.style"
+           colspan="{{cell.colspan}}" ng-show="{{cell.colshow}}"><span ng-style="cell.datacolor">{{cell.value}}</span><input ng-show="{{cell.active}}" class="rowinput {{cell.class}}" type="text" ng-readonly="{{cell.checked}}" value="{{cell.value}}" ng-blur="convertToReadonly(cell)" placeholder="{{cell.placeholder}}" aria-label="Readonly field" />
             </td>
         </tr>
     </tbody>

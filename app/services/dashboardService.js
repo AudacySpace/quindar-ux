@@ -6,6 +6,10 @@ app
     };
     var telemetry = {};
     var time = "";
+    var timestamp_alow = {value:""};
+    var timestamp_ahigh = {value:""};
+    var timestamp_wlow = {value:""};
+    var timestamp_whigh = {value:""};
 
     var docIds = [];
     var icons = {sIcon:"", gIcon:"", pIcon:"",dIcon:""};
@@ -24,6 +28,10 @@ app
                 for(var item in response.data){
                     telemetry[item] = response.data[item];
                     time = telemetry[item].timestamp.value;
+                    timestamp_alow.value  = telemetry[item].timestamp.alarm_low;
+                    timestamp_ahigh.value  = telemetry[item].timestamp.alarm_high;
+                    timestamp_wlow.value  = telemetry[item].timestamp.warn_low;
+                    timestamp_whigh.value  = telemetry[item].timestamp.warn_high;
                 }
                 if(Object.keys(response.data[item]).length > 0){//if data is not empty
                         if(prevId === telemetry[item]._id){ //  if proxy application is not receiving any data from ground station
@@ -188,6 +196,10 @@ app
         setRightLock : setRightLock,
         icons : icons,
         getTime : getTime,
-        countdown : countdown
+        countdown : countdown,
+        timestamp_alow : timestamp_alow,
+        timestamp_ahigh : timestamp_ahigh,
+        timestamp_wlow : timestamp_wlow,
+        timestamp_whigh :timestamp_whigh
 	}
 }]);
