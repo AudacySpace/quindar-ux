@@ -8,7 +8,7 @@ app.directive('datatable',function() {
     }; 
 });
 
-app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dashboardService,sidebarService) {  
+app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dashboardService,sidebarService,datastatesService) {  
 
     //Get values of the checkboxes in settings category display
     $scope.checkedValues = $scope.widget.settings.checkedValues;
@@ -18,12 +18,12 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
     var tempvalue = [];
     $scope.dataStatus = dashboardService.icons;
     var dServiceObjVal = {};
-    var colorAlarm = "color:#FF0000"; //Color red for alarm
-    var colorCaution = "color:#FF6D00";// Color orange for caution
-    var colorHealthy = "color:#12C700";// Color green for healthy data
-    var colorStale = "color:#71A5BC";// Color staleblue for stale data
-    var colorDisconnected = "color:#CFCFD5";//Color grey for disconnected db
-    var colorDefault = "color:#000000";//Color black for default color
+    var colorAlarm = datastatesService.colorValues.alarmcolor; //Color red for alarm
+    var colorCaution = datastatesService.colorValues.cautioncolor;// Color orange for caution
+    var colorHealthy = datastatesService.colorValues.healthycolor;// Color green for healthy data
+    var colorStale = datastatesService.colorValues.stalecolor;// Color staleblue for stale data
+    var colorDisconnected = datastatesService.colorValues.disconnectedcolor;//Color grey for disconnected db
+    var colorDefault = datastatesService.colorValues.defaultcolor;//Color black for default color
 
     //watch to check the database icon color to know about database status
     $scope.$watch('dataStatus',function(newVal,oldVal){
@@ -39,28 +39,32 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
                 "checked":"true",
                 "style":"text-align:left",
                 "colshow":"checkedValues.checkedId",
-                "active": "false"
+                "active": "false",
+                "datacolor":""
             },
             {   
                 "value":"",
                 "checked":"true",
                 "style":"text-align:left",
                 "colshow":"checkedValues.checkedName",
-                "active": "false"
+                "active": "false",
+                "datacolor":""
             },
             {   
                 "value":"",
                 "checked":"true",
                 "style":"text-align:right",
                 "colshow":"checkedValues.checkedAlow",
-                "active": "false"
+                "active": "false",
+                "datacolor":""
             },
             {   
                 "value":"",
                 "checked":"true",
                 "style":"text-align:right",
                 "colshow":"checkedValues.checkedWlow",
-                "active": "false"
+                "active": "false",
+                "datacolor":""
             },
             {   
                 "value":"",
@@ -75,28 +79,32 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
                 "checked":"true",
                 "style":"text-align:right",
                 "colshow":"checkedValues.checkedWhigh",
-                "active": "false"
+                "active": "false",
+                "datacolor":""
             },
             {   
                 "value":"",
                 "checked":"true",
                 "style":"text-align:right",
                 "colshow":"checkedValues.checkedAhigh",
-                "active": "false"
+                "active": "false",
+                "datacolor":""
             },
             {   
                 "value":"",
                 "checked":"true",
                 "style":"text-align:left",
                 "colshow":"checkedValues.checkedUnits",
-                "active": "false"
+                "active": "false",
+                "datacolor":""
             },
             {   
                 "value":"",
                 "checked":"true",
                 "style":"text-align:left",
                 "colshow":"checkedValues.checkedNotes",
-                "active": "false"
+                "active": "false",
+                "datacolor":""
             }],
             disabled: false
         });      
@@ -205,13 +213,13 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
     }
 
     updateRow();
-    $scope.interval = $interval(updateRow, 1000);
+    $scope.interval = $interval(updateRow, 500);
 
     function updateRow() {
-
         for (var i=0; i<$scope.table.rows.length; i++){
             tempRow = $scope.table.rows[i];
             if(tempRow.vehicle && tempRow.id) {
+                var valType = typeof telemetry[tempRow.vehicle][tempRow.id].value;
                 tempRow.contents[0].value = tempRow.id;
                 tempRow.contents[1].value = telemetry[tempRow.vehicle][tempRow.id].name;
                 if(telemetry[tempRow.vehicle][tempRow.id].alarm_low !== null){
@@ -226,35 +234,49 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
                     tempRow.contents[3].value = 'N/A';   
                 }
 
-                if(typeof telemetry[tempRow.vehicle][tempRow.id].value === "number"){
+                if(valType === "number"){
                     if(tempvalue[i] === telemetry[tempRow.vehicle][tempRow.id].value){
                          //stale data
-                        updateNumberDataColor(tempRow.contents,telemetry[tempRow.vehicle][tempRow.id].value,telemetry[tempRow.vehicle][tempRow.id].alarm_low,telemetry[tempRow.vehicle][tempRow.id].alarm_high,telemetry[tempRow.vehicle][tempRow.id].warn_low,telemetry[tempRow.vehicle][tempRow.id].warn_high,colorStale);
+                        if(dServiceObjVal.sIcon === "green" && dServiceObjVal.gIcon === "green" && dServiceObjVal.pIcon === "green" && dServiceObjVal.dIcon === "green" ){
+                            tempRow.contents[4].datacolor = colorHealthy;
+                        }else {
+                           tempRow.contents[4].datacolor = colorStale;   
+                        }
                         tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
                     }else {
                        //new data
-                        updateNumberDataColor(tempRow.contents,telemetry[tempRow.vehicle][tempRow.id].value,telemetry[tempRow.vehicle][tempRow.id].alarm_low,telemetry[tempRow.vehicle][tempRow.id].alarm_high,telemetry[tempRow.vehicle][tempRow.id].warn_low,telemetry[tempRow.vehicle][tempRow.id].warn_high,colorHealthy);
+                        var colorVal = datastatesService.getDataColor(telemetry[tempRow.vehicle][tempRow.id].alarm_low,telemetry[tempRow.vehicle][tempRow.id].alarm_high,telemetry[tempRow.vehicle][tempRow.id].value,telemetry[tempRow.vehicle][tempRow.id].warn_low,telemetry[tempRow.vehicle][tempRow.id].warn_high,valType); 
+                        if(colorVal === "red"){
+                            tempRow.contents[4].datacolor = colorAlarm;  
+                        }else if(colorVal === "orange"){
+                            tempRow.contents[4].datacolor = colorCaution;
+                        }else{
+                            tempRow.contents[4].datacolor = colorHealthy;
+                        }
                         tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
                         tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value;
                     }
                 } else {
-                    //timestamp or string
-                    var currentDate = new Date(telemetry[tempRow.vehicle][tempRow.id].value);
-                    var timestamp_alow = new Date(telemetry[tempRow.vehicle][tempRow.id].alarm_low);
-                    var timestamp_ahigh = new Date( telemetry[tempRow.vehicle][tempRow.id].alarm_high);
-                    var timestamp_wlow = new Date(telemetry[tempRow.vehicle][tempRow.id].warn_low);
-                    var timestamp_whigh = new Date(telemetry[tempRow.vehicle][tempRow.id].
-                        warn_high);
-
+                    //timestamp
                     if(tempvalue[i] === telemetry[tempRow.vehicle][tempRow.id].value){
                         //stale data
-                        updateStringDataColor(tempRow.contents,currentDate,timestamp_alow,timestamp_ahigh,timestamp_wlow,timestamp_whigh,telemetry[tempRow.vehicle][tempRow.id].alarm_low,telemetry[tempRow.vehicle][tempRow.id].alarm_high,telemetry[tempRow.vehicle][tempRow.id].warn_low,telemetry[tempRow.vehicle][tempRow.id].warn_high,colorStale);
-            
+                        if(dServiceObjVal.sIcon === "green" && dServiceObjVal.gIcon === "green" && dServiceObjVal.pIcon === "green" && dServiceObjVal.dIcon === "green" ){
+                             tempRow.contents[4].datacolor = colorHealthy;
+                        }else {
+                           tempRow.contents[4].datacolor = colorStale;    
+                        }
                         tempRow.contents[4].value = telemetry[tempRow.vehicle][tempRow.id].value; 
                     }else {
                         //new data
-                        updateStringDataColor(tempRow.contents,currentDate,timestamp_alow,timestamp_ahigh,timestamp_wlow,timestamp_whigh,telemetry[tempRow.vehicle][tempRow.id].alarm_low,telemetry[tempRow.vehicle][tempRow.id].alarm_high,telemetry[tempRow.vehicle][tempRow.id].warn_low,telemetry[tempRow.vehicle][tempRow.id].warn_high,colorHealthy);
-
+                        var colorVal = datastatesService.getDataColor(telemetry[tempRow.vehicle][tempRow.id].alarm_low,telemetry[tempRow.vehicle][tempRow.id].alarm_high,telemetry[tempRow.vehicle][tempRow.id].value,telemetry[tempRow.vehicle][tempRow.id].warn_low,telemetry[tempRow.vehicle][tempRow.id].warn_high,valType);
+                        if(colorVal === "red"){
+                            tempRow.contents[4].datacolor = colorAlarm;  
+                        }else if(colorVal === "orange"){
+                            tempRow.contents[4].datacolor = colorCaution;
+                        }else{
+                            tempRow.contents[4].datacolor = colorHealthy;
+                            
+                        }
                         tempRow.contents[4].value = telemetry[tempRow.vehicle][tempRow.id].value; 
                         tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value; 
                     }
@@ -282,159 +304,26 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
             }else {
                 if(dServiceObjVal.dIcon === "red"){
                     //GUI Disconnected with Database 
-                    tempRow.contents[4].datacolor = colorDisconnected; 
-                }else {
-                    tempRow.contents[4].datacolor = colorDefault;  
+                    tempRow.contents[0].datacolor = colorDisconnected;
+                    tempRow.contents[0].value = "-";
+                    tempRow.contents[1].datacolor = colorDisconnected;
+                    tempRow.contents[1].value = "-";
+                    tempRow.contents[2].datacolor = colorDisconnected;
+                    tempRow.contents[2].value = "-";
+                    tempRow.contents[3].datacolor = colorDisconnected;
+                    tempRow.contents[3].value = "-";
+                    tempRow.contents[4].datacolor = colorDisconnected;
+                    tempRow.contents[4].value = "-";
+                    tempRow.contents[5].datacolor = colorDisconnected;
+                    tempRow.contents[5].value = "-";
+                    tempRow.contents[6].datacolor = colorDisconnected;
+                    tempRow.contents[6].value = "-";
+                    tempRow.contents[7].datacolor = colorDisconnected;
+                    tempRow.contents[7].value = "-";
+                    tempRow.contents[8].datacolor = colorDisconnected;
+                    tempRow.contents[8].value = "-"; 
                 }
             }
-        }
-    }
-
-    //Function to change the color of the number data based on the threshold values
-    function updateNumberDataColor(dataContents,dataVal,Alow,Ahigh,Wlow,Whigh,newColor){
-        
-        if(Alow !== null && Ahigh !== null && Wlow !== null && Whigh !== null){
-            if(dataVal<Alow || dataVal > Ahigh){
-                dataContents[4].datacolor  = colorAlarm;
-            }else if(dataVal < Wlow || dataVal >Whigh){
-                dataContents[4].datacolor = colorCaution;
-            }else {
-                dataContents[4].datacolor  = newColor;
-            }
-        }else if(Alow === null && Ahigh === null && Wlow === null && Whigh === null){
-            dataContents[4].datacolor  = newColor;
-        }else if(Alow === null || Ahigh === null || Wlow === null || Whigh === null){
-            if(Alow !== null && Ahigh === null && Wlow === null && Whigh === null){
-                if(dataVal < Alow ){
-                    dataContents[4].datacolor  = colorAlarm;
-                }else {
-                    dataContents[4].datacolor  = newColor;
-                }
-            } else if(Alow === null && Ahigh !== null && Wlow === null && Whigh === null){
-                if(dataVal > Ahigh ){
-                    dataContents[4].datacolor  = colorAlarm;
-                }else {
-                    dataContents[4].datacolor  = newColor;
-                }
-            } else if(Alow === null && Ahigh === null && Wlow !== null && Whigh === null){
-                if(dataVal < Wlow ){
-                    dataContents[4].datacolor  = colorCaution;
-                }else {
-                    dataContents[4].datacolor  = newColor;
-                }
-            }else if(Alow ===  null && Ahigh === null && Wlow === null && Whigh !== null){
-                if(dataVal > Whigh ){
-                    dataContents[4].datacolor  = colorCaution;
-                }else {
-                    dataContents[4].datacolor  = newColor;
-                }
-            }else if(Alow !==  null && Ahigh !== null && Wlow === null && Whigh === null){
-                if(dataVal < Alow || dataVal > Ahigh){
-                    dataContents[4].datacolor  = colorAlarm;
-                }else {
-                    dataContents[4].datacolor  = newColor;
-                }
-            }else if(Alow !==  null && Ahigh === null && Wlow !== null && Whigh === null){
-                if(dataVal < Alow){
-                    dataContents[4].datacolor  = colorAlarm;
-                }else if(dataVal< Wlow){
-                    dataContents[4].datacolor  = colorCaution;
-                }else {
-                    dataContents[4].datacolor  = newColor;
-                }
-            }else if(Alow ===  null && Ahigh !== null && Wlow === null && Whigh !== null){
-                if(dataVal > Ahigh){
-                    dataContents[4].datacolor  = colorAlarm;
-                }else if(dataVal > Whigh){
-                    dataContents[4].datacolor  = colorCaution;
-                }else {
-                    dataContents[4].datacolor  = newColor;
-                }
-            }else if(Alow === null && Ahigh === null && Wlow !== null && Whigh !== null){
-                if(dataVal < Wlow || dataVal > Whigh){
-                    dataContents[4].datacolor  = colorCaution;
-                }else {
-                    dataContents[4].datacolor  = newColor;
-                }
-            }else {
-                dataContents[4].datacolor  = newColor;
-                }
-        }else {
-            dataContents[4].datacolor  = newColor;
-        }
-    }
-
-    //Function to change the color of the string data based on the threshold values
-    function updateStringDataColor(dataContents,currentDate,timestamp_alow,timestamp_ahigh,timestamp_wlow,timestamp_whigh,Alow,Ahigh,Wlow,Whigh,newColor){
-
-        if(Alow !== null && Ahigh !== null && Wlow !== null && Whigh !== null){
-            if(currentDate < timestamp_alow || currentDate > timestamp_ahigh){
-                dataContents[4].datacolor = colorAlarm;
-            }else if(currentDate < timestamp_wlow || currentDate >timestamp_whigh){
-                dataContents[4].datacolor = colorCaution;
-            }else {
-                dataContents[4].datacolor = newColor;
-            }
-        }else if(Alow === null && Ahigh === null && Wlow === null && Whigh === null){
-            dataContents[4].datacolor = newColor;
-        }else if(Alow === null || Ahigh === null || Wlow === null || Whigh === null){
-            if(Alow !== null && Ahigh === null && Wlow === null && Whigh === null){
-                if(currentDate < timestamp_alow ){
-                    dataContents[4].datacolor = colorAlarm;
-                }else {
-                    dataContents[4].datacolor = newColor;
-                }
-            } else if(Alow === null && Ahigh !== null && Wlow === null && Whigh === null){
-                if(currentDate > timestamp_ahigh ){
-                    dataContents[4].datacolor = colorAlarm;
-                }else {
-                    dataContents[4].datacolor = newColor;
-                }
-            }else if(Alow === null && Ahigh === null && Wlow !== null && Whigh === null){
-                if(currentDate < timestamp_wlow ){
-                    dataContents[4].datacolor = colorCaution;
-                }else {
-                    dataContents[4].datacolor = newColor;
-                }
-            }else if(Alow ===  null && Ahigh === null && Wlow === null && Whigh !== null){
-                if(currentDate > timestamp_whigh ){
-                    dataContents[4].datacolor = colorCaution;
-                }else {
-                    dataContents[4].datacolor = newColor;
-                }
-            }else if(Alow !==  null && Ahigh !== null && Wlow === null && Whigh === null){
-                if(currentDate < timestamp_alow || currentDate > timestamp_ahigh){
-                    dataContents[4].datacolor = colorAlarm;
-                }else {
-                    dataContents[4].datacolor = newColor;
-                }
-            }else if(Alow !==  null && Ahigh === null && Wlow !== null && Whigh === null){
-                if(currentDate < timestamp_alow){
-                    dataContents[4].datacolor = colorAlarm;
-                }else if(currentDate< timestamp_wlow){
-                    dataContents[4].datacolor = colorCaution;
-                }else {
-                    dataContents[4].datacolor = newColor;
-                }
-            }else if(Alow ===  null && Ahigh !== null && Wlow === null && Whigh !== null){
-                if(currentDate > timestamp_ahigh){
-                    dataContents[4].datacolor = colorAlarm;
-                }else if(currentDate > timestamp_whigh){
-                    dataContents[4].datacolor = colorCaution;
-                }else {
-                    dataContents[4].datacolor = newColor;
-                }
-            }else if(Alow === null && Ahigh === null && Wlow !== null && Whigh !== null){
-                if(currentDate < timestamp_wlow || currentDate > timestamp_whigh){
-                    dataContents[4].datacolor = colorCaution;
-                }else {
-                    dataContents[4].datacolor = newColor;
-                }
-            }else {
-                dataContents[4].datacolor = newColor;
-            }
-        }else {
-            dataContents[4].datacolor = newColor;
         }
     }
 

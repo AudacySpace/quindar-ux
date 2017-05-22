@@ -11,7 +11,7 @@ app
 });
 
 app
-.controller('SatelliteCtrl',function ($scope, $element, dashboardService, solarService) {
+.controller('SatelliteCtrl',function ($scope, $element,$interval, dashboardService, solarService, datastatesService) {
 	var container = $element.parent()[0];
 	var width = $(container).width();
 	var height = $(container).height();
@@ -23,7 +23,23 @@ app
 	var loader = new THREE.AssimpJSONLoader();
 	var telemetry = dashboardService.telemetry;
 	var π = Math.PI,radians = π / 180,degrees = 180 / π;
-	
+	var colorAlarm = datastatesService.colorValues.alarmcolor; //Color red for alarm
+    var colorCaution = datastatesService.colorValues.cautioncolor;// Color orange for caution
+    var colorHealthy = datastatesService.colorValues.healthycolor;// Color green for healthy data
+    var colorStale = datastatesService.colorValues.stalecolor;// Color staleblue for stale data
+    var colorDisconnected = datastatesService.colorValues.disconnectedcolor;//Color grey for disconnected db
+    var colorDefault = datastatesService.colorValues.defaultcolor;//Color black for default color
+    var q1tempval = '';
+    var q2tempval = '';
+	var q3tempval = '';
+    var qctempval = '';
+	$scope.statusIcons = dashboardService.icons;
+	var dServiceObj = {};
+
+	$scope.$watch('statusIcons',function(newVal,oldVal){
+        	dServiceObj = newVal; 
+    },true);
+
 	$scope.widget.settings.quaternion = new Object();
 
 	var createRenderer = function(){
@@ -132,12 +148,13 @@ app
 		var solECEF = solarService.longLat2ECEF(solLongRad,solLatRad);
 		return solECEF;
 	}
-
+ 	var count =0;
 	var render = function(){
+
 		requestAnimationFrame(render);
 		controls.update();
 		if($scope.cube && $scope.widget.settings.vehicle){
-					
+		
 			//set quaternion values for rotation
 			$scope.cube.quaternion.x = telemetry[$scope.widget.settings.vehicle].q1.value;
 			$scope.cube.quaternion.y = telemetry[$scope.widget.settings.vehicle].q2.value;
@@ -181,6 +198,107 @@ app
 	 	$scope.camera.fov = fov * $scope.widget.settings.zoom;
 	 	$scope.camera.updateProjectionMatrix();
 	   	$scope.renderer.render($scope.scene,$scope.camera);	
+	}
+
+	updateColors();
+	$scope.interval = $interval(updateColors,1000);
+
+	function updateColors(){
+		if($scope.widget.settings.vehicle && $scope.cube){
+
+			var valTypeq1 = typeof telemetry[$scope.widget.settings.vehicle].q1.value;
+			var valTypeq2 = typeof telemetry[$scope.widget.settings.vehicle].q2.value;
+			var valTypeq3 = typeof telemetry[$scope.widget.settings.vehicle].q3.value;
+			var valTypeqc = typeof telemetry[$scope.widget.settings.vehicle].qc.value;	
+
+			//color of q1 
+			if(q1tempval === telemetry[$scope.widget.settings.vehicle].q1.value){
+				if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green" ){
+					$scope.widget.settings.colorq1 = colorHealthy;
+				}else {
+					$scope.widget.settings.colorq1 = colorStale;
+				}		
+			}else{
+				var colorValq1 =  datastatesService.getDataColor(telemetry[$scope.widget.settings.vehicle].q1.alarm_low,telemetry[$scope.widget.settings.vehicle].q1.alarm_high,telemetry[$scope.widget.settings.vehicle].q1.value,telemetry[$scope.widget.settings.vehicle].q1.warn_low,telemetry[$scope.widget.settings.vehicle].q1.warn_high,valTypeq1); 
+				if(colorValq1 === "red"){
+                    $scope.widget.settings.colorq1 = colorAlarm;  
+                }else if(colorValq1 === "orange"){
+                    $scope.widget.settings.colorq1 = colorCaution;
+                }else{
+                    $scope.widget.settings.colorq1 = colorHealthy;
+                }
+				q1tempval = telemetry[$scope.widget.settings.vehicle].q1.value;
+			}
+
+			//color of q2
+			if(q2tempval === telemetry[$scope.widget.settings.vehicle].q2.value){
+				if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green" ){
+					$scope.widget.settings.colorq2 = colorHealthy;
+				}else {
+					$scope.widget.settings.colorq2 = colorStale;
+				}	
+			}else{
+				var colorValq2 =  datastatesService.getDataColor(telemetry[$scope.widget.settings.vehicle].q2.alarm_low,telemetry[$scope.widget.settings.vehicle].q2.alarm_high,telemetry[$scope.widget.settings.vehicle].q2.value,telemetry[$scope.widget.settings.vehicle].q2.warn_low,telemetry[$scope.widget.settings.vehicle].q2.warn_high,valTypeq2);
+				if(colorValq2 === "red"){
+                    $scope.widget.settings.colorq2 = colorAlarm;  
+                }else if(colorValq2 === "orange"){
+                    $scope.widget.settings.colorq2 = colorCaution;
+                }else{
+                    $scope.widget.settings.colorq2 = colorHealthy;
+                }
+				q2tempval = telemetry[$scope.widget.settings.vehicle].q2.value;
+			}
+
+			//color of q3
+			if(q3tempval === telemetry[$scope.widget.settings.vehicle].q3.value){
+				if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green" ){
+					$scope.widget.settings.colorq3 = colorHealthy;
+				}else {
+					$scope.widget.settings.colorq3 = colorStale;
+				}
+			}else{
+				var colorValq3 =  datastatesService.getDataColor(telemetry[$scope.widget.settings.vehicle].q3.alarm_low,telemetry[$scope.widget.settings.vehicle].q3.alarm_high,telemetry[$scope.widget.settings.vehicle].q3.value,telemetry[$scope.widget.settings.vehicle].q3.warn_low,telemetry[$scope.widget.settings.vehicle].q3.warn_high,valTypeq3);
+				if(colorValq3 === "red"){
+                    $scope.widget.settings.colorq3 = colorAlarm;  
+                }else if(colorValq3 === "orange"){
+                    $scope.widget.settings.colorq3 = colorCaution;
+                }else{
+                    $scope.widget.settings.colorq3 = colorHealthy;
+                }
+				q3tempval = telemetry[$scope.widget.settings.vehicle].q3.value;
+			}
+
+			//color of qc
+			if(qctempval === telemetry[$scope.widget.settings.vehicle].qc.value){
+				if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green" ){
+					$scope.widget.settings.colorqc = colorHealthy;
+				}else {
+					$scope.widget.settings.colorqc = colorStale;
+				}
+				
+			}else{
+				var colorValqc =  datastatesService.getDataColor(telemetry[$scope.widget.settings.vehicle].qc.alarm_low,telemetry[$scope.widget.settings.vehicle].qc.alarm_high,telemetry[$scope.widget.settings.vehicle].qc.value,telemetry[$scope.widget.settings.vehicle].qc.warn_low,telemetry[$scope.widget.settings.vehicle].qc.warn_high,valTypeqc);		
+				if(colorValqc === "red"){
+                    $scope.widget.settings.colorqc = colorAlarm;  
+                }else if(colorValqc === "orange"){
+                    $scope.widget.settings.colorqc = colorCaution;
+                }else{
+                    $scope.widget.settings.colorqc = colorHealthy;
+                }
+				qctempval = telemetry[$scope.widget.settings.vehicle].qc.value;
+			}
+
+			if(dServiceObj.dIcon === "red"){
+				$scope.widget.settings.colorq1 = colorDisconnected;
+				$scope.widget.settings.quaternion.q1 = '-';
+				$scope.widget.settings.colorq2 = colorDisconnected;
+				$scope.widget.settings.quaternion.q2 = '-';
+				$scope.widget.settings.colorq3 = colorDisconnected;
+				$scope.widget.settings.quaternion.q3 = '-';
+				$scope.widget.settings.colorqc = colorDisconnected;
+				$scope.widget.settings.quaternion.qc = '-';	
+			}
+		}
 	}
 
 	$scope.cube = new THREE.Object3D();
@@ -227,4 +345,15 @@ app
 	$scope.$watch("modelUrl", function(newValue, oldValue) {
 		if (newValue != oldValue) loadModel(newValue);
 	});
+
+	$scope.$on("$destroy", 
+        function(event) {
+            $interval.cancel( $scope.interval );
+            q1tempval = '';
+    		q2tempval = '';
+			q3tempval = '';
+    		qctempval = '';
+        }
+    );
+
 })
