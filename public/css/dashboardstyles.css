@@ -11,7 +11,6 @@ body {
 .container {
     margin-left:0;
     margin-right:0;
-
 }
 #qwidgetMenu {
     list-style-type: none;
@@ -69,6 +68,12 @@ span#qwidgetPlus,i#g-track,i#t-table,i#s-table,i#d-table,i#l-plot,span#save-layo
 .navbar-form {
     margin-top: 0px;
 }
+img#main-img{
+    height:50px;
+}
+a#QRegular.navbar-brand{
+    padding:0px;
+}
 .navbar-brand>img {
     height: 100%;
     width: auto;
@@ -115,41 +120,33 @@ img.search-icon:focus{
 .time {
    padding-left: 10px;
    padding-right:10px;
-   color: #555;
+   color: rgba(0, 0, 0, 0.3);
    font-size: 12px;
 }
 
-#i5 {
-   position:absolute;
-   top:0px; /*10px*/
-   right:40px;/*54px*//*18px*/
-   height:65%;
-   margin-top:5px;
+#icon_1{
+   height:25px;
+   margin-top:13px;
+   margin-right:9px; 
 }
-#i6 {
-   position:absolute;
-   top:0px; /* 10px */
-   right:25px; /* -30px*//*2px*/
-   height:65%;
-   margin-top:5px;
+#icon_2 {
+    height:25px;
+    margin-top:13px;
+    margin-right:9px;
 }
-#i7{
-   position:absolute;
-   top: 0px; /*10px*/
-   right: 10px;/*-7px*//*-14px*/
-   height: 65%;
-   margin-top:5px;
+#icon_3{
+    height:25px;
+    margin-top:13px;
+    margin-right:9px;
 }
-#i8{
-   position:absolute;
-   top: 0px; /* 10px*/
-   right: -5px;/*16px*/ /*-30px*/
-   height: 65%;
-   margin-top:5px;
+#icon_4{
+    height:25px;
+    margin-top:13px;
+    margin-right:0px;
 }
 #txt.clock{
-   top:10px;/*0px*/
-   right:-40px; /*-100px*/
+   top:10px;
+   right:0px; /*-19px*/
    font-size:22px;
 }
 a#username.dropdown-toggle {
@@ -176,6 +173,27 @@ a#username.dropdown-toggle {
 #mini-logout{
    display:none;
 }
+#line1{
+    width:0px;
+    height:10px;
+    top:-75px;
+    right:133px;
+    position:absolute;
+}
+#line2{
+    width:0px;
+    height:10px;
+    top:-75px;
+    right:99px;
+    position:absolute;
+}
+#line3{
+    width:0px;
+    height:10px;
+    top:-75px;
+    right:64px;
+    position:absolute;
+}
 @media (min-width: 768px){
 .navbar-nav>li>a {
     margin-top: 5px;
@@ -189,7 +207,16 @@ a#username.dropdown-toggle {
         display:none;
     }
     #QBlack {
+        padding-left:10px;
         display:inline-block;
+    }
+    img#main-img{
+        height:33px;
+    }
+    .nav>li>a {
+        position: relative;
+        display: block;
+        padding: 6px 6px;
     }
     a#addwidget, a#save-grid, a#load-grid, a#clear-grid, a#addGround{
         font-size:12px;
@@ -252,7 +279,7 @@ a#username.dropdown-toggle {
         position:relative;
         top:0;
         right:12px;
-        margin-top: 10px ;
+        margin-top: 13px ;
         margin-bottom:10px;
     }
     #configmenu {
@@ -262,29 +289,51 @@ a#username.dropdown-toggle {
     .rightsidenav a {
         font-size: 14px;
     }
-    #i5 {
+    #icon_1 {
         position: absolute;
-        top: -43px;
-        right: 111px;
-        height: 55%;
+        top: -63px;
+        right: 80px;
+        height:17px;
     }
-    #i6 {
+
+    #icon_2 {
         position: absolute;
-        top: -83px;
-        right: 86px;
-        height: 55%;
+        top: -63px;
+        right: 53px;
+        height:17px;
     }
-    #i7 {
+    #icon_3 {
         position:absolute;
-        top: -122px;
-        right: 61px;
-        height: 55%;
+        top: -63px;
+        right: 26px;
+        height:17px;
     }
-    #i8 {
+    #icon_4 {
         position: absolute;
-        top: -162px;
-        right: 36px;
-        height: 55%;
+        top: -63px;
+        right: 10px;
+        height:17px;
+    }
+    #line1{
+        width:0px;
+        height:10px;
+        top:-127px;
+        right:109px;
+        position:absolute;
+    }
+    #line2{
+        width:0px;
+        height:10px;
+        top:-127px;
+        right:82px;
+        position:absolute;
+    }
+    #line3{
+        width:0px;
+        height:10px;
+        top:-127px;
+        right:56px;
+        position:absolute;
     } 
     li.open {
         width:75%;
@@ -294,9 +343,9 @@ a#username.dropdown-toggle {
     }
     li#txt.clock{
         position: absolute;
-        top: -206px;
-        right: -86px;
-        font-size: 12px;
+        top: -62px;
+        right: -82px;
+        font-size: 10px;
     }
     .container-fluid{
         width:100%;
