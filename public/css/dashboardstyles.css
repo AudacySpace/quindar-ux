@@ -157,24 +157,12 @@ a#username.dropdown-toggle {
     margin-top: 0px;
     padding-bottom: 0px;
 }
-#user-name {
-    display:none;
-}
 #configmenu, #configmenu:hover {
     font-size: 20px;
     color: white;
 }
 .logout-bar{
     min-width: 128px;
-}
-#user-name {
-    display:none;
-    margin:10px 35px;
-    color:#07D1EA;
-    font-size:24px;
-}
-#mini-logout{
-    display:none;
 }
 #callsign{
     display: block;
@@ -236,15 +224,6 @@ a#username.dropdown-toggle {
         margin:0;
         width:20px;
     }
-    #user-name {
-        display:block;
-        margin:10px 35px;
-        color:#07D1EA;
-        font-size:18px;
-    }
-    #mini-logout{
-        display:block;
-    }
     .navbar {
         height:60px;
     }
@@ -280,8 +259,6 @@ a#username.dropdown-toggle {
         display:inline;
     }
     a#username.dropdown-toggle {
-        font-size:75%;
-        color:black;
         display:none;
     }
     a#add-widget {
@@ -365,7 +342,17 @@ a#username.dropdown-toggle {
         margin:0;
     }
     #callsign{
-      display: none;
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 736px) and (max-width: 768px) {
+    a#username.dropdown-toggle {
+        display:none;
+    }
+
+    #callsign{
+        display: none;
     }
 }   
 
