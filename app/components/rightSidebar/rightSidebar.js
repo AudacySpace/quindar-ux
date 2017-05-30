@@ -1,10 +1,10 @@
 app
 .component('rightSidebar', {
   	templateUrl: "./components/rightSidebar/right_sidebar.html",
-  	controller: function(gridService, dashboardService, prompt, $window, $mdSidenav, ModalService) {
+  	controller: function(gridService, dashboardService, prompt, $window, $mdSidenav, ModalService, userService) {
         var vm = this;
-  		vm.name = dashboardService.name;
-        vm.email = dashboardService.email;
+  		vm.name = userService.getUserName();
+        vm.email = userService.getUserEmail();
         var dashboard = gridService.getDashboard();
 
         vm.addWidget = function() {

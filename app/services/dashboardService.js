@@ -189,8 +189,6 @@ app
 	return {
         locks : locks,
         telemetry : telemetry,
-		name : username,
-		email : usermail,
         getLock : getLock,
         setLeftLock : setLeftLock,
         setRightLock : setRightLock,
