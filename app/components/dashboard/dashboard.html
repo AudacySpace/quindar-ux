@@ -30,9 +30,12 @@
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li>
-                                <a class="dropdown-toggle"  id="username" data-toggle="dropdown" href="#">{{ $ctrl.name }}</a>
+                                <a class="dropdown-toggle" id="username" data-toggle="dropdown" href="#"
+                                >{{ $ctrl.name }}</a>
+                                <small id="callsign"> {{ $ctrl.callsign }} </small>
                                 <ul class="dropdown-menu logout-bar">
                                     <li ><a href="/logout">Logout</a></li>
+                                    <li ><a href="#" ng-click="$ctrl.showSettings()">Settings</a></li>
                                 </ul>
                             </li>
                             <li id="cfgmenu">

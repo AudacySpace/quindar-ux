@@ -190,6 +190,28 @@ var ProxyStatus = require('./models/proxystatus');
             res.send(doc);
         });
     }); 
+
+    //set user's current role in the database
+    app.post('/setUserRole',function(req,res){
+        var email = req.body.email;
+        var role = req.body.role;
+
+        //update the current role of the user
+        User.findOne({ 'google.email' : email }, function(err, user) {
+            if(err){
+                console.log(err);
+            }
+
+            user.currentRole = role;
+
+            user.save(function(err) {
+                if (err) throw err;
+
+                res.send(user);
+            });
+        });
+
+    });
    
 };
    

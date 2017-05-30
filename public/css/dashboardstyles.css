@@ -82,18 +82,18 @@ a#QRegular.navbar-brand{
     padding-left:15px;
 }
 .navbar-brand {
-   padding: 5px 5px;
+    padding: 5px 5px;
 }
 #add-widget {
-   background-color: #07D1EA;
-   color: white;
-   margin-right:15px;
+    background-color: #07D1EA;
+    color: white;
+    margin-right:15px;
 }
 .status-icon {
-   float: left;
-   height: 50px;
-   padding: 10px 10px !important;
-   font-size: 18px;
+    float: left;
+    height: 50px;
+    padding: 10px 10px !important;
+    font-size: 18px;
 }
 .status-icon>img {
    height: 100%;
@@ -101,21 +101,21 @@ a#QRegular.navbar-brand{
    display: inline-block;
 }
 img#main-img:focus{
-  outline:auto 0px;
+    outline:auto 0px;
 }
 img.search-icon:focus{
-  outline:auto 0px;
+    outline:auto 0px;
 }
 .status-bar {
-   padding-left:10px;
-   padding-right:10px;
+    padding-left:10px;
+    padding-right:10px;
 } 
 .navbar-nav>li.clock {
 /*   padding-top: 15px;
    padding-bottom: 15px;*/
-   margin-top:5px;
-   line-height:20px;
-   font-size: 24px;
+    margin-top:5px;
+    line-height:20px;
+    font-size: 24px;
 }
 .time {
    padding-left: 10px;
@@ -150,28 +150,38 @@ img.search-icon:focus{
    font-size:22px;
 }
 a#username.dropdown-toggle {
-   font-size:18px;/*22px*/
-   color:black;
-   display:inline-block;
+    font-size:18px;/*22px*/
+    color:black;
+    display:inline-block;
+    background-color: white;
+    margin-top: 0px;
+    padding-bottom: 0px;
 }
 #user-name {
-   display:none;
+    display:none;
 }
 #configmenu, #configmenu:hover {
-   font-size: 20px;
-   color: white;
+    font-size: 20px;
+    color: white;
 }
 .logout-bar{
-   min-width: 128px;
+    min-width: 128px;
 }
 #user-name {
-   display:none;
-   margin:10px 35px;
-   color:#07D1EA;
-   font-size:24px;
+    display:none;
+    margin:10px 35px;
+    color:#07D1EA;
+    font-size:24px;
 }
 #mini-logout{
-   display:none;
+    display:none;
+}
+#callsign{
+    display: block;
+    color: black;
+    text-align: right;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 #line1{
     width:0px;
@@ -197,8 +207,8 @@ a#username.dropdown-toggle {
 @media (min-width: 768px){
 .navbar-nav>li>a {
     margin-top: 5px;
-     padding-top: 10px; 
-     padding-bottom: 10px; 
+    padding-top: 10px; 
+    padding-bottom: 10px; 
 }
 }
 @media only screen and (max-width: 736px) {
@@ -353,6 +363,9 @@ a#username.dropdown-toggle {
     }
     div.navbar-header{
         margin:0;
+    }
+    #callsign{
+      display: none;
     }
 }   
 

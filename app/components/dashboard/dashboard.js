@@ -4,7 +4,7 @@ angular.module('app')
   	scope: true,
    	bindToController: true,
   	templateUrl: "./components/dashboard/dashboard.html",
-  	controller: function(dashboardService, $interval, $mdSidenav,$window) {
+  	controller: function(dashboardService, $interval, $mdSidenav,$window, userService, $uibModal) {
   		var vm = this;
 
 		vm.clock = {
@@ -12,8 +12,9 @@ angular.module('app')
 		}
 		vm.locks = dashboardService.getLock();
 		vm.telemetry = dashboardService.telemetry;
-  		vm.name = dashboardService.name;
-  		vm.email = dashboardService.email;
+		vm.name = userService.getUserName();
+		vm.email = userService.getUserEmail();
+		vm.callsign = userService.getCurrentCallSign();
 
   		vm.interval = $interval(updateClock, 500);
 
@@ -39,5 +40,45 @@ angular.module('app')
 	    	}
 	    }
 
+	    vm.showSettings = function(){
+			$uibModal.open({
+				templateUrl: './components/dashboard/roleModal.html',
+				controller: 'modalCtrl',
+				controllerAs: '$ctrl'
+			}).result.then(function(response){
+				if(response) {
+					vm.callsign = response.callsign;
+				}
+			},
+			function () {
+				console.log('Modal dismissed');
+      		});
+	    }
 	}
 })
+
+app.controller('modalCtrl', function($uibModalInstance, userService) {
+	var $ctrl = this;
+	var cRole = userService.getCurrentRole();
+
+	$ctrl.close = function() {
+		$uibModalInstance.dismiss('cancel'); 
+	};
+
+	$ctrl.role = {
+		currentRole : cRole
+	};
+
+	$ctrl.roles = userService.getAllowedRoles();
+
+	$ctrl.updateRole = function(){
+        userService.setCurrentRole($ctrl.role.currentRole)
+        .then(function(response) {
+        	if(response.status == 200){
+                alert("User's current role updated");
+                $uibModalInstance.close($ctrl.role.currentRole);
+       	    }
+        })
+    }
+
+});

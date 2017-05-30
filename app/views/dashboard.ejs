@@ -69,6 +69,7 @@
     <script src="/services/sidebarService.js"></script>
     <script src="/services/solarService.js"></script>
     <script src="/services/datastatesService.js"></script>
+    <script src="/services/userService.js"></script>
 	
     <!--directives -->
     <script src="/directives/widget.js"></script>
@@ -86,15 +87,11 @@
 
     <!-- script to get user details from backend -->
     <script>
-        var username = "<%= user.google.name %>";
-        var usermail = "<%= user.google.email %>";
-
-
+        var user = <%- JSON.stringify(user) %>;
     </script>
 </head>
 
 <body ng-app="app">
-    
     <dashboard></dashboard>
 
     <!-- jQuery -->
