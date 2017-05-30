@@ -1,0 +1,27 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="$ctrl.close()">
+        <span aria-hidden="true">×</span>
+    </button>
+    <h4 class="modal-title" id="myModalLabel">Switch Role</h4>
+</div>
+<div class="modal-body" style="text-align:center">
+    <div  ng-repeat="aRole in $ctrl.roles">
+        <div class="row" ng-if="$even">
+            <div class="col-xs-5">
+                <label class="radio">
+                    <input type="radio" ng-model="$ctrl.role.currentRole" ng-value="$ctrl.roles[$index]"> {{ $ctrl.roles[$index].name }}
+                </label>
+            </div>
+            <div class="col-xs-5" ng-show="roles[$index+1]">
+                <label class="radio">
+                    <input type="radio" ng-model="$ctrl.role.currentRole" ng-value="$ctrl.roles[$index+1]"> {{ $ctrl.roles[$index+1].name }} 
+                </label>                            
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="$ctrl.close()">Close</button>
+    <button type="button" class="btn btn-primary" ng-click="$ctrl.updateRole()">Save</button>
+</div>
+
