@@ -45,7 +45,7 @@ span#user-admin,i#server-admin,i#docs {
     top: 0px;
     right: 8px;
 }
-span#qwidgetPlus,i#g-track,i#t-table,i#s-table,i#d-table,i#l-plot,span#save-layout,span#load-layout,span#clear-layout {
+span#qwidgetPlus,i#g-track,i#t-table,i#s-table,i#d-table,i#l-plot,i#clock,i#d-log,span#save-layout,span#load-layout,span#clear-layout {
     position: relative;
     top: 0px;
     right: 5px;
@@ -111,7 +111,7 @@ img.search-icon:focus{
    padding-right:10px;
 } 
 .navbar-nav>li.clock {
-/*   padding-top: 15px;
+/* padding-top: 15px;
    padding-bottom: 15px;*/
    margin-top:5px;
    line-height:20px;

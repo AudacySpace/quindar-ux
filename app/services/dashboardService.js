@@ -33,7 +33,7 @@ app
                     timestamp_wlow.value  = telemetry[item].timestamp.warn_low;
                     timestamp_whigh.value  = telemetry[item].timestamp.warn_high;
                 }
-                if(Object.keys(response.data[item]).length > 0){//if data is not empty
+                if(isEmpty(response.data) === false){//if data is not empty
                         if(prevId === telemetry[item]._id){ //  if proxy application is not receiving any data from ground station
                             icons.sIcon = "grey";
                             icons.gIcon = "red";
@@ -185,7 +185,16 @@ app
             });
         },5000);
     }
-    
+
+    function isEmpty(myObject) {
+        for(var key in myObject) {
+            if (myObject.hasOwnProperty(key)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 	return {
         locks : locks,
         telemetry : telemetry,
