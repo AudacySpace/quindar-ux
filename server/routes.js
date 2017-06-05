@@ -10,6 +10,8 @@ var Config = require('./models/configuration');
 
 var ProxyStatus = require('./models/proxystatus');
 
+var configRole = require('./config/role');
+
 // normal routes ===============================================================
 
     // show the home page (will also have our login links)
@@ -211,6 +213,88 @@ var ProxyStatus = require('./models/proxystatus');
             });
         });
 
+    });
+
+    //Get Users list
+    app.get('/getUsers', function(req, res){
+        var allUsers = [];
+
+        User.find( {}, { google : 1, allowedRoles : 1, currentRole : 1 }, function(err, users) {
+            if(err){ 
+                console.log(err);
+            }
+
+            for(var i=0; i<users.length; i++){
+                allUsers[i] = new Object();
+                allUsers[i].google = users[i].google;
+                allUsers[i].currentRole = users[i].currentRole;
+                var aRoles = {};
+
+                var roles = users[i].allowedRoles;
+
+                for(var j=0; j<roles.length; j++){
+                    aRoles[roles[j].callsign] = 1;
+                }
+                allUsers[i].allowedRoles = aRoles;
+            }
+
+            res.send(allUsers);
+        });
+    });
+
+    //get roles configured in server code
+    app.get('/getRoles', function(req,res){
+        res.send(configRole);
+    });
+
+    //set user's allowed roles in the database
+    app.post('/setAllowedRoles',function(req,res){
+        var email = req.body.email;
+        var roles = req.body.roles;
+
+        //update allowed roles of the user
+        User.findOne({ 'google.email' : email }, function(err, user) {
+            if(err){
+                console.log(err);
+            }
+
+            user.allowedRoles = roles;
+
+            user.save(function(err) {
+                if (err) throw err;
+
+                res.send(user);
+            });
+        });
+
+    });
+
+    //get current role of the user
+    app.get('/getCurrentRole', function(req,res){
+        var email = req.query.email;
+
+        //update the current role of the user
+        User.findOne({ 'google.email' : email }, { currentRole : 1 }, function(err, user) {
+            if(err){
+                console.log(err);
+            }
+
+            res.send(user.currentRole);
+        });
+    });
+
+    //get allowed roles of the user
+    app.get('/getAllowedRoles', function(req,res){
+        var email = req.query.email;
+
+        //update allowed roles of the user
+        User.findOne({ 'google.email' : email }, { allowedRoles : 1 }, function(err, user) {
+            if(err){
+                console.log(err);
+            }
+
+            res.send(user.allowedRoles);
+        });
     });
    
 };

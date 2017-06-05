@@ -1,0 +1,36 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="$ctrl.close()">
+        <span aria-hidden="true">×</span>
+    </button>
+    <h4 class="modal-title" id="myModalLabel">User Administration</h4>
+</div>
+<div class="modal-body">
+    <form class="form-horizontal">
+        <div class="form-group">
+            <label class="control-label col-sm-3">Name of the User</label>
+            <div class="col-sm-7">
+                <ui-select ng-model="$ctrl.selected.user" theme="bootstrap">
+                    <ui-select-match placeholder="Select User">{{$select.selected.google.name}}</ui-select-match>
+                    <ui-select-choices repeat="user in $ctrl.users">
+                        <div ng-bind="user.google.name"></div>
+                        <small ng-bind="user.google.email"></small>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-3">Allowed Roles</label>
+            <div class="col-sm-7">
+                <div class="checkbox"  ng-repeat="role in $ctrl.roles">
+                    <label>
+                        <input type="checkbox" ng-model="role.checked"> {{ role.name}}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="$ctrl.close()">Close</button>
+    <button type="button" class="btn btn-primary" ng-click="$ctrl.save()">Save</button>
+</div>

@@ -1,5 +1,8 @@
 app
 .factory('userService', ['$http', function($http) { 
+    var userRole = {
+        cRole : user.currentRole
+    };
 
     function getUserName() {
         if(user.google && user.google.name) {
@@ -26,22 +29,23 @@ app
     }
 
     function getCurrentRole() {
-        if(user.currentRole) {
-            return user.currentRole;
-        } else {
-            return "";
-        }
+        return $http({
+            url: "/getCurrentRole", 
+            method: "GET",
+            params: {"email": user.google.email}
+        });
     }
 
     function getAllowedRoles() {
-        if(user.allowedRoles) {
-            return user.allowedRoles;
-        } else {
-            return "";
-        }        
+        return $http({
+            url: "/getAllowedRoles", 
+            method: "GET",
+            params: {"email": user.google.email}
+        });      
     }
 
     function setCurrentRole(role) {
+        userRole.cRole = role;
         var email = getUserEmail();
         return $http({
             url: "/setUserRole", 
@@ -49,13 +53,39 @@ app
             data: {"email" : email, "role" : role}
         });
     }
+
+    function getUsers() {
+        return $http({
+                url: "/getUsers", 
+                method: "GET"
+            });
+    }
+
+    function getRoles() {
+        return $http({
+                url: "/getRoles", 
+                method: "GET"
+            });
+    }
+
+    function setAllowedRoles(user, roles) {
+        return $http({
+            url: "/setAllowedRoles", 
+            method: "POST",
+            data: {"email" : user.google.email, "roles" : roles}
+        });
+    }
     
 	return {
+        userRole : userRole,
         getUserName : getUserName,
         getUserEmail : getUserEmail,
         getCurrentCallSign : getCurrentCallSign,
         getCurrentRole : getCurrentRole,
         getAllowedRoles : getAllowedRoles,
-        setCurrentRole : setCurrentRole
+        setCurrentRole : setCurrentRole,
+        getUsers : getUsers,
+        getRoles : getRoles,
+        setAllowedRoles : setAllowedRoles
 	}
 }]);
