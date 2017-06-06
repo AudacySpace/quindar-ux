@@ -213,10 +213,10 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
         cell.checked = "true";
     }
 
-    updateRow();
-    $scope.interval = $interval(updateRow, 500);
+    $scope.interval = $interval(updateRow, 500, 0, false);   
 
     function updateRow() {
+        console.log("hi");
         for (var i=0; i<$scope.table.rows.length; i++){
             tempRow = $scope.table.rows[i];
             if(tempRow.vehicle && tempRow.id) {
@@ -243,7 +243,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
                         }else {
                            tempRow.contents[4].datacolor = colorStale;   
                         }
-                        tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
+                        tempRow.contents[4].value = telemetry[tempRow.vehicle][tempRow.id].value.toFixed(4); 
                     }else {
                        //new data
                         var colorVal = datastatesService.getDataColor(telemetry[tempRow.vehicle][tempRow.id].alarm_low,telemetry[tempRow.vehicle][tempRow.id].alarm_high,telemetry[tempRow.vehicle][tempRow.id].value,telemetry[tempRow.vehicle][tempRow.id].warn_low,telemetry[tempRow.vehicle][tempRow.id].warn_high,valType); 
@@ -254,7 +254,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
                         }else{
                             tempRow.contents[4].datacolor = colorHealthy;
                         }
-                        tempRow.contents[4].value = Math.round(telemetry[tempRow.vehicle][tempRow.id].value * 10000)/10000; 
+                        tempRow.contents[4].value = telemetry[tempRow.vehicle][tempRow.id].value.toFixed(4); 
                         tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value;
                     }
                 } else {
