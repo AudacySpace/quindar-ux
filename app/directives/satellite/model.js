@@ -200,8 +200,7 @@ app
 	   	$scope.renderer.render($scope.scene,$scope.camera);	
 	}
 
-	updateColors();
-	$scope.interval = $interval(updateColors,500);
+	$scope.interval = $interval(updateColors, 500, 0, false); 
 
 	function updateColors(){
 		if($scope.widget.settings.vehicle && $scope.cube){

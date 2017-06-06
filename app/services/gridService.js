@@ -154,7 +154,7 @@ app
         directiveSettings: "clocksettings",
         id: "clock",
         icon: {
-            id: "l-plot",
+            id: "clock",
             type: "fa-clock-o"
         },
         main: true,
@@ -163,7 +163,25 @@ app
         },
         saveLoad: false,
         delete: false
-    }];
+    },
+    {
+        sizeY: 3,
+        sizeX: 5,
+        name: "Data Log",
+        directive: "datalog",
+        directiveSettings: "datalogsettings",
+        id: "datalog",
+        icon: {
+            id: "d-log",
+            type: "fa-list-alt"
+        },
+        main: true,
+        settings: {
+            active: false
+        },
+        saveLoad: false,
+        delete: false
+     }];
 
     var dashboards = {
         'Home': {
