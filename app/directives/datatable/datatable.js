@@ -216,7 +216,6 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
     $scope.interval = $interval(updateRow, 500, 0, false);   
 
     function updateRow() {
-        console.log("hi");
         for (var i=0; i<$scope.table.rows.length; i++){
             tempRow = $scope.table.rows[i];
             if(tempRow.vehicle && tempRow.id) {
