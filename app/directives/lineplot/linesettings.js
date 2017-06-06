@@ -33,9 +33,13 @@ app.controller('LineSettingsCtrl',
         $scope.widget.settings.data = {
             value : "",
             vehicles : []
-        }
+        };
 
-        var previousValue = $scope.widget.settings.data.value;
+        $scope.data = {
+            value : ""
+        };
+
+        var previousValue = $scope.data.value;
         var previousVehicles = angular.copy($scope.checkedVehicles);
 
         $scope.getTelemetrydata = function(){
@@ -63,7 +67,7 @@ app.controller('LineSettingsCtrl',
 
             if($scope.vehicleInfo.vehicle !== "" && $scope.vehicleInfo.id !== "") {
                 if($scope.vehicleInfo.id !== "timestamp"){
-                    $scope.widget.settings.data.value = $scope.vehicleInfo.id;
+                    $scope.data.value = $scope.vehicleInfo.id;
                     if ($window.innerWidth >= 1400){
                         $scope.lock.lockLeft = !$scope.lock.lockLeft;
                         dashboardService.setLeftLock($scope.lock.lockLeft);
@@ -80,10 +84,12 @@ app.controller('LineSettingsCtrl',
         // Save
         $scope.saveWidget = function(widget){
             var count = 0;
-            if(widget.settings.data.value) {
+            if($scope.data.value) {
                 if(widget.settings.data.vehicles.length != 0) {
                     widget.settings.data.vehicles = [];
                 }
+
+                widget.settings.data.value = $scope.data.value;
 
                 for(var i=0; i<$scope.checkedVehicles.length; i++){
                     if($scope.checkedVehicles[i].checked === true){
@@ -101,7 +107,7 @@ app.controller('LineSettingsCtrl',
                     widget.main = true;
                     widget.settings.active = false;
                     previousVehicles = angular.copy($scope.checkedVehicles);
-                    previousValue = $scope.widget.settings.data.value;
+                    previousValue = $scope.data.value;
                 } else {
                     alert("Please select atleast one vehicle and save!");
                 }
@@ -112,7 +118,7 @@ app.controller('LineSettingsCtrl',
         $scope.closeWidget = function(widget){
             widget.main = true;
             widget.settings.active = false;
-            $scope.widget.settings.data.value = previousValue;
+            $scope.data.value = previousValue;
             $scope.checkedVehicles = previousVehicles;
         }
         

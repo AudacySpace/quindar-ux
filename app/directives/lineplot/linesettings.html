@@ -8,12 +8,12 @@
   				</div>
 				<div class="row settingsspace" style="display: table"></div>
 				<div class="input-group">
-					<input type="text" class="form-control" style="border-radius:0px" ng-click="getTelemetrydata()" value="{{widget.settings.data.value}}" placeholder="Click for data" readonly="readonly">
+					<input type="text" class="form-control" style="border-radius:0px" ng-click="getTelemetrydata()" value="{{data.value}}" placeholder="Click for data" readonly="readonly">
             		<span class="input-group-btn">
         				<button class="btn btn-secondary applybtn" type="button" ng-click="getValue()">Apply</button>
       				</span>
     			</div>
-    			<span ng-hide="widget.settings.data.value"> Required </span>
+    			<span ng-hide="data.value"> Required </span>
   			</div>
   			<div class="col-sm-1"></div>
 			<div class="col-sm-2" style="display: table-cell; float:none"></div>
