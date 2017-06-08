@@ -52,17 +52,12 @@ app.directive('datalogsettings', function() {
             $scope.vehicleInfo = sidebarService.getVehicleInfo();
 
             if($scope.vehicleInfo.vehicle !== "" && $scope.vehicleInfo.id !== "") {
-                if($scope.vehicleInfo.id !== "timestamp"){
                     $scope.data.value = $scope.vehicleInfo.id;
                     $scope.data.vehicle = $scope.vehicleInfo.vehicle;
                     if ($window.innerWidth >= 1400){
                         $scope.lock.lockLeft = !$scope.lock.lockLeft;
                         dashboardService.setLeftLock($scope.lock.lockLeft);
                     }
-                }
-                else{
-                    alert("Please select data value other than timestamp!");
-                }
             } else {
                 alert("Vehicle data not set. Please select from Data Menu");
             }

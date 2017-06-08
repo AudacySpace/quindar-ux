@@ -114,3 +114,7 @@ button.btn.gtbtns:focus{
 .covspan{
     margin-right:16px
 }
+.gttableheader{
+    background-color:#b5b5b5;
+    color:#000;
+}
