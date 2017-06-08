@@ -118,3 +118,9 @@ div.settingsMenu,div.deldatatable,div.saveloaddatatable{
     position: relative ;
 }
 
+@media only screen and (max-width: 599px) {
+    div.box-content {
+        height: 200px;
+    }
+}
+

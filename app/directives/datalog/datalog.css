@@ -29,35 +29,11 @@
     #datalogtable {
         max-height: 200px;
     }
-/*    #axis {
-        right: 20px;
-        top: initial;
-        font-size: 8px;
-        width:25%;
-    }
-    #vehicle {
-        top: initial;
-        left: initial;
-        font-size: 8px;
-        width:35%;
-    }*/
 }
 
 @media only screen and (min-width: 600px) and (max-width: 768px) {
     #datalogtable {
         max-height: 250px;
     }
-/*    #axis {
-        right: 0px;
-        top: initial;
-        font-size: 8px;
-        width:30%;
-    }
-    #vehicle {
-        top: initial;
-        left: initial;
-        font-size: 8px;
-        width:35%;
-    }*/
 }
 
