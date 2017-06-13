@@ -5,7 +5,7 @@ app
         var vm = this;
   		vm.name = userService.getUserName();
         vm.email = userService.getUserEmail();
-        vm.userRole = userService.userRole;
+        vm.userRole = getUserRole();
         var dashboard = gridService.getDashboard();
 
         vm.addWidget = function() {
@@ -111,6 +111,19 @@ app
                 dashboardService.setRightLock(locks.lockRight); 
             }
 		}
+
+        function getUserRole() {
+            if ($window.innerWidth <= 768){
+                var role = {
+                    "name": "Observer",
+                    "callsign": "VIP"
+                };
+                return role;
+            } else {
+                var role = userService.userRole;
+                return role.cRole;
+            }
+        }
     
 	}
 })
