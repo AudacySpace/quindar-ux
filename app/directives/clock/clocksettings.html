@@ -1,4 +1,4 @@
-<div class="saveloaddatatable">
+<div class="saveloaddatatable mainclk">
 	<div class="settingstop">
         <div class="row settingsrightcol" style="display: table; height:23.33%;">
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
@@ -8,7 +8,7 @@
                 </div>
                 <div class="row settingsspace" style="display: table"></div>
                 <div>
-                	<ui-select tagging ng-model="selected.type" theme="bootstrap">
+                	<ui-select tagging ng-model="selected.type" theme="bootstrap" >
         				<ui-select-match placeholder="Select Type">{{$select.selected.value}}</ui-select-match>
         				<ui-select-choices repeat="type in types">
             				<div ng-bind="type.value | highlight: $select.search"></div>
@@ -83,4 +83,59 @@
 			</div>	
 		</div>		
 	</div>
+</div>
+
+<div class="container mbl-clk">
+<form class="form-inline">
+  <label for="inlineFormInput" style="font-size:10px">Select Type</label>
+<div style="border-radius:0px">
+                    <ui-select tagging ng-model="selected.type" theme="bootstrap">
+                        <ui-select-match placeholder="Select Type">{{$select.selected.value}}</ui-select-match>
+                        <ui-select-choices repeat="type in types">
+                            <div ng-bind="type.value | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                <!--     <span ng-hide="selected.type.value == 'Clock' || selected.type.value == 'Timer'"> Required </span> -->
+                </div>
+
+                    <label for="Timezone" ng-show="selected.type.value == 'Clock'" style="font-size: 10px">Select Timezone</label>
+                    <label for="Name" ng-show="selected.type.value == 'Timer'" style="font-size: 10px">Name</label>
+                <div ng-show="selected.type.value == 'Clock'">
+                    <ui-select tagging ng-model="selected.timezone" theme="bootstrap">
+                        <ui-select-match placeholder="Select Timezone">{{$select.selected.value}}</ui-select-match>
+                        <ui-select-choices repeat="timezone in timezones">
+                            <div ng-bind="timezone.value | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                    <!-- <span ng-hide="selected.timezone"> Required </span> -->
+                </div>
+                                <div ng-show="selected.type.value == 'Timer'">
+                    <input type="text" class="form-control save-widget-styles" id="inlineFormInput" placeholder="Enter Name" ng-model="name" maxlength="20" style="width:100%">
+                  <!--   <span ng-hide="name"> Required </span> -->
+                </div>
+                 <label for="Reference Time" style="font-size: 10px" ng-show="selected.type.value == 'Timer'">Reference Time</label>
+                 <div ng-show="selected.type.value == 'Timer'">
+                <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="#">
+                        <div class="input-group setbtn">
+                            <input type="text" class="form-control" data-ng-model="reference" style="height:25px;border-radius:0px">
+                            <span class="input-group-addon" style="padding:3px;border-radius:0px">
+                                <img class="linerange" ng-src="/icons/line-plot-widget/aud_lineplot_customrange.svg" style="height:15px;border-radius:0px">
+                            </span>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="calendar">
+                        <datetimepicker data-ng-model="reference" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
+                    </ul>
+                  <!--   <span ng-hide="name"> Required </span> -->
+                </div>
+
+
+
+  <div style="width:101%">
+      <hr style="width:98%;margin-bottom:5px">
+  </div>
+
+                    <button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="saveSettings(widget)" style="font-size:10px">ADD</button>
+                    <button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="closeSettings(widget)" style="font-size:10px">CLOSE</button> 
+</form>
 </div>

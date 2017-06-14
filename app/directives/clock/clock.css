@@ -43,3 +43,54 @@ md-icon.delta {
 	top: initial;
     left: initial;
 }
+
+.mbl-clk {
+    display:none;
+}
+
+@media only screen and (max-width: 599px) {
+    .mbl-clk {
+       display:block;
+    }
+    .mainclk{
+        display:none;
+    }
+/*    .container {
+    padding-top:15px;
+    padding-bottom:15px;
+}*/
+/*hr{
+    margin-top:30px;
+    margin-bottom:10px;
+}*/
+span.btn.btn-default.form-control.ui-select-toggle{
+    outline: 0;
+    height: 25px;
+    line-height: 1.9em;
+    padding: 2px 123px 2px 6px;
+    font-size: 10px;
+    /*width: 70%;*/
+}
+.ui-select-bootstrap>input.ui-select-search.form-control,#inlineFormInput {
+    /* border-radius: 4px 0 0 4px; */
+    height: 25px;
+    padding: 2px 44px 2px 6px;
+    width: 76%;
+    font-size: 10px;
+    line-height: 1.9em;
+    border-radius:0px;
+}
+
+.ui-select-bootstrap>.ui-select-choices, .ui-select-bootstrap>.ui-select-no-choice {
+    /*width: 130%;*/
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+    margin-top: -1px;
+   /* width: 129%;*/
+    border-radius: 0px;
+    font-size: 10px;
+}
+
+
+}
