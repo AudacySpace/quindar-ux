@@ -12,13 +12,13 @@ body {
     margin-left:0;
     margin-right:0;
 }
-#qwidgetMenu {
+/*#qwidgetMenu {
     list-style-type: none;
     padding-left:0px;
     border-top:1px solid #ccc;
     border-bottom:1px solid #ccc;
-}
-#widgettops {
+}*/
+/*#widgettops {
     list-style-type: none;
     padding-left:0px;
     border-top:1px solid #242833;
@@ -26,10 +26,10 @@ body {
 }
 #widgetops ul {
     list-style-type: none;
-}
-#usermail{
+}*/
+/*#usermail{
     display:none;
-}
+}*/
 span#layout-arrow {
     position: relative;
     top: 0px;
@@ -52,22 +52,23 @@ span#qwidgetPlus,i#g-track,i#t-table,i#s-table,i#d-table,i#l-plot,i#clock,i#d-lo
 }
 .navbar {
     border: 0 none;  
-    padding-top: 7px;
-    padding-bottom: 0px;
+/*    padding-top: 7px;
+    padding-bottom: 0px;*/
     border-bottom: 3px solid #CFCFD5;
     text-align: center; 
-    height: 67px;
+    height: 53px;
 }
 .navbar .navbar-nav {
     display:inline-block;
     float: none;
+/*    height: 50px;*/
 }
 .navbar-default {
     background-color: white;
 }
-.navbar-form {
+/*.navbar-form {
     margin-top: 0px;
-}
+}*/
 img#main-img{
     height:50px;
 }
@@ -88,6 +89,10 @@ a#QRegular.navbar-brand{
     background-color: #07D1EA;
     color: white;
     margin-right:15px;
+
+    height: 50px;
+    margin-top: 0px;
+
 }
 .status-icon {
     float: left;
@@ -149,6 +154,16 @@ img.search-icon:focus{
    right:0px; /*-19px*/
    font-size:22px;
 }
+.bars {
+
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+}
+#top-header {
+        padding-right: 0px;
+    padding-left: 0px;
+}
 a#username.dropdown-toggle {
     font-size:18px;/*22px*/
     color:black;
@@ -157,10 +172,10 @@ a#username.dropdown-toggle {
     margin-top: 0px;
     padding-bottom: 0px;
 }
-#configmenu, #configmenu:hover {
+/*#configmenu, #configmenu:hover {
     font-size: 20px;
     color: white;
-}
+}*/
 .logout-bar{
     min-width: 128px;
 }
@@ -192,12 +207,18 @@ a#username.dropdown-toggle {
     right:64px;
     position:absolute;
 }
-@media (min-width: 768px){
-.navbar-nav>li>a {
-    margin-top: 5px;
-    padding-top: 10px; 
-    padding-bottom: 10px; 
+ul.nav.navbar-nav.navbar-right {
+    height: 50px;
 }
+#cfgmenu{
+    height:50px;
+}
+@media (min-width: 768px){
+    .navbar-nav>li>a {
+        margin-top: 5px;
+        padding-top: 10px; 
+        padding-bottom: 10px; 
+    }
 }
 @media only screen and (max-width: 736px) {
   /* For mobile phones: */
@@ -208,9 +229,13 @@ a#username.dropdown-toggle {
         padding-left:10px;
         display:inline-block;
     }
-    img#main-img{
-        height:33px;
+
+    .container-fluid>.navbar-header{
+        margin-left: 0px;
     }
+/*    img#main-img{
+        height:33px;
+    }*/
     .nav>li>a {
         position: relative;
         display: block;
@@ -219,16 +244,16 @@ a#username.dropdown-toggle {
     a#addwidget, a#save-grid, a#load-grid, a#clear-grid, a#addGround{
         font-size:12px;
     }
-    div.navbar-header {
+/*    div.navbar-header {
         padding:0;
         margin:0;
         width:20px;
-    }
-    .navbar {
+    }*/
+/*    .navbar {
         height:60px;
-    }
-    .navbar-brand>img {
-        height:65%;
+    }*/
+    .navbar-brand>img#main-img {
+        height:100%;
         padding-left:0px;
         padding-right:0px;
         margin-bottom:0;
@@ -264,18 +289,18 @@ a#username.dropdown-toggle {
     a#add-widget {
         width:100%;
         position:relative;
-        top:0;
+/*        top:0;
         right:12px;
         margin-top: 13px ;
-        margin-bottom:10px;
+        margin-bottom:10px;*/
     }
-    #configmenu {
+/*    #configmenu {
         font-size:14px;
         border-bottom: 1px solid #242833;
-    }
-    .rightsidenav a {
+    }*/
+/*    .rightsidenav a {
         font-size: 14px;
-    }
+    }*/
     #icon_1 {
         position: absolute;
         top: -63px;
@@ -326,7 +351,8 @@ a#username.dropdown-toggle {
         width:75%;
     }
     li#cfgmenu {
-        font-size:16px;   
+        font-size:16px;  
+            margin-right: 10px; 
     }
     li#txt.clock{
         position: absolute;
@@ -334,15 +360,19 @@ a#username.dropdown-toggle {
         right: -82px;
         font-size: 10px;
     }
-    .container-fluid{
+/*    .container-fluid{
         width:100%;
         margin:0;
-    }
-    div.navbar-header{
+    }*/
+/*    div.navbar-header{
         margin:0;
-    }
+    }*/
     #callsign{
         display: none;
+    }
+    .bars {
+            padding-top: 11px;
+    padding-bottom: 11px;
     }
 }
 
