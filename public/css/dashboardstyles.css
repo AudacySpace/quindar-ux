@@ -5,116 +5,108 @@ body {
     overflow-x: hidden;
     background-color: #F2F3F4;
 }
+
 #QBlack {
     display:none;
 }
+
 .container {
     margin-left:0;
     margin-right:0;
 }
-/*#qwidgetMenu {
-    list-style-type: none;
-    padding-left:0px;
-    border-top:1px solid #ccc;
-    border-bottom:1px solid #ccc;
-}*/
-/*#widgettops {
-    list-style-type: none;
-    padding-left:0px;
-    border-top:1px solid #242833;
-    border-bottom:1px solid #242833;
-}
-#widgetops ul {
-    list-style-type: none;
-}*/
-/*#usermail{
-    display:none;
-}*/
+
 span#layout-arrow {
     position: relative;
     top: 0px;
     right:0px;
 }
+
 span#qwidgets {
     position: relative;
     top: 2px;
     right: 8px;
 }
+
 span#user-admin,i#server-admin,i#docs {
     position: relative;
     top: 0px;
     right: 8px;
 }
+
 span#qwidgetPlus,i#g-track,i#t-table,i#s-table,i#d-table,i#l-plot,i#clock,i#d-log,span#save-layout,span#load-layout,span#clear-layout {
     position: relative;
     top: 0px;
     right: 5px;
 }
+
 .navbar {
-    border: 0 none;  
-/*    padding-top: 7px;
-    padding-bottom: 0px;*/
+    border: 0 none;
     border-bottom: 3px solid #CFCFD5;
     text-align: center; 
     height: 53px;
 }
+
 .navbar .navbar-nav {
     display:inline-block;
     float: none;
-/*    height: 50px;*/
 }
+
 .navbar-default {
     background-color: white;
 }
-/*.navbar-form {
-    margin-top: 0px;
-}*/
-img#main-img{
+
+img#main-img {
     height:50px;
 }
-a#QRegular.navbar-brand{
+
+a#QRegular.navbar-brand {
     padding:0px;
 }
+
 .navbar-brand>img {
     height: 100%;
     width: auto;
-/*  padding-left:5px;
-    padding-right:5px;*/
     padding-left:15px;
 }
+
 .navbar-brand {
     padding: 5px 5px;
 }
+
 #add-widget {
     background-color: #07D1EA;
     color: white;
     margin-right:15px;
-
     height: 50px;
     margin-top: 0px;
-
 }
+
 .status-icon {
     float: left;
     height: 50px;
     padding: 10px 10px !important;
     font-size: 18px;
 }
+
 .status-icon>img {
    height: 100%;
    width: auto;
    display: inline-block;
 }
-img#main-img:focus{
+
+img#main-img:focus {
     outline:auto 0px;
 }
-img.search-icon:focus{
+
+img.search-icon:focus {
     outline:auto 0px;
 }
+
 .status-bar {
     padding-left:10px;
     padding-right:10px;
 } 
+
 .navbar-nav>li.clock {
 /*   padding-top: 15px;
    padding-bottom: 15px;*/
@@ -122,6 +114,7 @@ img.search-icon:focus{
     line-height:20px;
     font-size: 24px;
 }
+
 .time {
    padding-left: 10px;
    padding-right:10px;
@@ -129,41 +122,46 @@ img.search-icon:focus{
    font-size: 12px;
 }
 
-#icon_1{
+#icon_1 {
    height:25px;
    margin-top:13px;
    margin-right:9px; 
 }
+
 #icon_2 {
     height:25px;
     margin-top:13px;
     margin-right:9px;
 }
-#icon_3{
+
+#icon_3 {
     height:25px;
     margin-top:13px;
     margin-right:9px;
 }
-#icon_4{
+
+#icon_4 {
     height:25px;
     margin-top:13px;
     margin-right:0px;
 }
-#txt.clock{
+
+#txt.clock {
    top:10px;
    right:0px; /*-19px*/
    font-size:22px;
 }
-.bars {
 
+.bars {
     padding-top: 8px;
     padding-bottom: 8px;
-
 }
+
 #top-header {
-        padding-right: 0px;
+    padding-right: 0px;
     padding-left: 0px;
 }
+
 a#username.dropdown-toggle {
     font-size:18px;/*22px*/
     color:black;
@@ -172,86 +170,84 @@ a#username.dropdown-toggle {
     margin-top: 0px;
     padding-bottom: 0px;
 }
-/*#configmenu, #configmenu:hover {
-    font-size: 20px;
-    color: white;
-}*/
-.logout-bar{
+
+.logout-bar {
     min-width: 128px;
 }
-#callsign{
+
+#callsign {
     display: block;
     color: black;
     text-align: right;
     padding-left: 15px;
     padding-right: 15px;
 }
-#line1{
+
+#line1 {
     width:0px;
     height:10px;
     top:-75px;
     right:133px;
     position:absolute;
 }
-#line2{
+
+#line2 {
     width:0px;
     height:10px;
     top:-75px;
     right:99px;
     position:absolute;
 }
-#line3{
+
+#line3 {
     width:0px;
     height:10px;
     top:-75px;
     right:64px;
     position:absolute;
 }
+
 ul.nav.navbar-nav.navbar-right {
     height: 50px;
 }
-#cfgmenu{
+
+#cfgmenu {
     height:50px;
 }
-@media (min-width: 768px){
+
+@media (min-width: 768px) {
     .navbar-nav>li>a {
         margin-top: 5px;
         padding-top: 10px; 
         padding-bottom: 10px; 
     }
 }
+
 @media only screen and (max-width: 736px) {
   /* For mobile phones: */
     #QRegular {
         display:none;
     }
+
     #QBlack {
         padding-left:10px;
         display:inline-block;
     }
 
-    .container-fluid>.navbar-header{
+    .container-fluid>.navbar-header {
         margin-left: 0px;
     }
-/*    img#main-img{
-        height:33px;
-    }*/
+
     .nav>li>a {
         position: relative;
         display: block;
         padding: 6px 6px;
     }
-    a#addwidget, a#save-grid, a#load-grid, a#clear-grid, a#addGround{
+
+    a#addwidget, a#save-grid, a#load-grid, a#clear-grid, a#addGround {
         font-size:12px;
     }
-/*    div.navbar-header {
-        padding:0;
-        margin:0;
-        width:20px;
-    }*/
-/*    .navbar {
-        height:60px;
-    }*/
+
     .navbar-brand>img#main-img {
         height:100%;
         padding-left:0px;
@@ -259,48 +255,45 @@ ul.nav.navbar-nav.navbar-right {
         margin-bottom:0;
         padding-bottom:0;
     }
+
     .status-icon {
         height:40px;
         padding:0;
     }
+
     li.status-icon {
         padding:0;
         margin:0;
     }
+
     ul.nav.navbar-nav {
         padding:0;
         margin:0;
     }
+
     li#txt.clock {
         font-size: 14px;
         position:relative;
         top:0;
         left:0;
     }
+
     ul.nav.navbar-nav.navbar-right {
         position:fixed;
         top:0;
         right:0;
         display:inline;
     }
+
     a#username.dropdown-toggle {
         display:none;
     }
+
     a#add-widget {
         width:100%;
         position:relative;
-/*        top:0;
-        right:12px;
-        margin-top: 13px ;
-        margin-bottom:10px;*/
     }
-/*    #configmenu {
-        font-size:14px;
-        border-bottom: 1px solid #242833;
-    }*/
-/*    .rightsidenav a {
-        font-size: 14px;
-    }*/
+
     #icon_1 {
         position: absolute;
         top: -63px;
@@ -314,65 +307,68 @@ ul.nav.navbar-nav.navbar-right {
         right: 53px;
         height:17px;
     }
+
     #icon_3 {
         position:absolute;
         top: -63px;
         right: 26px;
         height:17px;
     }
+
     #icon_4 {
         position: absolute;
         top: -63px;
         right: 10px;
         height:17px;
     }
-    #line1{
+
+    #line1 {
         width:0px;
         height:10px;
         top:-127px;
         right:109px;
         position:absolute;
     }
-    #line2{
+
+    #line2 {
         width:0px;
         height:10px;
         top:-127px;
         right:82px;
         position:absolute;
     }
-    #line3{
+
+    #line3 {
         width:0px;
         height:10px;
         top:-127px;
         right:56px;
         position:absolute;
     } 
+
     li.open {
         width:75%;
     }
+
     li#cfgmenu {
         font-size:16px;  
             margin-right: 10px; 
     }
+
     li#txt.clock{
         position: absolute;
         top: -62px;
         right: -82px;
         font-size: 10px;
     }
-/*    .container-fluid{
-        width:100%;
-        margin:0;
-    }*/
-/*    div.navbar-header{
-        margin:0;
-    }*/
-    #callsign{
+
+    #callsign {
         display: none;
     }
+
     .bars {
-            padding-top: 11px;
-    padding-bottom: 11px;
+        padding-top: 11px;
+        padding-bottom: 11px;
     }
 }
 
