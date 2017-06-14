@@ -16,6 +16,8 @@ md-list .md-subheader {
 md-toolbar {
     background-color: #020613 !important;
     border-bottom: 3px solid #07D1EA;
+    height: 53px;
+    min-height: 50px;
 }
 
 md-content#right {
