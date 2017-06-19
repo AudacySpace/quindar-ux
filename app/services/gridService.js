@@ -23,27 +23,32 @@ app
                                             {   
                                                 "value": i,
                                                 "style":"text-align:left;background-color:#fff;color:#000;font-size:14px;margin-left:2px",
-                                                "active": "false"
+                                                "active": "false",
+                                                "cstyle":"background-color:#fff;text-align:left;color:#000;font-size:9px"
                                             },
                                             {   
                                                 "value":"Audacy"+i,
                                                 "style":"text-align:left;background-color:#fff;color:#000;font-size:14px",
-                                                "active": "false"
+                                                "active": "false",
+                                                "cstyle":"background-color:#fff;text-align:left;color:#000;font-size:9px"
                                             },
                                             {   
                                                 "value":"",
                                                 "style":"text-align:left;background-color:#fff;color:#000;margin-top:0px",
-                                                "active": "true"
+                                                "active": "true",
+                                                "cstyle":"padding-left:0px;background-color:#fff;text-align:left;color:#000;font-size:9px"
                                             },
                                             {   
                                                 "value":"",
                                                 "style":"text-align:left;background-color:#fff;color:#000",
-                                                "active": "true"
+                                                "active": "true",
+                                                "cstyle":"padding-left:0px;background-color:#fff;text-align:left;color:#000;font-size:9px"
                                             },
                                             {   
                                                 "value":"",
                                                 "style":"text-align:left;background-color:#fff;color:#000",
-                                                "active": "true"
+                                                "active": "true",
+                                                "cstyle":"padding-left:0px;background-color:#fff;text-align:left;color:#000;font-size:9px"
                                             }
                                         ],
                                         status: [
