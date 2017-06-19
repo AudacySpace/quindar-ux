@@ -134,5 +134,48 @@ span.header-span{
     color: gray !important;
 }
 
+.mbl-dt {
+    display:none;
+}
+
+@media only screen and (max-width: 599px) {
+    .mbl-dt {
+       display:block;
+    }
+    .maindt{
+        display:none;
+    }
+    .dt-cbox{
+        margin-top:0px;
+        margin-bottom: 0px;
+        line-height: normal;
+    }
+    .mbl-dt-header{
+        font-size: 9px
+    }
+    .img_alow {
+         width:16px;
+    }
+    ul#drpmenu.dropdown-menu.drpmenu{
+        font-size:8px;
+    }
+    .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+        padding: 1px;
+    }
+    ul.drpmenu {
+        top: -16%;
+        left: 105%;
+        min-width:100px;
+    }
+    .arrowbtn{
+        padding:4px;
+        font-size:8px;
+    }
+    td.rowcell{
+        font-size:8px;
+    }
+}
+
+
 
 

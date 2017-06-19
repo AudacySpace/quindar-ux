@@ -85,3 +85,23 @@
 	line-height:1.45em;
 }
 
+.mbl-lp {
+	display:none;
+}
+
+@media only screen and (max-width: 599px) {
+    .mbl-lp {
+       display:block;
+    }
+    .mainlp{
+    	display:none;
+    }
+	.colorpicker {
+    	background-color: #ccc;
+   	 	border: 0;
+    	padding: 0;
+    	width: 15px;
+    	height: 17px;
+	}
+}
+

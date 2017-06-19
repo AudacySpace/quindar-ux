@@ -1,4 +1,4 @@
-<div class="deldatatable">
+<div class="deldatatable maindel">
 	<div class="settingstop">
 		<div class="row settingsrightcol" style="display: table">
 		
@@ -32,4 +32,15 @@
 			</div>
 		</div>
 	</div>
+</div>
+
+<div class="container deldatatable mbl-del" style="padding-top:15px">
+<form class="form-inline">
+ 	<label for="DeleteWidget" style="font-size:10px">Delete Widget?</label>
+  <div class="input-group" style="width:70%">
+      <hr style="width:142%;margin-top:110px;margin-bottom:5px;">
+  </div>
+<button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="$ctrl.deleteWidget($ctrl.widget)">YES</button>
+					<button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="$ctrl.closedeleteWidget($ctrl.widget)">NO</button>		
+</form>
 </div>

@@ -1,0 +1,12 @@
+.mbl-del {
+    display:none;
+}
+
+@media only screen and (max-width: 599px) {
+        .mbl-del {
+       display:block;
+    }
+    .maindel{
+        display:none;
+    }
+}
