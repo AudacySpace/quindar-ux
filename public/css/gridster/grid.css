@@ -118,9 +118,84 @@ div.settingsMenu,div.deldatatable,div.saveloaddatatable{
     position: relative ;
 }
 
+
+/*widget styles for mobile screens*/
 @media only screen and (max-width: 599px) {
     div.box-content {
         height: 200px;
+    }
+    .mbl-label{
+        font-size: 10px;
+    }
+    .mbl-inputitems{
+        border-radius:0px;
+        height:25px;
+    }
+    .mbl-inneritems{
+        padding:0px 10px;
+    }
+    .hr-double-col1-1{
+        margin-top:62px;margin-bottom:5px;
+    }
+    .mbl-input-grp{
+        width:100%;
+        border-radius:0px;
+    }
+    .drpdwn-name{
+        line-height: 1.2em;
+    }
+    .drpdwn-caret{
+        margin-top:4px;
+    }
+    .drpdown-list-item{
+        font-size:9px;
+        padding:1px;
+        margin-top:3px;
+        margin-bottom:3px;
+    }
+    .drpdwn-input-item{
+        margin-top: 2px;
+        height:12px;
+        width:12px;
+    }
+    .sbtns{
+        margin-right:5px;
+    }
+    .req-label{
+        font-size:8px;
+        float:right;
+    }
+    .applybtn {
+        border-radius:0px;
+        color:black;
+        line-height:1.45em;
+        height:25px;
+        font-size:10px;
+        padding:3px 15px;
+    }
+    .hr-double-col1{
+        margin-top:110px;
+        margin-bottom:5px;
+    }
+    .hr-double-col1-2-clock{
+        margin-top:62px;
+        margin-bottom:5px;
+    }
+    .hr-double-col1-2-timer{
+        margin-top:14px;
+        margin-bottom:5px;
+    }
+    .hr-double-col1-2{
+        margin-top:110px;
+        margin-bottom:5px;
+    }  
+    .mbl-sbtns{
+        position: relative;
+        border-radius: 0px;
+        overflow: hidden;
+        background-color: #07D1EA;
+        color: #fff;
+        margin-right: 5px;
     }
 }
 

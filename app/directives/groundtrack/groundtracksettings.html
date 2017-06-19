@@ -1,4 +1,4 @@
-<div class="settingsMenu">
+<div class="settingsMenu maingt">
     <div class="settingstop">
         <div class="row settingsrightcol" style="display: table">
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
@@ -19,7 +19,7 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="row in gttable.rows.data">
-                            <td ng-repeat="cell in row.contents" class="rowcell" style="{{cell.style}}" colspan="{{cell.colspan}}" ng-show="true">{{cell.value}}<input ng-show="{{cell.active}}" class="rowinput gtcbox" type="checkbox" style="{{cell.cbstyle}}" ng-model="row.status[$index]"/>
+                            <td ng-repeat="cell in row.contents" class="rowcell" style="{{cell.style}}" ng-show="true">{{cell.value}}<input ng-show="{{cell.active}}" class="rowinput gtcbox" type="checkbox" ng-model="row.status[$index]"/>
                             </td>
                         </tr>
                     </tbody>
@@ -46,5 +46,34 @@
             </div>
         </div>  
     </div>      
+</div>
+
+<!-- For Mobile Screens -->
+<div class="container mbl-gt">
+    <form>
+        <label for="SelectSpaceCraft" class="mbl-label">Select Spacecraft:</label>
+        <div class="input-group mbl-input-grp">
+            <table class="table table-bordered table-responsive col-md-10 table-condensed cf mbl-label">
+                <thead id="telehead" class="gttableheader">
+                    <tr>
+                        <th id="id" style="text-align:left;width:6%;" class="mbl-label">#</th>
+                        <th id="id" style="text-align:left;width:32%;" class="mbl-label">Name</th>
+                        <th id="name" style="text-align:left;width:10%;" class="mbl-label">Enabled</th>
+                        <th id="color" style="text-align:left;width:10%;" class="mbl-label">View Orbit</th>
+                        <th id="color" style="text-align:left;width:10%;" class="mbl-label">View Icon</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="row in gttable.rows.data">
+                        <td ng-repeat="cell in row.contents" class="rowcell" ng-show="true" style="{{cell.cstyle}}">{{cell.value}}<input ng-show="{{cell.active}}" class="rowinput gtcbox" type="checkbox" ng-model="row.status[$index]"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr class="hr-groundtrack">
+        <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveWidget(widget)">SAVE</button>
+        <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeWidget(widget)">CLOSE</button>      
+    </form>
 </div>
 

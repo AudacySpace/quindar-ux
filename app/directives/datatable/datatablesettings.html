@@ -1,4 +1,4 @@
-<div class="settingsMenu">
+<div class="settingsMenu maindt">
     <div class="settingstop">
         <div class="row settingsrightcol" style="display: table">
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
@@ -47,4 +47,34 @@
         </div>  
     </div>      
 </div>
+
+<!-- For Mobile Screens -->
+<div class="container mbl-dt">
+    <form>
+        <label for="CategoryDisplay" class="mbl-label">Category Display:</label>
+        <div class="dropdown mbl-label mbl-input-grp mbl-inputitems">
+            <button type="button" class="btn dropdown-toggle load-widget-styles mbl-inneritems mbl-inneritems mbl-input-grp mbl-inputitems mbl-label" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="pull-left drpdwn-name">Category</span> <span class="caret  pull-right drpdwn-caret"></span>
+            </button>
+            <ul class="dropdown-menu categorydrpdown" style="padding-top:0px;padding-bottom:0px;">
+                <li class="checkbox cbox drpdown-list-item"><input class="drpdwn-input-item" type="checkbox" value="" name="id" ng-model="checkedValues.checkedId" style="margin-top:0px"/>Id</li>
+                <li class="checkbox cbox drpdown-list-item"><input class="drpdwn-input-item" type="checkbox" value="" name="name" ng-model="checkedValues.checkedName" style="margin-top:0px"/>Name</li>
+                <li class="checkbox cbox drpdown-list-item"><input class="drpdwn-input-item" type="checkbox" value="" name="alarm_low" ng-model="checkedValues.checkedAlow" style="margin-top:0px"/>Alarm Low</li>
+                <li class="checkbox cbox drpdown-list-item"><input class="drpdwn-input-item" type="checkbox" value="" name="warn_low" ng-model="checkedValues.checkedWlow" style="margin-top:0px"/>Warn Low</li>
+                <li class="checkbox cbox drpdown-list-item"><input class="drpdwn-input-item" type="checkbox" value="" name="value" ng-model="checkedValues.checkedValue" style="margin-top:0px"/>Value</li>
+                <li class="checkbox cbox drpdown-list-item"><input class="drpdwn-input-item" type="checkbox" value="" name="warn_high" ng-model="checkedValues.checkedWhigh" style="margin-top:0px"/>Warn High</li>
+                <li class="checkbox cbox drpdown-list-item"><input class="drpdwn-input-item" type="checkbox" value="" name="alarm_high" ng-model="checkedValues.checkedAhigh" style="margin-top:0px"/>Alarm High</li>
+                <li class="checkbox cbox drpdown-list-item"><input class="drpdwn-input-item" type="checkbox" value="" name="units" ng-model="checkedValues.checkedUnits" style="margin-top:0px"/>Units</li>
+                <li class="checkbox cbox drpdown-list-item"><input class="drpdwn-input-item" type="checkbox" value="" name="notes" ng-model="checkedValues.checkedNotes" style="margin-top:0px"/>Notes</li>
+            </ul>
+        </div>
+        <hr class="hr-double-col1">
+        <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveDataTableSettings(widget)">SAVE</button>
+        <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeDataTableSettings(widget)">CLOSE</button>    
+</form>
+</div>
+
+
+
+
 
