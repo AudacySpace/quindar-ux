@@ -118,3 +118,48 @@ button.btn.gtbtns:focus{
     background-color:#b5b5b5;
     color:#000;
 }
+.mbl-gt {
+    display:none;
+}
+.gtcovbox{
+    float:right;
+    margin:8px;
+    height:15px;
+    width:15px;
+}
+.mbl-gtmain{
+    display:none;
+}
+
+@media only screen and (max-width: 599px) {
+    .mbl-gtmain{
+        display:block;
+    }
+    .lrg-gtmain{
+        display:none;
+    }
+    .mbl-gt {
+        display:block;
+    }
+    .maingt{
+        display:none;
+    }
+    .gtcbox {
+        height: 11px;
+        margin-top: 10px;
+    }
+    .gtbtns {
+        padding: 2px 2px;
+        font-size: 8px;
+    }
+    .gtcovbox{
+        float:right;
+        margin:6px;
+        height:10px;
+        width:10px;
+    }
+    .hr-groundtrack{
+        margin-top:4px;
+        margin-bottom:5px;
+    }
+}

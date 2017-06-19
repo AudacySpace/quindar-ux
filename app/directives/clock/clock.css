@@ -9,7 +9,6 @@
     background-color: #ccc;
     text-align: center;
 }
-
 #left-header {
 	margin-right: 2px;
     background-color: #ccc;
@@ -22,7 +21,6 @@
     text-align: center;
     font-weight: 400;
 }
-
 #left-row {
 	margin-right: 2px;
     background-color: #F2F3F4;
@@ -37,60 +35,113 @@ md-icon.delta {
     fill: black;
 }
 
+md-icon.trash{
+    width: 16px;
+    height: 16px;
+    vertical-align: inherit;
+    fill: black;  
+}
+
 #calendar {
 	color: #000000; 
 	border-radius: 0px; 
 	top: initial;
     left: initial;
 }
+.reftime-block{
+    padding:3px 6px;
+    border-radius:0px;
+}
+.reftime-image{
+    height:15px;
+    border-radius:0px
+}
 
 .mbl-clk {
     display:none;
 }
-
-@media only screen and (max-width: 599px) {
-    .mbl-clk {
-       display:block;
-    }
-    .mainclk{
-        display:none;
-    }
-/*    .container {
-    padding-top:15px;
-    padding-bottom:15px;
-}*/
-/*hr{
-    margin-top:30px;
-    margin-bottom:10px;
-}*/
-span.btn.btn-default.form-control.ui-select-toggle{
+.mainclk span.btn.btn-default.form-control.ui-select-toggle{
     outline: 0;
-    height: 25px;
-    line-height: 1.9em;
-    padding: 2px 123px 2px 6px;
-    font-size: 10px;
-    /*width: 70%;*/
+    width:100%;
 }
-.ui-select-bootstrap>input.ui-select-search.form-control,#inlineFormInput {
-    /* border-radius: 4px 0 0 4px; */
-    height: 25px;
-    padding: 2px 44px 2px 6px;
-    width: 76%;
-    font-size: 10px;
-    line-height: 1.9em;
+.mainclk .ui-select-bootstrap>input.ui-select-search.form-control,#inlineFormInput {
+    border-radius:0px;
+}   
+.mainclk .ui-select-bootstrap>.ui-select-choices, .ui-select-bootstrap>.ui-select-no-choice {
+    border-right:  1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-bottom:1px solid #ccc;;
+    width:100%;
+    border-radius: 0px;
+}
+.reftime-input{
     border-radius:0px;
 }
 
-.ui-select-bootstrap>.ui-select-choices, .ui-select-bootstrap>.ui-select-no-choice {
-    /*width: 130%;*/
-    height: auto;
-    max-height: 200px;
-    overflow-x: hidden;
-    margin-top: -1px;
-   /* width: 129%;*/
-    border-radius: 0px;
-    font-size: 10px;
-}
 
+@media only screen and (max-width: 599px) {
+    .mbl-clk{
+       display:block;
+    }
+   .mainclk{
+        display:none;
+    }
+    .mbl-clk span.btn.btn-default.form-control.ui-select-toggle{
+        outline: 0;
+        height: 25px;
+        width:100%;
+        padding:5px 10px;
+        font-size: 10px;
+    }
+    .mbl-clk .ui-select-bootstrap>input.ui-select-search.form-control,#inlineFormInput {
+        height: 25px;
+        padding:2px 0px;
+        width:100%;
+        font-size: 10px;
+        border-radius:0px;
+    }   
+    .mbl-clk .ui-select-bootstrap>.ui-select-choices, .ui-select-bootstrap>.ui-select-no-choice {
+        border-right:  1px solid #ccc;
+        border-left: 1px solid #ccc;
+        border-bottom:1px solid #ccc;;
+        width:100%;
+        border-radius: 0px;
+        font-size: 10px;
+    }
 
+    .reftime-block{
+        padding:3px;
+        border-radius:0px;
+    }
+    .reftime-image{
+        height:15px;
+        border-radius:0px
+    }
+    .reftime-input{
+        height:25px;
+        border-radius:0px;
+        padding:2px 10px;
+    }
+    .center-header,.left-header{
+        font-size: 10px;
+    }
+    .center-row,.left-row{
+        font-size: 8px;
+    }
+    div#left-header,div#center-header{
+        font-size: 10px;
+    }
+    md-icon.md-icon.delta{
+        height:8px;
+        width:8px;
+    }
+    div#left-row,div#center-row{
+        font-size:8px;
+    }
+    md-icon.trash{
+        width: 6px;
+        height: 6px;
+        vertical-align: inherit;
+        fill: black;  
+    }
 }
