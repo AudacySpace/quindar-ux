@@ -183,7 +183,6 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 
     // Function to update data to be plotted
     function updatePlot() {
-        console.log("timer");
         g.selectAll("path.route1").remove(); 
         g.selectAll("path.route2").remove();
         g.selectAll("path.route3").remove();

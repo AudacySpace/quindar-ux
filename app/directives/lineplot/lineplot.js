@@ -9,7 +9,6 @@ app
 
 app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardService, $interval) {
 	var telemetry = dashboardService.telemetry;
-
 	var parseTime = d3Service.timeParse("%Y-%m-%dT%H:%M:%S.%LZ");
 			
 	var delay = 1000;	// [milisecond]
