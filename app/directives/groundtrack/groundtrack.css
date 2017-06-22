@@ -130,12 +130,18 @@ button.btn.gtbtns:focus{
 .mbl-gtmain{
     display:none;
 }
+.tablet-gt{
+    display:none;
+}
 
 @media only screen and (max-width: 599px) {
     .mbl-gtmain{
         display:block;
     }
     .lrg-gtmain{
+        display:none;
+    }
+    .tablet-gt{
         display:none;
     }
     .mbl-gt {
@@ -162,4 +168,21 @@ button.btn.gtbtns:focus{
         margin-top:4px;
         margin-bottom:5px;
     }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+    .tablet-gt{
+        display:block;
+    }
+    .maingt{
+        display:none;
+    }
+    .mbl-gt {
+        display:none;
+    }
+    .gtcbox {
+        height: 11px;
+        margin-top: 10px;
+    }
+
 }
