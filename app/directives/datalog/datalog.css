@@ -28,6 +28,9 @@
 .mbl-dl {
     display:none;
 }
+.tablet-dl{
+    display:none;
+}
 
 @media only screen and (max-width: 599px) {
     #datalogtable {
@@ -37,6 +40,9 @@
        display:block;
     }
     .maindl{
+        display:none;
+    }
+    .tablet-dl{
         display:none;
     }
     .dlog-header {
@@ -55,6 +61,26 @@
 @media only screen and (min-width: 600px) and (max-width: 768px) {
     #datalogtable {
         max-height: 250px;
+    }
+    .tablet-dl{
+        display:block;
+    }
+    .maindl{
+        display:none;
+    }
+    .mbl-dl {
+        display:none;
+    }
+     .dlog-header {
+        font-size:10px;
+    }
+    .dlog-row {
+        background-color: #F2F3F4;
+        font-size:9px;
+        text-align: center;
+        font-weight: 400;
+        margin-top:1px;
+        margin-bottom:1px;
     }
 }
 

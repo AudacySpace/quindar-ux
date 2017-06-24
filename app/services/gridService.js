@@ -80,7 +80,7 @@ app
 		delete: false
     },
     {
-        sizeY: 2,
+        sizeY: 3,
         sizeX: 4,
         name: "Data Table",
         directive: "datatable",
@@ -110,7 +110,7 @@ app
     },    
     {
         sizeY: 3,
-        sizeX: 3,
+        sizeX: 4,
         name: "3D Model",
         directive: "satellite",
         directiveSettings: "satellitesettings",
@@ -127,8 +127,8 @@ app
         delete: false
     },
     {
-        sizeY: 4,
-        sizeX: 6,
+        sizeY: 3,
+        sizeX: 4,
         name: "Ground Track",
         directive: "groundtrack",
         directiveSettings: "groundtracksettings",
@@ -153,7 +153,7 @@ app
     },
     {
         sizeY: 3,
-        sizeX: 3,
+        sizeX: 4,
         name: "Clock",
         directive: "clock",
         directiveSettings: "clocksettings",
@@ -171,7 +171,7 @@ app
     },
     {
         sizeY: 3,
-        sizeX: 5,
+        sizeX: 4,
         name: "Data Log",
         directive: "datalog",
         directiveSettings: "datalogsettings",
@@ -216,7 +216,7 @@ app
                     col: 4,
                     row: 0,
                     sizeY: 3,
-                    sizeX: 3,
+                    sizeX: 4,
                     name: "3D Model",
                     directive: "satellite",
                     directiveSettings: "satellitesettings",

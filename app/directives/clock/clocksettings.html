@@ -89,7 +89,7 @@
 <!-- For Mobile Screens -->
 <div class="container mbl-clk">
     <form>
-        <label for="inlineFormInput" class="mbl-label">Select Type</label>
+        <label for="Type" class="mbl-label">Select Type</label>
         <div class="mbl-input-grp">
             <ui-select tagging ng-model="selected.type" theme="bootstrap">
                 <ui-select-match placeholder="Select Type">{{$select.selected.value}}</ui-select-match>
@@ -99,7 +99,6 @@
             </ui-select>
             <span ng-hide="selected.type.value == 'Clock' || selected.type.value == 'Timer'"
                     class="req-label"> Required </span>
-
         </div>
 
         <label for="Timezone" ng-show="selected.type.value == 'Clock'" class="mbl-label">Select Timezone</label>
@@ -138,4 +137,92 @@
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveSettings(widget)">ADD</button>
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeSettings(widget)">CLOSE</button> 
     </form>
+</div>
+
+<!-- For Tablet Screens -->
+<div class="saveloaddatatable tablet-clk">
+    <div class="settingstablettop">
+        <div class="row settingstablet-col1-3el tablestyle">
+            <div class="col-sm-1 tablecellstyle1"></div>
+            <div class="col-sm-10 tablecellstyle10">
+                <div class="row" style="height:16px;">
+                    <label for="Type" class="mbl-label">Select Type</label>
+                </div>
+                <div class="mbl-input-grp">
+                    <ui-select tagging ng-model="selected.type" theme="bootstrap">
+                        <ui-select-match placeholder="Select Type">{{$select.selected.value}}</ui-select-match>
+                        <ui-select-choices repeat="type in types">
+                            <div ng-bind="type.value | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                    <span ng-hide="selected.type.value == 'Clock' || selected.type.value == 'Timer'"
+                    class="req-label pull-right"> Required </span>
+                </div>
+            </div>
+            <div class="col-sm-1 tablecellstyle1"></div> 
+        </div>
+        <div class="row settingstablet-col1-3el tablestyle">
+            <div class="col-sm-1 tablecellstyle1"></div>
+            <div class="col-sm-10 tablecellstyle10">
+                <div class="row" style="height:19px">
+                    <label for="Timezone" ng-show="selected.type.value == 'Clock'" class="mbl-label">Select Timezone</label>
+                    <label for="Name" ng-show="selected.type.value == 'Timer'" class="mbl-label" >Name</label>
+                </div>
+                <div ng-show="selected.type.value == 'Clock'">
+                    <ui-select tagging ng-model="selected.timezone" theme="bootstrap">
+                        <ui-select-match placeholder="Select Timezone">{{$select.selected.value}}</ui-select-match>
+                        <ui-select-choices repeat="timezone in timezones">
+                            <div ng-bind="timezone.value | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                    <span ng-hide="selected.timezone" class="req-label"> Required </span>
+                </div>
+                <div ng-show="selected.type.value == 'Timer'">
+                    <input type="text" class="form-control save-widget-styles" id="inlineFormInput" placeholder="Enter Name" ng-model="name" maxlength="20" style="padding-left:10px">
+                    <span ng-hide="name" class="req-label"> Required </span>
+                </div>
+            </div>
+            <div class="col-sm-1 tablecellstyle1"></div>
+        </div>
+        <div class="row settingstablet-col1-3el tablestyle">
+            <div class="col-sm-1 tablecellstyle1"></div>
+            <div class="col-sm-10 tablecellstyle10">
+                <div class="row" style="height:19px">
+                    <label for="Reference Time" class="mbl-label" ng-show="selected.type.value == 'Timer'">Reference Time</label>
+                </div>
+                <div ng-show="selected.type.value == 'Timer'">
+                    <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="#">
+                        <div class="input-group setbtn">
+                            <input type="text" class="form-control reftime-input" data-ng-model="reference">
+                            <span class="input-group-addon reftime-block">
+                                <img class="linerange reftime-image" ng-src="/icons/line-plot-widget/aud_lineplot_customrange.svg">
+                            </span>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="calendar">
+                        <datetimepicker data-ng-model="reference" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
+                    </ul>
+                    <span ng-hide="name" class="req-label"> Required </span>
+                </div>
+            </div>
+            <div class="col-sm-1 tablecellstyle1"></div>
+        </div>
+        <div class="row settingstabletbottom-col1-3el tablestyle">
+            <div class="row">
+                <div class="col-sm-1 tablecellstyle1"></div>
+                <div class="col-sm-10 tablecellstyle10">
+                    <hr class="col1-2-hr">
+                </div>
+                <div class="col-sm-1 tablecellstyle1"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1 tablecellstyle1"></div>
+                <div class="col-sm-10 btndivider tablecellstyle10">
+                    <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="saveSettings(widget)">ADD</button>
+                    <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="closeSettings(widget)">CLOSE</button> 
+                </div>
+                <div class="col-sm-1 tablecellstyle1"></div>
+            </div>  
+        </div>
+    </div>      
 </div>

@@ -9,22 +9,17 @@
 						<label for="DeleteWidget">Delete Widget?</label>
 				</div>
 			</div>	
-			
 			<div class="col-sm-1" style="display: table-cell; float:none"></div>
 		</div>
-		
 		<div class="row settingsbottom" style="display: table">
-
 			<div class="row">
 				<div class="col-sm-1"></div>
 				<div class="col-sm-10">
 					<hr>
 				</div>
-			</div>
-				
+			</div>	
 			<div class="row">
 				<div class="col-sm-1"></div>
-
 				<div class="col-sm-10 btndivider">
 					<button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="$ctrl.deleteWidget($ctrl.widget)">YES</button>
 					<button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="$ctrl.closedeleteWidget($ctrl.widget)">NO</button>
@@ -34,13 +29,48 @@
 	</div>
 </div>
 
+<!-- For Mobile Screens -->
 <div class="container deldatatable mbl-del" style="padding-top:15px">
-<form class="form-inline">
- 	<label for="DeleteWidget" style="font-size:10px">Delete Widget?</label>
-  <div class="input-group" style="width:70%">
-      <hr style="width:142%;margin-top:110px;margin-bottom:5px;">
-  </div>
-<button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="$ctrl.deleteWidget($ctrl.widget)">YES</button>
-					<button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="$ctrl.closedeleteWidget($ctrl.widget)">NO</button>		
-</form>
+	<form class="form-inline">
+ 		<label for="DeleteWidget" class="mbl-label">Delete Widget?</label>
+  		<div class="input-group" style="width:70%">
+      		<hr class="del-menu-hr">
+  		</div>
+		<button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="$ctrl.deleteWidget($ctrl.widget)">YES</button>
+		<button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="$ctrl.closedeleteWidget($ctrl.widget)">NO</button>		
+	</form>
+</div>
+
+<!-- For Tablet Screens -->
+<div class="deldatatable tablet-del">
+    <div class="settingstablettop">
+        <div class="row settingstablet-col1-3el tablestyle">
+            <div class="col-sm-1 tablecellstyle1"></div>
+            <div class="col-sm-10 tablecellstyle10">
+                <div class="row" style="height:19px;">
+                    <label for="DeleteWidget" class="mbl-label">Delete Widget?</label>
+                </div>
+            </div>
+            <div class="col-sm-1 tablecellstyle1"></div> 
+        </div>
+        <div class="row settingstablet-col1-3el tablestyle"></div>
+        <div class="row settingstablet-col1-3el tablestyle"></div>
+        <div class="row settingstabletbottom-col1-3el tablestyle">
+            <div class="row">
+                <div class="col-sm-1 tablecellstyle1"></div>
+                <div class="col-sm-10 tablecellstyle10">
+                    <hr class="col1-2-hr">
+                </div>
+                <div class="col-sm-1 tablecellstyle1"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1 tablecellstyle1"></div>
+                <div class="col-sm-10 btndivider tablecellstyle10">
+					<button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="$ctrl.deleteWidget($ctrl.widget)">YES</button>
+					<button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="$ctrl.closedeleteWidget($ctrl.widget)">NO</button>    
+                </div>
+                <div class="col-sm-1 tablecellstyle1"></div>
+            </div>  
+        </div>
+    </div>      
 </div>

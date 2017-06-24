@@ -116,6 +116,7 @@ div.settingsMenu,div.deldatatable,div.saveloaddatatable{
     margin:0px;
     color:#fff;
     position: relative ;
+    overflow-y:hidden;
 }
 
 
@@ -197,5 +198,129 @@ div.settingsMenu,div.deldatatable,div.saveloaddatatable{
         color: #fff;
         margin-right: 5px;
     }
+}
+
+/*widget styles for tablet screens*/
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+    /* Column 1 - Elements 3 styles*/
+    .settingstablettop {
+        width: 100%;
+        height: 100%;
+        margin: auto;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        position: absolute;
+        font-family: "Open Sans", Sans-serif;   
+    }
+    .mbl-input-grp{
+        width:100%;
+        border-radius:0px;
+    } 
+    .drpdwn-caret{
+        margin-top:4px;
+    }
+    .tablet-sbtns{
+        position: relative;
+        border-radius: 0px;
+        overflow: hidden;
+        background-color: #07D1EA;
+        color: #fff;
+        margin-right: 5px;
+        padding: 3px 6px;
+    }
+    .mbl-label{
+        font-size: 10px;
+    }
+    .tablestyle{
+        display:table;
+    }
+    .tablecellstyle10{
+        display: table-cell;
+        float:none;
+        width:100%;
+    }
+    .tablecellstyle1{
+        display: table-cell;
+        float:none;
+    }
+    .req-label{
+        font-size:8px;
+        float:right;
+    }
+    .col1-2-data{
+        border-radius:0px;
+        font-size:9px;
+        height:15px;
+        background-color: #fff;
+    }
+    .applybtn {
+        font-size:9px;
+        padding:0px 2px;
+        height:15px
+    }
+    .cbox{
+        font-size:9px;
+        margin-top:5px;
+        margin-bottom:5px;
+    }
+    .input-cbox{
+        margin-top: 0px;
+        margin-bottom:5px;
+        height:12px;
+        width:12px
+    }
+    .colorpicker{
+        margin-left:10px;
+        height:17px;
+        width:15px
+    }
+    .col1-2-hr{
+        margin-bottom:5px;
+    }
+    .mbl-inputitems{
+        border-radius:0px;
+        height:15px;
+    }
+    .mbl-inneritems{
+        font-size:9px;
+        padding:0px 12px;
+        height:15px;
+    }
+    .mbl-input-grp{
+        width:100%;
+        border-radius:0px;
+    }
+    .drpdown-list-item{
+        font-size:9px;
+        padding:1px;
+        margin-top:3px;
+        margin-bottom:3px;
+    }
+    .drpdwn-input-item{
+        margin-top: 2px;
+        height:12px;
+        width:12px;
+    }
+    .categorydrpdown{
+        margin-top: -2px !important;
+    }
+    .settingstablet-col1-3el {
+        width: 100%;
+        height: 5%;
+        height:45px;
+        margin: 0;
+        top: 0;
+        bottom: 0;
+        left:0;
+        right:0;
+        font-family: "Open Sans", Sans-serif;   
+    }
+    .settingstabletbottom-col1-3el {
+        width: 100%;
+        height:5%;
+        font-family: "Open Sans", Sans-serif;   
+    } 
 }
 

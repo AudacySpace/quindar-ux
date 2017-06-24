@@ -54,8 +54,6 @@
 	height: 70%;
 	margin: 0;
 	top: 0;
-	margin: 0;
-	margin: 0;
 	bottom: 0;
 	font-family: "Open Sans", Sans-serif;	
 	font-size:14px;
@@ -88,6 +86,12 @@
 .mbl-lp {
 	display:none;
 }
+.tablet-lp{
+	display:none;
+}
+.lpdata-input{
+	background-color: #fff;
+}
 
 @media only screen and (max-width: 599px) {
     .mbl-lp {
@@ -96,6 +100,10 @@
     .mainlp{
     	display:none;
     }
+    .tablet-lp{
+		display:none;
+	}
+
 	.colorpicker {
     	background-color: #ccc;
    	 	border: 0;
@@ -103,5 +111,18 @@
     	width: 15px;
     	height: 17px;
 	}
+}
+
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+	.tablet-lp{
+		display:block;
+	}
+	.mainlp{
+    	display:none;
+    }
+    .mbl-lp {
+		display:none;
+	}
+
 }
 
