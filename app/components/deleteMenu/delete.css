@@ -1,12 +1,35 @@
 .mbl-del {
     display:none;
 }
+.tablet-del{
+	display:none;
+}
 
 @media only screen and (max-width: 599px) {
-        .mbl-del {
-       display:block;
+    .mbl-del {
+        display:block;
     }
     .maindel{
         display:none;
+    }
+   	.tablet-del{
+		display:none;
+	}
+    .del-menu-hr{
+        width:142%;
+        margin-top:110px;
+        margin-bottom:5px;
+    }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+	.tablet-del{
+		display:block;
+	}
+	.maindel{
+        display:none;
+    }
+    .mbl-del {
+       display:none;
     }
 }
