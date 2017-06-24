@@ -154,45 +154,53 @@ app
 		requestAnimationFrame(render);
 		controls.update();
 		if($scope.cube && $scope.widget.settings.vehicle){
+			if(telemetry[$scope.widget.settings.vehicle]) {
 		
-			//set quaternion values for rotation
-			$scope.cube.quaternion.x = telemetry[$scope.widget.settings.vehicle].q1.value;
-			$scope.cube.quaternion.y = telemetry[$scope.widget.settings.vehicle].q2.value;
-			$scope.cube.quaternion.z = telemetry[$scope.widget.settings.vehicle].q3.value;
-			$scope.cube.quaternion.w = telemetry[$scope.widget.settings.vehicle].qc.value;
+				//set quaternion values for rotation
+				$scope.cube.quaternion.x = telemetry[$scope.widget.settings.vehicle].q1.value;
+				$scope.cube.quaternion.y = telemetry[$scope.widget.settings.vehicle].q2.value;
+				$scope.cube.quaternion.z = telemetry[$scope.widget.settings.vehicle].q3.value;
+				$scope.cube.quaternion.w = telemetry[$scope.widget.settings.vehicle].qc.value;
 
-			//set quaternion values for displaying on widget
-			$scope.widget.settings.quaternion.q1 = telemetry[$scope.widget.settings.vehicle].q1.value.toFixed(4);
-			$scope.widget.settings.quaternion.q2 = telemetry[$scope.widget.settings.vehicle].q2.value.toFixed(4);
-			$scope.widget.settings.quaternion.q3 = telemetry[$scope.widget.settings.vehicle].q3.value.toFixed(4);
-			$scope.widget.settings.quaternion.qc = telemetry[$scope.widget.settings.vehicle].qc.value.toFixed(4);
-			
-			//set direction to Earth
-			var posX = telemetry[$scope.widget.settings.vehicle].x.value;
-			var posY = telemetry[$scope.widget.settings.vehicle].y.value;
-			var posZ = telemetry[$scope.widget.settings.vehicle].z.value;
+				//set quaternion values for displaying on widget
+				$scope.widget.settings.quaternion.q1 = telemetry[$scope.widget.settings.vehicle].q1.value.toFixed(4);
+				$scope.widget.settings.quaternion.q2 = telemetry[$scope.widget.settings.vehicle].q2.value.toFixed(4);
+				$scope.widget.settings.quaternion.q3 = telemetry[$scope.widget.settings.vehicle].q3.value.toFixed(4);
+				$scope.widget.settings.quaternion.qc = telemetry[$scope.widget.settings.vehicle].qc.value.toFixed(4);
+				
+				//set direction to Earth
+				var posX = telemetry[$scope.widget.settings.vehicle].x.value;
+				var posY = telemetry[$scope.widget.settings.vehicle].y.value;
+				var posZ = telemetry[$scope.widget.settings.vehicle].z.value;
 
-			//Transform position from ECEF to ECI
-			var earthECI = ECEF2ECI(posX,posY,posZ);
+				//Transform position from ECEF to ECI
+				var earthECI = ECEF2ECI(posX,posY,posZ);
 
-			//Plot Satellite to Earth Arrow
-			var dirEarth = new THREE.Vector3(-earthECI[0], -earthECI[1], -earthECI[2]);
-			dirEarth.normalize();
-			$scope.arrowEarth.visible = true;
-			$scope.arrowEarth.setDirection(dirEarth);
-			
-			//Calculate direction to Sun //
-			var time = new Date(telemetry[$scope.widget.settings.vehicle].timestamp.value);// Local time
-			var solECEF = solarCoords(time);
+				//Plot Satellite to Earth Arrow
+				var dirEarth = new THREE.Vector3(-earthECI[0], -earthECI[1], -earthECI[2]);
+				dirEarth.normalize();
+				$scope.arrowEarth.visible = true;
+				$scope.arrowEarth.setDirection(dirEarth);
+				
+				//Calculate direction to Sun //
+				var time = new Date(telemetry[$scope.widget.settings.vehicle].timestamp.value);// Local time
+				var solECEF = solarCoords(time);
 
-			// Sun in ECI [x,y,z]
-			var sunECI = ECEF2ECI(solECEF[0], solECEF[1], solECEF[2]);
+				// Sun in ECI [x,y,z]
+				var sunECI = ECEF2ECI(solECEF[0], solECEF[1], solECEF[2]);
 
-			//Plot Earth to Sun Arrow
-			var dirSun = new THREE.Vector3(sunECI[0], sunECI[1], sunECI[2]);
-			dirSun.normalize();
-			$scope.arrowSun.visible = true;		
-			$scope.arrowSun.setDirection(dirSun);
+				//Plot Earth to Sun Arrow
+				var dirSun = new THREE.Vector3(sunECI[0], sunECI[1], sunECI[2]);
+				dirSun.normalize();
+				$scope.arrowSun.visible = true;		
+				$scope.arrowSun.setDirection(dirSun);
+			} else {
+				//set quaternion values to N/A if telemetry data not available
+				$scope.widget.settings.quaternion.q1 = "N/A";
+				$scope.widget.settings.quaternion.q2 = "N/A";
+				$scope.widget.settings.quaternion.q3 = "N/A";
+				$scope.widget.settings.quaternion.qc = "N/A";
+			}
 	 	}
 	
 	 	$scope.camera.fov = fov * $scope.widget.settings.zoom;
@@ -203,7 +211,7 @@ app
 	$scope.interval = $interval(updateColors, 500, 0, false); 
 
 	function updateColors(){
-		if($scope.widget.settings.vehicle && $scope.cube){
+		if($scope.widget.settings.vehicle && $scope.cube && telemetry[$scope.widget.settings.vehicle]){
 
 			var valTypeq1 = typeof telemetry[$scope.widget.settings.vehicle].q1.value;
 			var valTypeq2 = typeof telemetry[$scope.widget.settings.vehicle].q2.value;
@@ -296,6 +304,12 @@ app
 				$scope.widget.settings.colorqc = colorDisconnected;
 				$scope.widget.settings.quaternion.qc = '-';	
 			}
+		} else {
+			//set to default color if telemetry data not available for that vehicle
+			$scope.widget.settings.colorq1 = colorDefault;
+			$scope.widget.settings.colorq2 = colorDefault;
+			$scope.widget.settings.colorq3 = colorDefault;
+			$scope.widget.settings.colorqc = colorDefault;
 		}
 	}
 
