@@ -127,8 +127,8 @@ app
         delete: false
     },
     {
-        sizeY: 4,
-        sizeX: 6,
+        sizeY: 3,
+        sizeX: 4,
         name: "Ground Track",
         directive: "groundtrack",
         directiveSettings: "groundtracksettings",

@@ -130,6 +130,9 @@ button.btn.gtbtns:focus{
 .mbl-gtmain{
     display:none;
 }
+.tablet-gtmain{
+    display:none;
+}
 .tablet-gt{
     display:none;
 }
@@ -139,6 +142,9 @@ button.btn.gtbtns:focus{
         display:block;
     }
     .lrg-gtmain{
+        display:none;
+    }
+    .tablet-gtmain{
         display:none;
     }
     .tablet-gt{
@@ -174,6 +180,15 @@ button.btn.gtbtns:focus{
     .tablet-gt{
         display:block;
     }
+    .tablet-gtmain{
+        display:block;
+    }
+    .mbl-gtmain{
+        display:none;
+    }
+    .lrg-gtmain{
+        display:none;
+    }
     .maingt{
         display:none;
     }
@@ -184,5 +199,17 @@ button.btn.gtbtns:focus{
         height: 11px;
         margin-top: 10px;
     }
-
+    .gtcovbox{
+        float:right;
+        margin:5px;
+        height:12px;
+        width:12px;
+    }
+    .gtbtns {
+        padding: 2px 2px;
+        font-size: 10px;
+    }
+    .tablet-gt .table-responsive{
+        margin-bottom:0px;
+    }
 }
