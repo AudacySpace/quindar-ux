@@ -81,7 +81,7 @@ app
     },
     {
         sizeY: 3,
-        sizeX: 4,
+        sizeX: 8,
         name: "Data Table",
         directive: "datatable",
 		directiveSettings: "datatablesettings",

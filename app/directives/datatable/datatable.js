@@ -31,8 +31,8 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
         dServiceObjVal = newVal; 
     },true);
 
-    //Default table structure -contains 15 rows to best appear for small and large screens
-    for (var i = 0; i < 15; i++) {
+    //Default table structure -contains 100 rows to best appear for small and large screens
+    for (var i = 0; i < 100; i++) {
         tableCols.push({
             contents: [
             {   
