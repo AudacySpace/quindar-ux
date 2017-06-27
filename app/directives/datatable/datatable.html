@@ -1,21 +1,21 @@
-<table class="table table-bordered table-responsive col-md-12 table-condensed cf">
+<table class="table table-bordered col-md-10">
     <thead id="telehead" class="datatableheader">
         <tr>
-            <th id="category" style="width:1%"></th>
+            <th id="category" style="width:0.1%"></th>
             <th id="id" style="text-align:left;width:10%" class="id mbl-dt-header" ng-show="checkedValues.checkedId" title="Telemetry Id">ID</th>
-            <th id="name" style="text-align:left;width:15%;" class="name mbl-dt-header" ng-show="checkedValues.checkedName" title="Telemetry Name">NAME</th>
-            <th id="alarm_low" style="text-align:center;width:10%" class="alarm_low numeric mbl-dt-header" ng-show="checkedValues.checkedAlow"><img src="../icons/datatable-widget/data_table_cat_ALARMLOW.svg" class="img_alow" title="Alarm low value"/></th>
-            <th id="warn_low" style="text-align:center;width:10%" class="warn_low numeric mbl-dt-headerimg" ng-show="checkedValues.checkedWlow"><img src="../icons/datatable-widget/data_table_cat_WARNLOW.svg" class="img_alow" title="Warn low value"/></th>
-            <th id="value" style="text-align:center;width:15%" class="value numeric mbl-dt-headerimg" ng-show="checkedValues.checkedValue"><img src="../icons/datatable-widget/data_table_cat_VALUE.svg" class="img_alow" title="Value"/></th>
-            <th id="warn_high" style="text-align:center;width:10%" class="warn_high numeric mbl-dt-headerimg" ng-show="checkedValues.checkedWhigh"><img src="../icons/datatable-widget/data_table_cat_WARNHIGH.svg" class="img_alow" title="Warn high value"/></th>
-            <th id="alarm_high" style="text-align:center;width:10%" class="alarm_high numeric mbl-dt-headerimg" ng-show="checkedValues.checkedAhigh"><img src="../icons/datatable-widget/data_table_cat_ALARMHIGH.svg" class="img_alow" title="Alarm high value"/></th>
+            <th id="name" style="text-align:left;width:25%;" class="name mbl-dt-header" ng-show="checkedValues.checkedName" title="Telemetry Name">NAME</th>
+            <th id="alarm_low" style="text-align:center;width:7%" class="alarm_low numeric mbl-dt-header" ng-show="checkedValues.checkedAlow"><img src="../icons/datatable-widget/data_table_cat_ALARMLOW.svg" class="img_alow" title="Alarm low value"/></th>
+            <th id="warn_low" style="text-align:center;width:7%" class="warn_low numeric mbl-dt-headerimg" ng-show="checkedValues.checkedWlow"><img src="../icons/datatable-widget/data_table_cat_WARNLOW.svg" class="img_alow" title="Warn low value"/></th>
+            <th id="value" style="text-align:center;width:7%" class="value numeric mbl-dt-headerimg" ng-show="checkedValues.checkedValue"><img src="../icons/datatable-widget/data_table_cat_VALUE.svg" class="img_alow" title="Value"/></th>
+            <th id="warn_high" style="text-align:center;width:7%" class="warn_high numeric mbl-dt-headerimg" ng-show="checkedValues.checkedWhigh"><img src="../icons/datatable-widget/data_table_cat_WARNHIGH.svg" class="img_alow" title="Warn high value"/></th>
+            <th id="alarm_high" style="text-align:center;width:7%" class="alarm_high numeric mbl-dt-headerimg" ng-show="checkedValues.checkedAhigh"><img src="../icons/datatable-widget/data_table_cat_ALARMHIGH.svg" class="img_alow" title="Alarm high value"/></th>
             <th id="units" style="text-align:left;width:5%" class="units mbl-dt-header" ng-show="checkedValues.checkedUnits" title="Units">UNITS</th>
-            <th id="notes" style="text-align:left;width:14%" class="notes mbl-dt-header" ng-show="checkedValues.checkedNotes" title="Notes">NOTES</th>
+            <th id="notes" style="text-align:left;width:14.9%" class="notes mbl-dt-header" ng-show="checkedValues.checkedNotes" title="Notes">NOTES</th>
         </tr>
     </thead>
     <tbody>
         <tr ng-repeat="row in table.rows">
-            <td class="categoryID-arrow">
+            <td class="categoryID-arrow" style="padding:0px 5px;text-align: center">
                 <div class="btn-group selectmenu">
                    <a href="#" style="width:100%" class="btn btn-default arrowbtn" data-toggle="dropdown"><span class="glyphicon glyphicon-menu-right side-arrow" id="side-arrow" style="font-weight:bolder"></span>
                       <span class="sr-only">Toggle Dropdown</span>
