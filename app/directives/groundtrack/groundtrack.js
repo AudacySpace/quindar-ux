@@ -21,6 +21,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
     var datastatus = [];
     var orbits = [];
     var satIcons = [];
+    $scope.timeObj = {};
 
     $scope.widget.stream = new Array();
     $scope.checkboxModel = {
@@ -34,6 +35,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
     $scope.iconHo = $scope.widget.settings.iconHolder;
 
     $scope.$watch('vals', function(newVal,oldVal){
+        $scope.timeObj = {};
         vehicles = newVal; 
     }, true);
 
@@ -46,14 +48,17 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
     },true);
 
     $scope.$watch('dataH',function(newVal,oldVal){
+        $scope.timeObj = {};
         datastatus = newVal; 
     },true);
 
     $scope.$watch('orbitHo',function(newVal,oldVal){
+        $scope.timeObj = {};
         orbits = newVal; 
     },true);
 
     $scope.$watch('iconHo',function(newVal,oldVal){
+        $scope.timeObj = {};
         satIcons = newVal; 
     },true);
 
@@ -216,16 +221,39 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                                 
                 // Convert [longitude,latitude] to plot 
                 var sat_coord = projGround([longitude,latitude]);
-                        
-                // Remove data when the length of scHolder reaches a certain value
-                if(scH[i].length > 600) {
-                    scH[i].splice(0,1);
-                    scS[i].splice(0,1);                            
+
+                //Timestamp array for each vehicle
+                if(!$scope.timeObj[i]){
+                    $scope.timeObj[i] = new Array();
                 }
 
+                //get current time
+                var dateValue = new Date(latestdata.timestamp.value);
+                var timestamp = dateValue.getTime(); //time in milliseconds
+
+                //push values to the array
+                if(timestamp != $scope.timeObj[i][$scope.timeObj[i].length-1]){
+                    $scope.timeObj[i].push(timestamp);
+                }
+                var diffMins = Math.round(($scope.timeObj[i][$scope.timeObj[i].length-1] - $scope.timeObj[i][0])/60000);
+
                 // add longitude and latitude to data_plot
-                scH[i].push([longitude, latitude]);
-                scS[i].push([x,y,z]);
+                var scHData = [longitude, latitude];
+                if(scHData != scH[i][scH[i].length - 1]){
+                    scH[i].push(scHData);
+                }
+
+                var scSData = [x, y, z];
+                if(scSData != scS[i][scS[i].length - 1]){
+                    scS[i].push(scSData);
+                }
+
+                // Remove data points after 90 minutes (7200000ms)
+                if( diffMins >= 90) {
+                    scH[i].splice(0,1);
+                    scS[i].splice(0,1);
+                    $scope.timeObj[i].splice(0,1);
+                }
 				
                 if(vehicles[i] === "Audacy1" ){
                     if(orbits[i] === true){
@@ -330,20 +358,21 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
         //b: Satellite B [x,y,z] [km]
         //c: Satellite A [longitude, latitude] [deg]
         //d: Satellite B [longitude, latitude] [deg]
-            
-        // Half angles [radians]
-        var th1 = Math.acos(rEarth/Math.sqrt(a[0]*a[0]+a[1]*a[1]+a[2]*a[2]));
-        var th2 = Math.acos(rEarth/Math.sqrt(b[0]*b[0]+b[1]*b[1]+b[2]*b[2]));
 
-        // Angle between a and b
-        var th = Math.acos(dotProd(a,b)/(mag(a)*mag(b)));
+        if(a && b && c && d) {
+            // Half angles [radians]
+            var th1 = Math.acos(rEarth/Math.sqrt(a[0]*a[0]+a[1]*a[1]+a[2]*a[2]));
+            var th2 = Math.acos(rEarth/Math.sqrt(b[0]*b[0]+b[1]*b[1]+b[2]*b[2]));
 
-        if (th < th1+th2){
-            var comm = g.append("path")
-                        .datum({type: "LineString", coordinates: [[c[0]+6,c[1]-2], [d[0]+6,d[1]-2]]})   
-                        .attr("class", "link")
-                        .attr("d", path);
-        } else {
+            // Angle between a and b
+            var th = Math.acos(dotProd(a,b)/(mag(a)*mag(b)));
+
+            if (th < th1+th2){
+                var comm = g.append("path")
+                            .datum({type: "LineString", coordinates: [[c[0]+6,c[1]-2], [d[0]+6,d[1]-2]]})
+                            .attr("class", "link")
+                            .attr("d", path);
+            }
         }
     }; 
 
@@ -353,31 +382,33 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
         // b: Satellite [longitude, latitude] [deg]
         // c: Satellite [x,y,z] [km]
         // ang: Ground station coverage angle [deg]
-            
-        // Convert Ground station location //
-        // Calculate z
-        var gs_z = rEarth*Math.sin(a[1]*radians);
-            
-        // Project ground station location on xy plane
-        var rp = rEarth*Math.cos(a[1]*radians);
-            
-        var gs_y = rp*Math.sin(a[0]*radians);
-        var gs_x = rp*Math.cos(a[0]*radians);
-            
-        var gs_state = [gs_x,gs_y,gs_z];
-        // End convert gound station location //
-            
-        // Vector from ground station to satellite
-        var r_gs2sat = [c[0]-gs_state[0], c[1]-gs_state[1], c[2]-gs_state[2]];
-            
-        // Angle ground station to satellite
-        var th = Math.acos(dotProd(r_gs2sat,gs_state)/(mag(r_gs2sat)*mag(gs_state)));
 
-        if (th*degrees < ang) {
-            var comm = g.append("path")
-                        .datum({type: "LineString", coordinates: [[a[0],a[1]], [b[0]+6,b[1]-2]]})   
-                        .attr("class", "gslink")
-                        .attr("d", path);               
+        if(a && b && c && ang) {
+            // Convert Ground station location //
+            // Calculate z
+            var gs_z = rEarth*Math.sin(a[1]*radians);
+
+            // Project ground station location on xy plane
+            var rp = rEarth*Math.cos(a[1]*radians);
+
+            var gs_y = rp*Math.sin(a[0]*radians);
+            var gs_x = rp*Math.cos(a[0]*radians);
+
+            var gs_state = [gs_x,gs_y,gs_z];
+            // End convert gound station location //
+
+            // Vector from ground station to satellite
+            var r_gs2sat = [c[0]-gs_state[0], c[1]-gs_state[1], c[2]-gs_state[2]];
+
+            // Angle ground station to satellite
+            var th = Math.acos(dotProd(r_gs2sat,gs_state)/(mag(r_gs2sat)*mag(gs_state)));
+
+            if (th*degrees < ang) {
+                var comm = g.append("path")
+                            .datum({type: "LineString", coordinates: [[a[0],a[1]], [b[0]+6,b[1]-2]]})
+                            .attr("class", "gslink")
+                            .attr("d", path);
+            }
         }
     };
          
