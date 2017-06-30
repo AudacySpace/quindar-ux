@@ -305,23 +305,14 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
                 if(dServiceObjVal.dIcon === "red"){
                     //GUI Disconnected with Database 
                     tempRow.contents[0].datacolor = colorDisconnected;
-                    tempRow.contents[0].value = "-";
                     tempRow.contents[1].datacolor = colorDisconnected;
-                    tempRow.contents[1].value = "-";
                     tempRow.contents[2].datacolor = colorDisconnected;
-                    tempRow.contents[2].value = "-";
                     tempRow.contents[3].datacolor = colorDisconnected;
-                    tempRow.contents[3].value = "-";
                     tempRow.contents[4].datacolor = colorDisconnected;
-                    tempRow.contents[4].value = "-";
                     tempRow.contents[5].datacolor = colorDisconnected;
-                    tempRow.contents[5].value = "-";
                     tempRow.contents[6].datacolor = colorDisconnected;
-                    tempRow.contents[6].value = "-";
                     tempRow.contents[7].datacolor = colorDisconnected;
-                    tempRow.contents[7].value = "-";
-                    tempRow.contents[8].datacolor = colorDisconnected;
-                    tempRow.contents[8].value = "-"; 
+                    tempRow.contents[8].datacolor = colorDisconnected; 
                 }
             }
         }

@@ -1,4 +1,21 @@
 /*Ground Track layout css*/
+.gtmain .gt-svg-container {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 65%;
+    padding-top: 0%;
+    vertical-align: top;
+    overflow: hidden;
+}
+.gtmain .gt-svg-content {
+    display: inline-block;
+    position: absolute;
+    height: 100%;
+    width: 100%
+    top: 0;
+    left: 0;
+}
 
 .gtbtns{
     background-color: rgba(255,255,255,0.1);

@@ -36,10 +36,10 @@ app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardS
 						
 	var line = d3Service.line()
 					.x(function(d) { return x(d.x); })
-					.y(function(d) { return y(d.y); });		
+					.y(function(d) { return y(d.y); });	
 
-	var xMap = function(d) { return x(d.x);};
-	var yMap = function(d) { return y(d.y);} 	
+	var xMap = function(d) { $scope.dx = d.x ; return x(d.x);};
+	var yMap = function(d) { $scope.dy = d.y ; return y(d.y);};
 			
 	var axisY = g.append("g")
 					.attr("transform", "translate("+margin.left+",0)")
@@ -51,13 +51,19 @@ app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardS
 					.attr("class", "axis")
 					.call(d3Service.axisBottom(x).tickSize(-transHeight));	
 
+	// Define the div for the tooltip
+	var div = d3Service.select(firstElement).append("div")	
+    			.attr("class", "valuetooltip")				
+    			.style("opacity", 0);
+
 	var labelX = g.append("text")             
 					.attr("transform","translate(" + (transWidth/2) + " ," + (transHeight +margin.bottom) + ")")
-					.attr("class","linelabel")
+					.attr("class","linelabel");
+
 
 	var labelY = g.append("text")
 					.attr("transform", "rotate(-90)")
-					.attr("y", -10 )
+					.attr("y", -15 )
 					.attr("x",0 - (transHeight / 2))
 					.attr("class", "linelabel");
 			
@@ -79,6 +85,7 @@ app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardS
 			g.selectAll("path.lineplot").remove();
 			g.selectAll("circle.circle").remove();
 			g.selectAll(".legend").remove();
+			d3.selectAll('.valuetooltip').style('opacity', '0');
 
 			//push real time data points
 			for(var v in vehicles){
@@ -111,16 +118,17 @@ app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardS
 					})				
 				]);
 
+
 			//define Y axis domain
 			y.domain([
 				d3.min(vehicles, function(v) {
 					return d3.min(v.data, function(d) { 
-						return d.y; 
+						return Math.floor(d.y);
 					}); 
 				}),
 				d3.max(vehicles, function(v) {
 					return d3.max(v.data, function(d) { 
-						return d.y; 
+						return Math.ceil(d.y);
 					}); 
 				})				
 			]);
@@ -148,7 +156,7 @@ app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardS
 					.datum(d.data)
 					.attr("class","lineplot")
 					.attr("stroke", d.color)
-					.attr("d", line);	
+					.attr("d", line);
 
 				g.selectAll("dot")
 					.data(d.data)
@@ -156,6 +164,19 @@ app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardS
 					.attr("r", 1)
 					.attr("cx", xMap)
 					.attr("cy", yMap)
+					.on("mouseover", function(d) {
+            			div.transition()		
+                			.duration(200)		
+                			.style("opacity", .9);		
+            			div	.html("x: " + $scope.dx + "<br/>"  +"y: " +parseFloat($scope.dy.toFixed(4)))	
+                			.style("left", (d3Service.mouse(this)[0])+ "px")		
+                			.style("top", (d3Service.mouse(this)[1]) + "px");
+            		})					
+        			.on("mouseout", function(d) {		
+            			div.transition()		
+                		   .duration(500)		
+                		   .style("opacity", 0);	
+        			})
 					.attr("stroke", d.color)
 					.attr("fill", d.color);
 

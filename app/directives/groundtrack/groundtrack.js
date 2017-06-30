@@ -81,7 +81,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                         .attr("viewBox", "-20 10 1000 500")
                         .attr('width', '100%')
                         .attr('height', '100%')
-                        .classed("svg-content", true);
+                        .classed("gt-svg-content", true);
 
     var transform = d3Service.zoomTransform(svg.node()); 
     var g = svg.append("g");
