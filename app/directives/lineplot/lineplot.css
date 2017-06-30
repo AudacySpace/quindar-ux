@@ -93,6 +93,19 @@
 	background-color: #fff;
 }
 
+div.valuetooltip {	
+    position: absolute;			
+    text-align: justify;			
+    width: 25%;					
+    height: auto;					
+    padding: 2px;				
+    font-size: 10px;
+    background-color:#F1F1F5;		
+    border: 0px;		
+    border-radius: 0px;			
+    pointer-events: none;			
+}
+
 @media only screen and (max-width: 599px) {
     .mbl-lp {
        display:block;
