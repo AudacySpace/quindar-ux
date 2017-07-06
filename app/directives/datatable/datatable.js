@@ -8,7 +8,7 @@ app.directive('datatable',function() {
     }; 
 });
 
-app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,dashboardService,sidebarService,datastatesService) {  
+app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$timeout,dashboardService,sidebarService,datastatesService) {  
 
     //Get values of the checkboxes in settings category display
     $scope.checkedValues = $scope.widget.settings.checkedValues;
@@ -26,13 +26,21 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
     var colorDefault = datastatesService.colorValues.defaultcolor;//Color black for default color
     var textLeft = {'text-align':'left'};
     var textRight = {'text-align':'right'};
+    var roweffect = { 
+                        'background-color':'#CFCFD5',
+                        'animation': 'background-fade 0.5s forwards',
+                        '-webkit-animation': 'background-fade 0.5s forwards',
+                        '-moz-animation': 'background-fade 0.5s forwards'
+                    };
     //watch to check the database icon color to know about database status
     $scope.$watch('dataStatus',function(newVal,oldVal){
         dServiceObjVal = newVal; 
     },true);
 
-    //Default table structure -contains 100 rows to best appear for small and large screens
-    for (var i = 0; i < 100; i++) {
+    var num_of_rows = 120;
+
+    //Default table structure -contains 120 rows to best appear for small and large screens
+    for (var i = 0; i < num_of_rows; i++) {
         tableCols.push({
             contents: [
             {   
@@ -107,7 +115,8 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
                 "active": "false",
                 "datacolor":""
             }],
-            disabled: false
+            disabled: false,
+            newclass:''
         });      
     }
 
@@ -162,13 +171,11 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
     //Function to add row above the current row
     $scope.addRowAbove = function($index){
         $scope.table.rows.splice($index,0,{contents :[{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false });
-        alert("Row added Above!");
     }
 
     //Function to add below the current row
     $scope.addRowBelow = function($index){
         $scope.table.rows.splice($index+1,0,{contents :[{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false });
-        alert("Row added Below!");
     }
 
     //Function to delete the current row.
@@ -177,15 +184,17 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
             alert("Please do not delete this row!Add row above to delete this row.");
         }else {
             $scope.table.rows.splice($index, 1);
-            alert("Row Deleted!");
         }
     }
 
     //Function to move row above.
     $scope.moveRowUp = function($index){
-        if($index !== 0){
+        if($index > 0){
             $scope.table.rows[$index-1] = $scope.table.rows.splice($index, 1, $scope.table.rows[$index-1])[0];
-            alert("Row moved up!")
+            $scope.table.rows[$index-1].colorin = roweffect;
+            $timeout(function() {
+                $scope.table.rows[$index-1].colorin = '';
+            }, 500);
         }
         else{
             alert("This row cannot be moved further up!");
@@ -194,9 +203,12 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,das
 
     //Function to move row down.
     $scope.moveRowDown = function($index){
-        if(($index) !== (($scope.table.rows.length)-1)){
+        if(($index) < (($scope.table.rows.length)-1)){
             $scope.table.rows[$index+1] = $scope.table.rows.splice($index, 1, $scope.table.rows[$index+1])[0];
-            alert("Row moved down");
+            $scope.table.rows[$index+1].colorin = roweffect;  
+            $timeout(function() {
+                $scope.table.rows[$index+1].colorin = '';
+            }, 500);  
         }
         else{
             alert("This row cannot be moved further down!You have reached the end of the table.");
