@@ -22,13 +22,13 @@ app
                             contents:   [
                                             {   
                                                 "value": i,
-                                                "style":"text-align:left;background-color:#fff;color:#000;font-size:14px;margin-left:2px",
+                                                "style":"text-align:left;background-color:#fff;color:#000;font-size:13px;margin-left:2px",
                                                 "active": "false",
                                                 "cstyle":"background-color:#fff;text-align:left;color:#000;font-size:9px"
                                             },
                                             {   
                                                 "value":"Audacy"+i,
-                                                "style":"text-align:left;background-color:#fff;color:#000;font-size:14px",
+                                                "style":"text-align:left;background-color:#fff;color:#000;font-size:13px",
                                                 "active": "false",
                                                 "cstyle":"background-color:#fff;text-align:left;color:#000;font-size:9px"
                                             },
@@ -80,8 +80,8 @@ app
 		delete: false
     },
     {
-        sizeY: 3,
-        sizeX: 8,
+        sizeY: 2,
+        sizeX: 4,
         name: "Data Table",
         directive: "datatable",
 		directiveSettings: "datatablesettings",

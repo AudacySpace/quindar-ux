@@ -60,8 +60,8 @@ a.arrowbtn:visited{
     width:30px;
 }
 ul.drpmenu {
-    top: -9%;
-    left: 139%;
+    top: -15%;
+    left: 132%;
     min-width: 128px;
     border:1px solid #ccc;
     border-radius:0;
@@ -69,7 +69,7 @@ ul.drpmenu {
     background-color:#f1f2f4;
     padding:0px;
     margin:0px;
-    font-size:12px;
+    font-size:13px;
 }
 .drpmenu>li>a{
     padding:1px 20px;
@@ -101,11 +101,16 @@ span.header-span{
 }
 .table-bordered>tbody>tr>td{
     border: 1px solid #ccc;
-    padding:0px 2px;
+    padding:2px 2px;
     white-space: nowrap;
+    font-size:13px;
 }
 .table.table-bordered{
     margin-bottom:0px;
+}
+.table-bordered>thead>tr>td{
+    padding:4px;
+    font-size:14px;
 }
 
 /*Data Table Settings Styles*/
@@ -142,6 +147,34 @@ span.header-span{
     display:none;
 }
 
+.animate-repeat.ng-enter,
+.animate-repeat.ng-leave {
+    -webkit-transition:all linear 0.5s;
+    -moz-transition:all linear 0.5s;
+    transition:all linear 0.5s;
+}
+
+.animate-repeat.ng-leave.ng-leave-active,
+.animate-repeat.ng-enter{
+   opacity:0;
+   background-color:#CFCFD5;
+}
+
+.animate-repeat.ng-leave,
+.animate-repeat.ng-enter.ng-enter-active{
+    opacity:1;
+    background-color:#CFCFD5;
+}
+
+@keyframes background-fade {
+    0%{
+       background:#fff;  
+    }
+    100% {
+        background:#CFCFD5;
+    }
+}
+
 @media only screen and (max-width: 599px) {
     .mbl-dt {
        display:block;
@@ -170,20 +203,17 @@ span.header-span{
         padding: 0px;
     }
     ul.drpmenu {
-        top: -6%;
-        left: 136%;
+        top: -12%;
+        left: 131%;
         min-width:100px;
     }
-    .arrowbtn{
-        padding:4px;
-        font-size:8px;
+    .table-bordered>tbody>tr>td.categoryID-arrow{
+        font-size:4px;
     }
-    td.rowcell{
-        font-size:9px;
-    }
-    .table-bordered>tbody>tr>td{
+    .table-bordered>tbody>tr>td.rowcell{
         border: 1px solid #ccc;
         padding:0px 0px;
+        font-size:8px;
         white-space: normal;
     }
 }
@@ -216,20 +246,17 @@ span.header-span{
         padding: 0px;
     }
     ul.drpmenu {
-        top: -16%;
-        left: 105%;
+        top: -12%;
+        left: 131%;
         min-width:100px;
     }
-    .arrowbtn{
-        padding:4px;
-        font-size:8px;
+    .table-bordered>tbody>tr>td.categoryID-arrow{
+        font-size:4px;
     }
-    td.rowcell{
-        font-size:9px;
-    }
-    .table-bordered>tbody>tr>td{
+       .table-bordered>tbody>tr>td.rowcell{
         border: 1px solid #ccc;
         padding:0px 0px;
+        font-size:8px;
         white-space: normal;
     }
 }
