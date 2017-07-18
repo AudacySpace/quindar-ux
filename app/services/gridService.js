@@ -1,5 +1,5 @@
 app
-.factory('gridService', ['$http', function($http) { 
+.factory('gridService', ['$http','$sessionStorage','prompt','userService', function($http,$sessionStorage,prompt,userService) { 
     var gridsterOptions = {
         margins: [20, 20],
         columns: 8,
@@ -8,6 +8,9 @@ app
             handle: '.box-header'
         }
     };     
+
+    var email = userService.getUserEmail();
+    checkDefaultDashboard();
 
     var orbitDisplay = [];
     var iconDisplay = [];
@@ -188,64 +191,68 @@ app
         delete: false
      }];
 
-    var dashboards = {
-        'Home': {
-            name: 'Home',
-            widgets: [
-            {
-                    col: 0,
-                    row: 0,
-                    sizeY: 3,
-                    sizeX: 4,
-                    name: "Line Plot",
-                    directive: "lineplot",
-                    directiveSettings: "linesettings",
-                    id: "addLine",
-                    icon: {
-                        id: "l-plot",
-                        type: "fa-line-chart"
-                    },
-                    main: true,
-                    settings: {
-                        active: false
-                    },
-                    saveLoad: false,
-                    delete: false
-                },
-                {
-                    col: 4,
-                    row: 0,
-                    sizeY: 3,
-                    sizeX: 4,
-                    name: "3D Model",
-                    directive: "satellite",
-                    directiveSettings: "satellitesettings",
-                    id: "satellite",
-                    icon: {
-                        id: "l-plot",
-                        type: "fa-cube"
-                    },
-                    main: true,
-                    settings: {
-                        active: false
-                    },
-                    saveLoad: false,
-                    delete: false
-                }
-                ]
-            }
-        };
+    function checkDefaultDashboard(){
 
-    var dashboard = {"current" : dashboards['Home']};
+        if(!$sessionStorage.dashboard || $sessionStorage.dashboard === null || $sessionStorage.dashboard === ''){
+            $sessionStorage.dashboards = {
+                'Home': {
+                    name: 'Home',
+                    widgets: [{
+                        col: 0,
+                        row: 0,
+                        sizeY: 3,
+                        sizeX: 4,
+                        name: "Line Plot",
+                        directive: "lineplot",
+                        directiveSettings: "linesettings",
+                        id: "addLine",
+                        icon: {
+                            id: "l-plot",
+                            type: "fa-line-chart"
+                        },
+                        main: true,
+                        settings: {
+                            active: false
+                        },
+                        saveLoad: false,
+                        delete: false
+                    },
+                    {
+                        col: 4,
+                        row: 0,
+                        sizeY: 3,
+                        sizeX: 4,
+                        name: "3D Model",
+                        directive: "satellite",
+                        directiveSettings: "satellitesettings",
+                        id: "satellite",
+                        icon: {
+                            id: "l-plot",
+                            type: "fa-cube"
+                        },
+                        main: true,
+                        settings: {
+                            active: false
+                        },
+                        saveLoad: false,
+                        delete: false
+                    }]
+                }
+            }
+
+            $sessionStorage.dashboard = {"current" : $sessionStorage.dashboards['Home']};
+        }
+
+    }
 
     var selectedDashboardId = 'Home';
 
     function getDashboard() {
-        return dashboard;
+        return $sessionStorage.dashboard;
     }
 
     function setDashboard(d1) {
-        dashboard["current"] = d1;
+        $sessionStorage.dashboard["current"] = d1;
     }
 
     function getDashboardId() {
@@ -257,7 +264,7 @@ app
     }
 
     function clear() {
-        dashboards[selectedDashboardId].widgets = [];
+        $sessionStorage.dashboards[selectedDashboardId].widgets = [];
     };
 
     function addWidget() {
@@ -270,19 +277,19 @@ app
 
     function addWidgets(widget) {
         var widgetdef = angular.copy(widget);
-        dashboards[selectedDashboardId].widgets.push(widgetdef);
+        $sessionStorage.dashboards[selectedDashboardId].widgets.push(widgetdef);
     }
 
-    function remove(widget) {
-        dashboard["current"].widgets.splice(dashboard["current"].widgets.indexOf(widget), 1);
+    function remove(widget) {      
+        $sessionStorage.dashboard["current"].widgets.splice($sessionStorage.dashboard["current"].widgets.indexOf(widget), 1);
     }
 
     function save(email, dName) {
-        dashboard["current"].name = dName;
+        $sessionStorage.dashboard["current"].name = dName;
         return $http({
             url: "/saveLayout", 
             method: "POST",
-            data: {"email" : email, "dashboard" : dashboard["current"]}
+            data: {"email" : email, "dashboard" : $sessionStorage.dashboard["current"]}
         });
     }
 
@@ -297,16 +304,14 @@ app
     function showLayout(layouts, layout) {
         for(var i=0; i<layouts.length; i++){
             var name = layouts[i].name;
-            dashboards[name] = layouts[i];
+            $sessionStorage.dashboards[name] = layouts[i];
         }
-        
-        dashboard["current"] = dashboards[layout.name];
+        $sessionStorage.dashboard["current"] = $sessionStorage.dashboards[layout.name];
         selectedDashboardId = layout.name;
     }
 
 	return {
         gridsterOptions : gridsterOptions,
-        dashboards : dashboards,
         clear : clear,
         addWidget : addWidget,
         getDashboard : getDashboard,
