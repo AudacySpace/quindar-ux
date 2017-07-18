@@ -4,7 +4,7 @@ angular.module('app')
   	scope: true,
    	bindToController: true,
   	templateUrl: "./components/dashboard/dashboard.html",
-  	controller: function(dashboardService, $interval, $mdSidenav,$window, userService, $uibModal) {
+  	controller: function(dashboardService,gridService, $interval,prompt,$mdSidenav,$window, userService, $uibModal,$scope,$sessionStorage) {
   		var vm = this;
 
 		vm.clock = {
@@ -15,13 +15,14 @@ angular.module('app')
 		vm.name = userService.getUserName();
 		vm.email = userService.getUserEmail();
 		vm.callsign = userService.getCurrentCallSign();
+		var dashboard = gridService.getDashboard();
 
   		vm.interval = $interval(updateClock, 500);
 
   		function updateClock(){
   			vm.clock = dashboardService.getTime(0);
   		}
-  		
+
 	    vm.openLeftNav = function(){
 	    	if ($window.innerWidth < 1400){
 	    		$mdSidenav('left').open();
@@ -30,6 +31,25 @@ angular.module('app')
 	    		dashboardService.setLeftLock(vm.locks.lockLeft); 
 	    	}
 	    }
+
+	    vm.logout = function () {
+            prompt({
+                title: 'Do you want to save this layout?',
+                input: true,
+                label: 'Layout Name',
+                value: dashboard["current"].name
+            }).then(function(name){
+                gridService.save(vm.email, name)
+                .then(function(response) {
+                    if(response.status == 200){
+                        alert("Layout saved succcessfully -- " + name);
+                        $window.location.href = '/logout';
+                    }
+                });
+            },function(){
+            	$window.location.href = '/logout';
+            });
+        };
 
 	    vm.openRightNav = function(){
 	    	if ($window.innerWidth < 1400){
@@ -75,6 +95,7 @@ app.controller('modalCtrl', function($uibModalInstance, userService) {
 	$ctrl.close = function() {
 		$uibModalInstance.dismiss('cancel'); 
 	};
+
 
 	userService.getAllowedRoles()
 	.then(function(response) {
