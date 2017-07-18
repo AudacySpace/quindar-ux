@@ -23,36 +23,37 @@ app
             $http({
                 url: "/getTelemetry", 
                 method: "GET",
-                params: {'vehicles' : ['Audacy1', 'Audacy2', 'Audacy3']}
+                params: {'mission' : 'ATest'}
             }).then(function success(response) {
-                for(var item in response.data){
-                    telemetry[item] = response.data[item];
-                    time = telemetry[item].timestamp.value;
-                    timestamp_alow.value  = telemetry[item].timestamp.alarm_low;
-                    timestamp_ahigh.value  = telemetry[item].timestamp.alarm_high;
-                    timestamp_wlow.value  = telemetry[item].timestamp.warn_low;
-                    timestamp_whigh.value  = telemetry[item].timestamp.warn_high;
-                }
+                telemetry = response.data.telemetry;
+            //     for(var item in response.data){
+            //         telemetry[item] = response.data[item];
+            //         time = telemetry[item].timestamp.value;
+            //         timestamp_alow.value  = telemetry[item].timestamp.alarm_low;
+            //         timestamp_ahigh.value  = telemetry[item].timestamp.alarm_high;
+            //         timestamp_wlow.value  = telemetry[item].timestamp.warn_low;
+            //         timestamp_whigh.value  = telemetry[item].timestamp.warn_high;
+            //     }
                 if(isEmpty(response.data) === false){//if data is not empty
-                        if(prevId === telemetry[item]._id){ //  if proxy application is not receiving any data from ground station
-                            icons.sIcon = "grey";
-                            icons.gIcon = "red";
-                            icons.pIcon = "green";
-                            icons.dIcon = "blue";
-                        }else{
-                            icons.sIcon = "green";
-                            icons.gIcon = "green";
-                            icons.pIcon = "green";
-                            icons.dIcon = "green";
-                            prevId = telemetry[item]._id;
-                        }
-                }else{ // if data received is empty
+                    if(prevId === response.data._id){ //  if proxy application is not receiving any data from ground station
+                        icons.sIcon = "grey";
+                        icons.gIcon = "red";
+                        icons.pIcon = "green";
+                        icons.dIcon = "blue";
+                    } else {
+                        icons.sIcon = "green";
+                        icons.gIcon = "green";
+                        icons.pIcon = "green";
+                        icons.dIcon = "green";
+                        prevId = response.data._id;
+                    }
+                } else { // if data received is empty
                     icons.sIcon = "red";
                     icons.gIcon = "green";
                     icons.pIcon = "green";
                     icons.dIcon = "green";
                 }
-            },function error(response){
+            }, function error(response){
                 icons.sIcon = "grey";
                 icons.gIcon = "grey";
                 icons.pIcon = "grey";
