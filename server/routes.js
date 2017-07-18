@@ -124,22 +124,18 @@ var configRole = require('./config/role');
 
     });
 
-    //Get telemetry data for the array of vehicles passed as a parameter
+    //Get telemetry data for the mission passed as a parameter
     app.get('/getTelemetry', function(req, res){
-        var vehicles = req.query.vehicles;
-        var telemetry = {};
+        var mission = req.query.mission;
 
-        if(vehicles) {
-            Telemetry.find( 
-                {'vehicleId.value' : { $in: vehicles} }, 
+        if(mission) {
+            Telemetry.findOne( 
+                {'mission' : mission }, 
                 {}, 
-                { sort: { '_id' : -1 }, limit : vehicles.length },
-                function(err, result) {
+                { sort: { 'timestamp' : -1 }},
+                function(err, telemetry) {
                     if(err) throw err;
 
-                    for(var i=0; i<result.length; i++) {
-                        telemetry[result[i].vehicleId.value] = result[i];
-                    }
                     res.send(telemetry);
                 }
             );
