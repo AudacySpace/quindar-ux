@@ -20,7 +20,21 @@ app
 				widget.settings.vehicle = $scope.selected.vehicle.value;
 			}
 
-			$scope.selected = {};
+			checkForSatelliteModel();
+
+			function checkForSatelliteModel(){
+				if(!$scope.widget.settings.vehicle){
+					$scope.selected = {};
+				}else {
+					$scope.selected = 
+					{ 
+						vehicle:{
+							value :$scope.widget.settings.vehicle
+						}
+					}
+				}
+			}
+
 			$scope.isLoaded = false;
 
 			$scope.vehicles = [
