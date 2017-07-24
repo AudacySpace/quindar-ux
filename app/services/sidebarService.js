@@ -6,11 +6,13 @@ app
         id : ''
     }
 
+    var key = ''
+
     function getConfig(config) {
         return $http({
                 url: "/getConfig", 
                 method: "GET",
-                params: {'source' : 'GMAT'}
+                params: {'mission' : 'ATest'}
             });
     }
 
@@ -23,10 +25,20 @@ app
         return vehicleInfo;
     }
 
+    function setData(dataString) {
+        key = dataString
+    }
+
+    function getData(){
+        return key;
+    }
+
 	return {
         getConfig : getConfig,
         setVehicleInfo : setVehicleInfo,
         vehicleInfo : vehicleInfo,
-        getVehicleInfo : getVehicleInfo
+        getVehicleInfo : getVehicleInfo,
+        setData : setData,
+        getData : getData
 	}
 }]);
