@@ -8,7 +8,8 @@ var configSchema = mongoose.Schema({
     	ipaddress : String,
     	filename :  String
     },
-    contents : Object
+    contents : Object,
+    mission : String
 
 });
 
