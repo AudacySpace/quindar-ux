@@ -1,34 +1,23 @@
 app
 .component('leftSidebar', {
   	templateUrl: "./components/leftSidebar/left_sidebar.html",
-  	controller: function(sidebarService, $interval) {
+  	controller: function(sidebarService) {
   		var vm = this;
         vm.post = {id: null}; //object to store the input id value
 
   		getData();
 
-		vm.vehicleMenu = false;
-
-        vm.showVehicleMenu = function(){
-            vm.vehicleMenu = !vm.vehicleMenu;
+        vm.selectData = function(data){
+            if(data.nodes.length == 0){
+                sidebarService.setData(data.value);
+            } else {
+                data.active = !data.active;
+            }
         }
-
-        vm.showCategoryMenu = function(vehicle){
-            vehicle.active = !vehicle.active;
-        }
-
-        vm.showTelemetryMenu = function(config){
-            config.active = !config.active;
-        }
-
-  		vm.selectConfig = function(vehicle, data){
-            sidebarService.setVehicleInfo(vehicle.name,data);
-  		}
 
         //Function to search data menu using id
         vm.searchData = function(id){
-     
-            
+
             var vehs = angular.copy(vm.vehicles);//creates a copy of the vehicles object
             var vehMenu = angular.copy(vm.vehicleMenu);//creates a copy of vehicle menu status
             var newObj = {};
@@ -92,45 +81,49 @@ app
         }
         //End of searchData function
 
-  		function getData(){
-  			sidebarService.getConfig()
-  			.then(function(response) {
-  				vm.config = response.data;
-                for(var i=0;i<vm.config.length;i++){
-                    vm.config[i].datastatus = [];
+        //get the configuration contents from database
+        function getData(){
+            sidebarService.getConfig()
+            .then(function(response) {
+                if(response.data) {
+                    vm.dataTree = getDataTree(response.data);
                 }
+            });
 
-                for(var j=0; j<vm.config.length; j++){
-                    for(var k=0;k<vm.config[j].values.length;k++){
-                    vm.config[j].active = false;
-                    vm.config[j].datastatus[k] = true;
-                    vm.config[j].category = initCaps(vm.config[j].category);
+        }
+
+        //recursive function to create the tree structure data
+        function getDataTree(data, cKey){
+            var tree = [];
+            for(var key in data) {
+                if(data.hasOwnProperty(key)) {
+                    var nodes = [];
+                    var newKey = (cKey ? cKey + "." + key : key);
+
+                    if(typeof data[key] === 'object'){
+                        nodes = getDataTree(data[key], newKey);
                     }
+
+                    if(nodes.length != 0) {
+                        key = initCaps(key);
+                    }
+
+                    var node = {
+                        'name' : key,
+                        'nodes' : nodes,
+                        'value' : newKey,
+                        'active' : false
+                    };
+
+                    tree.push(node)
                 }
-                
-  				vm.vehicles = [ {
-					name : "Audacy1",
-					config : vm.config,
-					active : false
-				},
-				{
-					name : "Audacy2",
-					config : vm.config,
-					active : false
-				},
-				{
-					name : "Audacy3",
-					config : vm.config,
-					active : false
-				}
-				];
+            }
+            return tree;
+        }
 
-       		});
-
-  		}
-
+        //function to capitalise the first letter of a string
         function initCaps(str){
-            words = str.toLowerCase().split(' ');
+            words = str.split(' ');
 
             for(var i = 0; i < words.length; i++) {
                 var letters = words[i].split('');
