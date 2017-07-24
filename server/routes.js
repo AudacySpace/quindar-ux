@@ -144,37 +144,24 @@ var configRole = require('./config/role');
 
     //Get Configuration contents for the source name passed as a parameter
     app.get('/getConfig', function(req, res){
-        var source = req.query.source;
-        var contents;
-        var flags = [];
-        var configuration = [];
+        var mission = req.query.mission;
 
-        Config.findOne({ 'source.name' : source }, { '_id': 0 }, function(err, config) {
+        Config.findOne({ 'mission' : mission }, { '_id': 0 }, function(err, config) {
             if(err){
                 console.log(err);
             }
 
-            for (var item in config.contents){   
-                if(config.contents[item].category != "ground station" && 
-                    config.contents[item].category != "vehicle") {
-
-                    var category = config.contents[item].category;
-
-                    if( flags[category]) {
-                        for(var j=0; j<configuration.length; j++){
-                            if(configuration[j].category == category){
-                                configuration[j].values.push(item);
-                            }
-                        }
-                    } else {
-                        contents = {category:"", values:[]};
-                        contents.category = category;
-                        contents.values.push(item);
-                        flags[category] = true;
-                        configuration.push(contents);
-                    }
-                }
+            //splice keys to include tree from platform level
+            for (var point in config.contents) {
+                var nodes = point.split("_").slice(2);
+                var newPoint = nodes.join("_");
+                config.contents[newPoint] = config.contents[point];
+                delete config.contents[point];
             }
+
+            //create a hierarchial structure to support data menu on UI
+            var configuration = convert(config.contents)
+
             res.send(configuration);
         });
     });
@@ -302,4 +289,27 @@ function isLoggedIn(req, res, next) {
         return next();
 
     res.redirect('/');
+}
+
+//Function to convert flat structure object to hierarchial structure
+function convert(obj) {
+    var result = {};
+    eachKeyValue(obj, function(namespace, value) {
+        var parts = namespace.split("_");
+        var last = parts.pop();
+        var node = result;
+        parts.forEach(function(key) {
+            node = node[key] = node[key] || {};
+        });
+        node[last] = '';
+    });
+    return result;
+}
+
+function eachKeyValue(obj, fun) {
+    for (var i in obj) {
+        if (obj.hasOwnProperty(i)) {
+            fun(i, obj[i]);
+        }
+    }
 }
