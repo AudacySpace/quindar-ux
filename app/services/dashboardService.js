@@ -13,6 +13,7 @@ app
 
     var docIds = [];
     var icons = {sIcon:"", gIcon:"", pIcon:"",dIcon:""};
+    
 
     getTelemetry();
     getProxyStatus();
@@ -121,10 +122,16 @@ app
     }
 
     function countdown(target) {
+        var targettimestamp;
+        if(typeof target === "string"){
+            targettimestamp = new Date(target);
+        }else {
+            targettimestamp = target;
+        }
         var sign = '';
         var today = new Date(time);
         var currentDate = new Date(today.getTime() + (today.getTimezoneOffset() * 60000));
-        var signedDiff = target - currentDate;
+        var signedDiff = targettimestamp - currentDate;
 
         //remove sign to calculate individual numbers
         var difference = Math.abs(signedDiff);

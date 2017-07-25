@@ -13,7 +13,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     //Get values of the checkboxes in settings category display
     $scope.checkedValues = $scope.widget.settings.checkedValues;
     var tableCols = []; // table column data
-    var tempRow = "";
+    var tempRow = {vehicle:"",id:""};
     var telemetry = dashboardService.telemetry;
     var tempvalue = [];
     $scope.dataStatus = dashboardService.icons;
@@ -37,93 +37,108 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
         dServiceObjVal = newVal; 
     },true);
 
-    var num_of_rows = 120;
+    var num_of_rows = 39;
 
     //Default table structure -contains 120 rows to best appear for small and large screens
-    for (var i = 0; i < num_of_rows; i++) {
+    for (var i = 0; i <= num_of_rows; i++) {
         tableCols.push({
             contents: [
             {   
-                "value":"",
+                "datavalue":"",
                 "checked":"true",
                 "style":textLeft,
                 "colshow":"checkedValues.checkedId",
                 "active": "false",
-                "datacolor":""
+                "datacolor":"",
+                "headervalue":""
             },
             {   
-                "value":"",
+                "datavalue":"",
                 "checked":"true",
                 "style":textLeft,
                 "colshow":"checkedValues.checkedName",
                 "active": "false",
-                "datacolor":""
+                "datacolor":"",
+                "headervalue":""
             },
             {   
-                "value":"",
+                "datavalue":"",
                 "checked":"true",
                 "style":textRight,
                 "colshow":"checkedValues.checkedAlow",
                 "active": "false",
-                "datacolor":""
+                "datacolor":"",
+                "headervalue":""
             },
             {   
-                "value":"",
+                "datavalue":"",
                 "checked":"true",
                 "style":textRight,
                 "colshow":"checkedValues.checkedWlow",
                 "active": "false",
-                "datacolor":""
+                "datacolor":"",
+                "headervalue":""
             },
             {   
-                "value":"",
+                "datavalue":"",
                 "checked":"true",
                 "style":textRight,
                 "colshow":"checkedValues.checkedValue",
                 "active": "false",
-                "datacolor":""
+                "datacolor":"",
+                "headervalue":""
             },
             {   
-                "value":"",
+                "datavalue":"",
                 "checked":"true",
                 "style":textRight,
                 "colshow":"checkedValues.checkedWhigh",
                 "active": "false",
-                "datacolor":""
+                "datacolor":"",
+                "headervalue":""
             },
             {   
-                "value":"",
+                "datavalue":"",
                 "checked":"true",
                 "style":textRight,
                 "colshow":"checkedValues.checkedAhigh",
                 "active": "false",
-                "datacolor":""
+                "datacolor":"",
+                "headervalue":""
             },
             {   
-                "value":"",
+                "datavalue":"",
                 "checked":"true",
                 "style":textLeft,
                 "colshow":"checkedValues.checkedUnits",
                 "active": "false",
-                "datacolor":""
+                "datacolor":"",
+                "headervalue":""
             },
             {   
-                "value":"",
+                "datavalue":"",
                 "checked":"true",
                 "style":textLeft,
                 "colshow":"checkedValues.checkedNotes",
                 "active": "false",
-                "datacolor":""
+                "datacolor":"",
+                "headervalue":""
             }],
-            disabled: false,
-            newclass:''
+            disabled: false
         });      
     }
 
+
     //Table row and column structure
-    $scope.table = { 
-        "rows" : tableCols 
-    };
+    checkForRowData();
+
+    function checkForRowData(){
+        if(!$scope.widget.settings.table){
+            $scope.widget.settings.table = { 
+                "rows" : tableCols 
+            };
+        }
+    }
 
     //Function to select telemetry Id
     $scope.getTelemetrydata = function($event){
@@ -170,30 +185,40 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
 
     //Function to add row above the current row
     $scope.addRowAbove = function($index){
-        $scope.table.rows.splice($index,0,{contents :[{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false });
+        if($scope.widget.settings.table.rows.length < 80){
+            $scope.widget.settings.table.rows.splice($index,0,{contents :[{"datavalue":"","headervalue":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false }); 
+        }else {
+            alert("You have reached the maximum limit for rows!");
+        }
+       
     }
 
     //Function to add below the current row
     $scope.addRowBelow = function($index){
-        $scope.table.rows.splice($index+1,0,{contents :[{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false });
+        if($scope.widget.settings.table.rows.length < 80){
+           $scope.widget.settings.table.rows.splice($index+1,0,{contents :[{"datavalue":"","headervalue":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false });  
+       }else {
+            alert("You have reached the maximum limit for rows!");
+       }
+       
     }
 
     //Function to delete the current row.
     $scope.deleteRow = function($index){
-        if(($index === 0) && ($scope.table.rows.length) === 1){
+        if(($index === 0) && ($scope.widget.settings.table.rows.length) === 1){
             alert("Please do not delete this row!Add row above to delete this row.");
         }else {
-            $scope.table.rows.splice($index, 1);
+            $scope.widget.settings.table.rows.splice($index, 1);
         }
     }
 
     //Function to move row above.
     $scope.moveRowUp = function($index){
         if($index > 0){
-            $scope.table.rows[$index-1] = $scope.table.rows.splice($index, 1, $scope.table.rows[$index-1])[0];
-            $scope.table.rows[$index-1].colorin = roweffect;
+            $scope.widget.settings.table.rows[$index-1] = $scope.widget.settings.table.rows.splice($index, 1, $scope.widget.settings.table.rows[$index-1])[0];
+            $scope.widget.settings.table.rows[$index-1].colorin = roweffect;
             $timeout(function() {
-                $scope.table.rows[$index-1].colorin = '';
+                $scope.widget.settings.table.rows[$index-1].colorin = '';
             }, 500);
         }
         else{
@@ -203,11 +228,11 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
 
     //Function to move row down.
     $scope.moveRowDown = function($index){
-        if(($index) < (($scope.table.rows.length)-1)){
-            $scope.table.rows[$index+1] = $scope.table.rows.splice($index, 1, $scope.table.rows[$index+1])[0];
-            $scope.table.rows[$index+1].colorin = roweffect;  
+        if(($index) < (($scope.widget.settings.table.rows.length)-1)){
+            $scope.widget.settings.table.rows[$index+1] = $scope.widget.settings.table.rows.splice($index, 1, $scope.widget.settings.table.rows[$index+1])[0];
+            $scope.widget.settings.table.rows[$index+1].colorin = roweffect;  
             $timeout(function() {
-                $scope.table.rows[$index+1].colorin = '';
+                $scope.widget.settings.table.rows[$index+1].colorin = '';
             }, 500);  
         }
         else{
@@ -217,33 +242,29 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
 
     //Function to convert a row to a header
     $scope.convertHeader = function($index){
-        $scope.table.rows[$index] = {contents:[{"value":"","checked":"false","style":"text-align:right;background-color:#1072A4;","colshow":"true","colspan":"9","class":"header","placeholder":"Click here to edit", "active":"true"}], disabled: true};
+        $scope.widget.settings.table.rows[$index] = {contents:[{"datavalue":"","headervalue":"","checked":"false","style":"text-align:right;background-color:#1072A4;","colshow":"true","colspan":"9","class":"header","placeholder":"Click here to edit", "active":"true"}], disabled: true};
     } 
-
-    //Function to set the row to readonly on blur
-    $scope.convertToReadonly = function(cell){
-        cell.checked = "true";
-    }
 
     $scope.interval = $interval(updateRow, 500, 0, false);   
 
     function updateRow() {
-        for (var i=0; i<$scope.table.rows.length; i++){
-            tempRow = $scope.table.rows[i];
+        for (var i=0; i<$scope.widget.settings.table.rows.length; i++){
+            tempRow = $scope.widget.settings.table.rows[i];
             if(tempRow.vehicle && tempRow.id) {
+                try {
                 var valType = typeof telemetry[tempRow.vehicle][tempRow.id].value;
-                tempRow.contents[0].value = tempRow.id;
-                tempRow.contents[1].value = telemetry[tempRow.vehicle][tempRow.id].name;
+                tempRow.contents[0].datavalue = tempRow.id;
+                tempRow.contents[1].datavalue = telemetry[tempRow.vehicle][tempRow.id].name;
                 if(telemetry[tempRow.vehicle][tempRow.id].alarm_low !== null){
-                    tempRow.contents[2].value = telemetry[tempRow.vehicle][tempRow.id].alarm_low;
+                    tempRow.contents[2].datavalue = telemetry[tempRow.vehicle][tempRow.id].alarm_low;
                 }else {
-                    tempRow.contents[2].value = 'N/A';   
+                    tempRow.contents[2].datavalue = 'N/A';   
                 }
 
                 if(telemetry[tempRow.vehicle][tempRow.id].warn_low !== null){
-                    tempRow.contents[3].value = telemetry[tempRow.vehicle][tempRow.id].warn_low;
+                    tempRow.contents[3].datavalue = telemetry[tempRow.vehicle][tempRow.id].warn_low;
                 }else {
-                    tempRow.contents[3].value = 'N/A';   
+                    tempRow.contents[3].datavalue = 'N/A';   
                 }
 
                 if(valType === "number"){
@@ -254,7 +275,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                         }else {
                            tempRow.contents[4].datacolor = colorStale;   
                         }
-                        tempRow.contents[4].value = telemetry[tempRow.vehicle][tempRow.id].value.toFixed(4); 
+                        tempRow.contents[4].datavalue = telemetry[tempRow.vehicle][tempRow.id].value.toFixed(4); 
                     }else {
                        //new data
                         var colorVal = datastatesService.getDataColor(telemetry[tempRow.vehicle][tempRow.id].alarm_low,telemetry[tempRow.vehicle][tempRow.id].alarm_high,telemetry[tempRow.vehicle][tempRow.id].value,telemetry[tempRow.vehicle][tempRow.id].warn_low,telemetry[tempRow.vehicle][tempRow.id].warn_high,valType); 
@@ -265,7 +286,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                         }else{
                             tempRow.contents[4].datacolor = colorHealthy;
                         }
-                        tempRow.contents[4].value = telemetry[tempRow.vehicle][tempRow.id].value.toFixed(4); 
+                        tempRow.contents[4].datavalue = telemetry[tempRow.vehicle][tempRow.id].value.toFixed(4); 
                         tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value;
                     }
                 } else {
@@ -277,7 +298,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                         }else {
                            tempRow.contents[4].datacolor = colorStale;    
                         }
-                        tempRow.contents[4].value = telemetry[tempRow.vehicle][tempRow.id].value; 
+                        tempRow.contents[4].datavalue = telemetry[tempRow.vehicle][tempRow.id].value; 
                     }else {
                         //new data
                         var colorVal = datastatesService.getDataColor(telemetry[tempRow.vehicle][tempRow.id].alarm_low,telemetry[tempRow.vehicle][tempRow.id].alarm_high,telemetry[tempRow.vehicle][tempRow.id].value,telemetry[tempRow.vehicle][tempRow.id].warn_low,telemetry[tempRow.vehicle][tempRow.id].warn_high,valType);
@@ -289,30 +310,33 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                             tempRow.contents[4].datacolor = colorHealthy;
                             
                         }
-                        tempRow.contents[4].value = telemetry[tempRow.vehicle][tempRow.id].value; 
+                        tempRow.contents[4].datavalue = telemetry[tempRow.vehicle][tempRow.id].value; 
                         tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value; 
                     }
                 }
 
                 if(telemetry[tempRow.vehicle][tempRow.id].warn_high !== null){
-                    tempRow.contents[5].value = telemetry[tempRow.vehicle][tempRow.id].warn_high;
+                    tempRow.contents[5].datavalue = telemetry[tempRow.vehicle][tempRow.id].warn_high;
                 }else {
-                    tempRow.contents[5].value = 'N/A';   
+                    tempRow.contents[5].datavalue = 'N/A';   
                 }
 
                 if(telemetry[tempRow.vehicle][tempRow.id].alarm_high !== null){
-                    tempRow.contents[6].value = telemetry[tempRow.vehicle][tempRow.id].alarm_high;
+                    tempRow.contents[6].datavalue = telemetry[tempRow.vehicle][tempRow.id].alarm_high;
                 }else {
-                    tempRow.contents[6].value = 'N/A';   
+                    tempRow.contents[6].datavalue = 'N/A';   
                 }
 
-                tempRow.contents[7].value = telemetry[tempRow.vehicle][tempRow.id].units;
+                tempRow.contents[7].datavalue = telemetry[tempRow.vehicle][tempRow.id].units;
 
                 if(telemetry[tempRow.vehicle][tempRow.id].notes !== ''){
-                    tempRow.contents[8].value = telemetry[tempRow.vehicle][tempRow.id].notes;
+                    tempRow.contents[8].datavalue = telemetry[tempRow.vehicle][tempRow.id].notes;
                 }else {
-                    tempRow.contents[8].value = 'N/A';    
+                    tempRow.contents[8].datavalue = 'N/A';    
                 }
+            }catch(err){
+
+            }
             }else {
                 if(dServiceObjVal.dIcon === "red"){
                     //GUI Disconnected with Database 

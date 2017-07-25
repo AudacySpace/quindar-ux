@@ -76,7 +76,7 @@ app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardS
 	$scope.interval = $interval(updatePlot, delay, 0, false);	
 
 	function updatePlot() {
-		if($scope.widget.settings.data.value != "" && $scope.widget.settings.data.vehicles.length != 0) {
+		if($scope.widget.settings.data.value !== "" && $scope.widget.settings.data.vehicles.length > 0) {
 			var paramY = $scope.widget.settings.data.value;
 			var paramX = "timestamp";
 			var legendSpace = transWidth/$scope.widget.settings.data.vehicles.length;
@@ -91,16 +91,17 @@ app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardS
 			for(var v in vehicles){
 				var vehicle = vehicles[v];
 
-				var tTemp = parseTime(telemetry[vehicle.name][paramX].value);
-				var xTemp = telemetry[vehicle.name][paramY].value;
-				var category = telemetry[vehicle.name][paramY].category;
-				var yUnits = telemetry[vehicle.name][paramY].units;
-		
-				vehicle.data.push({x:tTemp, y:xTemp});
+				if(telemetry[vehicle.name] !== undefined){	
+					var tTemp = parseTime(telemetry[vehicle.name][paramX].value);
+					var xTemp = telemetry[vehicle.name][paramY].value;
+					var category = telemetry[vehicle.name][paramY].category;
+					var yUnits = telemetry[vehicle.name][paramY].units;
+					vehicle.data.push({x:tTemp, y:xTemp});
 					
-				if (vehicle.data.length > limit) {
-					vehicle.data.splice(0,1);
-				};
+					if (vehicle.data.length > limit) {
+						vehicle.data.splice(0,1);
+					};
+				}
 			}
 
 			//define X axis domain
@@ -151,6 +152,7 @@ app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardS
 				.attr("opacity", 0.1);
 
 			vehicles.forEach(function(d,i) {
+				if(telemetry[d.name] !== undefined){
 				//plot line and circles
 				g.append("path")
 					.datum(d.data)
@@ -194,6 +196,7 @@ app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardS
 						(transHeight + margin.bottom + 30) +")")
 					.attr("class","legend")
 					.text(d.name);
+				}
 			});
 		}
 	}
