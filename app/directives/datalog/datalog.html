@@ -29,7 +29,7 @@
       <input type="text" class="d-log-input" ng-model="search.vehicle"/> 
     </div>  
 </div>
-<div layout="row"  ng-repeat="data in widget.settings.logData | filter:search">
+<div layout="row"  ng-repeat="data in logData | filter:search">
     <div flex="25" class="dlog-row dlog-center-row">
         {{data.name}}
     </div>

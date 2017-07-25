@@ -27,18 +27,25 @@ app.controller('ClockCtrl', function($scope, dashboardService, datastatesService
         	dServiceObj = newVal; 
     },true);
 
-	$scope.widget.settings.clocks = [{
-		name : 'UTC',
-		delta : '',
-		time : {
-			days : '000',
-			minutes : '00',
-			hours : '00',
-			seconds : '00'
-		},
-		timezone : 0,
-		style : colorDefault
-	}];
+    checkForClockData();
+
+    function checkForClockData(){
+    	if( !$scope.widget.settings.clocks){
+
+			$scope.widget.settings.clocks = [{
+				name : 'UTC',
+				delta : '',
+				time : {
+					days : '000',
+					minutes : '00',
+					hours : '00',
+					seconds : '00'
+				},
+				timezone : 0,
+				style : colorDefault
+			}];
+		}
+	}
 
 	updateClock();
 

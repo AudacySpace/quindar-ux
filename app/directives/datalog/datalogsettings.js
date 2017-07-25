@@ -4,14 +4,10 @@ app.directive('datalogsettings', function() {
     templateUrl:'./directives/datalog/datalogsettings.html', 
     controller: function($scope,$window,$mdSidenav,sidebarService,dashboardService){
 
-        $scope.widget.settings.data = {
-            value: '',
-            vehicle: ''
-        };
+        checkForLogData();
+        var previousValue = $scope.widget.settings.data.value;
+        var previousVehicle = $scope.widget.settings.data.vehicle;
 
-         var previousValue = $scope.widget.settings.data.value;
-         var previousVehicle = $scope.widget.settings.data.vehicle;
-         $scope.data = {value:'',vehicle:''};
 
         $scope.saveDataLogSettings = function(widget){
             if($scope.data.value !== '' && $scope.data.vehicle !== ''){
@@ -50,7 +46,6 @@ app.directive('datalogsettings', function() {
 
         $scope.getValue = function(){
             $scope.vehicleInfo = sidebarService.getVehicleInfo();
-
             if($scope.vehicleInfo.vehicle !== "" && $scope.vehicleInfo.id !== "") {
                     $scope.data.value = $scope.vehicleInfo.id;
                     $scope.data.vehicle = $scope.vehicleInfo.vehicle;
@@ -62,6 +57,22 @@ app.directive('datalogsettings', function() {
                 alert("Vehicle data not set. Please select from Data Menu");
             }
         }
+
+        function checkForLogData(){
+            if(!$scope.widget.settings.data){
+                $scope.widget.settings.data = {
+                    value: '',
+                    vehicle: ''
+                }; 
+                $scope.data = {value:'',vehicle:''};
+            }else {
+                $scope.data = {
+                    value:$scope.widget.settings.data.value,
+                    vehicle:$scope.widget.settings.data.vehicle
+                };
+            }  
+        }
+
     }
   	}; 
 });
