@@ -7,6 +7,8 @@ app.directive('clocksettings', function() {
 })
 
 app.controller('ClockSettingsCtrl', function($scope){
+
+	
 	$scope.closeSettings = function(widget){
 		widget.main = true;
 		widget.settings.active = false;
@@ -23,12 +25,12 @@ app.controller('ClockSettingsCtrl', function($scope){
 						name : $scope.selected.timezone.value,
 						delta : '',
 						time : {
-							timestamp: {
+							// timestamp: {
 								days : '00',
 								minutes : '00',
 								hours : '00',
 								seconds : '00'
-							}
+							// }
 						},
 						timezone : $scope.selected.timezone.zone,
 						style : {
@@ -47,12 +49,12 @@ app.controller('ClockSettingsCtrl', function($scope){
 						name : $scope.name,
 						delta : '',
 						time : {
-							timestamp: {
+							// timestamp: {
 								days : '00',
 								minutes : '00',
 								hours : '00',
 								seconds : '00'
-							}
+							// }
 						},
 						reference : $scope.reference,
 						style : {

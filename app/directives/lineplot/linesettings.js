@@ -9,36 +9,9 @@ app
 
 app.controller('LineSettingsCtrl', 
     function($scope, $mdSidenav, $window, dashboardService, sidebarService){
-        $scope.checkedVehicles = [
-                {
-                    'key': 1,
-                    'value': 'Audacy1',
-                    'checked': false,
-                    'color' : '#0AACCF'
-                }, 
-                {
-                    'key': 2,
-                    'value': 'Audacy2',
-                    'checked': true,
-                    'color' : '#FF9100'
-                }, 
-                {
-                    'key': 3,
-                    'value': 'Audacy3',
-                    'checked': false,
-                    'color' : '#64DD17'
-                }
-        ];
 
-        $scope.widget.settings.data = {
-            value : "",
-            vehicles : []
-        };
-
-        $scope.data = {
-            value : ""
-        };
-
+        $scope.checkedVehicles = $scope.widget.settings.checkedVehicles;
+        checkForLPData();
         var previousValue = $scope.data.value;
         var previousVehicles = angular.copy($scope.checkedVehicles);
 
@@ -55,6 +28,7 @@ app.controller('LineSettingsCtrl',
 
         $scope.getValue = function(){
             $scope.vehicleInfo = sidebarService.getVehicleInfo();
+            console.log($scope.widget.settings.checkedVehicles);
 
             for(var i=0; i<$scope.checkedVehicles.length; i++){
                 if($scope.checkedVehicles[i].value === $scope.vehicleInfo.vehicle){
@@ -89,6 +63,10 @@ app.controller('LineSettingsCtrl',
                     widget.settings.data.vehicles = [];
                 }
 
+                if(widget.settings.checkedVehicles.length !== 0){
+                    widget.settings.checkedVehicles = [];
+                }
+
                 widget.settings.data.value = $scope.data.value;
 
                 for(var i=0; i<$scope.checkedVehicles.length; i++){
@@ -99,7 +77,10 @@ app.controller('LineSettingsCtrl',
                             'data' : []
                         }
                         widget.settings.data.vehicles.push(vehicle);
+                        widget.settings.checkedVehicles.push({"key":i+1,"value":$scope.checkedVehicles[i].value,"checked":true,"color":$scope.checkedVehicles[i].color});
                         count++;
+                    }else {
+                        widget.settings.checkedVehicles.push({"key":i+1,"value":$scope.checkedVehicles[i].value,"checked":false,"color":$scope.checkedVehicles[i].color})
                     }
                 }
 
@@ -121,6 +102,41 @@ app.controller('LineSettingsCtrl',
             $scope.data.value = previousValue;
             $scope.checkedVehicles = previousVehicles;
         }
+
+        function checkForLPData(){
+       
+            if(!$scope.widget.settings.data){
+                $scope.widget.settings.data = {
+                    value : "",
+                    vehicles : []
+                };
+
+                $scope.data = {
+                    value : ""
+                };  
+
+            }else {
+                $scope.data = {
+                    value : $scope.widget.settings.data.value
+                }; 
+
+                if($scope.widget.settings.data.vehicles.length != 0) {
+                    $scope.widget.settings.data.vehicles = [];
+                }
+
+                for(var i=0; i<$scope.checkedVehicles.length; i++){
+                    if($scope.checkedVehicles[i].checked === true){
+                        var vehicle = {
+                            'name' : $scope.checkedVehicles[i].value,
+                            'color' : $scope.checkedVehicles[i].color,
+                            'data' : []
+                        }
+                        $scope.widget.settings.data.vehicles.push(vehicle);
+                    }
+                }
+            }
+        }
+
         
     }
 );
