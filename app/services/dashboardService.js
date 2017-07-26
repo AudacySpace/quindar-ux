@@ -6,6 +6,7 @@ app
     };
     var telemetry = {};
     var time = "";
+    var platforms = [];
 
     var icons = {sIcon:"", gIcon:"", pIcon:"",dIcon:""};
 
@@ -20,7 +21,11 @@ app
                 method: "GET",
                 params: {'mission' : 'ATest'}
             }).then(function success(response) {
-                telemetry = response.data.telemetry;
+                for(var item in response.data.telemetry){
+                    telemetry[item] = response.data.telemetry[item];
+                }
+                telemetry['data'] = response.data.telemetry;
+                telemetry['time'] = response.data.timestamp;
                 time = response.data.timestamp;
                 if(isEmpty(response.data) === false){//if data is not empty
                     if(prevId === response.data._id){ //  if proxy application is not receiving any data from ground station
@@ -183,6 +188,24 @@ app
         }
         return true;
     }
+
+    function sortObject(o) {
+        var sorted = {},
+        key, a = [];
+
+        for (key in o) {
+            if (o.hasOwnProperty(key)) {
+                a.push(key);
+            }
+        }
+
+        a.sort();
+
+        for (key = 0; key < a.length; key++) {
+            sorted[a[key]] = o[a[key]];
+        }
+        return sorted;
+    }
     
 	return {
         locks : locks,
@@ -193,5 +216,6 @@ app
         icons : icons,
         getTime : getTime,
         countdown : countdown,
+        sortObject : sortObject
 	}
 }]);

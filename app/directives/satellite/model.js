@@ -114,7 +114,7 @@ app
 	// Earth Centered Earth Fixed to Earth Centered Inertial
 	var ECEF2ECI = function(posX,posY,posZ){
 		// Calculat Greenwich Mean Sidereal Time //		
-		var time = new Date(telemetry[$scope.widget.settings.vehicle].timestamp.value);// Local time
+		var time = new Date(telemetry['time']);// Local time
 		
 		var jd = solarService.date2JulianDate(time);	// Julian date UTC
 		var jdcJ2000 = (jd - 2451545.0)/36525.0;	//Julian centuries since epoch J2000
@@ -157,21 +157,21 @@ app
 			if(telemetry[$scope.widget.settings.vehicle]) {
 		
 				//set quaternion values for rotation
-				$scope.cube.quaternion.x = telemetry[$scope.widget.settings.vehicle].q1.value;
-				$scope.cube.quaternion.y = telemetry[$scope.widget.settings.vehicle].q2.value;
-				$scope.cube.quaternion.z = telemetry[$scope.widget.settings.vehicle].q3.value;
-				$scope.cube.quaternion.w = telemetry[$scope.widget.settings.vehicle].qc.value;
+				$scope.cube.quaternion.x = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q1.value;
+				$scope.cube.quaternion.y = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q2.value;
+				$scope.cube.quaternion.z = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q3.value;
+				$scope.cube.quaternion.w = telemetry[$scope.widget.settings.vehicle].GNC.attitude.qc.value;
 
 				//set quaternion values for displaying on widget
-				$scope.widget.settings.quaternion.q1 = telemetry[$scope.widget.settings.vehicle].q1.value.toFixed(4);
-				$scope.widget.settings.quaternion.q2 = telemetry[$scope.widget.settings.vehicle].q2.value.toFixed(4);
-				$scope.widget.settings.quaternion.q3 = telemetry[$scope.widget.settings.vehicle].q3.value.toFixed(4);
-				$scope.widget.settings.quaternion.qc = telemetry[$scope.widget.settings.vehicle].qc.value.toFixed(4);
+				$scope.widget.settings.quaternion.q1 = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q1.value.toFixed(4);
+				$scope.widget.settings.quaternion.q2 = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q2.value.toFixed(4);
+				$scope.widget.settings.quaternion.q3 = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q3.value.toFixed(4);
+				$scope.widget.settings.quaternion.qc = telemetry[$scope.widget.settings.vehicle].GNC.attitude.qc.value.toFixed(4);
 				
 				//set direction to Earth
-				var posX = telemetry[$scope.widget.settings.vehicle].x.value;
-				var posY = telemetry[$scope.widget.settings.vehicle].y.value;
-				var posZ = telemetry[$scope.widget.settings.vehicle].z.value;
+				var posX = telemetry[$scope.widget.settings.vehicle].GNC.position.x.value;
+				var posY = telemetry[$scope.widget.settings.vehicle].GNC.position.y.value;
+				var posZ = telemetry[$scope.widget.settings.vehicle].GNC.position.z.value;
 
 				//Transform position from ECEF to ECI
 				var earthECI = ECEF2ECI(posX,posY,posZ);
@@ -183,7 +183,7 @@ app
 				$scope.arrowEarth.setDirection(dirEarth);
 				
 				//Calculate direction to Sun //
-				var time = new Date(telemetry[$scope.widget.settings.vehicle].timestamp.value);// Local time
+				var time = new Date(telemetry['time']);// Local time
 				var solECEF = solarCoords(time);
 
 				// Sun in ECI [x,y,z]
@@ -213,20 +213,25 @@ app
 	function updateColors(){
 		if($scope.widget.settings.vehicle && $scope.cube && telemetry[$scope.widget.settings.vehicle]){
 
-			var valTypeq1 = typeof telemetry[$scope.widget.settings.vehicle].q1.value;
-			var valTypeq2 = typeof telemetry[$scope.widget.settings.vehicle].q2.value;
-			var valTypeq3 = typeof telemetry[$scope.widget.settings.vehicle].q3.value;
-			var valTypeqc = typeof telemetry[$scope.widget.settings.vehicle].qc.value;	
+			var valTypeq1 = typeof telemetry[$scope.widget.settings.vehicle].GNC.attitude.q1.value;
+			var valTypeq2 = typeof telemetry[$scope.widget.settings.vehicle].GNC.attitude.q2.value;
+			var valTypeq3 = typeof telemetry[$scope.widget.settings.vehicle].GNC.attitude.q3.value;
+			var valTypeqc = typeof telemetry[$scope.widget.settings.vehicle].GNC.attitude.qc.value;	
+
+			var q1 = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q1;
+			var q2 = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q2;
+			var q3 = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q3;
+			var qc = telemetry[$scope.widget.settings.vehicle].GNC.attitude.qc;	
 
 			//color of q1 
-			if(q1tempval === telemetry[$scope.widget.settings.vehicle].q1.value){
+			if(q1tempval === q1.value){
 				if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green" ){
 					$scope.widget.settings.colorq1 = colorHealthy;
 				}else {
 					$scope.widget.settings.colorq1 = colorStale;
 				}	
 			}else{
-				var colorValq1 =  datastatesService.getDataColor(telemetry[$scope.widget.settings.vehicle].q1.alarm_low,telemetry[$scope.widget.settings.vehicle].q1.alarm_high,telemetry[$scope.widget.settings.vehicle].q1.value,telemetry[$scope.widget.settings.vehicle].q1.warn_low,telemetry[$scope.widget.settings.vehicle].q1.warn_high,valTypeq1); 
+				var colorValq1 =  datastatesService.getDataColor(q1.alarm_low,q1.alarm_high,q1.value,q1.warn_low,q1.warn_high,valTypeq1); 
 				if(colorValq1 === "red"){
                     $scope.widget.settings.colorq1 = colorAlarm;  
                 }else if(colorValq1 === "orange"){
@@ -234,18 +239,18 @@ app
                 }else{
                     $scope.widget.settings.colorq1 = colorHealthy;
                 }
-				q1tempval = telemetry[$scope.widget.settings.vehicle].q1.value;
+				q1tempval = q1.value;
 			}
 
 			//color of q2
-			if(q2tempval === telemetry[$scope.widget.settings.vehicle].q2.value){
+			if(q2tempval === q2.value){
 				if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green" ){
 					$scope.widget.settings.colorq2 = colorHealthy;
 				}else {
 					$scope.widget.settings.colorq2 = colorStale;
 				}	
 			}else{
-				var colorValq2 =  datastatesService.getDataColor(telemetry[$scope.widget.settings.vehicle].q2.alarm_low,telemetry[$scope.widget.settings.vehicle].q2.alarm_high,telemetry[$scope.widget.settings.vehicle].q2.value,telemetry[$scope.widget.settings.vehicle].q2.warn_low,telemetry[$scope.widget.settings.vehicle].q2.warn_high,valTypeq2);
+				var colorValq2 =  datastatesService.getDataColor(q2.alarm_low,q2.alarm_high,q2.value,q2.warn_low,q2.warn_high,valTypeq2);
 				if(colorValq2 === "red"){
                     $scope.widget.settings.colorq2 = colorAlarm;  
                 }else if(colorValq2 === "orange"){
@@ -253,18 +258,18 @@ app
                 }else{
                     $scope.widget.settings.colorq2 = colorHealthy;
                 }
-				q2tempval = telemetry[$scope.widget.settings.vehicle].q2.value;
+				q2tempval = q2.value;
 			}
 
 			//color of q3
-			if(q3tempval === telemetry[$scope.widget.settings.vehicle].q3.value){
+			if(q3tempval === q3.value){
 				if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green" ){
 					$scope.widget.settings.colorq3 = colorHealthy;
 				}else {
 					$scope.widget.settings.colorq3 = colorStale;
 				}
 			}else{
-				var colorValq3 =  datastatesService.getDataColor(telemetry[$scope.widget.settings.vehicle].q3.alarm_low,telemetry[$scope.widget.settings.vehicle].q3.alarm_high,telemetry[$scope.widget.settings.vehicle].q3.value,telemetry[$scope.widget.settings.vehicle].q3.warn_low,telemetry[$scope.widget.settings.vehicle].q3.warn_high,valTypeq3);
+				var colorValq3 =  datastatesService.getDataColor(q3.alarm_low,q3.alarm_high,q3.value,q3.warn_low,q3.warn_high,valTypeq3);
 				if(colorValq3 === "red"){
                     $scope.widget.settings.colorq3 = colorAlarm;  
                 }else if(colorValq3 === "orange"){
@@ -272,18 +277,18 @@ app
                 }else{
                     $scope.widget.settings.colorq3 = colorHealthy;
                 }
-				q3tempval = telemetry[$scope.widget.settings.vehicle].q3.value;
+				q3tempval = q3.value;
 			}
 
 			//color of qc
-			if(qctempval === telemetry[$scope.widget.settings.vehicle].qc.value){
+			if(qctempval === qc.value){
 				if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green" ){
 					$scope.widget.settings.colorqc = colorHealthy;
 				}else {
 					$scope.widget.settings.colorqc = colorStale;
 				}
 			}else{
-				var colorValqc =  datastatesService.getDataColor(telemetry[$scope.widget.settings.vehicle].qc.alarm_low,telemetry[$scope.widget.settings.vehicle].qc.alarm_high,telemetry[$scope.widget.settings.vehicle].qc.value,telemetry[$scope.widget.settings.vehicle].qc.warn_low,telemetry[$scope.widget.settings.vehicle].qc.warn_high,valTypeqc);		
+				var colorValqc =  datastatesService.getDataColor(qc.alarm_low,qc.alarm_high,qc.value,qc.warn_low,qc.warn_high,valTypeqc);		
 				if(colorValqc === "red"){
                     $scope.widget.settings.colorqc = colorAlarm;  
                 }else if(colorValqc === "orange"){
@@ -291,7 +296,7 @@ app
                 }else{
                     $scope.widget.settings.colorqc = colorHealthy;
                 }
-				qctempval = telemetry[$scope.widget.settings.vehicle].qc.value;
+				qctempval = qc.value;
 			}
 
 			if(dServiceObj.dIcon === "red"){
