@@ -13,51 +13,42 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
     var telemetry = dashboardService.telemetry;
     var temp = $element[0].getElementsByTagName("div")[0];
     var el = temp.getElementsByTagName("div")[1];
-
-    var vehName;
     var vehicles = [];
     var scH = {};
     var scS = {};
     var datastatus = [];
     var orbits = [];
     var satIcons = [];
-    $scope.timeObj = {};
 
-    $scope.widget.stream = new Array();
+    $scope.timeObj = {};
     $scope.checkboxModel = {
         value1 : true
     };
-    $scope.vals =  $scope.widget.settings.vehName;
-    $scope.scHo = $scope.widget.settings.scHolder;
-    $scope.scSt = $scope.widget.settings.scStates;
-    $scope.dataH = $scope.widget.settings.dataHolder;
-    $scope.orbitHo = $scope.widget.settings.orbitHolder;
-    $scope.iconHo = $scope.widget.settings.iconHolder;
 
-    $scope.$watch('vals', function(newVal,oldVal){
+    $scope.$watch('widget.settings.vehName', function(newVal,oldVal){
         $scope.timeObj = {};
         vehicles = newVal; 
     }, true);
 
-    $scope.$watch('scHo',function(newVal,oldVal){
+    $scope.$watch('widget.settings.scHolder',function(newVal,oldVal){
         scH = newVal; 
     },true);
 
-    $scope.$watch('scSt',function(newVal,oldVal){
+    $scope.$watch('widget.settings.scStates',function(newVal,oldVal){
         scS = newVal; 
     },true);
 
-    $scope.$watch('dataH',function(newVal,oldVal){
+    $scope.$watch('widget.settings.dataHolder',function(newVal,oldVal){
         $scope.timeObj = {};
         datastatus = newVal; 
     },true);
 
-    $scope.$watch('orbitHo',function(newVal,oldVal){
+    $scope.$watch('widget.settings.orbitHolder',function(newVal,oldVal){
         $scope.timeObj = {};
         orbits = newVal; 
     },true);
 
-    $scope.$watch('iconHo',function(newVal,oldVal){
+    $scope.$watch('widget.settings.iconHolder',function(newVal,oldVal){
         $scope.timeObj = {};
         satIcons = newVal; 
     },true);
@@ -85,7 +76,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 
     var transform = d3Service.zoomTransform(svg.node()); 
     var g = svg.append("g");
-    var sat = ['Audacy1','Audacy2','Audacy3'];
+
     var gs = ['GS1','GS2'];
     var station = [[-122.4, 37.7],[103.8, 1.4]];
     var satRadius = 10000;//7000;
@@ -188,12 +179,8 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 
     // Function to update data to be plotted
     function updatePlot() {
-        g.selectAll("path.route1").remove(); 
-        g.selectAll("path.route2").remove();
-        g.selectAll("path.route3").remove();
-        g.selectAll("#craft1").remove();
-        g.selectAll("#craft2").remove();
-        g.selectAll("#craft3").remove();
+        g.selectAll("path.route").remove(); 
+        g.selectAll("#craft").remove();
         g.selectAll("path.link").remove();
         g.selectAll("line").remove();
         g.selectAll("path.gslink").remove(); 
@@ -201,7 +188,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
         showDayNight();
 
         for (i=0; i< vehicles.length; i++){
-            latestdata = telemetry[vehicles[i]];
+            latestdata = telemetry[vehicles[i].name];
   
             // Check if the latestdata is available for the selected s/c
             if (latestdata == null) {
@@ -209,9 +196,9 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
             }
             else {
                 // update latestdata                                      
-                var x = latestdata.x.value;
-                var y = latestdata.y.value;
-                var z = latestdata.z.value;
+                var x = latestdata.GNC.position.x.value;
+                var y = latestdata.GNC.position.y.value;
+                var z = latestdata.GNC.position.z.value;
                             
                 // Calculate longitude and latitude from the satellite position x, y, z.
                 // The values (x,y,z) must be Earth fixed.
@@ -228,7 +215,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                 }
 
                 //get current time
-                var dateValue = new Date(latestdata.timestamp.value);
+                var dateValue = new Date(telemetry['time']);
                 var timestamp = dateValue.getTime(); //time in milliseconds
 
                 //push values to the array
@@ -255,62 +242,24 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                     $scope.timeObj[i].splice(0,1);
                 }
 				
-                if(vehicles[i] === "Audacy1" ){
-                    if(orbits[i] === true){
-                   
-                        var route1 = g.append("path")
-                                      .datum({type: "LineString", coordinates: scH[i]})  
-                                      .attr("class", "route1")
-                                      .attr("d", path);
-                    }
+                if(orbits[i] === true){
+                    var route = g.append("path")
+                                 .datum({type: "LineString", coordinates: scH[i]})  
+                                 .attr("class", "route")
+                                 .attr("stroke", vehicles[i].color)
+                                 .attr("d", path);
+                }
                     
-                    if(satIcons[i] === true){
-                        var  craft1 = g.append("svg:image")
-                                       .attr("xlink:href", "/icons/groundtrack-widget/one.svg")
-                                       .attr("id", "craft1")
-                                       .attr("x",sat_coord[0])
-                                       .attr("y",sat_coord[1]-15)
-                                       .attr("width",30)
-                                       .attr("height",30)
-                                       .append("svg:title").text("Audacy 1");
-
-                    }
-                } else if(vehicles[i] === "Audacy2"){
-                    if(orbits[i] === true){
-                        var route2 = g.append("path")
-                                      .datum({type: "LineString", coordinates: scH[i]})  
-                                      .attr("class", "route2")
-                                      .attr("d", path);
-                    }
-
-                    if(satIcons[i] === true){
-                        var  craft2 = g.append("svg:image")
-                                       .attr("xlink:href", "/icons/groundtrack-widget/two.svg")
-                                       .attr("id", "craft2")
-                                       .attr("x",sat_coord[0])
-                                       .attr("y",sat_coord[1]-15)
-                                       .attr("width",30)
-                                       .attr("height",30)
-                                       .append("svg:title").text("Audacy 2");
-                    }
-                } else if(vehicles[i] === "Audacy3"){
-                    if(orbits[i] === true){
-                        var route3 = g.append("path")
-                                      .datum({type: "LineString", coordinates: scH[i]})  
-                                      .attr("class", "route3")
-                                      .attr("d", path); 
-                    }
-
-                    if(satIcons[i] === true){
-                        var  craft3 = g.append("svg:image")
-                                       .attr("xlink:href", "/icons/groundtrack-widget/three.svg")
-                                       .attr("id", "craft3")
-                                       .attr("x",sat_coord[0])
-                                       .attr("y",sat_coord[1]-15)
-                                       .attr("width",30)
-                                       .attr("height",30)
-                                       .append("svg:title").text("Audacy 3");
-                    }
+                if(satIcons[i] === true){
+                    var craft = g.append("svg:image")
+                                 .attr("xlink:href", "/icons/groundtrack-widget/satellite.svg")
+                                 .attr("id", "craft")
+                                 .attr("fill", "#000000")
+                                 .attr("x",sat_coord[0])
+                                 .attr("y",sat_coord[1]-15)
+                                 .attr("width",30)
+                                 .attr("height",30)
+                                 .append("svg:title").text(vehicles[i].name);
                 }
             }
         }
