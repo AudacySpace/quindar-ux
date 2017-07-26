@@ -7,58 +7,7 @@ app
             enabled: true,
             handle: '.box-header'
         }
-    };     
-
-    var orbitDisplay = [];
-    var iconDisplay = [];
-    for(var i=0;i<3;i++){
-        orbitDisplay[i] = true;
-        iconDisplay[i] = true;
-    }
-
-    var groundtracktableCols = [];
-    for (var i = 1; i < 4; i++) {
-        groundtracktableCols.push({
-                            contents:   [
-                                            {   
-                                                "value": i,
-                                                "style":"text-align:left;background-color:#fff;color:#000;font-size:13px;margin-left:2px",
-                                                "active": "false",
-                                                "cstyle":"background-color:#fff;text-align:left;color:#000;font-size:9px"
-                                            },
-                                            {   
-                                                "value":"Audacy"+i,
-                                                "style":"text-align:left;background-color:#fff;color:#000;font-size:13px",
-                                                "active": "false",
-                                                "cstyle":"background-color:#fff;text-align:left;color:#000;font-size:9px"
-                                            },
-                                            {   
-                                                "value":"",
-                                                "style":"text-align:left;background-color:#fff;color:#000;margin-top:0px",
-                                                "active": "true",
-                                                "cstyle":"padding-left:0px;background-color:#fff;text-align:left;color:#000;font-size:9px"
-                                            },
-                                            {   
-                                                "value":"",
-                                                "style":"text-align:left;background-color:#fff;color:#000",
-                                                "active": "true",
-                                                "cstyle":"padding-left:0px;background-color:#fff;text-align:left;color:#000;font-size:9px"
-                                            },
-                                            {   
-                                                "value":"",
-                                                "style":"text-align:left;background-color:#fff;color:#000",
-                                                "active": "true",
-                                                "cstyle":"padding-left:0px;background-color:#fff;text-align:left;color:#000;font-size:9px"
-                                            }
-                                        ],
-                                        status: [
-                                        idStatus = false,
-                                        nameStatus = false,
-                                        dataStatus = true,
-                                        orbitStatus = true,
-                                        iconStatus = true]
-                       }); 
-    }                        
+    };                   
 
     var widgetDefinitions = [
     {
@@ -139,14 +88,7 @@ app
         },
         main: true,
         settings: {
-            active: false,
-            contents : groundtracktableCols,
-            vehName :[],
-            scHolder :{},
-            scStates :{},
-            dataHolder :[],
-            orbitHolder :[],
-            iconHolder :[]
+            active: false
         },
         saveLoad: false,
         delete: false

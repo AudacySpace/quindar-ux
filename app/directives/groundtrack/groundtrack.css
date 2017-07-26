@@ -106,20 +106,9 @@ button.btn.gtbtns:focus{
     -o-transform: scale(1); /* Opera */
     padding: 10px;
 }
-.route1 {
+.route {
     fill:  none;
-    stroke: #07D1EA; 
     stroke-width:3px;
-}
-.route2 {
-    fill:  none;
-    stroke: #0D8DB8; 
-    stroke-width:3px;
-}
-.route3 {
-    fill:  none;
-    stroke: #172168;
-    stroke-width:3px; 
 }
 .zoomicons{
     width:18px;

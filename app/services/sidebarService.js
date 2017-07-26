@@ -6,7 +6,7 @@ app
         id : ''
     }
 
-    var key = ''
+    var key = '';
 
     function getConfig(config) {
         return $http({
@@ -25,11 +25,11 @@ app
         return vehicleInfo;
     }
 
-    function setData(dataString) {
-        key = dataString
+    function setDataKey(dataString) {
+        key = dataString;
     }
 
-    function getData(){
+    function getDataKey(){
         return key;
     }
 
@@ -38,7 +38,7 @@ app
         setVehicleInfo : setVehicleInfo,
         vehicleInfo : vehicleInfo,
         getVehicleInfo : getVehicleInfo,
-        setData : setData,
-        getData : getData
+        setDataKey : setDataKey,
+        getDataKey : getDataKey
 	}
 }]);
