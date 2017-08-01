@@ -92,15 +92,18 @@ app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardS
 				var vehicle = vehicles[v];
 
 				if(telemetry[vehicle.name] !== undefined){	
-					var tTemp = parseTime(telemetry[vehicle.name][paramX].value);
-					var xTemp = telemetry[vehicle.name][paramY].value;
-					var category = telemetry[vehicle.name][paramY].category;
-					var yUnits = telemetry[vehicle.name][paramY].units;
-					vehicle.data.push({x:tTemp, y:xTemp});
-					
-					if (vehicle.data.length > limit) {
-						vehicle.data.splice(0,1);
-					};
+					var tTemp = parseTime(telemetry['time']);
+					var currentData = dashboardService.getData(vehicle.key);
+					if(currentData){
+						var xTemp = currentData.value;
+						var category = currentData.category;
+						var yUnits = currentData.units;
+						vehicle.data.push({x:tTemp, y:xTemp});
+
+						if (vehicle.data.length > limit) {
+							vehicle.data.splice(0,1);
+						};
+					}
 				}
 			}
 
@@ -140,7 +143,9 @@ app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardS
 				.call(d3Service.axisBottom(x).tickSize(-transHeight));	
 
 			// text label for the y axis
-			labelY.text(category+" [ "+paramY+ " ] " + yUnits + " ");
+			if(category && paramY){
+				labelY.text(category+" [ "+paramY+ " ] " + yUnits + " ");
+			}
 	  
 			// text label for the x axis
 			labelX.text(paramX);

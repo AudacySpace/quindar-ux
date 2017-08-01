@@ -213,6 +213,24 @@ app
         }
         return sorted;
     }
+
+    function getData(key){
+        var keys = key.split('.'),
+            data = telemetry['data'];
+
+        if(key && data){
+            for (var i = 0; i < keys.length; ++i) {
+                if (data[keys[i]] == undefined) {
+                    return undefined;
+                } else {
+                    data = data[keys[i]];
+                }
+            }
+            return data;
+        } else {
+            return null;
+        }
+    }
     
 	return {
         locks : locks,
@@ -223,6 +241,7 @@ app
         icons : icons,
         getTime : getTime,
         countdown : countdown,
-        sortObject : sortObject
+        sortObject : sortObject,
+        getData : getData
 	}
 }]);
