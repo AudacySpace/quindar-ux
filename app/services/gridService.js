@@ -27,26 +27,10 @@ app
         main: true,
 		settings: {
             active: false,
-            checkedVehicles : [
-                                {
-                                    'key': 1,
-                                    'value': 'Audacy1',
-                                    'checked': false,
-                                    'color' : '#0AACCF'
-                                }, 
-                                {
-                                    'key': 2,
-                                    'value': 'Audacy2',
-                                    'checked': true,
-                                    'color' : '#FF9100'
-                                }, 
-                                {
-                                    'key': 3,
-                                    'value': 'Audacy3',
-                                    'checked': false,
-                                    'color' : '#64DD17'
-                                }
-                            ]
+            contents : {
+                vehicles : [],
+                value : ""
+            }
         },
 		saveLoad: false,
 		delete: false
@@ -112,7 +96,14 @@ app
         },
         main: true,
         settings: {
-            active: false
+            active: false,
+            contents : [],
+            vehName : [],
+            scHolder : {},
+            scStates : {},
+            dataHolder : [],
+            orbitHolder :[],
+            iconHolder :[]
         },
         saveLoad: false,
         delete: false
@@ -176,26 +167,10 @@ app
                         main: true,
                         settings: {
                             active: false,
-                            checkedVehicles : [
-                                {
-                                    'key': 1,
-                                    'value': 'Audacy1',
-                                    'checked': false,
-                                    'color' : '#0AACCF'
-                                }, 
-                                {
-                                    'key': 2,
-                                    'value': 'Audacy2',
-                                    'checked': true,
-                                    'color' : '#FF9100'
-                                }, 
-                                {
-                                    'key': 3,
-                                    'value': 'Audacy3',
-                                    'checked': false,
-                                    'color' : '#64DD17'
-                                }
-                            ]
+                            contents : {
+                                vehicles : [],
+                                value : ""
+                            }
                         },
                         saveLoad: false,
                         delete: false

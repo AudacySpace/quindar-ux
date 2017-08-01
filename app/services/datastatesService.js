@@ -18,13 +18,12 @@ app
 
    function getDataColor(alowValue,ahighValue,dataValue,wlowValue,whighValue,valueType){
         var aLowVal,aHighVal,dataVal,wLowVal,wHighVal;
-
         if(valueType === "number"){
-            aLowVal = alowValue;
-            aHighVal = ahighValue;
-            dataVal = dataValue;
-            wLowVal = wlowValue;
-            wHighVal = whighValue;
+            aLowVal = parseFloat(alowValue);
+            aHighVal = parseFloat(ahighValue);
+            dataVal = parseFloat(dataValue);
+            wLowVal = parseFloat(wlowValue);
+            wHighVal = parseFloat(whighValue);
         }else {
             aLowVal = new Date(alowValue);
             aHighVal = new Date(ahighValue);

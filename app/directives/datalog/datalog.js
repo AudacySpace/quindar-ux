@@ -16,12 +16,15 @@ app.controller('DataLogCtrl',function ($scope,$window,$element,$interval,dashboa
     var colorStale = datastatesService.colorValues.stalecolor;// Color staleblue for stale data
     var colorDisconnected = datastatesService.colorValues.disconnectedcolor;//Color grey for disconnected db
     var colorDefault = datastatesService.colorValues.defaultcolor;//Color black for default color
-    var tempValues = [];
+    var prevLogData = [];
     var dServiceObjVal = {};
     $scope.dataStatus = dashboardService.icons;
 
     $scope.logData =  [];
-    var prevLogObj = {id:'',vehicle:''};
+    var prevData = {
+        key : ''
+    };
+    var dataColor = '';
 
     //watch to check the database icon color to know about database status
     $scope.$watch('dataStatus',function(newVal,oldVal){
@@ -32,24 +35,25 @@ app.controller('DataLogCtrl',function ($scope,$window,$element,$interval,dashboa
 
     /*Function to update the log and set data state colors*/
 	function updateLog(){
-           if( $scope.widget.settings.data.value !== '' && $scope.widget.settings.data.vehicle !== ''){ 
-                if( prevLogObj.id === $scope.widget.settings.data.value && prevLogObj.vehicle === $scope.widget.settings.data.vehicle ){
-                    updateLogTable();     
-                }else {
+        if($scope.widget.settings.data) {
+            if( $scope.widget.settings.data.id !== '' && $scope.widget.settings.data.vehicle !== ''){ 
+                if( prevData.key !== $scope.widget.settings.data.key ){
                     while($scope.logData.length > 0){
                         $scope.logData.pop();
-                    }
-                    updateLogTable(); 
+                    }               
                 }
+
+                updateLogTable();
 
                 if(dServiceObjVal.dIcon === "red"){
                     for(var i=0;i<=$scope.logData.length-1;i++){
                         $scope.logData[i].style = colorDisconnected;  
                     }
                 }
-                prevLogObj.id = $scope.widget.settings.data.value;
-                prevLogObj.vehicle = $scope.widget.settings.data.vehicle;
+
+                prevData.key = $scope.widget.settings.data.key;
             }
+        }
 	}
 
     function updateLogTable(){
@@ -58,44 +62,45 @@ app.controller('DataLogCtrl',function ($scope,$window,$element,$interval,dashboa
                 $scope.logData.pop();
             }
         }
-        var valType = typeof telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].value;
-        if(tempValues[tempValues.length-1] === telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].value){
 
-            if(dServiceObjVal.sIcon === "green" && dServiceObjVal.gIcon === "green" && dServiceObjVal.pIcon === "green" && dServiceObjVal.dIcon === "green"){
-                if(valType === "number"){
-                    $scope.logData.push({name:telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].name,value:telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].value.toFixed(4),timestamp:telemetry[$scope.widget.settings.data.vehicle]['timestamp'].value,style:colorHealthy});  
-                }else {
-                    $scope.logData.push({name:telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].name,value:telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].value,timestamp:telemetry[$scope.widget.settings.data.vehicle]['timestamp'].value,style:colorHealthy});  
-                }
-            } else {
-                if(valType === "number"){
-                    $scope.logData.push({name:telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].name,value:telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].value.toFixed(4),timestamp:telemetry[$scope.widget.settings.data.vehicle]['timestamp'].value,style:colorStale});  
-                }else {
-                    $scope.logData.push({name:telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].name,value:telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].value,timestamp:telemetry[$scope.widget.settings.data.vehicle]['timestamp'].value,style:colorStale});
-                } 
-            }
-        }else {
-            var colorVal = datastatesService.getDataColor(telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].alarm_low,telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].alarm_high,telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].value,telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].warn_low,telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].warn_high,valType); 
-
+        var currentData = dashboardService.getData($scope.widget.settings.data.key);
+        if(currentData) {
+            var valType = typeof currentData.value;
             if(valType === "number"){
-                if(colorVal === "red"){
-                    $scope.logData.push({name:telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].name,value:telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].value.toFixed(4),timestamp:telemetry[$scope.widget.settings.data.vehicle]['timestamp'].value,style:colorAlarm});
-                }else if(colorVal === "orange"){
-                    $scope.logData.push({name:telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].name,value:telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].value.toFixed(4),timestamp:telemetry[$scope.widget.settings.data.vehicle]['timestamp'].value,style:colorCaution});
-                }else {
-                    $scope.logData.push({name:telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].name,value:telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].value.toFixed(4),timestamp:telemetry[$scope.widget.settings.data.vehicle]['timestamp'].value,style:colorHealthy});
+                currentData.value = currentData.value.toFixed(4);
+            }
+
+            if(prevLogData[prevLogData.length-1] === currentData.value){
+                if(dServiceObjVal.sIcon === "green" && dServiceObjVal.gIcon === "green" && 
+                    dServiceObjVal.pIcon === "green" && dServiceObjVal.dIcon === "green"){
+                    
+                    dataColor = colorHealthy; 
+
+                } else {
+                    dataColor = colorStale;
                 }
             }else {
+                var colorVal = datastatesService.getDataColor(currentData.alarm_low, 
+                    currentData.alarm_high, currentData.value, currentData.warn_low, currentData.warn_high, valType); 
+
                 if(colorVal === "red"){
-                    $scope.logData.push({name:telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].name,value:telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].value,timestamp:telemetry[$scope.widget.settings.data.vehicle]['timestamp'].value,style:colorAlarm});
+                    dataColor = colorAlarm;
                 }else if(colorVal === "orange"){
-                    $scope.logData.push({name:telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].name,value:telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].value,timestamp:telemetry[$scope.widget.settings.data.vehicle]['timestamp'].value,style:colorCaution});
+                    dataColor = colorCaution;
                 }else {
-                    $scope.logData.push({name:telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].name,value:telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].value,timestamp:telemetry[$scope.widget.settings.data.vehicle]['timestamp'].value,style:colorHealthy});
-                } 
+                    dataColor = colorHealthy;
+                }
+
+                prevLogData.push(currentData.value);
             }
-            tempValues.push(telemetry[$scope.widget.settings.data.vehicle][$scope.widget.settings.data.value].value);
-        }
+                    
+            $scope.logData.push({
+                    name : currentData.name,
+                    value : currentData.value,
+                    timestamp : telemetry['time'],
+                    style : dataColor
+            });
+        } 
     }
 
 	$scope.$on("$destroy", 

@@ -9,7 +9,7 @@ app
 
         vm.selectData = function(data){
             if(data.nodes.length == 0){
-                sidebarService.setDataKey(data.value);
+                sidebarService.setVehicleInfo(data.value);
             } else {
                 data.active = !data.active;
             }
