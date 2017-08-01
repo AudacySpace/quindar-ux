@@ -13,8 +13,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     //Get values of the checkboxes in settings category display
     $scope.checkedValues = $scope.widget.settings.checkedValues;
     var tableCols = []; // table column data
-    var tempRow = {vehicle:"",id:""};
-    var telemetry = dashboardService.telemetry;
+    var tempRow = { vehicle : "", id : "", key : ""};
     var tempvalue = [];
     $scope.dataStatus = dashboardService.icons;
     var dServiceObjVal = {};
@@ -159,17 +158,13 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     //Function to display selected telemetry Id value and its corresponding data values.
     $scope.getValue = function($event, row){
         var vehicleInfo = sidebarService.getVehicleInfo();
-        var vehicle = vehicleInfo.vehicle;
-        var id = vehicleInfo.id;
         var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
 
-        if(vehicle !== "" && id !== "") {
-            if(telemetry !== null) {
-                row.vehicle = vehicle;
-                row.id = id;
-            } else {
-                alert("Telemetry data not available");
-            }
+        if(vehicleInfo.key) {
+            row.vehicle = vehicleInfo.vehicle;
+            row.id = vehicleInfo.id;
+            row.key = vehicleInfo.key;
+
             arrow.style.color = "#b3b3b3";
             if ($window.innerWidth >= 1400){
                 if($scope.lock.lockLeft !== false){
@@ -250,94 +245,77 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     function updateRow() {
         for (var i=0; i<$scope.widget.settings.table.rows.length; i++){
             tempRow = $scope.widget.settings.table.rows[i];
-            if(tempRow.vehicle && tempRow.id) {
+            if(tempRow.key) {
                 try {
-                var valType = typeof telemetry[tempRow.vehicle][tempRow.id].value;
-                tempRow.contents[0].datavalue = tempRow.id;
-                tempRow.contents[1].datavalue = telemetry[tempRow.vehicle][tempRow.id].name;
-                if(telemetry[tempRow.vehicle][tempRow.id].alarm_low !== null){
-                    tempRow.contents[2].datavalue = telemetry[tempRow.vehicle][tempRow.id].alarm_low;
-                }else {
-                    tempRow.contents[2].datavalue = 'N/A';   
-                }
+                    var currentData = dashboardService.getData(tempRow.key);
+                    if(currentData) {
+                        var valType = typeof currentData.value;
+                        if(valType === "number"){
+                            currentData.value = currentData.value.toFixed(4);
+                        }
 
-                if(telemetry[tempRow.vehicle][tempRow.id].warn_low !== null){
-                    tempRow.contents[3].datavalue = telemetry[tempRow.vehicle][tempRow.id].warn_low;
-                }else {
-                    tempRow.contents[3].datavalue = 'N/A';   
-                }
+                        tempRow.contents[0].datavalue = tempRow.id;
+                        tempRow.contents[1].datavalue = currentData.name;
 
-                if(valType === "number"){
-                    if(tempvalue[i] === telemetry[tempRow.vehicle][tempRow.id].value){
-                         //stale data
-                        if(dServiceObjVal.sIcon === "green" && dServiceObjVal.gIcon === "green" && dServiceObjVal.pIcon === "green" && dServiceObjVal.dIcon === "green" ){
-                            tempRow.contents[4].datacolor = colorHealthy;
+                        if(currentData.alarm_low){
+                            tempRow.contents[2].datavalue = currentData.alarm_low;
                         }else {
-                           tempRow.contents[4].datacolor = colorStale;   
+                            tempRow.contents[2].datavalue = 'N/A';   
                         }
-                        tempRow.contents[4].datavalue = telemetry[tempRow.vehicle][tempRow.id].value.toFixed(4); 
-                    }else {
-                       //new data
-                        var colorVal = datastatesService.getDataColor(telemetry[tempRow.vehicle][tempRow.id].alarm_low,telemetry[tempRow.vehicle][tempRow.id].alarm_high,telemetry[tempRow.vehicle][tempRow.id].value,telemetry[tempRow.vehicle][tempRow.id].warn_low,telemetry[tempRow.vehicle][tempRow.id].warn_high,valType); 
-                        if(colorVal === "red"){
-                            tempRow.contents[4].datacolor = colorAlarm;  
-                        }else if(colorVal === "orange"){
-                            tempRow.contents[4].datacolor = colorCaution;
-                        }else{
-                            tempRow.contents[4].datacolor = colorHealthy;
-                        }
-                        tempRow.contents[4].datavalue = telemetry[tempRow.vehicle][tempRow.id].value.toFixed(4); 
-                        tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value;
-                    }
-                } else {
-                    //timestamp
-                    if(tempvalue[i] === telemetry[tempRow.vehicle][tempRow.id].value){
-                        //stale data
-                        if(dServiceObjVal.sIcon === "green" && dServiceObjVal.gIcon === "green" && dServiceObjVal.pIcon === "green" && dServiceObjVal.dIcon === "green" ){
-                             tempRow.contents[4].datacolor = colorHealthy;
+
+                        if(currentData.warn_low){
+                            tempRow.contents[3].datavalue = currentData.warn_low;
                         }else {
-                           tempRow.contents[4].datacolor = colorStale;    
+                            tempRow.contents[3].datavalue = 'N/A';   
                         }
-                        tempRow.contents[4].datavalue = telemetry[tempRow.vehicle][tempRow.id].value; 
-                    }else {
-                        //new data
-                        var colorVal = datastatesService.getDataColor(telemetry[tempRow.vehicle][tempRow.id].alarm_low,telemetry[tempRow.vehicle][tempRow.id].alarm_high,telemetry[tempRow.vehicle][tempRow.id].value,telemetry[tempRow.vehicle][tempRow.id].warn_low,telemetry[tempRow.vehicle][tempRow.id].warn_high,valType);
-                        if(colorVal === "red"){
-                            tempRow.contents[4].datacolor = colorAlarm;  
-                        }else if(colorVal === "orange"){
-                            tempRow.contents[4].datacolor = colorCaution;
-                        }else{
-                            tempRow.contents[4].datacolor = colorHealthy;
-                            
+
+                        tempRow.contents[4].datavalue = currentData.value;
+                        if(tempvalue[i] === currentData.value){
+                            //stale data
+                            if(dServiceObjVal.sIcon === "green" && dServiceObjVal.gIcon === "green" && 
+                                dServiceObjVal.pIcon === "green" && dServiceObjVal.dIcon === "green" ){
+                                    tempRow.contents[4].datacolor = colorHealthy;
+                            } else {
+                                tempRow.contents[4].datacolor = colorStale;
+                            }
+                        } else {
+                            //new data
+                            var colorVal = datastatesService.getDataColor(currentData.alarm_low, currentData.alarm_high,
+                                                currentData.value, currentData.warn_low, currentData.warn_high, valType)
+                            if(colorVal === "red"){
+                                tempRow.contents[4].datacolor = colorAlarm;  
+                            }else if(colorVal === "orange"){
+                                tempRow.contents[4].datacolor = colorCaution;
+                            }else{
+                                tempRow.contents[4].datacolor = colorHealthy;
+                            }
+                            tempvalue[i] = currentData.value;
+                        } 
+
+                        if(currentData.warn_high){
+                            tempRow.contents[5].datavalue = currentData.warn_high;
+                        }else {
+                            tempRow.contents[5].datavalue = 'N/A';   
                         }
-                        tempRow.contents[4].datavalue = telemetry[tempRow.vehicle][tempRow.id].value; 
-                        tempvalue[i] = telemetry[tempRow.vehicle][tempRow.id].value; 
+
+                        if(currentData.alarm_high){
+                            tempRow.contents[6].datavalue = currentData.alarm_high;
+                        }else {
+                            tempRow.contents[6].datavalue = 'N/A';   
+                        }
+
+                        tempRow.contents[7].datavalue = currentData.units;
+
+                        if(currentData.notes !== ''){
+                            tempRow.contents[8].datavalue = currentData.notes;
+                        }else {
+                            tempRow.contents[8].datavalue = 'N/A';    
+                        }
                     }
+                } catch(err){
+
                 }
-
-                if(telemetry[tempRow.vehicle][tempRow.id].warn_high !== null){
-                    tempRow.contents[5].datavalue = telemetry[tempRow.vehicle][tempRow.id].warn_high;
-                }else {
-                    tempRow.contents[5].datavalue = 'N/A';   
-                }
-
-                if(telemetry[tempRow.vehicle][tempRow.id].alarm_high !== null){
-                    tempRow.contents[6].datavalue = telemetry[tempRow.vehicle][tempRow.id].alarm_high;
-                }else {
-                    tempRow.contents[6].datavalue = 'N/A';   
-                }
-
-                tempRow.contents[7].datavalue = telemetry[tempRow.vehicle][tempRow.id].units;
-
-                if(telemetry[tempRow.vehicle][tempRow.id].notes !== ''){
-                    tempRow.contents[8].datavalue = telemetry[tempRow.vehicle][tempRow.id].notes;
-                }else {
-                    tempRow.contents[8].datavalue = 'N/A';    
-                }
-            }catch(err){
-
-            }
-            }else {
+            } else {
                 if(dServiceObjVal.dIcon === "red"){
                     //GUI Disconnected with Database 
                     tempRow.contents[0].datacolor = colorDisconnected;

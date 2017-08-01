@@ -3,18 +3,8 @@ app.directive('groundtracksettings', function() {
     	restrict: 'EA', 
 		templateUrl:'./directives/groundtrack/groundtracksettings.html',
 		controller: function($scope,$element, sidebarService, dashboardService) {
+            
             var colors = [ "#07D1EA", "#0D8DB8", "#172168", "#228B22", "#12C700", "#C6FF00" ];
-
-            $scope.widget.settings = {
-                contents : [],
-                vehName : [],
-                scHolder : {},
-                scStates : {},
-                dataHolder : [],
-                orbitHolder :[],
-                iconHolder :[]
-            };
-
             var previousSettings = angular.copy($scope.widget.settings.contents);
 
             createVehicles();
@@ -77,58 +67,59 @@ app.directive('groundtracksettings', function() {
             }
 
             function createVehicles(){
-                sidebarService.getConfig()
-                .then(function(response) {
-                    if(response.data) {
-                        var data = dashboardService.sortObject(response.data);
-                        var count = 0;
-                        for(var key in data) {
-                            if(data.hasOwnProperty(key)) {
-                                count = count+1;
-                                $scope.widget.settings.contents.push(
-                                    [
-                                            {   
-                                                "value": count,
-                                                "style":"text-align:left;background-color:#fff;color:#000;font-size:13px;margin-left:2px",
-                                                "active": "false",
-                                                "cstyle":"background-color:#fff;text-align:left;color:#000;font-size:9px",
-                                                "status": false
-                                            },
-                                            {   
-                                                "value": key,
-                                                "style":"text-align:left;background-color:#fff;color:#000;font-size:13px",
-                                                "active": "false",
-                                                "cstyle":"background-color:#fff;text-align:left;color:#000;font-size:9px",
-                                                "status": false
-                                            },
-                                            {   
-                                                "value":"",
-                                                "style":"text-align:left;background-color:#fff;color:#000;margin-top:0px",
-                                                "active": "true",
-                                                "cstyle":"padding-left:0px;background-color:#fff;text-align:left;color:#000;font-size:9px",
-                                                "status": true
-                                            },
-                                            {   
-                                                "value":"",
-                                                "style":"text-align:left;background-color:#fff;color:#000",
-                                                "active": "true",
-                                                "cstyle":"padding-left:0px;background-color:#fff;text-align:left;color:#000;font-size:9px",
-                                                "status": true
-                                            },
-                                            {   
-                                                "value":"",
-                                                "style":"text-align:left;background-color:#fff;color:#000",
-                                                "active": "true",
-                                                "cstyle":"padding-left:0px;background-color:#fff;text-align:left;color:#000;font-size:9px",
-                                                "status": true
-                                            }
-                                    ]
-                                ); 
+                if($scope.widget.settings.contents.length == 0){
+                    sidebarService.getConfig()
+                    .then(function(response) {
+                        if(response.data) {
+                            var data = dashboardService.sortObject(response.data);
+                            var count = 0;
+                            for(var key in data) {
+                                if(data.hasOwnProperty(key)) {
+                                    count = count+1;
+                                    $scope.widget.settings.contents.push(
+                                        [
+                                                {   
+                                                    "value": count,
+                                                    "style":"text-align:left;background-color:#fff;color:#000;font-size:13px;margin-left:2px",
+                                                    "active": "false",
+                                                    "cstyle":"background-color:#fff;text-align:left;color:#000;font-size:9px",
+                                                    "status": false
+                                                },
+                                                {   
+                                                    "value": key,
+                                                    "style":"text-align:left;background-color:#fff;color:#000;font-size:13px",
+                                                    "active": "false",
+                                                    "cstyle":"background-color:#fff;text-align:left;color:#000;font-size:9px",
+                                                    "status": false
+                                                },
+                                                {   
+                                                    "value":"",
+                                                    "style":"text-align:left;background-color:#fff;color:#000;margin-top:0px",
+                                                    "active": "true",
+                                                    "cstyle":"padding-left:0px;background-color:#fff;text-align:left;color:#000;font-size:9px",
+                                                    "status": true
+                                                },
+                                                {   
+                                                    "value":"",
+                                                    "style":"text-align:left;background-color:#fff;color:#000",
+                                                    "active": "true",
+                                                    "cstyle":"padding-left:0px;background-color:#fff;text-align:left;color:#000;font-size:9px",
+                                                    "status": true
+                                                },
+                                                {   
+                                                    "value":"",
+                                                    "style":"text-align:left;background-color:#fff;color:#000",
+                                                    "active": "true",
+                                                    "cstyle":"padding-left:0px;background-color:#fff;text-align:left;color:#000;font-size:9px",
+                                                    "status": true
+                                                }
+                                        ]
+                                    ); 
+                                }
                             }
-                        }
-                        previousSettings = angular.copy($scope.widget.settings.contents);
-                    } 
-                });
+                        } 
+                    });
+                }
             }
 		}
 	}

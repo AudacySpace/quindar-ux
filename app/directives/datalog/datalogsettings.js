@@ -5,20 +5,16 @@ app.directive('datalogsettings', function() {
     controller: function($scope,$window,$mdSidenav,sidebarService,dashboardService){
 
         checkForLogData();
-        var previousValue = $scope.widget.settings.data.value;
-        var previousVehicle = $scope.widget.settings.data.vehicle;
-
+        var previousValue = $scope.data;
 
         $scope.saveDataLogSettings = function(widget){
-            if($scope.data.value !== '' && $scope.data.vehicle !== ''){
+            if($scope.data.id !== '' && $scope.data.vehicle !== ''){
                 widget.main = true;
                 widget.settings.active = false;
                 widget.saveLoad = false;
                 widget.delete = false;
-                $scope.widget.settings.data.value = $scope.data.value;
-                $scope.widget.settings.data.vehicle = $scope.data.vehicle;
-                previousValue = angular.copy($scope.widget.settings.data.value);
-                previousVehicle =  angular.copy($scope.widget.settings.data.vehicle);
+                $scope.widget.settings.data = angular.copy($scope.data);
+                previousValue = angular.copy($scope.data);
             }
         };
 
@@ -27,14 +23,10 @@ app.directive('datalogsettings', function() {
             widget.settings.active = false;
             widget.saveLoad = false;
             widget.delete = false;
-            $scope.data.value = previousValue;
-            $scope.data.vehicle = previousVehicle;
-            $scope.widget.settings.data.value = previousValue;
-            $scope.widget.settings.data.vehicle = previousVehicle;
+            $scope.data = angular.copy(previousValue);
         }
 
         $scope.getTelemetrydata = function(){
-
             if ($window.innerWidth < 1400){
                 $mdSidenav('left').open();
             } else {
@@ -45,14 +37,13 @@ app.directive('datalogsettings', function() {
         }
 
         $scope.getValue = function(){
-            $scope.vehicleInfo = sidebarService.getVehicleInfo();
-            if($scope.vehicleInfo.vehicle !== "" && $scope.vehicleInfo.id !== "") {
-                    $scope.data.value = $scope.vehicleInfo.id;
-                    $scope.data.vehicle = $scope.vehicleInfo.vehicle;
-                    if ($window.innerWidth >= 1400){
-                        $scope.lock.lockLeft = !$scope.lock.lockLeft;
-                        dashboardService.setLeftLock($scope.lock.lockLeft);
-                    }
+            var vehicleInfo = sidebarService.getVehicleInfo();
+            if(vehicleInfo.vehicle !== "" && vehicleInfo.id !== "") {
+                $scope.data = angular.copy(vehicleInfo);
+                if ($window.innerWidth >= 1400){
+                    $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                    dashboardService.setLeftLock($scope.lock.lockLeft);
+                }
             } else {
                 alert("Vehicle data not set. Please select from Data Menu");
             }
@@ -60,16 +51,13 @@ app.directive('datalogsettings', function() {
 
         function checkForLogData(){
             if(!$scope.widget.settings.data){
-                $scope.widget.settings.data = {
-                    value: '',
-                    vehicle: ''
-                }; 
-                $scope.data = {value:'',vehicle:''};
-            }else {
                 $scope.data = {
-                    value:$scope.widget.settings.data.value,
-                    vehicle:$scope.widget.settings.data.vehicle
+                    id: '',
+                    vehicle: '',
+                    key: ''
                 };
+            }else {
+                $scope.data = angular.copy($scope.widget.settings.data);
             }  
         }
 
