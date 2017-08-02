@@ -155,7 +155,12 @@ app.controller('missionModalCtrl', function($uibModalInstance,dashboardService,$
 	},true);
 
 	$ctrl.close = function() {
-		$uibModalInstance.dismiss('cancel'); 
+		if($ctrl.mission.currentMission === ""){
+			$uibModalInstance.dismiss('cancel'); 
+		}else {
+			alert("Please save the selected mission.");
+		}
+
 	};
 
 	$ctrl.setMission = function(){

@@ -8,8 +8,6 @@ app
     var time = "";
     var platforms = [];
     var missions = [];
-    var totalMissions = [];
-    var missionsWithData = [];
     var selectedMission = {"mission":""};
 
     var icons = {sIcon:"", gIcon:"", pIcon:"",dIcon:""};  
@@ -41,7 +39,7 @@ app
                     getTelemetry(response.name);
                 }
             },function close(){
-                alert("No mission selected!");
+                alert("No mission selected!Reload the page for options.");
             }); 
         },function error(response){
             console.log("No mission available!");

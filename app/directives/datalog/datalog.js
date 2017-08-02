@@ -51,6 +51,12 @@ app.controller('DataLogCtrl',function ($scope,$window,$element,$interval,dashboa
                     }
                 }
 
+                if(dServiceObjVal.sIcon === "red"){
+                    while($scope.logData.length > 0){
+                        $scope.logData.pop();
+                    }
+                }
+
                 prevData.key = $scope.widget.settings.data.key;
             }
         }
@@ -62,6 +68,8 @@ app.controller('DataLogCtrl',function ($scope,$window,$element,$interval,dashboa
                 $scope.logData.pop();
             }
         }
+
+
 
         var currentData = dashboardService.getData($scope.widget.settings.data.key);
         if(currentData) {

@@ -73,136 +73,151 @@ app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardS
 	g.selectAll("line")
 		.attr("opacity", 0.1);
 
-	$scope.interval = $interval(updatePlot, delay, 0, false);	
+	$scope.interval = $interval(updatePlot, delay, 0, false);
+
+	var dServiceObjVal = {};
+    $scope.dataStatus = dashboardService.icons;	
+
+    $scope.$watch('dataStatus',function(newVal,oldVal){
+        dServiceObjVal = newVal; 
+    },true);
 
 	function updatePlot() {
 		if($scope.widget.settings.data.value !== "" && $scope.widget.settings.data.vehicles.length > 0) {
-			var paramY = $scope.widget.settings.data.value;
-			var paramX = "timestamp";
-			var legendSpace = transWidth/$scope.widget.settings.data.vehicles.length;
-			var vehicles = $scope.widget.settings.data.vehicles;
+			if(dServiceObjVal.sIcon !== "red"){
+				var paramY = $scope.widget.settings.data.value;
+				var paramX = "timestamp";
+				var legendSpace = transWidth/$scope.widget.settings.data.vehicles.length;
+				var vehicles = $scope.widget.settings.data.vehicles;
 
-			g.selectAll("path.lineplot").remove();
-			g.selectAll("circle.circle").remove();
-			g.selectAll(".legend").remove();
-			d3.selectAll('.valuetooltip').style('opacity', '0');
+				g.selectAll("path.lineplot").remove();
+				g.selectAll("circle.circle").remove();
+				g.selectAll(".legend").remove();
+				d3.selectAll('.valuetooltip').style('opacity', '0');
 
-			//push real time data points
-			for(var v in vehicles){
-				var vehicle = vehicles[v];
+				//push real time data points
+				for(var v in vehicles){
+					var vehicle = vehicles[v];
 
-				if(telemetry[vehicle.name] !== undefined){	
-					var tTemp = parseTime(telemetry['time']);
-					var currentData = dashboardService.getData(vehicle.key);
-					if(currentData){
-						var xTemp = currentData.value;
-						var category = currentData.category;
-						var yUnits = currentData.units;
-						vehicle.data.push({x:tTemp, y:xTemp});
+					if(telemetry[vehicle.name] !== undefined){	
+						var tTemp = parseTime(telemetry['time']);
+						var currentData = dashboardService.getData(vehicle.key);
+						if(currentData){
+							var xTemp = currentData.value;
+							var category = currentData.category;
+							var yUnits = currentData.units;
+							vehicle.data.push({x:tTemp, y:xTemp});
 
-						if (vehicle.data.length > limit) {
-							vehicle.data.splice(0,1);
-						};
+							if (vehicle.data.length > limit) {
+								vehicle.data.splice(0,1);
+							};
+						}
 					}
 				}
-			}
 
-			//define X axis domain
-			x.range([margin.left, transWidth+margin.left])
-				.domain([
+				//define X axis domain
+				x.range([margin.left, transWidth+margin.left])
+					.domain([
+						d3.min(vehicles, function(v) {
+							return d3.min(v.data, function(d) { 
+								return d.x; 
+							}); 
+						}),
+						d3.max(vehicles, function(v) {
+							return d3.max(v.data, function(d) { 
+								return d.x; 
+							}); 
+						})				
+					]);
+
+
+				//define Y axis domain
+				y.domain([
 					d3.min(vehicles, function(v) {
 						return d3.min(v.data, function(d) { 
-							return d.x; 
+							return Math.floor(d.y);
 						}); 
 					}),
 					d3.max(vehicles, function(v) {
 						return d3.max(v.data, function(d) { 
-							return d.x; 
+							return Math.ceil(d.y);
 						}); 
 					})				
 				]);
 
+				axisY.call(d3Service.axisLeft(y).tickSize(-transWidth));
 
-			//define Y axis domain
-			y.domain([
-				d3.min(vehicles, function(v) {
-					return d3.min(v.data, function(d) { 
-						return Math.floor(d.y);
-					}); 
-				}),
-				d3.max(vehicles, function(v) {
-					return d3.max(v.data, function(d) { 
-						return Math.ceil(d.y);
-					}); 
-				})				
-			]);
+				axisX.attr("transform", "translate(0,"+ transHeight + ")")
+					.call(d3Service.axisBottom(x).tickSize(-transHeight));	
 
-			axisY.call(d3Service.axisLeft(y).tickSize(-transWidth));
-
-			axisX.attr("transform", "translate(0,"+ transHeight + ")")
-				.call(d3Service.axisBottom(x).tickSize(-transHeight));	
-
-			// text label for the y axis
-			if(category && paramY){
-				labelY.text(category+" [ "+paramY+ " ] " + yUnits + " ");
-			}
-	  
-			// text label for the x axis
-			labelX.text(paramX);
-
-			g.selectAll("path")
-				.attr("opacity", 0.1);
-				
-			g.selectAll("line")
-				.attr("opacity", 0.1);
-
-			vehicles.forEach(function(d,i) {
-				if(telemetry[d.name] !== undefined){
-				//plot line and circles
-				g.append("path")
-					.datum(d.data)
-					.attr("class","lineplot")
-					.attr("stroke", d.color)
-					.attr("d", line);
-
-				g.selectAll("dot")
-					.data(d.data)
-					.enter().append("circle").attr("class","circle")
-					.attr("r", 1)
-					.attr("cx", xMap)
-					.attr("cy", yMap)
-					.on("mouseover", function(d) {
-            			div.transition()		
-                			.duration(200)		
-                			.style("opacity", .9);		
-            			div	.html("x: " + $scope.dx + "<br/>"  +"y: " +parseFloat($scope.dy.toFixed(4)))	
-                			.style("left", (d3Service.mouse(this)[0])+ "px")		
-                			.style("top", (d3Service.mouse(this)[1]) + "px");
-            		})					
-        			.on("mouseout", function(d) {		
-            			div.transition()		
-                		   .duration(500)		
-                		   .style("opacity", 0);	
-        			})
-					.attr("stroke", d.color)
-					.attr("fill", d.color);
-
-				//Add the legend data
-				g.append("rect")
-			    	.attr("transform","translate(" + (legendSpace/2 + i*legendSpace) + " ," + 
-			    		(transHeight + margin.bottom + 20) + ")")
-					.attr("height", 10)
-					.attr("width", 10)
-					.attr("class","legend")
-					.style("fill",d.color);
-				
-				g.append("text")
-					.attr("transform","translate(" + (legendSpace/2 + i*legendSpace + 15) + " ,"+ 
-						(transHeight + margin.bottom + 30) +")")
-					.attr("class","legend")
-					.text(d.name);
+				// text label for the y axis
+				if(category && paramY){
+					labelY.text(category+" [ "+paramY+ " ] " + yUnits + " ");
 				}
-			});
+	  
+				// text label for the x axis
+				labelX.text(paramX);
+
+				g.selectAll("path")
+					.attr("opacity", 0.1);
+				
+				g.selectAll("line")
+					.attr("opacity", 0.1);
+
+				vehicles.forEach(function(d,i) {
+					if(telemetry[d.name] !== undefined){
+					//plot line and circles
+					g.append("path")
+						.datum(d.data)
+						.attr("class","lineplot")
+						.attr("stroke", d.color)
+						.attr("d", line);
+
+					g.selectAll("dot")
+						.data(d.data)
+						.enter().append("circle").attr("class","circle")
+						.attr("r", 1)
+						.attr("cx", xMap)
+						.attr("cy", yMap)
+						.on("mouseover", function(d) {
+	            			div.transition()		
+	                			.duration(200)		
+	                			.style("opacity", .9);		
+	            			div	.html("x: " + $scope.dx + "<br/>"  +"y: " +parseFloat($scope.dy.toFixed(4)))	
+	                			.style("left", (d3Service.mouse(this)[0])+ "px")		
+	                			.style("top", (d3Service.mouse(this)[1]) + "px");
+	            		})					
+	        			.on("mouseout", function(d) {		
+	            			div.transition()		
+	                		   .duration(500)		
+	                		   .style("opacity", 0);	
+	        			})
+						.attr("stroke", d.color)
+						.attr("fill", d.color);
+
+					//Add the legend data
+					g.append("rect")
+				    	.attr("transform","translate(" + (legendSpace/2 + i*legendSpace) + " ," + 
+				    		(transHeight + margin.bottom + 20) + ")")
+						.attr("height", 10)
+						.attr("width", 10)
+						.attr("class","legend")
+						.style("fill",d.color);
+					
+					g.append("text")
+						.attr("transform","translate(" + (legendSpace/2 + i*legendSpace + 15) + " ,"+ 
+							(transHeight + margin.bottom + 30) +")")
+						.attr("class","legend")
+						.text(d.name);
+					}
+				});
+			}else {//when mission has no data
+				g.selectAll("path.lineplot").remove();
+				g.selectAll("circle.circle").remove();
+				g.selectAll("dot").remove();
+				g.selectAll(".legend").remove();
+				d3.selectAll('.valuetooltip').style('opacity', '0');
+			}
 		}
 	}
 

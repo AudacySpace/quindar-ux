@@ -329,6 +329,29 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                     tempRow.contents[8].datacolor = colorDisconnected; 
                 }
             }
+
+            if(dServiceObjVal.sIcon === "red"){
+                if(tempRow.contents[0].datavalue !== ""){
+                    tempRow.contents[0].datavalue = "N/A";
+                    tempRow.contents[1].datavalue = "N/A";
+                    tempRow.contents[2].datavalue = "N/A";
+                    tempRow.contents[3].datavalue = "N/A";
+                    tempRow.contents[4].datavalue = "N/A";
+                    tempRow.contents[5].datavalue = "N/A";
+                    tempRow.contents[6].datavalue = "N/A";
+                    tempRow.contents[7].datavalue = "N/A";
+                    tempRow.contents[8].datavalue = "N/A";
+                    tempRow.contents[0].datacolor = colorDefault;
+                    tempRow.contents[1].datacolor = colorDefault;
+                    tempRow.contents[2].datacolor = colorDefault;
+                    tempRow.contents[3].datacolor = colorDefault;
+                    tempRow.contents[4].datacolor = colorDefault;
+                    tempRow.contents[5].datacolor = colorDefault;
+                    tempRow.contents[6].datacolor = colorDefault;
+                    tempRow.contents[7].datacolor = colorDefault;
+                    tempRow.contents[8].datacolor = colorDefault; 
+                }
+            }
         }
     }
 
