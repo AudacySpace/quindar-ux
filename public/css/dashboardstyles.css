@@ -216,6 +216,13 @@ ul.nav.navbar-nav.navbar-right {
     height:50px;
 }
 
+#missionImage {
+    position:relative;
+    top:7px;
+    height:35px;
+    left:2px;
+}
+
 @media (min-width: 768px) {
     .navbar-nav>li>a {
         margin-top: 5px;
@@ -235,6 +242,15 @@ ul.nav.navbar-nav.navbar-right {
         display:inline-block;
     }
 
+    #missionName {
+      display:none;  
+    }
+    #missionImage{
+        position: relative;
+        top: -58px;/*-57px*/
+        height: 15px;
+        left: -108px;/*-130px*/
+    }
     .container-fluid>.navbar-header {
         margin-left: 0px;
     }

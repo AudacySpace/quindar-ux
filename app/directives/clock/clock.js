@@ -90,7 +90,16 @@ app.controller('ClockCtrl', function($scope, dashboardService, datastatesService
 			//show disconnected when database connection fails
 			if(dServiceObj.dIcon === "red"){
 				$scope.widget.settings.clocks[i].style = colorDisconnected;
-			}			
+			}
+
+			if(dServiceObj.sIcon === "red"){
+				$scope.widget.settings.clocks[i].style = colorDefault;
+				$scope.widget.settings.clocks[i].time.days = "000";
+				$scope.widget.settings.clocks[i].time.minutes = "00";
+				$scope.widget.settings.clocks[i].time.hours = "00";
+				$scope.widget.settings.clocks[i].time.seconds = "00";
+				$scope.widget.settings.clocks[i].timezone = 0;
+			}		
 		}
 	}
 

@@ -19,11 +19,17 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
     var datastatus = [];
     var orbits = [];
     var satIcons = [];
-
+    var dServiceObj = {};
     $scope.timeObj = {};
     $scope.checkboxModel = {
         value1 : true
     };
+
+    $scope.statusIcons = dashboardService.icons;
+
+    $scope.$watch('statusIcons',function(newVal,oldVal){
+        dServiceObj = newVal; 
+    },true);
 
     $scope.$watch('widget.settings.vehName', function(newVal,oldVal){
         $scope.timeObj = {};
@@ -179,79 +185,82 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 
     // Function to update data to be plotted
     function updatePlot() {
-        g.selectAll("path.route").remove(); 
-        g.selectAll("#craft").remove();
-        g.selectAll("path.link").remove();
-        g.selectAll("line").remove();
-        g.selectAll("path.gslink").remove(); 
 
-        showDayNight();
+        if(dServiceObj.sIcon !== "red"){
+            g.selectAll("path.route").remove(); 
+            g.selectAll("#craft").remove();
+            g.selectAll("path.link").remove();
+            g.selectAll("line").remove();
+            g.selectAll("path.gslink").remove(); 
 
-        for (i=0; i< vehicles.length; i++){
-            latestdata = telemetry[vehicles[i].name];
-  
-            // Check if the latestdata is available for the selected s/c
-            if (latestdata == null) {
-                //alert("Latest data not available.");         
-            }
-            else {
-                // update latestdata                                      
-                var x = latestdata.GNC.position.x.value;
-                var y = latestdata.GNC.position.y.value;
-                var z = latestdata.GNC.position.z.value;
+            showDayNight();
+
+            for (i=0; i< vehicles.length; i++){
+            
+                latestdata = telemetry[vehicles[i].name];
+
+                // Check if the latestdata is available for the selected s/c
+                if (latestdata === null || latestdata === undefined) {
+                    //alert("Latest data not available.");      
+                }
+                else {
+                    // update latestdata                                      
+                    var x = latestdata.GNC.position.x.value;
+                    var y = latestdata.GNC.position.y.value;
+                    var z = latestdata.GNC.position.z.value;
                             
-                // Calculate longitude and latitude from the satellite position x, y, z.
-                // The values (x,y,z) must be Earth fixed.
-                r = Math.sqrt(Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2));
-                longitude = Math.atan2(y,x)/Math.PI*180;
-                latitude = Math.asin(z/r)/Math.PI*180;
+                    // Calculate longitude and latitude from the satellite position x, y, z.
+                    // The values (x,y,z) must be Earth fixed.
+                    r = Math.sqrt(Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2));
+                    longitude = Math.atan2(y,x)/Math.PI*180;
+                    latitude = Math.asin(z/r)/Math.PI*180;
                                 
-                // Convert [longitude,latitude] to plot 
-                var sat_coord = projGround([longitude,latitude]);
+                    // Convert [longitude,latitude] to plot 
+                    var sat_coord = projGround([longitude,latitude]);
 
-                //Timestamp array for each vehicle
-                if(!$scope.timeObj[i]){
-                    $scope.timeObj[i] = new Array();
-                }
+                    //Timestamp array for each vehicle
+                    if(!$scope.timeObj[i]){
+                        $scope.timeObj[i] = new Array();
+                    }
 
-                //get current time
-                var dateValue = new Date(telemetry['time']);
-                var timestamp = dateValue.getTime(); //time in milliseconds
+                    //get current time
+                    var dateValue = new Date(telemetry['time']);
+                    var timestamp = dateValue.getTime(); //time in milliseconds
 
-                //push values to the array
-                if(timestamp != $scope.timeObj[i][$scope.timeObj[i].length-1]){
-                    $scope.timeObj[i].push(timestamp);
-                }
-                var diffMins = Math.round(($scope.timeObj[i][$scope.timeObj[i].length-1] - $scope.timeObj[i][0])/60000);
+                    //push values to the array
+                    if(timestamp != $scope.timeObj[i][$scope.timeObj[i].length-1]){
+                        $scope.timeObj[i].push(timestamp);
+                    }
+                    var diffMins = Math.round(($scope.timeObj[i][$scope.timeObj[i].length-1] - $scope.timeObj[i][0])/60000);
 
-                // add longitude and latitude to data_plot
-                var scHData = [longitude, latitude];
-                if(scHData != scH[i][scH[i].length - 1]){
-                    scH[i].push(scHData);
-                }
+                    // add longitude and latitude to data_plot
+                    var scHData = [longitude, latitude];
+                    if(scHData != scH[i][scH[i].length - 1]){
+                        scH[i].push(scHData);
+                    }
 
-                var scSData = [x, y, z];
-                if(scSData != scS[i][scS[i].length - 1]){
-                    scS[i].push(scSData);
-                }
+                    var scSData = [x, y, z];
+                    if(scSData != scS[i][scS[i].length - 1]){
+                        scS[i].push(scSData);
+                    }
 
-                // Remove data points after 90 minutes (7200000ms)
-                if( diffMins >= 90) {
-                    scH[i].splice(0,1);
-                    scS[i].splice(0,1);
-                    $scope.timeObj[i].splice(0,1);
-                }
+                    // Remove data points after 90 minutes (7200000ms)
+                    if( diffMins >= 90) {
+                        scH[i].splice(0,1);
+                        scS[i].splice(0,1);
+                        $scope.timeObj[i].splice(0,1);
+                    }
 				
-                if(orbits[i] === true){
-                    var route = g.append("path")
+                    if(orbits[i] === true){
+                        var route = g.append("path")
                                  .datum({type: "LineString", coordinates: scH[i]})  
                                  .attr("class", "route")
                                  .attr("stroke", vehicles[i].color)
                                  .attr("d", path);
-                }
+                    }
                     
-                if(satIcons[i] === true){
-                    var craft = g.append("svg:image")
+                    if(satIcons[i] === true){
+                        var craft = g.append("svg:image")
                                  .attr("xlink:href", "/icons/groundtrack-widget/satellite.svg")
                                  .attr("id", "craft")
                                  .attr("fill", "#000000")
@@ -260,26 +269,33 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                                  .attr("width",30)
                                  .attr("height",30)
                                  .append("svg:title").text(vehicles[i].name);
+                    }
                 }
             }
-        }
 
-        for (k=0; k<datastatus.length-1; k++) {
-            if (datastatus[k] === true && satIcons[k] === true) {
-                for (kk=k+1; kk<datastatus.length; kk++) {
-                    if (datastatus[kk] === true && satIcons[kk] === true) {
-                        commlink(scS[k][scS[k].length-1],scS[kk][scS[kk].length-1],scH[k][scH[k].length-1],scH[kk][scH[kk].length-1]); 
-                    }       
+            for (k=0; k<datastatus.length-1; k++) {
+                if (datastatus[k] === true && satIcons[k] === true) {
+                    for (kk=k+1; kk<datastatus.length; kk++) {
+                        if (datastatus[kk] === true && satIcons[kk] === true) {
+                            commlink(scS[k][scS[k].length-1],scS[kk][scS[kk].length-1],scH[k][scH[k].length-1],scH[kk][scH[kk].length-1]); 
+                        }       
+                    }
                 }
             }
-        }
 
-        for (k=0; k<datastatus.length; k++) {
-            if(datastatus[k] === true && satIcons[k] === true) {
-                for (kk=0; kk<gs.length; kk++) {
-                    gsCommLink(station[kk], scH[k][scH[k].length-1], scS[k][scS[k].length-1], gsAng);           
-                }  
+            for (k=0; k<datastatus.length; k++) {
+                if(datastatus[k] === true && satIcons[k] === true) {
+                    for (kk=0; kk<gs.length; kk++) {
+                        gsCommLink(station[kk], scH[k][scH[k].length-1], scS[k][scS[k].length-1], gsAng);           
+                    }  
+                }
             }
+        }else {
+            g.selectAll("path.route").remove(); 
+            g.selectAll("#craft").remove();
+            g.selectAll("path.link").remove();
+            g.selectAll("line").remove();
+            g.selectAll("path.gslink").remove(); 
         }
     }
 

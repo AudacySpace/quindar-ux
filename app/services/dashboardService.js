@@ -1,5 +1,5 @@
 app
-.factory('dashboardService', ['$interval', '$http', function($interval, $http) {
+.factory('dashboardService', ['$interval', '$http','$uibModal', function($interval, $http,$uibModal) {
     var locks = {
         lockLeft : false,
         lockRight : false
@@ -7,27 +7,70 @@ app
     var telemetry = {};
     var time = "";
     var platforms = [];
+    var missions = [];
+    var totalMissions = [];
+    var missionsWithData = [];
+    var selectedMission = {"mission":""};
 
-    var icons = {sIcon:"", gIcon:"", pIcon:"",dIcon:""};
-    
-
-    getTelemetry();
+    var icons = {sIcon:"", gIcon:"", pIcon:"",dIcon:""};  
+    getMissions(missions);
     getProxyStatus();
+    var intervalId = {};
 
-    function getTelemetry() {
+    function getMissions(missions){
+        $http({
+            url: "/getMissions", 
+            method: "GET",
+            params:{}
+        }).then(function success(response) {
+            for(var i=0;i<response.data.length;i++){
+                if(response.data[i] === "Audacy Zero"){
+                    missions.push({"name":response.data[i],"image":"/media/icons/AudacyZero_Logo_Reg.svg"});
+                }else if(response.data[i] === "Audacy Lynq"){
+                    missions.push({"name":response.data[i],"image":""});
+                }else {
+                    missions.push({"name":response.data[i],"image":"/media/icons/Audacy_Icon_White.svg"}); 
+                }
+            }
+            $uibModal.open({
+                templateUrl: './components/dashboard/missionModal.html',
+                controller: 'missionModalCtrl',
+                controllerAs: '$ctrl'
+            }).result.then(function(response){
+                if(response){
+                    getTelemetry(response.name);
+                }
+            },function close(){
+                alert("No mission selected!");
+            }); 
+        },function error(response){
+            console.log("No mission available!");
+        });
+    }
+
+    function getTelemetry(missionName) {
         var prevId = "";
-        $interval(function () { 
+        if(intervalId){
+            $interval.cancel(intervalId);
+        }
+        intervalId =  $interval(function () { 
             $http({
                 url: "/getTelemetry", 
                 method: "GET",
-                params: {'mission' : 'ATest'}
+                params: {'mission' : missionName}
             }).then(function success(response) {
+
+                if(response.data){
                 for(var item in response.data.telemetry){
                     telemetry[item] = response.data.telemetry[item];
                 }
-                telemetry['data'] = response.data.telemetry;
-                telemetry['time'] = response.data.timestamp;
-                time = response.data.timestamp;
+                    telemetry['data'] = response.data.telemetry;
+                    telemetry['time'] = response.data.timestamp;
+                    time = response.data.timestamp;
+                }else{
+
+                }
+
                 if(isEmpty(response.data) === false){//if data is not empty
                     if(prevId === response.data._id){ //  if proxy application is not receiving any data from ground station
                         icons.sIcon = "grey";
@@ -214,6 +257,7 @@ app
         return sorted;
     }
 
+
     function getData(key){
         var keys = key.split('.'),
             data = telemetry['data'];
@@ -231,13 +275,26 @@ app
             return null;
         }
     }
+
+    function setCurrentMission(mName){
+        selectedMission.mission = mName.currentMission;
+    }
+    function getCurrentMission(){
+        return selectedMission;
+    }
     
 	return {
         locks : locks,
         telemetry : telemetry,
+        missions : missions,
         getLock : getLock,
+        setCurrentMission : setCurrentMission,
+        getCurrentMission : getCurrentMission,
+        getTelemetry : getTelemetry,
+        getMissions : getMissions,
         setLeftLock : setLeftLock,
         setRightLock : setRightLock,
+        isEmpty : isEmpty,
         icons : icons,
         getTime : getTime,
         countdown : countdown,

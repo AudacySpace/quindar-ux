@@ -4,7 +4,7 @@ angular.module('app')
   	scope: true,
    	bindToController: true,
   	templateUrl: "./components/dashboard/dashboard.html",
-  	controller: function(dashboardService,gridService, $interval,prompt,$mdSidenav,$window, userService, $uibModal,$scope,$sessionStorage) {
+  	controller: function(dashboardService,gridService, $interval,prompt,$mdSidenav,$window, userService, $uibModal,$scope,$sessionStorage,$http) {
   		var vm = this;
 
 		vm.clock = {
@@ -16,11 +16,26 @@ angular.module('app')
 		vm.email = userService.getUserEmail();
 		vm.callsign = userService.getCurrentCallSign();
 		var dashboard = gridService.getDashboard();
+		var totalMissions = [];
+		$scope.statusIcons = dashboardService.icons;
+		var dServiceObj = {};
+
+		$scope.$watch('statusIcons',function(newVal,oldVal){
+        	dServiceObj = newVal; 
+    	},true);
 
   		vm.interval = $interval(updateClock, 500);
+		vm.currentMission =  dashboardService.getCurrentMission();
 
   		function updateClock(){
   			vm.clock = dashboardService.getTime(0);
+  			if(dServiceObj){
+  				if(dServiceObj.sIcon === "red" ){
+				vm.clock = {
+					utc : "000.00.00.00 UTC"
+				}
+			}
+			}
   		}
 
 	    vm.openLeftNav = function(){
@@ -30,6 +45,13 @@ angular.module('app')
 	    		vm.locks.lockLeft = !vm.locks.lockLeft;
 	    		dashboardService.setLeftLock(vm.locks.lockLeft); 
 	    	}
+	    }
+
+	    vm.changeMission = function(){
+	 		if(totalMissions.length > 0){
+	    		totalMissions = [];
+	    	}
+			dashboardService.getMissions(totalMissions);
 	    }
 
 	    vm.logout = function () {
@@ -119,3 +141,28 @@ app.controller('modalCtrl', function($uibModalInstance, userService) {
 	    }
     }
 });
+
+
+app.controller('missionModalCtrl', function($uibModalInstance,dashboardService,$scope) {
+	var $ctrl = this;
+	$scope.missions = dashboardService.missions;
+	$ctrl.mission = {
+		currentMission : "",
+		currentImage : "/media/icons/Audacy_Icon_White.svg"
+	}
+	$scope.$watch("missions",function(newVal,oldVal){
+		$ctrl.missions = newVal;
+	},true);
+
+	$ctrl.close = function() {
+		$uibModalInstance.dismiss('cancel'); 
+	};
+
+	$ctrl.setMission = function(){
+		 dashboardService.setCurrentMission($ctrl.mission);
+	     alert("Mission has been set");
+	     $uibModalInstance.close($ctrl.mission.currentMission);
+	     
+	}
+});
+

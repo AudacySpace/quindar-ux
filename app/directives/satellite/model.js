@@ -202,6 +202,17 @@ app
 				$scope.widget.settings.quaternion.qc = "N/A";
 			}
 	 	}
+
+	 	if(dServiceObj.sIcon === "red"){
+	 		$scope.widget.settings.quaternion.q1 = "N/A";
+			$scope.widget.settings.quaternion.q2 = "N/A";
+			$scope.widget.settings.quaternion.q3 = "N/A";
+			$scope.widget.settings.quaternion.qc = "N/A";
+			$scope.widget.settings.colorq1 = colorDefault;
+			$scope.widget.settings.colorq2 = colorDefault;
+			$scope.widget.settings.colorq3 = colorDefault;
+			$scope.widget.settings.colorqc = colorDefault;
+	 	}
 	
 	 	$scope.camera.fov = fov * $scope.widget.settings.zoom;
 	 	$scope.camera.updateProjectionMatrix();
