@@ -20,10 +20,9 @@
     <div class="md-toolbar-tools">
         <form>
             <div class="input-group">
-                <input type="text" class="form-control" id="input-search" placeholder="Search Telemetry Id" ng-model="post.id">
-                <span class="input-group-addon" id="group-search">
+                <input type="text" class="form-control" id="input-search" placeholder="Search Telemetry Id" ng-model="$ctrl.searchID">
+                <span class="input-group-addon" id="group-search" ng-click="$ctrl.filter()">
                     <img ng-src="/icons/search.svg" class="search-icon"/>
-<!--                     <img ng-src="/icons/search.svg" ng-click="$ctrl.searchData(post.id)" class="search-icon"/> -->
                 </span>
             </div>
         </form>
