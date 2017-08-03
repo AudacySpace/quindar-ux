@@ -11,7 +11,15 @@ app.controller('LineSettingsCtrl',
     function($scope, $mdSidenav, $window, dashboardService, sidebarService){
 
         var colors = [ "#0AACCF", "#FF9100", "#64DD17", "#07D1EA", "#0D8DB8", "#172168", "#228B22", "#12C700", "#C6FF00" ];
-        createSettingsData();
+
+        $scope.currentMission =  dashboardService.getCurrentMission();
+        $scope.$watch("currentMission",function(newVal,oldVal){
+            if(newVal.mission !== ""){
+                createSettingsData(newVal.mission.name);
+            }           
+        },true);
+        // createSettingsData();
+
         var previousSettings;
 
         $scope.getTelemetrydata = function(){
@@ -93,9 +101,9 @@ app.controller('LineSettingsCtrl',
             $scope.widget.settings.contents = angular.copy(previousSettings);
         }
 
-        function createSettingsData(){
+        function createSettingsData(mname){
             if($scope.widget.settings.contents.vehicles.length == 0){
-                sidebarService.getConfig()
+                dashboardService.getConfig(mname)
                 .then(function(response) {
                     if(response.data) {
                         var data = dashboardService.sortObject(response.data);
