@@ -151,7 +151,8 @@ app
             $sessionStorage.dashboards = {
                 'Home': {
                     name: 'Home',
-                    widgets: [{
+                     widgets: [
+                     {
                         col: 0,
                         row: 0,
                         sizeY: 3,
@@ -194,7 +195,8 @@ app
                         },
                         saveLoad: false,
                         delete: false
-                    }]
+                    }
+                    ]
                 }
             }
 

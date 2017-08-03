@@ -1,11 +1,14 @@
 app
 .component('leftSidebar', {
   	templateUrl: "./components/leftSidebar/left_sidebar.html",
-  	controller: function(sidebarService) {
+  	controller: function(sidebarService,dashboardService,$scope) {
   		var vm = this;
         vm.post = {id: null}; //object to store the input id value
 
-  		getData();
+        $scope.treeData = dashboardService.treeData;
+        $scope.$watch("treeData",function(newVal,oldVal){
+            vm.dataTree = newVal.data;         
+        },true);
 
         vm.selectData = function(data){
             if(data.nodes.length == 0){
@@ -79,59 +82,6 @@ app
                 }             
             }
         }
-        //End of searchData function
-
-        //get the configuration contents from database
-        function getData(){
-            sidebarService.getConfig()
-            .then(function(response) {
-                if(response.data) {
-                    vm.dataTree = getDataTree(response.data);
-                }
-            });
-
-        }
-
-        //recursive function to create the tree structure data
-        function getDataTree(data, cKey){
-            var tree = [];
-            for(var key in data) {
-                if(data.hasOwnProperty(key)) {
-                    var nodes = [];
-                    var newKey = (cKey ? cKey + "." + key : key);
-
-                    if(typeof data[key] === 'object'){
-                        nodes = getDataTree(data[key], newKey);
-                    }
-
-                    if(nodes.length != 0) {
-                        key = initCaps(key);
-                    }
-
-                    var node = {
-                        'name' : key,
-                        'nodes' : nodes,
-                        'value' : newKey,
-                        'active' : false
-                    };
-
-                    tree.push(node)
-                }
-            }
-            return tree;
-        }
-
-        //function to capitalise the first letter of a string
-        function initCaps(str){
-            words = str.split(' ');
-
-            for(var i = 0; i < words.length; i++) {
-                var letters = words[i].split('');
-                letters[0] = letters[0].toUpperCase();
-                words[i] = letters.join('');
-            }
-            return words.join(' ');
-        }
-        
+        //End of searchData function        
 	}
 });

@@ -7,7 +7,14 @@ app.directive('groundtracksettings', function() {
             var colors = [ "#07D1EA", "#0D8DB8", "#172168", "#228B22", "#12C700", "#C6FF00" ];
             var previousSettings = angular.copy($scope.widget.settings.contents);
 
-            createVehicles();
+            $scope.currentMission =  dashboardService.getCurrentMission();
+            $scope.$watch("currentMission",function(newVal,oldVal){
+                if(newVal.mission !== ""){
+                    createVehicles(newVal.mission.name);
+                }           
+            },true);
+
+            // createVehicles();
             
             $scope.closeWidget = function(widget){
                 widget.main = true;
@@ -66,9 +73,9 @@ app.directive('groundtracksettings', function() {
                 previousSettings = angular.copy($scope.widget.settings.contents);
             }
 
-            function createVehicles(){
+            function createVehicles(mname){
                 if($scope.widget.settings.contents.length == 0){
-                    sidebarService.getConfig()
+                    dashboardService.getConfig(mname)
                     .then(function(response) {
                         if(response.data) {
                             var data = dashboardService.sortObject(response.data);
