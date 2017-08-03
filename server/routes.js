@@ -279,7 +279,14 @@ var configRole = require('./config/role');
             res.send(user.allowedRoles);
         });
     });
-   
+
+    //Get all existing Missions
+    app.get('/getMissions', function(req, res){
+        Config.find({},{"mission":1,"_id": false},function(err,missions){
+            if(err) throw err;
+            res.send(missions);
+        });
+    });
 };
    
 // route middleware to ensure user is logged in

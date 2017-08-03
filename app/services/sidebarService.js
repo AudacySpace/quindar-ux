@@ -7,14 +7,6 @@ app
         key : ''
     }
 
-    function getConfig(config) {
-        return $http({
-                url: "/getConfig", 
-                method: "GET",
-                params: {'mission' : 'ATest'}
-            });
-    }
-
     function setVehicleInfo(dataString) {
         var nodes = dataString.split(".");
         vehicleInfo.vehicle = nodes[0];
@@ -27,7 +19,6 @@ app
     }
 
 	return {
-        getConfig : getConfig,
         setVehicleInfo : setVehicleInfo,
         vehicleInfo : vehicleInfo,
         getVehicleInfo : getVehicleInfo

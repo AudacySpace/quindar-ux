@@ -6,7 +6,13 @@ app
         controller: function($scope, sidebarService, dashboardService){
 
         	$scope.vehicles = [];
-        	createVehicles();
+        	$scope.currentMission =  dashboardService.getCurrentMission();
+        	$scope.$watch("currentMission",function(newVal,oldVal){
+        		if(newVal.mission !== ""){
+        			createVehicles(newVal.mission.name);
+        		}		      	
+        	},true);
+        	// createVehicles();
 
 			$scope.closeSettings = function(widget){
 				widget.main = true;
@@ -42,8 +48,8 @@ app
 
 			$scope.isLoaded = false;
 
-			function createVehicles(){
-				sidebarService.getConfig()
+			function createVehicles(mname){
+				dashboardService.getConfig(mname)
 		        .then(function(response) {
 		            if(response.data) {
 		                var data = dashboardService.sortObject(response.data);

@@ -215,6 +215,12 @@ ul.nav.navbar-nav.navbar-right {
 #cfgmenu {
     height:50px;
 }
+#missionImage {
+    position:relative;
+    top:7px;
+    height:35px;
+    left:2px;
+}
 
 @media (min-width: 768px) {
     .navbar-nav>li>a {
@@ -233,6 +239,15 @@ ul.nav.navbar-nav.navbar-right {
     #QBlack {
         padding-left:10px;
         display:inline-block;
+    }
+    #missionName {
+      display:none;  
+    }
+    #missionImage{
+        position: relative;
+        top: -58px;/*-57px*/
+        height: 15px;
+        left: -108px;/*-130px*/
     }
 
     .container-fluid>.navbar-header {
