@@ -293,49 +293,9 @@ app
         getConfig(missionname)
             .then(function(response) {
                 if(response.data) {
-                    treeData.data = getDataTree(response.data);
+                    treeData.data = response.data;
                 }
             });
-    }
-
-    //recursive function to create the tree structure data
-    function getDataTree(data, cKey){
-        var tree = [];
-        for(var key in data) {
-            if(data.hasOwnProperty(key)) {
-                var nodes = [];
-                var newKey = (cKey ? cKey + "." + key : key);
-
-                if(typeof data[key] === 'object'){
-                    nodes = getDataTree(data[key], newKey);
-                }
-
-                if(nodes.length != 0) {
-                    key = initCaps(key);
-                }
-
-                var node = {
-                    'name' : key,
-                    'nodes' : nodes,
-                    'value' : newKey,
-                    'active' : false
-                };
-
-                tree.push(node)
-            }
-        }
-        return tree;
-    }
-
-    //function to capitalise the first letter of a string
-    function initCaps(str){
-        words = str.split(' ');
-        for(var i = 0; i < words.length; i++) {
-            var letters = words[i].split('');
-            letters[0] = letters[0].toUpperCase();
-            words[i] = letters.join('');
-        }
-        return words.join(' ');
     }
     
 	return {
