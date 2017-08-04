@@ -7,9 +7,10 @@ app
             enabled: true,
             handle: '.box-header'
         }
-    };     
+    }; 
 
     var email = userService.getUserEmail();
+
     checkDefaultDashboard();
 
     var widgetDefinitions = [
@@ -151,8 +152,11 @@ app
             $sessionStorage.dashboards = {
                 'Home': {
                     name: 'Home',
-                     widgets: [
-                     {
+                    mission:{
+                        missionName: '',
+                        missionImage: ''
+                    },
+                    widgets: [{
                         col: 0,
                         row: 0,
                         sizeY: 3,
@@ -195,12 +199,10 @@ app
                         },
                         saveLoad: false,
                         delete: false
-                    }
-                    ]
+                    }]
                 }
             }
-
-            $sessionStorage.dashboard = {"current" : $sessionStorage.dashboards['Home']};
+             $sessionStorage.dashboard = {"current" : $sessionStorage.dashboards['Home']};
         }
 
     }
@@ -270,6 +272,25 @@ app
         selectedDashboardId = layout.name;
     }
 
+    function setMissionForLayout(mname){
+        $sessionStorage.dashboards[getDashboardId()].mission.missionName = mname;
+        if($sessionStorage.dashboards[getDashboardId()].mission.missionName !== ""){
+            var sessionimage = getMissionImage($sessionStorage.dashboards[getDashboardId()].mission.missionName);
+            $sessionStorage.dashboards[getDashboardId()].mission.missionImage = sessionimage;
+        }
+    }
+
+    function getMissionImage(mname){
+        var image = "";
+        if(mname === "Audacy Zero" || mname === "AudacyZero"){
+            image = "/media/icons/AudacyZero_Logo_White.jpg";
+            return image;
+        }else {
+            image = "/media/icons/Audacy_Icon_White.svg";
+            return image;
+        }
+    }
+
 	return {
         gridsterOptions : gridsterOptions,
         clear : clear,
@@ -280,9 +301,11 @@ app
         setDashboardId : setDashboardId,
         addWidgets : addWidgets,
         widgetDefinitions : widgetDefinitions,
+        setMissionForLayout : setMissionForLayout,
         remove : remove, 
         save : save,
         load : load,
-        showLayout : showLayout
+        showLayout : showLayout,
+        getMissionImage : getMissionImage
 	}
 }]);
