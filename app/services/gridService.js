@@ -259,7 +259,7 @@ app
         return $http({
             url: "/loadLayout", 
             method: "GET",
-            params: {"email" : email}
+            params: {"email" : email,"missionname" : $sessionStorage.dashboards[getDashboardId()].mission.missionName}
         });
     }
 
