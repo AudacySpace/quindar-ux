@@ -125,16 +125,13 @@ app.controller('modalCtrl', function($uibModalInstance, userService) {
 app.controller('missionModalCtrl', function($uibModalInstance,dashboardService,$scope) {
 	var $ctrl = this;
 	$scope.missions = dashboardService.missions;
-	$ctrl.mission = {
-		currentMission : "",
-		currentImage : "/media/icons/Audacy_Icon_White.svg"
-	}
+	$ctrl.currentMission = {};
 	$scope.$watch("missions",function(newVal,oldVal){
 		$ctrl.missions = newVal;
 	},true);
 
 	$ctrl.close = function() {
-		if($ctrl.mission.currentMission === ""){
+		if(dashboardService.isEmpty($ctrl.currentMission) === true){
 			$uibModalInstance.dismiss('cancel'); 
 		}else {
 			alert("Please save the selected mission.");
@@ -143,9 +140,12 @@ app.controller('missionModalCtrl', function($uibModalInstance,dashboardService,$
 	};
 
 	$ctrl.setMission = function(){
-		 dashboardService.setCurrentMission($ctrl.mission);
-	     alert("Mission has been set");
-	     $uibModalInstance.close($ctrl.mission.currentMission);
-	     
+		if(dashboardService.isEmpty($ctrl.currentMission) === false){
+			dashboardService.setCurrentMission($ctrl.currentMission);
+	    	$uibModalInstance.close($ctrl.currentMission);
+	    	alert("Mission has been set");
+	    }else {
+	    	alert("Please select a mission before you save.");
+	    }   
 	}
 });

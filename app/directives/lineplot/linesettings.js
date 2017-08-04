@@ -14,9 +14,9 @@ app.controller('LineSettingsCtrl',
 
         $scope.currentMission =  dashboardService.getCurrentMission();
         $scope.$watch("currentMission",function(newVal,oldVal){
-            if(newVal.mission !== ""){
-                createSettingsData(newVal.mission.name);
-            }           
+            if(newVal.missionName !== ""){
+                    createSettingsData(newVal.missionName);
+                }          
         },true);
         // createSettingsData();
 

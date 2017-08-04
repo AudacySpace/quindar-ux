@@ -3,6 +3,7 @@ app
   	templateUrl: "./components/leftSidebar/left_sidebar.html",
   	controller: function(sidebarService,dashboardService,$scope) {
   		var vm = this;
+
         vm.searchID = "";
         var previousTree = [];
 
@@ -11,6 +12,7 @@ app
         $scope.$watch("treeData",function(newVal,oldVal){
             vm.dataTree = getDataTree(newVal.data);
             previousTree = angular.copy(vm.dataTree);      
+
         },true);
 
         vm.selectData = function(data){

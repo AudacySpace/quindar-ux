@@ -8,8 +8,8 @@ app
         	$scope.vehicles = [];
         	$scope.currentMission =  dashboardService.getCurrentMission();
         	$scope.$watch("currentMission",function(newVal,oldVal){
-        		if(newVal.mission !== ""){
-        			createVehicles(newVal.mission.name);
+        		if(newVal.missionName !== ""){
+        				createVehicles(newVal.missionName);
         		}		      	
         	},true);
         	// createVehicles();

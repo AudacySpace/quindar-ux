@@ -1,5 +1,5 @@
 app
-.factory('dashboardService', ['$interval', '$http','$uibModal', function($interval, $http,$uibModal) {
+.factory('dashboardService', ['$interval', '$http','$uibModal','gridService', function($interval, $http,$uibModal,gridService) {
     var locks = {
         lockLeft : false,
         lockRight : false
@@ -8,13 +8,23 @@ app
     var time = "";
     var platforms = [];
     var missions = [];
-    var selectedMission = {"mission":""};
+    var selectedMission = {"missionName":"","missionImage":""};
     var treeData = {"data":[]};
     var icons = {sIcon:"", gIcon:"", pIcon:"",dIcon:""};
-    
-    getMissions(missions);
+
+    getMissionLayout();
     getProxyStatus();
-    var intervalId = {};
+
+    function getMissionLayout(){
+        var currentLayout = gridService.getDashboard();
+        if(currentLayout.current.mission.missionName !== ""){
+            setCurrentMission(currentLayout.current.mission);
+            getTelemetry(currentLayout.current.mission.missionName);
+            getDataMenu(currentLayout.current.mission.missionName); 
+        }else {
+            getMissions(missions);
+        }
+    }
 
     function getMissions(missions){
         $http({
@@ -23,13 +33,8 @@ app
             params:{}
         }).then(function success(response) {
             for(var i=0;i<response.data.length;i++){
-                if(response.data[i] === "Audacy Zero"){
-                    missions.push({"name":response.data[i].mission,"image":"/media/icons/AudacyZero_Logo_Reg.svg"});
-                }else if(response.data[i] === "Audacy Lynq"){
-                    missions.push({"name":response.data[i].mission,"image":""});
-                }else {
-                    missions.push({"name":response.data[i].mission,"image":"/media/icons/Audacy_Icon_White.svg"}); 
-                }
+                var image = gridService.getMissionImage(response.data[i].mission);
+                missions.push({"missionName":response.data[i].mission,"missionImage":image});
             }
             $uibModal.open({
                 templateUrl: './components/dashboard/missionModal.html',
@@ -37,8 +42,9 @@ app
                 controllerAs: '$ctrl'
             }).result.then(function(response){
                 if(response){
-                    getTelemetry(response.name);
-                    getDataMenu(response.name);
+                    gridService.setMissionForLayout(response.missionName);
+                    getTelemetry(response.missionName);
+                    getDataMenu(response.missionName);
                 }
             },function close(){
                 alert("No mission selected!Reload the page for options.");
@@ -50,10 +56,7 @@ app
 
     function getTelemetry(missionName) {
         var prevId = "";
-        if(intervalId){
-            $interval.cancel(intervalId);
-        }
-        intervalId =  $interval(function () { 
+        $interval(function () { 
             $http({
                 url: "/getTelemetry", 
                 method: "GET",
@@ -67,7 +70,7 @@ app
                     telemetry['time'] = response.data.timestamp;
                     time = response.data.timestamp;
                 }else{
-
+                    telemetry = {};
                 }
 
                 if(isEmpty(response.data) === false){//if data is not empty
@@ -275,7 +278,8 @@ app
     }
 
     function setCurrentMission(mName){
-        selectedMission.mission = mName.currentMission;
+        selectedMission.missionName = mName.missionName;
+        selectedMission.missionImage = mName.missionImage;
     }
     function getCurrentMission(){
         return selectedMission;
@@ -297,7 +301,7 @@ app
                 }
             });
     }
-    
+
 	return {
         locks : locks,
         telemetry : telemetry,
