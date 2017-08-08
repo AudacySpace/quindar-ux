@@ -1,19 +1,13 @@
 app
 .component('leftSidebar', {
   	templateUrl: "./components/leftSidebar/left_sidebar.html",
-  	controller: function(sidebarService,dashboardService,$scope) {
+  	controller: function(sidebarService, dashboardService, $scope, $interval) {
   		var vm = this;
 
         vm.searchID = "";
         var previousTree = [];
 
-        $scope.treeData = dashboardService.treeData;
-
-        $scope.$watch("treeData",function(newVal,oldVal){
-            vm.dataTree = getDataTree(newVal.data);
-            previousTree = angular.copy(vm.dataTree);      
-
-        },true);
+        getData();
 
         vm.selectData = function(data){
             if(data.nodes.length == 0){
@@ -44,6 +38,23 @@ app
                 alert("No match found!");
                 vm.dataTree = angular.copy(previousTree);
             }
+        }
+
+        //get the configuration contents from database
+        function getData(){
+            var interval = $interval(function(){
+                var currentMission = dashboardService.getCurrentMission();
+                if(currentMission.missionName != ""){
+                    dashboardService.getConfig(currentMission.missionName)
+                    .then(function(response) {
+                        if(response.data) {
+                            vm.dataTree = getDataTree(response.data);
+                            previousTree = angular.copy(vm.dataTree);
+                        }
+                    });
+                    $interval.cancel(interval);
+                }
+            }, 1000);
         }
 
         //recursive function to create the tree structure data
