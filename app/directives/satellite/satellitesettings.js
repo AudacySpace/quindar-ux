@@ -3,16 +3,13 @@ app
     return {
         restrict: 'E',
         templateUrl:'./directives/satellite/satellitesettings.html',
-        controller: function($scope, sidebarService, dashboardService){
+        controller: function($scope, dashboardService, $interval){
 
         	$scope.vehicles = [];
-        	$scope.currentMission =  dashboardService.getCurrentMission();
-        	$scope.$watch("currentMission",function(newVal,oldVal){
-        		if(newVal.missionName !== ""){
-        				createVehicles(newVal.missionName);
-        		}		      	
-        	},true);
-        	// createVehicles();
+			$scope.isLoaded = false;
+
+        	createVehicles();
+			checkForSatelliteModel();
 
 			$scope.closeSettings = function(widget){
 				widget.main = true;
@@ -31,8 +28,6 @@ app
 				}
 			}
 
-			checkForSatelliteModel();
-
 			function checkForSatelliteModel(){
 				if(!$scope.widget.settings.vehicle){
 					$scope.selected = {};
@@ -46,22 +41,26 @@ app
 				}
 			}
 
-			$scope.isLoaded = false;
-
-			function createVehicles(mname){
-				dashboardService.getConfig(mname)
-		        .then(function(response) {
-		            if(response.data) {
-		                var data = dashboardService.sortObject(response.data);
-		                var count = 0;
-		                for(var key in data) {
-		                    if(data.hasOwnProperty(key)) {
-		                    	count = count+1;
-		                        $scope.vehicles.push({'key': count, 'value': key})
-		                    }
-		                }
-		            } 
-		        });
+			function createVehicles(){
+				var interval = $interval(function(){
+	                var currentMission = dashboardService.getCurrentMission();
+	                if(currentMission.missionName != ""){
+						dashboardService.getConfig(currentMission.missionName)
+				        .then(function(response) {
+				            if(response.data) {
+				                var data = dashboardService.sortObject(response.data);
+				                var count = 0;
+				                for(var key in data) {
+				                    if(data.hasOwnProperty(key)) {
+				                    	count = count+1;
+				                        $scope.vehicles.push({'key': count, 'value': key})
+				                    }
+				                }
+				            } 
+				        });
+				        $interval.cancel(interval);
+				    }
+				}, 1000);
 			}
     	}
     }

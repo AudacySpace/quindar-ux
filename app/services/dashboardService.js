@@ -6,10 +6,8 @@ app
     };
     var telemetry = {};
     var time = "";
-    var platforms = [];
     var missions = [];
     var selectedMission = {"missionName":"","missionImage":""};
-    var treeData = {"data":[]};
     var icons = {sIcon:"", gIcon:"", pIcon:"",dIcon:""};
 
     getMissionLayout();
@@ -20,7 +18,6 @@ app
         if(currentLayout.current.mission.missionName !== ""){
             setCurrentMission(currentLayout.current.mission);
             getTelemetry(currentLayout.current.mission.missionName);
-            getDataMenu(currentLayout.current.mission.missionName); 
         }else {
             getMissions(missions);
         }
@@ -44,7 +41,6 @@ app
                 if(response){
                     gridService.setMissionForLayout(response.missionName);
                     getTelemetry(response.missionName);
-                    getDataMenu(response.missionName);
                 }
             },function close(){
                 alert("No mission selected!Reload the page for options.");
@@ -285,20 +281,11 @@ app
         return selectedMission;
     }
 
-    function getConfig(missionname) {
+    function getConfig(missionName) {
         return $http({
                 url: "/getConfig", 
                 method: "GET",
-                params: {'mission' : missionname}
-            });
-    }
-
-    function getDataMenu(missionname){
-        getConfig(missionname)
-            .then(function(response) {
-                if(response.data) {
-                    treeData.data = response.data;
-                }
+                params: {'mission' : missionName}
             });
     }
 
@@ -306,20 +293,17 @@ app
         locks : locks,
         telemetry : telemetry,
         missions : missions,
+        icons : icons,
         getLock : getLock,
-        setCurrentMission : setCurrentMission,
-        getCurrentMission : getCurrentMission,
-        treeData : treeData,
-        getTelemetry : getTelemetry,
-        getMissions : getMissions,
         setLeftLock : setLeftLock,
         setRightLock : setRightLock,
-        isEmpty : isEmpty,
-        icons : icons,
         getTime : getTime,
         countdown : countdown,
+        isEmpty : isEmpty,
         sortObject : sortObject,
         getData : getData,
-        getConfig : getConfig
+        setCurrentMission : setCurrentMission,
+        getCurrentMission : getCurrentMission,
+        getConfig : getConfig,
 	}
 }]);

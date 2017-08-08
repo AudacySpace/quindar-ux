@@ -2,19 +2,12 @@ app.directive('groundtracksettings', function() {
   	return { 
     	restrict: 'EA', 
 		templateUrl:'./directives/groundtrack/groundtracksettings.html',
-		controller: function($scope,$element, sidebarService, dashboardService) {
+		controller: function($scope, dashboardService, $interval) {
             
             var colors = [ "#07D1EA", "#0D8DB8", "#172168", "#228B22", "#12C700", "#C6FF00" ];
             var previousSettings = angular.copy($scope.widget.settings.contents);
 
-            $scope.currentMission =  dashboardService.getCurrentMission();
-            $scope.$watch("currentMission",function(newVal,oldVal){
-                if(newVal.missionName !== ""){
-                    createVehicles(newVal.missionName);
-                }           
-            },true);
-
-            // createVehicles();
+            createVehicles();
             
             $scope.closeWidget = function(widget){
                 widget.main = true;
@@ -73,60 +66,66 @@ app.directive('groundtracksettings', function() {
                 previousSettings = angular.copy($scope.widget.settings.contents);
             }
 
-            function createVehicles(mname){
-                if($scope.widget.settings.contents.length == 0){
-                    dashboardService.getConfig(mname)
-                    .then(function(response) {
-                        if(response.data) {
-                            var data = dashboardService.sortObject(response.data);
-                            var count = 0;
-                            for(var key in data) {
-                                if(data.hasOwnProperty(key)) {
-                                    count = count+1;
-                                    $scope.widget.settings.contents.push(
-                                        [
-                                                {   
-                                                    "value": count,
-                                                    "style":"text-align:left;background-color:#fff;color:#000;font-size:13px;margin-left:2px",
-                                                    "active": "false",
-                                                    "cstyle":"background-color:#fff;text-align:left;color:#000;font-size:9px",
-                                                    "status": false
-                                                },
-                                                {   
-                                                    "value": key,
-                                                    "style":"text-align:left;background-color:#fff;color:#000;font-size:13px",
-                                                    "active": "false",
-                                                    "cstyle":"background-color:#fff;text-align:left;color:#000;font-size:9px",
-                                                    "status": false
-                                                },
-                                                {   
-                                                    "value":"",
-                                                    "style":"text-align:left;background-color:#fff;color:#000;margin-top:0px",
-                                                    "active": "true",
-                                                    "cstyle":"padding-left:0px;background-color:#fff;text-align:left;color:#000;font-size:9px",
-                                                    "status": true
-                                                },
-                                                {   
-                                                    "value":"",
-                                                    "style":"text-align:left;background-color:#fff;color:#000",
-                                                    "active": "true",
-                                                    "cstyle":"padding-left:0px;background-color:#fff;text-align:left;color:#000;font-size:9px",
-                                                    "status": true
-                                                },
-                                                {   
-                                                    "value":"",
-                                                    "style":"text-align:left;background-color:#fff;color:#000",
-                                                    "active": "true",
-                                                    "cstyle":"padding-left:0px;background-color:#fff;text-align:left;color:#000;font-size:9px",
-                                                    "status": true
-                                                }
-                                        ]
-                                    ); 
-                                }
-                            }
-                        } 
-                    });
-                }
+            function createVehicles(){
+                var interval = $interval(function(){
+                    var currentMission = dashboardService.getCurrentMission();
+                    if(currentMission.missionName != ""){
+                        if($scope.widget.settings.contents.length == 0){
+                            dashboardService.getConfig(currentMission.missionName)
+                            .then(function(response){
+                                if(response.data) {
+                                    var data = dashboardService.sortObject(response.data);
+                                    var count = 0;
+                                    for(var key in data) {
+                                        if(data.hasOwnProperty(key)) {
+                                            count = count+1;
+                                            $scope.widget.settings.contents.push(
+                                                [
+                                                        {   
+                                                            "value": count,
+                                                            "style":"text-align:left;background-color:#fff;color:#000;font-size:13px;margin-left:2px",
+                                                            "active": "false",
+                                                            "cstyle":"background-color:#fff;text-align:left;color:#000;font-size:9px",
+                                                            "status": false
+                                                        },
+                                                        {   
+                                                            "value": key,
+                                                            "style":"text-align:left;background-color:#fff;color:#000;font-size:13px",
+                                                            "active": "false",
+                                                            "cstyle":"background-color:#fff;text-align:left;color:#000;font-size:9px",
+                                                            "status": false
+                                                        },
+                                                        {   
+                                                            "value":"",
+                                                            "style":"text-align:left;background-color:#fff;color:#000;margin-top:0px",
+                                                            "active": "true",
+                                                            "cstyle":"padding-left:0px;background-color:#fff;text-align:left;color:#000;font-size:9px",
+                                                            "status": true
+                                                        },
+                                                        {   
+                                                            "value":"",
+                                                            "style":"text-align:left;background-color:#fff;color:#000",
+                                                            "active": "true",
+                                                            "cstyle":"padding-left:0px;background-color:#fff;text-align:left;color:#000;font-size:9px",
+                                                            "status": true
+                                                        },
+                                                        {   
+                                                            "value":"",
+                                                            "style":"text-align:left;background-color:#fff;color:#000",
+                                                            "active": "true",
+                                                            "cstyle":"padding-left:0px;background-color:#fff;text-align:left;color:#000;font-size:9px",
+                                                            "status": true
+                                                        }
+                                                ]
+                                            ); 
+                                        }
+                                    }
+                                } 
+                            });
+                        }
+                        $interval.cancel(interval);
+                    }
+                }, 1000);
             }
 		}
 	}

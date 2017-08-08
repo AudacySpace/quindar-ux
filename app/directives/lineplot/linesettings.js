@@ -8,19 +8,12 @@ app
 }); 
 
 app.controller('LineSettingsCtrl', 
-    function($scope, $mdSidenav, $window, dashboardService, sidebarService){
+    function($scope, $mdSidenav, $window, dashboardService, sidebarService, $interval){
 
         var colors = [ "#0AACCF", "#FF9100", "#64DD17", "#07D1EA", "#0D8DB8", "#172168", "#228B22", "#12C700", "#C6FF00" ];
-
-        $scope.currentMission =  dashboardService.getCurrentMission();
-        $scope.$watch("currentMission",function(newVal,oldVal){
-            if(newVal.missionName !== ""){
-                    createSettingsData(newVal.missionName);
-                }          
-        },true);
-        // createSettingsData();
-
         var previousSettings;
+
+        createSettingsData();
 
         $scope.getTelemetrydata = function(){
 
@@ -101,40 +94,46 @@ app.controller('LineSettingsCtrl',
             $scope.widget.settings.contents = angular.copy(previousSettings);
         }
 
-        function createSettingsData(mname){
-            if($scope.widget.settings.contents.vehicles.length == 0){
-                dashboardService.getConfig(mname)
-                .then(function(response) {
-                    if(response.data) {
-                        var data = dashboardService.sortObject(response.data);
-                        var count = 0;
-                        for(var key in data) {
-                            if(data.hasOwnProperty(key)) {
-                                count = count+1;
-                                $scope.widget.settings.contents.vehicles.push(
-                                {
-                                    'key': count,
-                                    'value': key,
-                                    'checked': false,
-                                    'color' : colors[count-1]    
-                                }); 
-                            }
+        function createSettingsData(){
+            var interval = $interval(function(){
+                var currentMission = dashboardService.getCurrentMission();
+                if(currentMission.missionName != ""){
+                    if($scope.widget.settings.contents.vehicles.length == 0){
+                        dashboardService.getConfig(currentMission.missionName)
+                        .then(function(response) {
+                            if(response.data) {
+                                var data = dashboardService.sortObject(response.data);
+                                var count = 0;
+                                for(var key in data) {
+                                    if(data.hasOwnProperty(key)) {
+                                        count = count+1;
+                                        $scope.widget.settings.contents.vehicles.push(
+                                        {
+                                            'key': count,
+                                            'value': key,
+                                            'checked': false,
+                                            'color' : colors[count-1]    
+                                        }); 
+                                    }
+                                }
+                                previousSettings = angular.copy($scope.widget.settings.contents);
+                            } 
+                        });
+
+                        $scope.widget.settings.data = {
+                            value : "",
+                            vehicles : [],
+                            key : ""
+                        };
+                    } else {
+                        for(var i=0; i<$scope.widget.settings.data.vehicles.length; i++){
+                            $scope.widget.settings.data.vehicles[i].data = [];
                         }
                         previousSettings = angular.copy($scope.widget.settings.contents);
-                    } 
-                });
-
-                $scope.widget.settings.data = {
-                    value : "",
-                    vehicles : [],
-                    key : ""
-                };
-            } else {
-                for(var i=0; i<$scope.widget.settings.data.vehicles.length; i++){
-                    $scope.widget.settings.data.vehicles[i].data = [];
+                    }
+                    $interval.cancel(interval);
                 }
-                previousSettings = angular.copy($scope.widget.settings.contents);
-            }
+            }, 1000 );
         }
 
         function createKey(vehicle, key){
