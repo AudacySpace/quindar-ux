@@ -76,14 +76,22 @@ var configRole = require('./config/role');
     //Load Layout from User collection of Quindar database
     app.get('/loadLayout', function(req,res){
         var email = req.query.email;
+        var missionname = req.query.missionname;
 
         //Load the layout from the User collection
         User.findOne({ 'google.email' : email }, function(err, user) {
             if(err){
                 console.log(err);
             }
-
-            res.send(user.grid);
+            var missionLayouts = [];
+            for(var i=0;i<user.grid.length;i++){
+                if(user.grid[i].mission){
+                    if(user.grid[i].mission.missionName === missionname){
+                        missionLayouts.push(user.grid[i]);
+                    }
+                }
+            }
+            res.send(missionLayouts);
         });
     });
   
