@@ -4,7 +4,7 @@ angular.module('app')
   	scope: true,
    	bindToController: true,
   	templateUrl: "./components/dashboard/dashboard.html",
-  	controller: function(dashboardService,gridService, $interval,prompt,$mdSidenav,$window, userService, $uibModal,$scope,$sessionStorage,$http) {
+  	controller: function(dashboardService,gridService, $interval,prompt,$mdSidenav,$window, userService, $uibModal) {
   		var vm = this;
 
 		vm.clock = {

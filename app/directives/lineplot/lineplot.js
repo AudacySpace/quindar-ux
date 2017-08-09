@@ -138,18 +138,18 @@ app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardS
 					})				
 				]);
 
-				axisY.call(d3Service.axisLeft(y).tickSize(-transWidth));
-
-				axisX.attr("transform", "translate(0,"+ transHeight + ")")
-					.call(d3Service.axisBottom(x).tickSize(-transHeight));	
-
-				// text label for the y axis
 				if(category && paramY){
+					axisY.call(d3Service.axisLeft(y).tickSize(-transWidth));
+
+					axisX.attr("transform", "translate(0,"+ transHeight + ")")
+						.call(d3Service.axisBottom(x).tickSize(-transHeight));	
+
+					// text label for the y axis
 					labelY.text(category+" [ "+paramY+ " ] " + yUnits + " ");
-				}
 		  
-				// text label for the x axis
-				labelX.text(paramX);
+					// text label for the x axis
+					labelX.text(paramX);
+				}
 
 				g.selectAll("path")
 					.attr("opacity", 0.1);

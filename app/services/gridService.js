@@ -1,5 +1,6 @@
 app
-.factory('gridService', ['$http','$sessionStorage','prompt','userService', function($http,$sessionStorage,prompt,userService) { 
+.factory('gridService', ['$http', '$sessionStorage', '$window', 'userService', 
+    function($http, $sessionStorage, $window, userService) { 
     var gridsterOptions = {
         margins: [20, 20],
         columns: 8,
@@ -202,9 +203,9 @@ app
                     }]
                 }
             }
-             $sessionStorage.dashboard = {"current" : $sessionStorage.dashboards['Home']};
-        }
-
+            $sessionStorage.dashboard = {"current" : $sessionStorage.dashboards['Home']};
+        } 
+        $window.document.title = "Quindar - " + $sessionStorage.dashboard.current.name;
     }
 
     var selectedDashboardId = 'Home';
@@ -282,7 +283,7 @@ app
 
     function getMissionImage(mname){
         var image = "";
-        if(mname === "Audacy Zero" || mname === "AudacyZero"){
+        if(mname === "AZero" || mname === "AudacyZero"){
             image = "/media/icons/AudacyZero_Logo_White.jpg";
             return image;
         }else {

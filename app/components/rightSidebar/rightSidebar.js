@@ -43,6 +43,7 @@ app
                 .then(function(response) {
                     if(response.status == 200){
                         alert("Layout saved succcessfully -- " + name);
+                        $window.document.title = "Quindar - " + name;
                     }
                 });
             });

@@ -23,7 +23,10 @@ app
             vm.dataTree = angular.copy(previousTree);
 
             vm.dataTree = vm.dataTree.filter(function f(data) {
-                if (data.name.includes(vm.searchID)) return true;
+                var name = data.name.toLowerCase();
+                var searchID = vm.searchID.toLowerCase();
+                
+                if (name.includes(searchID)) return true;
 
                 if (data.nodes) {
                     data.nodes = data.nodes.filter(f);

@@ -57,10 +57,8 @@ app.directive('groundtracksettings', function() {
                 }
 
                 for (j=0; j< widget.settings.vehName.length;j++) {
-                    widget.settings.scHolder[j] = [[0.,0.]];
-                    widget.settings.scHolder[j].pop();
-                    widget.settings.scStates[j] = [[0.,0.,0.]];
-                    widget.settings.scStates[j].pop();
+                    widget.settings.scHolder[j] = [];
+                    widget.settings.scStates[j] = [];
 
                 }; 
                 previousSettings = angular.copy($scope.widget.settings.contents);
@@ -122,6 +120,11 @@ app.directive('groundtracksettings', function() {
                                     }
                                 } 
                             });
+                        } else {
+                            for (j=0; j< $scope.widget.settings.vehName.length;j++) {
+                                $scope.widget.settings.scHolder[j] = [];
+                                $scope.widget.settings.scStates[j] = [];
+                            }
                         }
                         $interval.cancel(interval);
                     }
