@@ -1,7 +1,13 @@
-#alarmpanel-row {
+/*Custom css for alarm panel qwidget*/
+.alarmpanel-row {
     margin-left: 2px;
     margin-bottom: 2px;
     margin-top:50px
+}
+.alarmpaneldata-row {
+    margin-left: 2px;
+    margin-bottom: 2px;
+    margin-top:2px 
 }
 .mbl-alarm {
     display:none;
@@ -9,7 +15,6 @@
 .tablet-alarm{
     display:none;
 }
-
 .masteralarm {
     width:100%; 
     height:115px;
@@ -47,7 +52,6 @@
 }
 
 @media only screen and (max-width: 599px) {
-
     .mbl-alarm {
        display:block;
     }
@@ -56,17 +60,6 @@
     }
     .tablet-alarm{
         display:none;
-    }
-    .dlog-header {
-        font-size:10px;
-    }
-    .dlog-row {
-        background-color: #F2F3F4;
-        font-size:9px;
-        text-align: center;
-        font-weight: 400;
-        margin-top:1px;
-        margin-bottom:1px;
     }
 }
 
@@ -82,17 +75,6 @@
     }
     .mbl-dl {
         display:none;
-    }
-     .dlog-header {
-        font-size:10px;
-    }
-    .dlog-row {
-        background-color: #F2F3F4;
-        font-size:9px;
-        text-align: center;
-        font-weight: 400;
-        margin-top:1px;
-        margin-bottom:1px;
     }
 }
 

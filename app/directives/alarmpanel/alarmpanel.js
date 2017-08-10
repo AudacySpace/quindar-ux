@@ -21,15 +21,21 @@ app.controller('AlarmPanelCtrl',function ($scope,$window,$element,$interval,dash
 
     getVehicles();
 
-    $scope.widget.settings.status = [{
-
-        "time":"",
+    $scope.statustable = [{
+        "time":" - ",
         "channel":"",
-        "alert":"",
-        "bound":"",
-        "ack":""
-
+        "alert":" ",
+        "bound":" ",
+        "ack":" "
+    },
+    {
+        "time":" - ",
+        "channel":" ",
+        "alert":" ",
+        "bound":" ",
+        "ack":" "
     }];
+
 
     function getVehicles(){
         var interval = $interval(function(){
@@ -71,7 +77,6 @@ app.controller('AlarmPanelCtrl',function ($scope,$window,$element,$interval,dash
                                     }   
                                 }
                             } 
-                            console.log($scope.widget.settings.colors);
                         }); 
                 }
                 $interval.cancel(interval);
