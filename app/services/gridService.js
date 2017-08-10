@@ -251,7 +251,7 @@ app
     }
 
     function clear() {
-        $sessionStorage.dashboards[selectedDashboardId].widgets = [];
+        $sessionStorage.dashboard["current"].widgets = [];
     };
 
     function addWidget() {
@@ -264,7 +264,7 @@ app
 
     function addWidgets(widget) {
         var widgetdef = angular.copy(widget);
-        $sessionStorage.dashboards[selectedDashboardId].widgets.push(widgetdef);
+        $sessionStorage.dashboard["current"].widgets.push(widgetdef);
     }
 
     function remove(widget) {      
@@ -284,7 +284,7 @@ app
         return $http({
             url: "/loadLayout", 
             method: "GET",
-            params: {"email" : email,"missionname" : $sessionStorage.dashboards[getDashboardId()].mission.missionName}
+            params: {"email" : email,"missionname" : $sessionStorage.dashboard["current"].mission.missionName}
         });
     }
 
@@ -298,10 +298,10 @@ app
     }
 
     function setMissionForLayout(mname){
-        $sessionStorage.dashboards[getDashboardId()].mission.missionName = mname;
-        if($sessionStorage.dashboards[getDashboardId()].mission.missionName !== ""){
-            var sessionimage = getMissionImage($sessionStorage.dashboards[getDashboardId()].mission.missionName);
-            $sessionStorage.dashboards[getDashboardId()].mission.missionImage = sessionimage;
+        $sessionStorage.dashboard["current"].mission.missionName = mname;
+        if($sessionStorage.dashboard["current"].mission.missionName !== ""){
+            var sessionimage = getMissionImage($sessionStorage.dashboard["current"].mission.missionName);
+            $sessionStorage.dashboard["current"].mission.missionImage = sessionimage;
         }
     }
 
