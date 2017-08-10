@@ -1,0 +1,72 @@
+ <div id="alarmpanel">
+    <div layout="row">
+        <div flex="malarm.flexprop" ng-repeat="malarm in widget.settings.contents">
+            <!-- ngrepeat for Master alarm vehicles -->
+            <div class="masteralarm">
+                <button href="#accessibility" role="button" tabindex="1" class="button alarm-vehicle" >{{malarm.vehicle}}
+                </button>
+            </div>
+            <!-- ngrepeat for sub systems for each vehicle -->
+            <div flex="malarm.flexprop" ng-repeat="system in malarm.categories">
+                <button href="#accessibility" role="button" tabindex="1" class="button alarm-subsys" style="">{{system}}
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Status board to track the out of bound telemetry -->
+    <div id="statusboard" ng-show="statusboard.status">
+        <div layout="row" id="alarmpanel-row">
+            <div flex="20" class="md-title" id="left-header">
+                Time
+            </div>
+            <div flex="20" class="md-title" id="left-header">
+                Channel
+            </div>
+            <div flex="20" class="md-title" id="center-header">
+                Alert
+            </div>
+            <div flex="20" class="md-title" id="center-header">
+                Bound
+            </div>
+            <div flex="20" class="md-title" id="center-header">
+                Ack
+            </div>
+        </div>
+        <div layout="row" id="clock-row">
+            <div flex="20" class="md-title" id="left-row">
+                {{1}}
+            </div>
+            <div flex="20" class="md-title" id="left-row">
+                {{2}}
+            </div>
+            <div flex="20" class="md-title" id="center-row" ng-style="clock.style">
+                {{3}}
+            </div>
+            <div flex="20" class="md-title" id="center-row" ng-style="clock.style">
+                {{4}}
+            </div>
+            <div flex="20" class="md-title" id="center-row" ng-style="clock.style">
+                {{5}}
+            </div>
+        </div>
+        <div layout="row" id="clock-row">
+            <div flex="20" class="md-title" id="left-row">
+                {{1}}
+            </div>
+            <div flex="20" class="md-title" id="left-row">
+                {{2}}
+            </div>
+            <div flex="20" class="md-title" id="center-row" ng-style="clock.style">
+                {{3}}
+            </div>
+            <div flex="20" class="md-title" id="center-row" ng-style="clock.style">
+                {{4}}
+            </div>
+            <div flex="20" class="md-title" id="center-row" ng-style="clock.style">
+                {{5}}
+            </div>
+        </div>
+    </div>
+</div>
+
+
