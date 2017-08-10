@@ -9,11 +9,21 @@ app.directive('datatablesettings', function() {
 
         $scope.saveDataTableSettings = function(widget){
             var val = $scope.checkedValues;
-            widget.main = true;
-            widget.settings.active = false;
-            widget.saveLoad = false;
-            widget.delete = false;
-            values = angular.copy($scope.checkedValues);
+            var count = 0;
+            for(obj in val){
+                if(val[obj]){
+                    count = count + 1;
+                }
+            }
+            if(count > 0) {
+                widget.main = true;
+                widget.settings.active = false;
+                widget.saveLoad = false;
+                widget.delete = false;
+                values = angular.copy($scope.checkedValues);
+            } else {
+                alert("Please check at least one category");
+            }
         };
 
         $scope.closeDataTableSettings = function(widget){

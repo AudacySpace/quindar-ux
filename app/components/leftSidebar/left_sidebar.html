@@ -1,11 +1,28 @@
+<!-- Recursive html code for creating a tree like structure in data menu -->
+<script type="text/ng-template" id="dataTree.html">
+    <md-divider ng-show="data.nodes.length != 0 || $index == 0"></md-divider>
+    <md-list-item id="tree" ng-click="$ctrl.selectData(data)"
+        ng-style="{ 'padding-left' : count*16+'px', 'font-size' : (16-count)+'px' }" >
+        <md-icon class="md-icon" ng-class="{'large': count==0, 'small': count!=0 }" 
+            md-svg-icon="{{ count==0 ? '/icons/aud_sat.svg' : '/icons/aud_target.svg' }}" style="color:#ccc;">
+        </md-icon>
+        <p>{{ data.name }}</p>
+    </md-list-item>
+    <md-list class="md-dense" ng-show="data.active">
+        <md-divider ng-show="data.nodes.length == 0"></md-divider>
+        <div ng-init = "count=count+1" ng-repeat = "data in data.nodes | orderBy:'name'" ng-include="'dataTree.html'">
+        </div>
+    </md-list>
+</script>
+
 <!--Left Side Nav -->
 <md-toolbar>
     <div class="md-toolbar-tools">
         <form>
             <div class="input-group">
-                <input type="text" class="form-control" id="input-search" placeholder="Search Telemetry Id" ng-model="post.id">
-                <span class="input-group-addon" id="group-search">
-                    <img ng-src="/icons/search.svg" ng-click="$ctrl.searchData(post.id)" class="search-icon"/>
+                <input type="text" class="form-control" id="input-search" placeholder="Search Telemetry Id" ng-model="$ctrl.searchID">
+                <span class="input-group-addon" id="group-search" ng-click="$ctrl.filter()">
+                    <img ng-src="/icons/search.svg" class="search-icon"/>
                 </span>
             </div>
         </form>
@@ -13,32 +30,9 @@
 </md-toolbar>
 <md-content flex role="navigation" id="left">
     <md-list>
-        <md-list-item ng-click="$ctrl.showVehicleMenu()">
-            <md-icon class="md-icon large" md-svg-icon="/icons/aud_signal.svg"></md-icon>
-            <p>GMAT</p>
-        </md-list-item>
+        <div ng-init= "count=0" ng-repeat = "data in $ctrl.dataTree | orderBy:'name'" ng-include="'dataTree.html'">
+        </div>
         <md-divider></md-divider>
-        <md-list class="md-dense" flex ng-show="$ctrl.vehicleMenu" ng-repeat = "vehicle in $ctrl.vehicles">
-            <md-list-item ng-click="$ctrl.showCategoryMenu(vehicle)" id="list2">
-                <md-icon class="md-icon large" md-svg-icon="/icons/aud_sat.svg" style="color:#ccc;"></md-icon>
-                <p>{{ vehicle.name }}</p>
-            </md-list-item>
-            <md-list class="md-dense" flex ng-show="vehicle.active" ng-repeat="data in vehicle.config">
-                <md-divider></md-divider>
-                <md-list-item id="list3" ng-click="$ctrl.showTelemetryMenu(data)">
-                    <md-icon class="md-icon small" md-svg-icon="/icons/aud_target.svg" style="color:#ccc;"></md-icon>
-                    <p>{{ data.category }}</p>
-                </md-list-item>
-                <md-list class="md-dense" flex ng-show="data.active">
-                    <md-divider></md-divider>
-                    <md-list-item ng-repeat="value in data.values" ng-click="$ctrl.selectConfig(vehicle,value)" id="list4" ng-show="data.datastatus[$index]">
-                        <md-icon class="md-icon smaller" md-svg-icon="/icons/aud_arrow_01-2.svg"></md-icon>
-                        <p>{{ value }}</p>
-                    </md-list-item>
-                </md-list>
-            </md-list>
-            <md-divider></md-divider>
-        </md-list>
     </md-list>
 </md-content>
 <!--End of Left Side Nav -->

@@ -1,59 +1,94 @@
 app
-.factory('dashboardService', ['$interval', '$http', function($interval, $http) {
+.factory('dashboardService', ['$interval', '$http','$uibModal','gridService', function($interval, $http,$uibModal,gridService) {
     var locks = {
         lockLeft : false,
         lockRight : false
     };
     var telemetry = {};
     var time = "";
-    var timestamp_alow = {value:""};
-    var timestamp_ahigh = {value:""};
-    var timestamp_wlow = {value:""};
-    var timestamp_whigh = {value:""};
-
-    var docIds = [];
+    var missions = [];
+    var selectedMission = {"missionName":"","missionImage":""};
     var icons = {sIcon:"", gIcon:"", pIcon:"",dIcon:""};
-    
 
-    getTelemetry();
+    getMissionLayout();
     getProxyStatus();
 
-    function getTelemetry() {
+    function getMissionLayout(){
+        var currentLayout = gridService.getDashboard();
+        if(currentLayout.current.mission.missionName !== ""){
+            setCurrentMission(currentLayout.current.mission);
+            getTelemetry(currentLayout.current.mission.missionName);
+        }else {
+            getMissions(missions);
+        }
+    }
+
+    function getMissions(missions){
+        $http({
+            url: "/getMissions", 
+            method: "GET",
+            params:{}
+        }).then(function success(response) {
+            for(var i=0;i<response.data.length;i++){
+                var image = gridService.getMissionImage(response.data[i].mission);
+                missions.push({"missionName":response.data[i].mission,"missionImage":image});
+            }
+            $uibModal.open({
+                templateUrl: './components/dashboard/missionModal.html',
+                controller: 'missionModalCtrl',
+                controllerAs: '$ctrl'
+            }).result.then(function(response){
+                if(response){
+                    gridService.setMissionForLayout(response.missionName);
+                    getTelemetry(response.missionName);
+                }
+            },function close(){
+                alert("No mission selected!Reload the page for options.");
+            }); 
+        },function error(response){
+            console.log("No mission available!");
+        });
+    }
+
+    function getTelemetry(missionName) {
         var prevId = "";
         $interval(function () { 
             $http({
                 url: "/getTelemetry", 
                 method: "GET",
-                params: {'vehicles' : ['Audacy1', 'Audacy2', 'Audacy3']}
+                params: {'mission' : missionName}
             }).then(function success(response) {
-                for(var item in response.data){
-                    telemetry[item] = response.data[item];
-                    time = telemetry[item].timestamp.value;
-                    timestamp_alow.value  = telemetry[item].timestamp.alarm_low;
-                    timestamp_ahigh.value  = telemetry[item].timestamp.alarm_high;
-                    timestamp_wlow.value  = telemetry[item].timestamp.warn_low;
-                    timestamp_whigh.value  = telemetry[item].timestamp.warn_high;
+                if(response.data){
+                    for(var item in response.data.telemetry){
+                        telemetry[item] = response.data.telemetry[item];
+                    }
+                    telemetry['data'] = response.data.telemetry;
+                    telemetry['time'] = response.data.timestamp;
+                    time = response.data.timestamp;
+                }else{
+                    telemetry = {};
                 }
+
                 if(isEmpty(response.data) === false){//if data is not empty
-                        if(prevId === telemetry[item]._id){ //  if proxy application is not receiving any data from ground station
-                            icons.sIcon = "grey";
-                            icons.gIcon = "red";
-                            icons.pIcon = "green";
-                            icons.dIcon = "blue";
-                        }else{
-                            icons.sIcon = "green";
-                            icons.gIcon = "green";
-                            icons.pIcon = "green";
-                            icons.dIcon = "green";
-                            prevId = telemetry[item]._id;
-                        }
-                }else{ // if data received is empty
+                    if(prevId === response.data._id){ //  if proxy application is not receiving any data from ground station
+                        icons.sIcon = "grey";
+                        icons.gIcon = "red";
+                        icons.pIcon = "green";
+                        icons.dIcon = "blue";
+                    } else {
+                        icons.sIcon = "green";
+                        icons.gIcon = "green";
+                        icons.pIcon = "green";
+                        icons.dIcon = "green";
+                        prevId = response.data._id;
+                    }
+                } else { // if data received is empty
                     icons.sIcon = "red";
                     icons.gIcon = "green";
                     icons.pIcon = "green";
                     icons.dIcon = "green";
                 }
-            },function error(response){
+            }, function error(response){
                 icons.sIcon = "grey";
                 icons.gIcon = "grey";
                 icons.pIcon = "grey";
@@ -201,19 +236,74 @@ app
         }
         return true;
     }
-    
+
+    function sortObject(o) {
+        var sorted = {},
+        key, a = [];
+
+        for (key in o) {
+            if (o.hasOwnProperty(key)) {
+                a.push(key);
+            }
+        }
+
+        a.sort();
+
+        for (key = 0; key < a.length; key++) {
+            sorted[a[key]] = o[a[key]];
+        }
+        return sorted;
+    }
+
+    function getData(key){
+        var keys = key.split('.'),
+            data = telemetry['data'];
+
+        if(key && data){
+            for (var i = 0; i < keys.length; ++i) {
+                if (data[keys[i]] == undefined) {
+                    return undefined;
+                } else {
+                    data = data[keys[i]];
+                }
+            }
+            return data;
+        } else {
+            return null;
+        }
+    }
+
+    function setCurrentMission(mName){
+        selectedMission.missionName = mName.missionName;
+        selectedMission.missionImage = mName.missionImage;
+    }
+    function getCurrentMission(){
+        return selectedMission;
+    }
+
+    function getConfig(missionName) {
+        return $http({
+                url: "/getConfig", 
+                method: "GET",
+                params: {'mission' : missionName}
+            });
+    }
+
 	return {
         locks : locks,
         telemetry : telemetry,
+        missions : missions,
+        icons : icons,
         getLock : getLock,
         setLeftLock : setLeftLock,
         setRightLock : setRightLock,
-        icons : icons,
         getTime : getTime,
         countdown : countdown,
-        timestamp_alow : timestamp_alow,
-        timestamp_ahigh : timestamp_ahigh,
-        timestamp_wlow : timestamp_wlow,
-        timestamp_whigh :timestamp_whigh
+        isEmpty : isEmpty,
+        sortObject : sortObject,
+        getData : getData,
+        setCurrentMission : setCurrentMission,
+        getCurrentMission : getCurrentMission,
+        getConfig : getConfig,
 	}
 }]);

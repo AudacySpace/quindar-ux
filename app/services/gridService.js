@@ -1,5 +1,6 @@
 app
-.factory('gridService', ['$http','$sessionStorage','prompt','userService', function($http,$sessionStorage,prompt,userService) { 
+.factory('gridService', ['$http', '$sessionStorage', '$window', 'userService', 
+    function($http, $sessionStorage, $window, userService) { 
     var gridsterOptions = {
         margins: [20, 20],
         columns: 8,
@@ -7,60 +8,11 @@ app
             enabled: true,
             handle: '.box-header'
         }
-    };     
+    }; 
 
     var email = userService.getUserEmail();
-    checkDefaultDashboard();
 
-    var groundtracktableCols = [];
-    for (var i = 1; i < 4; i++) {
-        groundtracktableCols.push({
-                            contents:   [
-                                            {   
-                                                "value": i,
-                                                "style":"text-align:left;background-color:#fff;color:#000;font-size:13px;margin-left:2px",
-                                                "active": "false",
-                                                "cstyle":"background-color:#fff;text-align:left;color:#000;font-size:9px",
-                                                "cstatus":"false"
-                                            },
-                                            {   
-                                                "value":"Audacy"+i,
-                                                "style":"text-align:left;background-color:#fff;color:#000;font-size:13px",
-                                                "active": "false",
-                                                "cstyle":"background-color:#fff;text-align:left;color:#000;font-size:9px",
-                                                "cstatus":"false"
-                                            },
-                                            {   
-                                                "value":"",
-                                                "style":"text-align:left;background-color:#fff;color:#000;margin-top:0px",
-                                                "active": "true",
-                                                "cstyle":"padding-left:0px;background-color:#fff;text-align:left;color:#000;font-size:9px",
-                                                "cstatus":"true"
-                                            },
-                                            {   
-                                                "value":"",
-                                                "style":"text-align:left;background-color:#fff;color:#000",
-                                                "active": "true",
-                                                "cstyle":"padding-left:0px;background-color:#fff;text-align:left;color:#000;font-size:9px",
-                                                "cstatus":"true"
-                                            },
-                                            {   
-                                                "value":"",
-                                                "style":"text-align:left;background-color:#fff;color:#000",
-                                                "active": "true",
-                                                "cstyle":"padding-left:0px;background-color:#fff;text-align:left;color:#000;font-size:9px",
-                                                "cstatus":"true"
-                                            }
-                                        ]
-                                        ,
-                                        status: [
-                                        idStatus = false,
-                                        nameStatus = false,
-                                        dataStatus = true,
-                                        orbitStatus = true,
-                                        iconStatus = true]
-                       }); 
-    }                        
+    checkDefaultDashboard();
 
     var widgetDefinitions = [
     {
@@ -77,26 +29,10 @@ app
         main: true,
 		settings: {
             active: false,
-            checkedVehicles : [
-                                {
-                                    'key': 1,
-                                    'value': 'Audacy1',
-                                    'checked': false,
-                                    'color' : '#0AACCF'
-                                }, 
-                                {
-                                    'key': 2,
-                                    'value': 'Audacy2',
-                                    'checked': true,
-                                    'color' : '#FF9100'
-                                }, 
-                                {
-                                    'key': 3,
-                                    'value': 'Audacy3',
-                                    'checked': false,
-                                    'color' : '#64DD17'
-                                }
-                            ]
+            contents : {
+                vehicles : [],
+                value : ""
+            }
         },
 		saveLoad: false,
 		delete: false
@@ -163,11 +99,11 @@ app
         main: true,
         settings: {
             active: false,
-            contents : groundtracktableCols,
-            vehName :[],
-            scHolder :{},
-            scStates :{},
-            dataHolder :[],
+            contents : [],
+            vehName : [],
+            scHolder : {},
+            scStates : {},
+            dataHolder : [],
             orbitHolder :[],
             iconHolder :[]
         },
@@ -217,6 +153,10 @@ app
             $sessionStorage.dashboards = {
                 'Home': {
                     name: 'Home',
+                    mission:{
+                        missionName: '',
+                        missionImage: ''
+                    },
                     widgets: [{
                         col: 0,
                         row: 0,
@@ -233,26 +173,10 @@ app
                         main: true,
                         settings: {
                             active: false,
-                            checkedVehicles : [
-                                {
-                                    'key': 1,
-                                    'value': 'Audacy1',
-                                    'checked': false,
-                                    'color' : '#0AACCF'
-                                }, 
-                                {
-                                    'key': 2,
-                                    'value': 'Audacy2',
-                                    'checked': true,
-                                    'color' : '#FF9100'
-                                }, 
-                                {
-                                    'key': 3,
-                                    'value': 'Audacy3',
-                                    'checked': false,
-                                    'color' : '#64DD17'
-                                }
-                            ]
+                            contents : {
+                                vehicles : [],
+                                value : ""
+                            }
                         },
                         saveLoad: false,
                         delete: false
@@ -279,10 +203,9 @@ app
                     }]
                 }
             }
-
             $sessionStorage.dashboard = {"current" : $sessionStorage.dashboards['Home']};
-        }
-
+        } 
+        $window.document.title = "Quindar - " + $sessionStorage.dashboard.current.name;
     }
 
     var selectedDashboardId = 'Home';
@@ -337,7 +260,7 @@ app
         return $http({
             url: "/loadLayout", 
             method: "GET",
-            params: {"email" : email}
+            params: {"email" : email,"missionname" : $sessionStorage.dashboards[getDashboardId()].mission.missionName}
         });
     }
 
@@ -350,6 +273,25 @@ app
         selectedDashboardId = layout.name;
     }
 
+    function setMissionForLayout(mname){
+        $sessionStorage.dashboards[getDashboardId()].mission.missionName = mname;
+        if($sessionStorage.dashboards[getDashboardId()].mission.missionName !== ""){
+            var sessionimage = getMissionImage($sessionStorage.dashboards[getDashboardId()].mission.missionName);
+            $sessionStorage.dashboards[getDashboardId()].mission.missionImage = sessionimage;
+        }
+    }
+
+    function getMissionImage(mname){
+        var image = "";
+        if(mname === "AZero" || mname === "AudacyZero"){
+            image = "/media/icons/AudacyZero_Logo_White.jpg";
+            return image;
+        }else {
+            image = "/media/icons/Audacy_Icon_White.svg";
+            return image;
+        }
+    }
+
 	return {
         gridsterOptions : gridsterOptions,
         clear : clear,
@@ -360,9 +302,11 @@ app
         setDashboardId : setDashboardId,
         addWidgets : addWidgets,
         widgetDefinitions : widgetDefinitions,
+        setMissionForLayout : setMissionForLayout,
         remove : remove, 
         save : save,
         load : load,
-        showLayout : showLayout
+        showLayout : showLayout,
+        getMissionImage : getMissionImage
 	}
 }]);

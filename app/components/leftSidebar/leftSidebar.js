@@ -1,136 +1,97 @@
 app
 .component('leftSidebar', {
   	templateUrl: "./components/leftSidebar/left_sidebar.html",
-  	controller: function(sidebarService, $interval) {
+  	controller: function(sidebarService, dashboardService, $scope, $interval) {
   		var vm = this;
-        vm.post = {id: null}; //object to store the input id value
 
-  		getData();
+        vm.searchID = "";
+        var previousTree = [];
 
-		vm.vehicleMenu = false;
+        getData();
 
-        vm.showVehicleMenu = function(){
-            vm.vehicleMenu = !vm.vehicleMenu;
-        }
-
-        vm.showCategoryMenu = function(vehicle){
-            vehicle.active = !vehicle.active;
-        }
-
-        vm.showTelemetryMenu = function(config){
-            config.active = !config.active;
-        }
-
-  		vm.selectConfig = function(vehicle, data){
-            sidebarService.setVehicleInfo(vehicle.name,data);
-  		}
-
-        //Function to search data menu using id
-        vm.searchData = function(id){
-     
-            
-            var vehs = angular.copy(vm.vehicles);//creates a copy of the vehicles object
-            var vehMenu = angular.copy(vm.vehicleMenu);//creates a copy of vehicle menu status
-            var newObj = {};
-
-            //loops through the vehicles and its configuration data and 
-            //closes any open list
-            for(var i=0;i<vehs.length;i++){
-                for(var j=0;j<vehs[i].config.length;j++){
-                    for(var k=0;k<vehs[i].config[j].values.length;k++){
-                        if(vehs[i].config[j].active = true){
-                            vehs[i].config[j].active = false;
-                            vehs[i].config[j].datastatus[k] = false;
-                            vm.vehicleMenu = false;
-                        }else {
-                            vehs[i].config[j].active;
-                            vm.vehicleMenu = false;
-                        }
-                    }
-                }
-            }
-
-            //loops through the vehicles and its configuration data and 
-            //finds match to show
-            var matchStatus = false;
-            for(var i=0;i<vehs.length;i++){ 
-               // console.log("i"+ i);
-                for(var j=0;j<vehs[i].config.length;j++){
-                 //   console.log("j"+ j);
-                    for(var k=0;k<vehs[i].config[j].values.length;k++){
-                     //   console.log("k"+ k);
-                        if(id != undefined && id !== '' && id != '' && id.length > 0){
-                             if(vehs[i].config[j].values[k].search(id) !== -1 ){
-                                vehMenu = true;
-                                vehs[i].active = true;
-                                vehs[i].config[j].active = true;
-                                vehs[i].config[j].datastatus[k] = true;
-                                newObj = JSON.stringify(vehs);
-                                vm.vehicleMenu = vehMenu;
-                                vm.vehicles = JSON.parse(newObj)
-                                matchStatus = true;
-                            } else if(matchStatus === false && i === vehs.length-1 && j=== vehs[i].config.length-1 && k===vehs[i].config[j].values.length-1 )  {
-                                     alert("No match found!");
-                            }
-                        }else {
-
-                                vehMenu = false;
-                                vehs[i].active = false;
-                                vehs[i].config[j].active = false;
-                                vehs[i].config[j].datastatus[k] = true;
-                                newObj = JSON.stringify(vehs);
-                                vm.vehicleMenu = vehMenu;
-                                vm.vehicles = JSON.parse(newObj);
-
-                                if(k === vehs[i].config[j].values.length-1 && j === vehs[i].config.length-1 && i === vehs.length-1  ){
-                                    alert("You should enter an input value to search!");
-                                }
-                        } 
-                    }
-                }             
+        vm.selectData = function(data){
+            if(data.nodes.length == 0){
+                sidebarService.setVehicleInfo(data.value);
+            } else {
+                data.active = !data.active;
             }
         }
-        //End of searchData function
 
-  		function getData(){
-  			sidebarService.getConfig()
-  			.then(function(response) {
-  				vm.config = response.data;
-                for(var i=0;i<vm.config.length;i++){
-                    vm.config[i].datastatus = [];
-                }
+        //function to filter data menu using search ID
+        vm.filter = function(){
+            //copy the data menu pulled from configuration
+            vm.dataTree = angular.copy(previousTree);
 
-                for(var j=0; j<vm.config.length; j++){
-                    for(var k=0;k<vm.config[j].values.length;k++){
-                    vm.config[j].active = false;
-                    vm.config[j].datastatus[k] = true;
-                    vm.config[j].category = initCaps(vm.config[j].category);
-                    }
-                }
+            vm.dataTree = vm.dataTree.filter(function f(data) {
+                var name = data.name.toLowerCase();
+                var searchID = vm.searchID.toLowerCase();
                 
-  				vm.vehicles = [ {
-					name : "Audacy1",
-					config : vm.config,
-					active : false
-				},
-				{
-					name : "Audacy2",
-					config : vm.config,
-					active : false
-				},
-				{
-					name : "Audacy3",
-					config : vm.config,
-					active : false
-				}
-				];
+                if (name.includes(searchID)) return true;
 
-       		});
+                if (data.nodes) {
+                    data.nodes = data.nodes.filter(f);
+                    if(data.nodes.length){
+                        data.active = !data.active;
+                    }
+                    return data.nodes.length;
+                }
+            });
 
-  		}
+            if(vm.dataTree.length == 0){
+                alert("No match found!");
+                vm.dataTree = angular.copy(previousTree);
+            }
+        }
 
+        //get the configuration contents from database
+        function getData(){
+            var interval = $interval(function(){
+                var currentMission = dashboardService.getCurrentMission();
+                if(currentMission.missionName != ""){
+                    dashboardService.getConfig(currentMission.missionName)
+                    .then(function(response) {
+                        if(response.data) {
+                            vm.dataTree = getDataTree(response.data);
+                            previousTree = angular.copy(vm.dataTree);
+                        }
+                    });
+                    $interval.cancel(interval);
+                }
+            }, 1000);
+        }
+
+        //recursive function to create the tree structure data
+        function getDataTree(data, cKey){
+            var tree = [];
+            for(var key in data) {
+                if(data.hasOwnProperty(key)) {
+                    var nodes = [];
+                    var newKey = (cKey ? cKey + "." + key : key);
+
+                    if(typeof data[key] === 'object'){
+                        nodes = getDataTree(data[key], newKey);
+                    }
+
+                    if(nodes.length != 0) {
+                        key = initCaps(key);
+                    }
+
+                    var node = {
+                        'name' : key,
+                        'nodes' : nodes,
+                        'value' : newKey,
+                        'active' : false
+                    };
+
+                    tree.push(node)
+                }
+            }
+            return tree;
+        }
+
+        //function to capitalise the first letter of a string
         function initCaps(str){
-            words = str.toLowerCase().split(' ');
+            words = str.split(' ');
 
             for(var i = 0; i < words.length; i++) {
                 var letters = words[i].split('');
@@ -139,6 +100,5 @@ app
             }
             return words.join(' ');
         }
-        
 	}
 });

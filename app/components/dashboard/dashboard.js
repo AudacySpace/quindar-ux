@@ -4,7 +4,7 @@ angular.module('app')
   	scope: true,
    	bindToController: true,
   	templateUrl: "./components/dashboard/dashboard.html",
-  	controller: function(dashboardService,gridService, $interval,prompt,$mdSidenav,$window, userService, $uibModal,$scope,$sessionStorage) {
+  	controller: function(dashboardService,gridService, $interval,prompt,$mdSidenav,$window, userService, $uibModal) {
   		var vm = this;
 
 		vm.clock = {
@@ -16,8 +16,10 @@ angular.module('app')
 		vm.email = userService.getUserEmail();
 		vm.callsign = userService.getCurrentCallSign();
 		var dashboard = gridService.getDashboard();
+		var totalMissions = [];
 
   		vm.interval = $interval(updateClock, 500);
+  		vm.currentMission =  dashboardService.getCurrentMission();
 
   		function updateClock(){
   			vm.clock = dashboardService.getTime(0);
@@ -118,4 +120,32 @@ app.controller('modalCtrl', function($uibModalInstance, userService) {
 	        });
 	    }
     }
+});
+
+app.controller('missionModalCtrl', function($uibModalInstance,dashboardService,$scope) {
+	var $ctrl = this;
+	$scope.missions = dashboardService.missions;
+	$ctrl.currentMission = {};
+	$scope.$watch("missions",function(newVal,oldVal){
+		$ctrl.missions = newVal;
+	},true);
+
+	$ctrl.close = function() {
+		if(dashboardService.isEmpty($ctrl.currentMission) === true){
+			$uibModalInstance.dismiss('cancel'); 
+		}else {
+			alert("Please save the selected mission.");
+		}
+
+	};
+
+	$ctrl.setMission = function(){
+		if(dashboardService.isEmpty($ctrl.currentMission) === false){
+			dashboardService.setCurrentMission($ctrl.currentMission);
+	    	$uibModalInstance.close($ctrl.currentMission);
+	    	alert("Mission has been set");
+	    }else {
+	    	alert("Please select a mission before you save.");
+	    }   
+	}
 });

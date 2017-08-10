@@ -8,12 +8,12 @@ app
 }); 
 
 app.controller('LineSettingsCtrl', 
-    function($scope, $mdSidenav, $window, dashboardService, sidebarService){
+    function($scope, $mdSidenav, $window, dashboardService, sidebarService, $interval){
 
-        $scope.checkedVehicles = $scope.widget.settings.checkedVehicles;
-        checkForLPData();
-        var previousValue = $scope.data.value;
-        var previousVehicles = angular.copy($scope.checkedVehicles);
+        var colors = [ "#0AACCF", "#FF9100", "#64DD17", "#07D1EA", "#0D8DB8", "#172168", "#228B22", "#12C700", "#C6FF00" ];
+        var previousSettings;
+
+        createSettingsData();
 
         $scope.getTelemetrydata = function(){
 
@@ -27,28 +27,23 @@ app.controller('LineSettingsCtrl',
         }
 
         $scope.getValue = function(){
-            $scope.vehicleInfo = sidebarService.getVehicleInfo();
-            console.log($scope.widget.settings.checkedVehicles);
+            var vehicleInfo = sidebarService.getVehicleInfo();
 
-            for(var i=0; i<$scope.checkedVehicles.length; i++){
-                if($scope.checkedVehicles[i].value === $scope.vehicleInfo.vehicle){
-                    $scope.checkedVehicles[i].checked = true;
+            for(var i=0; i<$scope.widget.settings.contents.vehicles.length; i++){
+                if($scope.widget.settings.contents.vehicles[i].value === vehicleInfo.vehicle){
+                    $scope.widget.settings.contents.vehicles[i].checked = true;
                 }
                 else{
-                    $scope.checkedVehicles[i].checked = false;
+                    $scope.widget.settings.contents.vehicles[i].checked = false;
                 }
             }
 
-            if($scope.vehicleInfo.vehicle !== "" && $scope.vehicleInfo.id !== "") {
-                if($scope.vehicleInfo.id !== "timestamp"){
-                    $scope.data.value = $scope.vehicleInfo.id;
-                    if ($window.innerWidth >= 1400){
-                        $scope.lock.lockLeft = !$scope.lock.lockLeft;
-                        dashboardService.setLeftLock($scope.lock.lockLeft);
-                    }
-                }
-                else{
-                    alert("Please select data value other than timestamp!");
+            if(vehicleInfo.key !== "") {
+                $scope.widget.settings.contents.value = vehicleInfo.id;
+                $scope.widget.settings.data.key = vehicleInfo.key;
+                if ($window.innerWidth >= 1400){
+                    $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                    dashboardService.setLeftLock($scope.lock.lockLeft);
                 }
             } else {
                 alert("Vehicle data not set. Please select from Data Menu");
@@ -58,37 +53,34 @@ app.controller('LineSettingsCtrl',
         // Save
         $scope.saveWidget = function(widget){
             var count = 0;
-            if($scope.data.value) {
+            if(widget.settings.contents.value) {
                 if(widget.settings.data.vehicles.length != 0) {
                     widget.settings.data.vehicles = [];
                 }
 
-                if(widget.settings.checkedVehicles.length !== 0){
-                    widget.settings.checkedVehicles = [];
-                }
+                widget.settings.data.value = widget.settings.contents.value;
+                var vehicles = widget.settings.contents.vehicles;
 
-                widget.settings.data.value = $scope.data.value;
+                for(var i=0; i<vehicles.length; i++){
+                    if(vehicles[i].checked === true){
+                        //create key to access telemetry for each vehicle
+                        var key = createKey(vehicles[i].value, widget.settings.data.key);
 
-                for(var i=0; i<$scope.checkedVehicles.length; i++){
-                    if($scope.checkedVehicles[i].checked === true){
                         var vehicle = {
-                            'name' : $scope.checkedVehicles[i].value,
-                            'color' : $scope.checkedVehicles[i].color,
-                            'data' : []
+                            'name' : vehicles[i].value,
+                            'color' : vehicles[i].color,
+                            'data' : [],
+                            'key' : key
                         }
                         widget.settings.data.vehicles.push(vehicle);
-                        widget.settings.checkedVehicles.push({"key":i+1,"value":$scope.checkedVehicles[i].value,"checked":true,"color":$scope.checkedVehicles[i].color});
                         count++;
-                    }else {
-                        widget.settings.checkedVehicles.push({"key":i+1,"value":$scope.checkedVehicles[i].value,"checked":false,"color":$scope.checkedVehicles[i].color})
                     }
                 }
 
                 if(count != 0){
                     widget.main = true;
                     widget.settings.active = false;
-                    previousVehicles = angular.copy($scope.checkedVehicles);
-                    previousValue = $scope.data.value;
+                    previousSettings = angular.copy(widget.settings.contents);
                 } else {
                     alert("Please select atleast one vehicle and save!");
                 }
@@ -99,44 +91,60 @@ app.controller('LineSettingsCtrl',
         $scope.closeWidget = function(widget){
             widget.main = true;
             widget.settings.active = false;
-            $scope.data.value = previousValue;
-            $scope.checkedVehicles = previousVehicles;
+            $scope.widget.settings.contents = angular.copy(previousSettings);
         }
 
-        function checkForLPData(){
-       
-            if(!$scope.widget.settings.data){
-                $scope.widget.settings.data = {
-                    value : "",
-                    vehicles : []
-                };
+        function createSettingsData(){
+            var interval = $interval(function(){
+                var currentMission = dashboardService.getCurrentMission();
+                if(currentMission.missionName != ""){
+                    if($scope.widget.settings.contents.vehicles.length == 0){
+                        dashboardService.getConfig(currentMission.missionName)
+                        .then(function(response) {
+                            if(response.data) {
+                                var data = dashboardService.sortObject(response.data);
+                                var count = 0;
+                                for(var key in data) {
+                                    if(data.hasOwnProperty(key)) {
+                                        count = count+1;
+                                        $scope.widget.settings.contents.vehicles.push(
+                                        {
+                                            'key': count,
+                                            'value': key,
+                                            'checked': false,
+                                            'color' : colors[count-1]    
+                                        }); 
+                                    }
+                                }
+                                previousSettings = angular.copy($scope.widget.settings.contents);
+                            } 
+                        });
 
-                $scope.data = {
-                    value : ""
-                };  
-
-            }else {
-                $scope.data = {
-                    value : $scope.widget.settings.data.value
-                }; 
-
-                if($scope.widget.settings.data.vehicles.length != 0) {
-                    $scope.widget.settings.data.vehicles = [];
-                }
-
-                for(var i=0; i<$scope.checkedVehicles.length; i++){
-                    if($scope.checkedVehicles[i].checked === true){
-                        var vehicle = {
-                            'name' : $scope.checkedVehicles[i].value,
-                            'color' : $scope.checkedVehicles[i].color,
-                            'data' : []
+                        $scope.widget.settings.data = {
+                            value : "",
+                            vehicles : [],
+                            key : ""
+                        };
+                    } else {
+                        for(var i=0; i<$scope.widget.settings.data.vehicles.length; i++){
+                            $scope.widget.settings.data.vehicles[i].data = [];
                         }
-                        $scope.widget.settings.data.vehicles.push(vehicle);
+                        previousSettings = angular.copy($scope.widget.settings.contents);
                     }
+                    $interval.cancel(interval);
                 }
-            }
+            }, 1000 );
         }
 
-        
+        function createKey(vehicle, key){
+            var nodes = key.split('.');
+            if(vehicle === nodes[0]){
+                return key;
+            } else {
+                var partKey = nodes.slice(1);
+                var newKey = vehicle + "." + partKey.join(".");
+                return newKey;
+            }
+        }      
     }
 );

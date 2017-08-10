@@ -3,7 +3,13 @@ app
     return {
         restrict: 'E',
         templateUrl:'./directives/satellite/satellitesettings.html',
-        controller: function($scope){
+        controller: function($scope, dashboardService, $interval){
+
+        	$scope.vehicles = [];
+			$scope.isLoaded = false;
+
+        	createVehicles();
+			checkForSatelliteModel();
 
 			$scope.closeSettings = function(widget){
 				widget.main = true;
@@ -13,14 +19,14 @@ app
 			}
 
 			$scope.saveSettings = function(widget){
-				widget.main = true;
-				widget.settings.active = false;
-				widget.saveLoad = false;
-				widget.delete = false;
-				widget.settings.vehicle = $scope.selected.vehicle.value;
+				if($scope.selected.vehicle){
+					widget.main = true;
+					widget.settings.active = false;
+					widget.saveLoad = false;
+					widget.delete = false;
+					widget.settings.vehicle = $scope.selected.vehicle.value;
+				}
 			}
-
-			checkForSatelliteModel();
 
 			function checkForSatelliteModel(){
 				if(!$scope.widget.settings.vehicle){
@@ -35,21 +41,27 @@ app
 				}
 			}
 
-			$scope.isLoaded = false;
-
-			$scope.vehicles = [
-			{
-        		'key': 1,
-		        'value': 'Audacy1'
-		    }, 
-		    {
-		        'key': 2,
-		        'value': 'Audacy2'
-		    }, 
-		    {
-		        'key': 3,
-		        'value': 'Audacy3'
-		    }];
+			function createVehicles(){
+				var interval = $interval(function(){
+	                var currentMission = dashboardService.getCurrentMission();
+	                if(currentMission.missionName != ""){
+						dashboardService.getConfig(currentMission.missionName)
+				        .then(function(response) {
+				            if(response.data) {
+				                var data = dashboardService.sortObject(response.data);
+				                var count = 0;
+				                for(var key in data) {
+				                    if(data.hasOwnProperty(key)) {
+				                    	count = count+1;
+				                        $scope.vehicles.push({'key': count, 'value': key})
+				                    }
+				                }
+				            } 
+				        });
+				        $interval.cancel(interval);
+				    }
+				}, 1000);
+			}
     	}
     }
 });

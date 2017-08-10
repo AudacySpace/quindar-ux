@@ -76,14 +76,22 @@ var configRole = require('./config/role');
     //Load Layout from User collection of Quindar database
     app.get('/loadLayout', function(req,res){
         var email = req.query.email;
+        var missionname = req.query.missionname;
 
         //Load the layout from the User collection
         User.findOne({ 'google.email' : email }, function(err, user) {
             if(err){
                 console.log(err);
             }
-
-            res.send(user.grid);
+            var missionLayouts = [];
+            for(var i=0;i<user.grid.length;i++){
+                if(user.grid[i].mission){
+                    if(user.grid[i].mission.missionName === missionname){
+                        missionLayouts.push(user.grid[i]);
+                    }
+                }
+            }
+            res.send(missionLayouts);
         });
     });
   
@@ -124,22 +132,18 @@ var configRole = require('./config/role');
 
     });
 
-    //Get telemetry data for the array of vehicles passed as a parameter
+    //Get telemetry data for the mission passed as a parameter
     app.get('/getTelemetry', function(req, res){
-        var vehicles = req.query.vehicles;
-        var telemetry = {};
+        var mission = req.query.mission;
 
-        if(vehicles) {
-            Telemetry.find( 
-                {'vehicleId.value' : { $in: vehicles} }, 
+        if(mission) {
+            Telemetry.findOne( 
+                {'mission' : mission }, 
                 {}, 
-                { sort: { '_id' : -1 }, limit : vehicles.length },
-                function(err, result) {
+                { sort: { 'timestamp' : -1 }},
+                function(err, telemetry) {
                     if(err) throw err;
 
-                    for(var i=0; i<result.length; i++) {
-                        telemetry[result[i].vehicleId.value] = result[i];
-                    }
                     res.send(telemetry);
                 }
             );
@@ -148,37 +152,24 @@ var configRole = require('./config/role');
 
     //Get Configuration contents for the source name passed as a parameter
     app.get('/getConfig', function(req, res){
-        var source = req.query.source;
-        var contents;
-        var flags = [];
-        var configuration = [];
+        var mission = req.query.mission;
 
-        Config.findOne({ 'source.name' : source }, { '_id': 0 }, function(err, config) {
+        Config.findOne({ 'mission' : mission }, { '_id': 0 }, function(err, config) {
             if(err){
                 console.log(err);
             }
 
-            for (var item in config.contents){   
-                if(config.contents[item].category != "ground station" && 
-                    config.contents[item].category != "vehicle") {
-
-                    var category = config.contents[item].category;
-
-                    if( flags[category]) {
-                        for(var j=0; j<configuration.length; j++){
-                            if(configuration[j].category == category){
-                                configuration[j].values.push(item);
-                            }
-                        }
-                    } else {
-                        contents = {category:"", values:[]};
-                        contents.category = category;
-                        contents.values.push(item);
-                        flags[category] = true;
-                        configuration.push(contents);
-                    }
-                }
+            //splice keys to include tree from platform level
+            for (var point in config.contents) {
+                var nodes = point.split("_").slice(2);
+                var newPoint = nodes.join("_");
+                config.contents[newPoint] = config.contents[point];
+                delete config.contents[point];
             }
+
+            //create a hierarchial structure to support data menu on UI
+            var configuration = convert(config.contents)
+
             res.send(configuration);
         });
     });
@@ -296,7 +287,14 @@ var configRole = require('./config/role');
             res.send(user.allowedRoles);
         });
     });
-   
+
+    //Get all existing Missions
+    app.get('/getMissions', function(req, res){
+        Config.find({},{"mission":1,"_id": false},function(err,missions){
+            if(err) throw err;
+            res.send(missions);
+        });
+    });
 };
    
 // route middleware to ensure user is logged in
@@ -306,4 +304,27 @@ function isLoggedIn(req, res, next) {
         return next();
 
     res.redirect('/');
+}
+
+//Function to convert flat structure object to hierarchial structure
+function convert(obj) {
+    var result = {};
+    eachKeyValue(obj, function(namespace, value) {
+        var parts = namespace.split("_");
+        var last = parts.pop();
+        var node = result;
+        parts.forEach(function(key) {
+            node = node[key] = node[key] || {};
+        });
+        node[last] = '';
+    });
+    return result;
+}
+
+function eachKeyValue(obj, fun) {
+    for (var i in obj) {
+        if (obj.hasOwnProperty(i)) {
+            fun(i, obj[i]);
+        }
+    }
 }
