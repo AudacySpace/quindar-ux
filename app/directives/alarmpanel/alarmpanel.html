@@ -1,14 +1,14 @@
  <div id="alarmpanel">
     <div layout="row">
-        <div flex="malarm.flexprop" ng-repeat="malarm in widget.settings.contents">
+        <div flex="malarm.flexprop" ng-repeat="masteralarm in widget.settings.contents">
             <!-- ngrepeat for Master alarm vehicles -->
             <div class="masteralarm">
-                <button href="#accessibility" role="button" tabindex="1" class="button alarm-vehicle" >{{malarm.vehicle}}
+                <button href="#accessibility" role="button" tabindex="1" class="button alarm-vehicle" ng-style="masteralarm.vehicleColor" ng-class="class[$index]" ng-click="addtablerow(masteralarm.vehicle,$index);" ng-disabled="checked[$index]">{{masteralarm.vehicle}}
                 </button>
             </div>
             <!-- ngrepeat for sub systems for each vehicle -->
-            <div flex="malarm.flexprop" ng-repeat="system in malarm.categories">
-                <button href="#accessibility" role="button" tabindex="1" class="button alarm-subsys" style="">{{system}}
+            <div flex="masteralarm.flexprop" ng-repeat="system in masteralarm.categories">
+                <button href="#accessibility" role="button" tabindex="1" class="button alarm-subsys" ng-style = "masteralarm.categoryColors[$index]" >{{system}}
                 </button>
             </div>
         </div>
