@@ -32,8 +32,7 @@
     border-radius:0px;
     width:100px;
     height:100px;
-    background:#12c700;
-    color:#ffffff;
+    color:#DCDCDC;
     padding-left:0px;
     padding-right:0px;
     text-align:center;
@@ -44,11 +43,65 @@
     height:50px;
     margin-top:10px;
     margin-bottom:10px;
-    background:#12c700;
-    color:#ffffff;
+    color:#DCDCDC;
     padding-left:0px;
     padding-right:0px;
     text-align:center;
+}
+
+@-moz-keyframes glowing {
+  0% { background-color: #B20000; -moz-box-shadow: 0 0 3px #B20000; }
+  50% { background-color: #FF0000; -moz-box-shadow: 0 0 40px #FF0000; }
+  100% { background-color: #B20000; -moz-box-shadow: 0 0 3px #B20000; }
+}
+
+@-o-keyframes glowing {
+  0% { background-color: #B20000; box-shadow: 0 0 3px #B20000; }
+  50% { background-color: #FF0000; box-shadow: 0 0 40px #FF0000; }
+  100% { background-color: #B20000; box-shadow: 0 0 3px #B20000; }
+}
+
+@keyframes glowing {
+  0% { background-color: #B20000; box-shadow: 0 0 3px #B20000; }
+  50% { background-color: #FF0000; box-shadow: 0 0 40px #FF0000; }
+  100% { background-color: #B20000; box-shadow: 0 0 3px #B20000; }
+}
+
+@-moz-keyframes glowingyellow {
+  0% { background-color: #FFD700; box-shadow: 0 0 3px #FFD700; }
+  50% { background-color: #FFFF00; box-shadow: 0 0 40px #FFFF00; }
+  100% { background-color: #FFD700; box-shadow: 0 0 3px #FFD700; }
+}
+
+@-o-keyframes glowingyellow {
+  0% { background-color: #FFD700; box-shadow: 0 0 3px #FFD700; }
+  50% { background-color: #FFFF00; box-shadow: 0 0 40px #FFFF00;}
+  100% { background-color: #FFD700; box-shadow: 0 0 3px #FFD700; }
+}
+
+@keyframes glowingyellow {
+  0% { background-color: #FFD700; box-shadow: 0 0 3px #FFD700; }
+  50% { background-color: #FFFF00; box-shadow: 0 0 40px #FFFF00; }
+  100% { background-color: #FFD700; box-shadow: 0 0 3px #FFD700; }
+}
+
+.buttonred {
+  -webkit-animation: glowing 1000ms infinite;
+  -moz-animation: glowing 1000ms infinite;
+  -o-animation: glowing 1000ms infinite;
+  animation: glowing 1000ms infinite;
+}
+
+.buttonyellow {
+  -webkit-animation: glowingyellow 1000ms infinite;
+  -moz-animation: glowingyellow 1000ms infinite;
+  -o-animation: glowingyellow 1000ms infinite;
+  animation: glowingyellow 1000ms infinite;
+}
+
+
+.buttonNone {
+
 }
 
 @media only screen and (max-width: 599px) {
@@ -64,7 +117,7 @@
 }
 
 @media only screen and (min-width: 600px) and (max-width: 768px) {
-    #datalogtable {
+    #alarmpanel {
         max-height: 250px;
     }
     .tablet-alarm{
