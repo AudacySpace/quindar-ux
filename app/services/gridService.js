@@ -146,30 +146,29 @@ app
         saveLoad: false,
         delete: false
      },
-     // {
-     //    sizeY: 3,
-     //    sizeX: 4,
-     //    name: "Alarm Panel",
-     //    directive: "alarmpanel",
-     //    directiveSettings: "alarmpanelsettings",
-     //    id: "alarmpanel",
-     //    icon: {
-     //        id: "alarm",
-     //        type: "fa-tachometer"
-     //    },
-     //    main: true,
-     //    settings: {
-     //        active: false,
-     //        contents : [],
-     //        colors : [],
-     //        statusboard :{
-     //            status:true
-     //        }
-     //    },
-     //    saveLoad: false,
-     //    delete: false
-     // }
-     ];
+     {
+        sizeY: 3,
+        sizeX: 4,
+        name: "Alarm Panel",
+        directive: "alarmpanel",
+        directiveSettings: "alarmpanelsettings",
+        id: "alarmpanel",
+        icon: {
+            id: "alarm",
+            type: "fa-tachometer"
+        },
+        main: true,
+        settings: {
+            active: false,
+            contents : [],
+            colors : [],
+            statusboard :{
+                status:false
+            }
+        },
+        saveLoad: false,
+        delete: false
+     }];
 
     function checkDefaultDashboard(){
 
