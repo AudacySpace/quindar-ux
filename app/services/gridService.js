@@ -29,9 +29,10 @@ app
         main: true,
 		settings: {
             active: false,
-            contents : {
+            data : {
                 vehicles : [],
-                value : ""
+                value : "", 
+                key: ""
             }
         },
 		saveLoad: false,
@@ -62,7 +63,8 @@ app
                 checkedAhigh: true,
                 checkedUnits: true,
                 checkedNotes: true
-            }
+            },
+            data : []
         },
 		saveLoad: false,
 		delete: false
@@ -101,8 +103,6 @@ app
             active: false,
             contents : [],
             vehName : [],
-            scHolder : {},
-            scStates : {},
             dataHolder : [],
             orbitHolder :[],
             iconHolder :[]
@@ -196,9 +196,10 @@ app
                         main: true,
                         settings: {
                             active: false,
-                            contents : {
+                            data : {
                                 vehicles : [],
-                                value : ""
+                                value : "",
+                                key : ""
                             }
                         },
                         saveLoad: false,

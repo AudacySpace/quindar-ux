@@ -25,10 +25,18 @@ app.controller('ClockCtrl', function($scope, dashboardService, datastatesService
     checkForClockData();
 
     function checkForClockData(){
-    	if( !$scope.widget.settings.clocks){
-
+    	if(!$scope.widget.settings.clocks){
 			$scope.widget.settings.clocks = [{
 				name : 'UTC',
+				timezone : 0,
+			}];
+		}
+
+		// initialize clocks
+		$scope.clocks = new Array();
+		for (var i=0; i<$scope.widget.settings.clocks.length; i++) { 
+			$scope.clocks[i] = {
+				name : $scope.widget.settings.clocks[i].name,
 				delta : '',
 				time : {
 					days : '000',
@@ -36,68 +44,73 @@ app.controller('ClockCtrl', function($scope, dashboardService, datastatesService
 					hours : '00',
 					seconds : '00'
 				},
-				timezone : 0,
 				style : colorDefault
-			}];
+			}
 		}
 	}
 
-	updateClock();
-
 	function updateClock(){
-
 		for (var i=0; i<$scope.widget.settings.clocks.length; i++){
+			
+			if(typeof $scope.clocks[i] !== "object"){
+				$scope.clocks[i] = new Object();
+			}
+
 			//Block to get time for Clock as per timezone
 			if($scope.widget.settings.clocks[i].hasOwnProperty('timezone')) {
-				$scope.widget.settings.clocks[i].time = dashboardService.getTime($scope.widget.settings.clocks[i].timezone);
+				$scope.clocks[i].name = $scope.widget.settings.clocks[i].name;
+				$scope.clocks[i].time = dashboardService.getTime($scope.widget.settings.clocks[i].timezone);
+				$scope.clocks[i].delta = "";
 
 				// healthy if all the status icons are green, else stale 
 				if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green"){
-					$scope.widget.settings.clocks[i].style = colorHealthy;
+					$scope.clocks[i].style = colorHealthy;
 				} 
 				else{
-					$scope.widget.settings.clocks[i].style = colorStale;
+					$scope.clocks[i].style = colorStale;
 				}
 
 			} else { //Block for timer
 				tempTime = dashboardService.countdown($scope.widget.settings.clocks[i].reference);
-				$scope.widget.settings.clocks[i].time = tempTime
-				$scope.widget.settings.clocks[i].delta = tempTime.sign;
+				$scope.clocks[i].name = $scope.widget.settings.clocks[i].name;
+				$scope.clocks[i].time = dashboardService.countdown($scope.widget.settings.clocks[i].reference);
+				$scope.clocks[i].delta = tempTime.sign;
 
 				if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green"){
 					if(tempTime.sign == "-"){
 						if(tempTime.days == '000' && tempTime.hours == '00') {
 							if(tempTime.minutes <= '59' && tempTime.minutes > '10') {
 								//timer color when it is between 10 and 59 minutes
-								$scope.widget.settings.clocks[i].style = colorCaution; 
+								$scope.clocks[i].style = colorCaution; 
 							}
 							if(tempTime.minutes <= '10') {
 								//timer color when it is below 10 minutes
-								$scope.widget.settings.clocks[i].style = colorAlarm;
+								$scope.clocks[i].style = colorAlarm;
 							}
 						} else {
-							$scope.widget.settings.clocks[i].style = colorHealthy;
+							$scope.clocks[i].style = colorHealthy;
 						}
 					} else {
-						$scope.widget.settings.clocks[i].style = colorHealthy;
+						$scope.clocks[i].style = colorHealthy;
 					}
 				}else {
-					$scope.widget.settings.clocks[i].style = colorStale;
+					$scope.clocks[i].style = colorStale;
 				}
 
 			}
 
 			//show disconnected when database connection fails
 			if(dServiceObj.dIcon === "red"){
-				$scope.widget.settings.clocks[i].style = colorDisconnected;
+				$scope.clocks[i].style = colorDisconnected;
 			}			
 		}
 	}
 
 	$scope.interval = $interval(updateClock, 500);
 
-	$scope.remove = function(clock) {
-		$scope.widget.settings.clocks.splice($scope.widget.settings.clocks.indexOf(clock), 1);
+	$scope.remove = function($index) {
+		$scope.widget.settings.clocks.splice($index, 1);
+		$scope.clocks.splice($index, 1);
 	}
 
 	$scope.$on("$destroy", 

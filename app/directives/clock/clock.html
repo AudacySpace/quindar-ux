@@ -29,7 +29,7 @@
     <div flex class="md-title" id="center-header">
     </div>
 </div>
-<div layout="row" id="clock-row" ng-repeat="clock in widget.settings.clocks">
+<div layout="row" id="clock-row" ng-repeat="clock in clocks">
   	<div flex="30" class="md-title" id="left-row">
     	{{clock.name}}
   	</div>
@@ -58,7 +58,7 @@
   		{{clock.time.seconds}}
   	</div>
     <div flex class="md-title" id="center-row">
-        <md-icon class="md-icon trash" md-svg-icon="/icons/trash_black.svg" ng-click="remove(clock)"></md-icon>
+        <md-icon class="md-icon trash" md-svg-icon="/icons/trash_black.svg" ng-click="remove($index)"></md-icon>
     </div>
 </div>
 

@@ -1,5 +1,5 @@
 <div id="container">
-	<model model-url="modelUrl" widget="widget"></model>
+	<model model-url="modelUrl" widget="widget" quaternion="quaternion"></model>
 	<div id="vehicle" ng-show="widget.settings.vehicle">
 		<div id="canvas-box">
 			<ul id="box">
@@ -10,16 +10,16 @@
 					<b>Vehicle </b> {{ widget.settings.vehicle }}
 				</li>
 				<li>
-					<b>q1 </b><span ng-style="widget.settings.colorq1">{{ widget.settings.quaternion.q1 }}</span>
+					<b>q1 </b><span ng-style="quaternion.colorq1">{{ quaternion.q1 }}</span>
 				</li>
 				<li>
-					<b>q2 </b><span ng-style="widget.settings.colorq2">{{ widget.settings.quaternion.q2 }}</span>
+					<b>q2 </b><span ng-style="quaternion.colorq2">{{ quaternion.q2 }}</span>
 				</li>
 				<li>
-					<b>q3 </b><span ng-style="widget.settings.colorq3">{{ widget.settings.quaternion.q3 }}</span>
+					<b>q3 </b><span ng-style="quaternion.colorq3">{{ quaternion.q3 }}</span>
 				</li>
 				<li>
-					<b>qc </b><span ng-style="widget.settings.colorqc">{{ widget.settings.quaternion.qc }}</span>
+					<b>qc </b><span ng-style="quaternion.colorqc">{{ quaternion.qc }}</span>
 				</li>
 			</ul>
 		</div>

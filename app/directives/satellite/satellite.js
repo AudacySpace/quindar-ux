@@ -10,6 +10,8 @@ app
             $scope.step = 0.01;
             $scope.min = 0.2;
             $scope.max = 1.8;
+            $scope.quaternion = new Object();
+            $scope.colors = new Object();
 
             // $scope.changeModel = function() {
             //     if ($scope.modelUrl == "../directives/satellite/models/jeep1.ms3d.json") {

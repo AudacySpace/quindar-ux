@@ -14,7 +14,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="row in widget.settings.table.rows" class="animate-repeat" ng-style="row.colorin">
+        <tr ng-repeat="row in table.rows" class="animate-repeat" ng-style="row.colorin">
             <td class="categoryID-arrow" style="padding:2px 4px;text-align: center">
                 <div class="btn-group selectmenu">
                    <a href="#" style="width:100%" class="btn btn-default arrowbtn" data-toggle="dropdown"><span class="glyphicon glyphicon-menu-right side-arrow" id="side-arrow" style="font-weight:bolder"></span>
@@ -22,7 +22,7 @@
                     </a>
                     <ul class="dropdown-menu drpmenu" role="menu" id="drpmenu">
                         <li class="uldrpmenu"><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || getTelemetrydata($event)">Select Telemetry Id</a></li>
-                        <li><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || getValue($event,row)">Apply Telemetry Id</a></li>
+                        <li><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || getValue($event,row,$index)">Apply Telemetry Id</a></li>
                         <li class="divider liner"></li>
                         <li><a href="#" class="row-above" ng-click="addRowAbove($index)">Add Row Above</a></li>
                         <li><a href="#" class="row-below" ng-click="addRowBelow($index)">Add Row Below</a></li>
@@ -34,7 +34,7 @@
                 </div>
             </td>
             <td ng-repeat="cell in row.contents" class="rowcell" ng-style="cell.style"
-           colspan="{{cell.colspan}}" ng-show="{{cell.colshow}}"><span ng-style="cell.datacolor">{{cell.datavalue}}</span><input ng-show="{{cell.active}}" class="rowinput {{cell.class}}" type="text" value="{{cell.headervalue}}" ng-model="cell.headervalue" placeholder="{{cell.placeholder}}" aria-label="Readonly field" />
+           colspan="{{cell.colspan}}" ng-show="{{cell.colshow}}"><span ng-style="cell.datacolor">{{cell.datavalue}}</span><input ng-show="{{cell.active}}" class="rowinput {{cell.class}}" type="text" value="{{cell.headervalue.data}}" ng-model="cell.headervalue.data" placeholder="{{cell.placeholder}}" aria-label="Readonly field" />
             </td>
         </tr>
     </tbody>

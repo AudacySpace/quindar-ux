@@ -4,7 +4,8 @@ app
     	restrict: 'E',
 		scope: {
 			modelUrl: "=modelUrl",
-			widget: "=widget"
+			widget: "=widget",
+			quaternion: "=quaternion"
 		},
 		controller: 'SatelliteCtrl'
   	}; 
@@ -40,7 +41,7 @@ app
         	dServiceObj = newVal; 
     },true);
 
-	$scope.widget.settings.quaternion = new Object();
+	//$scope.quaternion = new Object();
 
 	var createRenderer = function(){
     	var renderer =  new THREE.WebGLRenderer();
@@ -163,10 +164,10 @@ app
 				$scope.cube.quaternion.w = telemetry[$scope.widget.settings.vehicle].GNC.attitude.qc.value;
 
 				//set quaternion values for displaying on widget
-				$scope.widget.settings.quaternion.q1 = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q1.value.toFixed(4);
-				$scope.widget.settings.quaternion.q2 = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q2.value.toFixed(4);
-				$scope.widget.settings.quaternion.q3 = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q3.value.toFixed(4);
-				$scope.widget.settings.quaternion.qc = telemetry[$scope.widget.settings.vehicle].GNC.attitude.qc.value.toFixed(4);
+				$scope.quaternion.q1 = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q1.value.toFixed(4);
+				$scope.quaternion.q2 = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q2.value.toFixed(4);
+				$scope.quaternion.q3 = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q3.value.toFixed(4);
+				$scope.quaternion.qc = telemetry[$scope.widget.settings.vehicle].GNC.attitude.qc.value.toFixed(4);
 				
 				//set direction to Earth
 				var posX = telemetry[$scope.widget.settings.vehicle].GNC.position.x.value;
@@ -196,10 +197,10 @@ app
 				$scope.arrowSun.setDirection(dirSun);
 			} else {
 				//set quaternion values to N/A if telemetry data not available
-				$scope.widget.settings.quaternion.q1 = "N/A";
-				$scope.widget.settings.quaternion.q2 = "N/A";
-				$scope.widget.settings.quaternion.q3 = "N/A";
-				$scope.widget.settings.quaternion.qc = "N/A";
+				$scope.quaternion.q1 = "N/A";
+				$scope.quaternion.q2 = "N/A";
+				$scope.quaternion.q3 = "N/A";
+				$scope.quaternion.qc = "N/A";
 			}
 	 	}
 	
@@ -226,18 +227,18 @@ app
 			//color of q1 
 			if(q1tempval === q1.value){
 				if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green" ){
-					$scope.widget.settings.colorq1 = colorHealthy;
+					$scope.quaternion.colorq1 = colorHealthy;
 				}else {
-					$scope.widget.settings.colorq1 = colorStale;
+					$scope.quaternion.colorq1 = colorStale;
 				}	
 			}else{
 				var colorValq1 =  datastatesService.getDataColor(q1.alarm_low,q1.alarm_high,q1.value,q1.warn_low,q1.warn_high,valTypeq1); 
 				if(colorValq1 === "red"){
-                    $scope.widget.settings.colorq1 = colorAlarm;  
+                    $scope.quaternion.colorq1 = colorAlarm;  
                 }else if(colorValq1 === "orange"){
-                    $scope.widget.settings.colorq1 = colorCaution;
+                    $scope.quaternion.colorq1 = colorCaution;
                 }else{
-                    $scope.widget.settings.colorq1 = colorHealthy;
+                    $scope.quaternion.colorq1 = colorHealthy;
                 }
 				q1tempval = q1.value;
 			}
@@ -245,18 +246,18 @@ app
 			//color of q2
 			if(q2tempval === q2.value){
 				if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green" ){
-					$scope.widget.settings.colorq2 = colorHealthy;
+					$scope.quaternion.colorq2 = colorHealthy;
 				}else {
-					$scope.widget.settings.colorq2 = colorStale;
+					$scope.quaternion.colorq2 = colorStale;
 				}	
 			}else{
 				var colorValq2 =  datastatesService.getDataColor(q2.alarm_low,q2.alarm_high,q2.value,q2.warn_low,q2.warn_high,valTypeq2);
 				if(colorValq2 === "red"){
-                    $scope.widget.settings.colorq2 = colorAlarm;  
+                    $scope.quaternion.colorq2 = colorAlarm;  
                 }else if(colorValq2 === "orange"){
-                    $scope.widget.settings.colorq2 = colorCaution;
+                    $scope.quaternion.colorq2 = colorCaution;
                 }else{
-                    $scope.widget.settings.colorq2 = colorHealthy;
+                    $scope.quaternion.colorq2 = colorHealthy;
                 }
 				q2tempval = q2.value;
 			}
@@ -264,18 +265,18 @@ app
 			//color of q3
 			if(q3tempval === q3.value){
 				if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green" ){
-					$scope.widget.settings.colorq3 = colorHealthy;
+					$scope.quaternion.colorq3 = colorHealthy;
 				}else {
-					$scope.widget.settings.colorq3 = colorStale;
+					$scope.quaternion.colorq3 = colorStale;
 				}
 			}else{
 				var colorValq3 =  datastatesService.getDataColor(q3.alarm_low,q3.alarm_high,q3.value,q3.warn_low,q3.warn_high,valTypeq3);
 				if(colorValq3 === "red"){
-                    $scope.widget.settings.colorq3 = colorAlarm;  
+                    $scope.quaternion.colorq3 = colorAlarm;  
                 }else if(colorValq3 === "orange"){
-                    $scope.widget.settings.colorq3 = colorCaution;
+                    $scope.quaternion.colorq3 = colorCaution;
                 }else{
-                    $scope.widget.settings.colorq3 = colorHealthy;
+                    $scope.quaternion.colorq3 = colorHealthy;
                 }
 				q3tempval = q3.value;
 			}
@@ -283,38 +284,38 @@ app
 			//color of qc
 			if(qctempval === qc.value){
 				if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green" ){
-					$scope.widget.settings.colorqc = colorHealthy;
+					$scope.quaternion.colorqc = colorHealthy;
 				}else {
-					$scope.widget.settings.colorqc = colorStale;
+					$scope.quaternion.colorqc = colorStale;
 				}
 			}else{
 				var colorValqc =  datastatesService.getDataColor(qc.alarm_low,qc.alarm_high,qc.value,qc.warn_low,qc.warn_high,valTypeqc);		
 				if(colorValqc === "red"){
-                    $scope.widget.settings.colorqc = colorAlarm;  
+                    $scope.quaternion.colorqc = colorAlarm;  
                 }else if(colorValqc === "orange"){
-                    $scope.widget.settings.colorqc = colorCaution;
+                    $scope.quaternion.colorqc = colorCaution;
                 }else{
-                    $scope.widget.settings.colorqc = colorHealthy;
+                    $scope.quaternion.colorqc = colorHealthy;
                 }
 				qctempval = qc.value;
 			}
 
 			if(dServiceObj.dIcon === "red"){
-				$scope.widget.settings.colorq1 = colorDisconnected;
-				$scope.widget.settings.quaternion.q1 = '-';
-				$scope.widget.settings.colorq2 = colorDisconnected;
-				$scope.widget.settings.quaternion.q2 = '-';
-				$scope.widget.settings.colorq3 = colorDisconnected;
-				$scope.widget.settings.quaternion.q3 = '-';
-				$scope.widget.settings.colorqc = colorDisconnected;
-				$scope.widget.settings.quaternion.qc = '-';	
+				$scope.quaternion.colorq1 = colorDisconnected;
+				$scope.quaternion.q1 = '-';
+				$scope.quaternion.colorq2 = colorDisconnected;
+				$scope.quaternion.q2 = '-';
+				$scope.quaternion.colorq3 = colorDisconnected;
+				$scope.quaternion.q3 = '-';
+				$scope.quaternion.colorqc = colorDisconnected;
+				$scope.quaternion.qc = '-';	
 			}
 		} else {
 			//set to default color if telemetry data not available for that vehicle
-			$scope.widget.settings.colorq1 = colorDefault;
-			$scope.widget.settings.colorq2 = colorDefault;
-			$scope.widget.settings.colorq3 = colorDefault;
-			$scope.widget.settings.colorqc = colorDefault;
+			$scope.quaternion.colorq1 = colorDefault;
+			$scope.quaternion.colorq2 = colorDefault;
+			$scope.quaternion.colorq3 = colorDefault;
+			$scope.quaternion.colorqc = colorDefault;
 		}
 	}
 

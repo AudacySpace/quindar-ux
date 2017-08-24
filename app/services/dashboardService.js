@@ -163,30 +163,37 @@ app
         }else {
             targettimestamp = target;
         }
-        var sign = '';
-        var today = new Date(time);
-        var currentDate = new Date(today.getTime() + (today.getTimezoneOffset() * 60000));
-        var signedDiff = targettimestamp - currentDate;
+        var days = "000",
+            hours = "00",
+            minutes = "00",
+            seconds = "00",
+            sign = '';
 
-        //remove sign to calculate individual numbers
-        var difference = Math.abs(signedDiff);
-        // Time calculations for days, hours, minutes and seconds
-        var days = Math.floor(difference / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((difference % (1000 * 60)) / 1000);
+        if(time != "") {
+            var today = new Date(time);
+            var currentDate = new Date(today.getTime() + (today.getTimezoneOffset() * 60000));
+            var signedDiff = targettimestamp - currentDate;
 
-        // define sign
-        if (signedDiff < 0) {
-            sign = '+';
-        } else {
-            sign = '-';   
+            //remove sign to calculate individual numbers
+            var difference = Math.abs(signedDiff);
+            // Time calculations for days, hours, minutes and seconds
+            var days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            // define sign
+            if (signedDiff < 0) {
+                sign = '+';
+            } else {
+                sign = '-';   
+            }
+
+            days = checkDays(days);
+            hours = checkTime(hours);
+            minutes = checkTime(minutes);
+            seconds = checkTime(seconds);
         }
-
-        days = checkDays(days);
-        hours = checkTime(hours);
-        minutes = checkTime(minutes);
-        seconds = checkTime(seconds);
 
         return {
             "days" : days,

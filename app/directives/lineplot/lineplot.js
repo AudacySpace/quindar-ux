@@ -10,7 +10,8 @@ app
 app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardService, $interval) {
 	var telemetry = dashboardService.telemetry;
 	var parseTime = d3Service.timeParse("%Y-%m-%dT%H:%M:%S.%LZ");
-			
+	$scope.plotData = {};
+	var prevSettings;
 	var delay = 1000;	// [milisecond]
 	var limit = 100;	// Number of points in a plot
 	var margin = {top: 10, right: 30, bottom: 30, left: 30};
@@ -83,6 +84,18 @@ app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardS
 				var legendSpace = transWidth/$scope.widget.settings.data.vehicles.length;
 				var vehicles = $scope.widget.settings.data.vehicles;
 
+				//reset plotData when there is a change in settings
+				if (JSON.stringify(prevSettings) !== JSON.stringify($scope.widget.settings.data)){
+					for(v in vehicles){
+						var vehicle = vehicles[v];
+						if(!$scope.plotData[vehicle.name]){
+							$scope.plotData[vehicle.name] = new Array();
+						} else {
+							$scope.plotData[vehicle.name] = [];
+						}
+					}
+				} 
+
 				g.selectAll("path.lineplot").remove();
 				g.selectAll("circle.circle").remove();
 				g.selectAll(".legend").remove();
@@ -99,10 +112,10 @@ app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardS
 							var xTemp = currentData.value;
 							var category = currentData.category;
 							var yUnits = currentData.units;
-							vehicle.data.push({x:tTemp, y:xTemp});
+							$scope.plotData[vehicle.name].push({x:tTemp, y:xTemp});
 
-							if (vehicle.data.length > limit) {
-								vehicle.data.splice(0,1);
+							if ($scope.plotData[vehicle.name].length > limit) {
+								$scope.plotData[vehicle.name].splice(0,1);
 							};
 						}
 					}
@@ -112,12 +125,12 @@ app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardS
 				x.range([margin.left, transWidth+margin.left])
 					.domain([
 						d3.min(vehicles, function(v) {
-							return d3.min(v.data, function(d) { 
+							return d3.min($scope.plotData[v.name], function(d) { 
 								return d.x; 
 							}); 
 						}),
 						d3.max(vehicles, function(v) {
-							return d3.max(v.data, function(d) { 
+							return d3.max($scope.plotData[v.name], function(d) { 
 								return d.x; 
 							}); 
 						})				
@@ -127,12 +140,12 @@ app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardS
 				//define Y axis domain
 				y.domain([
 					d3.min(vehicles, function(v) {
-						return d3.min(v.data, function(d) { 
+						return d3.min($scope.plotData[v.name], function(d) { 
 							return Math.floor(d.y);
 						}); 
 					}),
 					d3.max(vehicles, function(v) {
-						return d3.max(v.data, function(d) { 
+						return d3.max($scope.plotData[v.name], function(d) { 
 							return Math.ceil(d.y);
 						}); 
 					})				
@@ -161,13 +174,13 @@ app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardS
 					if(telemetry[d.name] !== undefined){
 					//plot line and circles
 					g.append("path")
-						.datum(d.data)
+						.datum($scope.plotData[d.name])
 						.attr("class","lineplot")
 						.attr("stroke", d.color)
 						.attr("d", line);
 
 					g.selectAll("dot")
-						.data(d.data)
+						.data($scope.plotData[d.name])
 						.enter().append("circle").attr("class","circle")
 						.attr("r", 1)
 						.attr("cx", xMap)
@@ -204,6 +217,7 @@ app.controller('LinePlotCtrl', function ($scope, $element, d3Service, dashboardS
 						.text(d.name);
 					}
 				});
+				prevSettings = angular.copy($scope.widget.settings.data);
 			}
 		}
 	}

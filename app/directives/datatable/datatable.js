@@ -13,7 +13,6 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     //Get values of the checkboxes in settings category display
     $scope.checkedValues = $scope.widget.settings.checkedValues;
     var tableCols = []; // table column data
-    var tempRow = { vehicle : "", id : "", key : ""};
     var tempvalue = [];
     $scope.dataStatus = dashboardService.icons;
     var dServiceObjVal = {};
@@ -127,18 +126,6 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
         });      
     }
 
-
-    //Table row and column structure
-    checkForRowData();
-
-    function checkForRowData(){
-        if(!$scope.widget.settings.table){
-            $scope.widget.settings.table = { 
-                "rows" : tableCols 
-            };
-        }
-    }
-
     //Function to select telemetry Id
     $scope.getTelemetrydata = function($event){
         var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
@@ -156,14 +143,14 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     }
 
     //Function to display selected telemetry Id value and its corresponding data values.
-    $scope.getValue = function($event, row){
+    $scope.getValue = function($event, row, $index){
         var vehicleInfo = sidebarService.getVehicleInfo();
         var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
 
         if(vehicleInfo.key) {
-            row.vehicle = vehicleInfo.vehicle;
-            row.id = vehicleInfo.id;
-            row.key = vehicleInfo.key;
+            $scope.widget.settings.data[$index] = new Object();
+            $scope.widget.settings.data[$index].type = "data";
+            $scope.widget.settings.data[$index].value = vehicleInfo.key;
 
             arrow.style.color = "#b3b3b3";
             if ($window.innerWidth >= 1400){
@@ -180,8 +167,9 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
 
     //Function to add row above the current row
     $scope.addRowAbove = function($index){
-        if($scope.widget.settings.table.rows.length < 80){
-            $scope.widget.settings.table.rows.splice($index,0,{contents :[{"datavalue":"","headervalue":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false }); 
+        if($scope.table.rows.length < 80){
+            $scope.table.rows.splice($index,0,{contents :[{"datavalue":"","headervalue":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false });
+            $scope.widget.settings.data.splice($index, 0, {}); 
         }else {
             alert("You have reached the maximum limit for rows!");
         }
@@ -190,8 +178,9 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
 
     //Function to add below the current row
     $scope.addRowBelow = function($index){
-        if($scope.widget.settings.table.rows.length < 80){
-           $scope.widget.settings.table.rows.splice($index+1,0,{contents :[{"datavalue":"","headervalue":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false });  
+        if($scope.table.rows.length < 80){
+           $scope.table.rows.splice($index+1,0,{contents :[{"datavalue":"","headervalue":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false });  
+            $scope.widget.settings.data.splice($index+1, 0, {}); 
        }else {
             alert("You have reached the maximum limit for rows!");
        }
@@ -200,20 +189,22 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
 
     //Function to delete the current row.
     $scope.deleteRow = function($index){
-        if(($index === 0) && ($scope.widget.settings.table.rows.length) === 1){
+        if(($index === 0) && ($scope.table.rows.length) === 1){
             alert("Please do not delete this row!Add row above to delete this row.");
         }else {
-            $scope.widget.settings.table.rows.splice($index, 1);
+            $scope.table.rows.splice($index, 1);
+            $scope.widget.settings.data.splice($index,1);
         }
     }
 
     //Function to move row above.
     $scope.moveRowUp = function($index){
         if($index > 0){
-            $scope.widget.settings.table.rows[$index-1] = $scope.widget.settings.table.rows.splice($index, 1, $scope.widget.settings.table.rows[$index-1])[0];
-            $scope.widget.settings.table.rows[$index-1].colorin = roweffect;
+            $scope.table.rows[$index-1] = $scope.table.rows.splice($index, 1, $scope.table.rows[$index-1])[0];
+            $scope.widget.settings.data[$index-1] = $scope.widget.settings.data.splice($index, 1, $scope.widget.settings.data[$index-1])[0];
+            $scope.table.rows[$index-1].colorin = roweffect;
             $timeout(function() {
-                $scope.widget.settings.table.rows[$index-1].colorin = '';
+                $scope.table.rows[$index-1].colorin = '';
             }, 500);
         }
         else{
@@ -223,11 +214,12 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
 
     //Function to move row down.
     $scope.moveRowDown = function($index){
-        if(($index) < (($scope.widget.settings.table.rows.length)-1)){
-            $scope.widget.settings.table.rows[$index+1] = $scope.widget.settings.table.rows.splice($index, 1, $scope.widget.settings.table.rows[$index+1])[0];
-            $scope.widget.settings.table.rows[$index+1].colorin = roweffect;  
+        if(($index) < (($scope.table.rows.length)-1)){
+            $scope.table.rows[$index+1] = $scope.table.rows.splice($index, 1, $scope.table.rows[$index+1])[0];
+            $scope.widget.settings.data[$index+1] = $scope.widget.settings.data.splice($index, 1, $scope.widget.settings.data[$index+1])[0];
+            $scope.table.rows[$index+1].colorin = roweffect;  
             $timeout(function() {
-                $scope.widget.settings.table.rows[$index+1].colorin = '';
+                $scope.table.rows[$index+1].colorin = '';
             }, 500);  
         }
         else{
@@ -236,84 +228,117 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     }
 
     //Function to convert a row to a header
-    $scope.convertHeader = function($index){
-        $scope.widget.settings.table.rows[$index] = {contents:[{"datavalue":"","headervalue":"","checked":"false","style":"text-align:right;background-color:#1072A4;","colshow":"true","colspan":"9","class":"header","placeholder":"Click here to edit", "active":"true"}], disabled: true};
+    $scope.convertHeader = function($index, header){
+        if(header){
+            data = header.data
+        } else {
+            data = "";
+        }
+        $scope.table.rows[$index] = {contents:[{"datavalue":"","headervalue":{"data": data },"checked":"false","style":"text-align:right;background-color:#1072A4;","colshow":"true","colspan":"9","class":"header","placeholder":"Click here to edit", "active":"true"}], disabled: true};
+        $scope.widget.settings.data[$index] = new Object();
+        $scope.widget.settings.data[$index].type = "header";
+        $scope.widget.settings.data[$index].value = $scope.table.rows[$index].contents[0].headervalue;
     } 
 
-    $scope.interval = $interval(updateRow, 500, 0, false);   
+    $scope.interval = $interval(updateRow, 500, 0, false);
+
+    //Table row and column structure
+    checkForRowData();
+
+    function checkForRowData(){
+        $scope.table = { 
+            "rows" : tableCols 
+        };
+
+        if($scope.widget.settings.data.length != 0){
+            for (var i=0; i<$scope.widget.settings.data.length; i++){
+                if($scope.widget.settings.data[i].type == "header") {
+                    $scope.convertHeader(i, $scope.widget.settings.data[i].value);
+                }
+            }
+        }
+    } 
 
     function updateRow() {
-        for (var i=0; i<$scope.widget.settings.table.rows.length; i++){
-            tempRow = $scope.widget.settings.table.rows[i];
-            if(tempRow.key) {
-                try {
-                    var currentData = dashboardService.getData(tempRow.key);
-                    if(currentData) {
-                        var valType = typeof currentData.value;
-                        if(valType === "number"){
-                            currentData.value = currentData.value.toFixed(4);
-                        }
+        for (var i=0; i<$scope.table.rows.length; i++){
+            var tempRow = $scope.table.rows[i];
+            var data = $scope.widget.settings.data[i];
+            if(data) {
+                //update values if the row type is data, not header
+                if(data.type == "data"){
+                    var key = data.value;
+                    try {
+                        //id is the last/leaf node of the dot separated key.
+                        var id = key.split('.').slice(-1)[0];
 
-                        tempRow.contents[0].datavalue = tempRow.id;
-                        tempRow.contents[1].datavalue = currentData.name;
+                        var currentData = dashboardService.getData(key);
+                        if(currentData) {
+                            var valType = typeof currentData.value;
+                            if(valType === "number"){
+                                currentData.value = currentData.value.toFixed(4);
+                            }
 
-                        if(currentData.alarm_low){
-                            tempRow.contents[2].datavalue = currentData.alarm_low;
-                        }else {
-                            tempRow.contents[2].datavalue = 'N/A';   
-                        }
+                            tempRow.contents[0].datavalue = id;
+                            tempRow.contents[1].datavalue = currentData.name;
 
-                        if(currentData.warn_low){
-                            tempRow.contents[3].datavalue = currentData.warn_low;
-                        }else {
-                            tempRow.contents[3].datavalue = 'N/A';   
-                        }
+                            if(currentData.alarm_low){
+                                tempRow.contents[2].datavalue = currentData.alarm_low;
+                            }else {
+                                tempRow.contents[2].datavalue = 'N/A';   
+                            }
 
-                        tempRow.contents[4].datavalue = currentData.value;
-                        if(tempvalue[i] === currentData.value){
-                            //stale data
-                            if(dServiceObjVal.sIcon === "green" && dServiceObjVal.gIcon === "green" && 
-                                dServiceObjVal.pIcon === "green" && dServiceObjVal.dIcon === "green" ){
-                                    tempRow.contents[4].datacolor = colorHealthy;
+                            if(currentData.warn_low){
+                                tempRow.contents[3].datavalue = currentData.warn_low;
+                            }else {
+                                tempRow.contents[3].datavalue = 'N/A';   
+                            }
+
+                            tempRow.contents[4].datavalue = currentData.value;
+                            if(tempvalue[i] === currentData.value){
+                                //stale data
+                                if(dServiceObjVal.sIcon === "green" && dServiceObjVal.gIcon === "green" && 
+                                    dServiceObjVal.pIcon === "green" && dServiceObjVal.dIcon === "green" ){
+                                        tempRow.contents[4].datacolor = colorHealthy;
+                                } else {
+                                    tempRow.contents[4].datacolor = colorStale;
+                                }
                             } else {
-                                tempRow.contents[4].datacolor = colorStale;
+                                //new data
+                                var colorVal = datastatesService.getDataColor(currentData.alarm_low, currentData.alarm_high,
+                                                    currentData.value, currentData.warn_low, currentData.warn_high, valType)
+                                if(colorVal === "red"){
+                                    tempRow.contents[4].datacolor = colorAlarm;  
+                                }else if(colorVal === "orange"){
+                                    tempRow.contents[4].datacolor = colorCaution;
+                                }else{
+                                    tempRow.contents[4].datacolor = colorHealthy;
+                                }
+                                tempvalue[i] = currentData.value;
+                            } 
+
+                            if(currentData.warn_high){
+                                tempRow.contents[5].datavalue = currentData.warn_high;
+                            }else {
+                                tempRow.contents[5].datavalue = 'N/A';   
                             }
-                        } else {
-                            //new data
-                            var colorVal = datastatesService.getDataColor(currentData.alarm_low, currentData.alarm_high,
-                                                currentData.value, currentData.warn_low, currentData.warn_high, valType)
-                            if(colorVal === "red"){
-                                tempRow.contents[4].datacolor = colorAlarm;  
-                            }else if(colorVal === "orange"){
-                                tempRow.contents[4].datacolor = colorCaution;
-                            }else{
-                                tempRow.contents[4].datacolor = colorHealthy;
+
+                            if(currentData.alarm_high){
+                                tempRow.contents[6].datavalue = currentData.alarm_high;
+                            }else {
+                                tempRow.contents[6].datavalue = 'N/A';   
                             }
-                            tempvalue[i] = currentData.value;
-                        } 
 
-                        if(currentData.warn_high){
-                            tempRow.contents[5].datavalue = currentData.warn_high;
-                        }else {
-                            tempRow.contents[5].datavalue = 'N/A';   
+                            tempRow.contents[7].datavalue = currentData.units;
+
+                            if(currentData.notes !== ''){
+                                tempRow.contents[8].datavalue = currentData.notes;
+                            }else {
+                                tempRow.contents[8].datavalue = 'N/A';    
+                            }
                         }
+                    } catch(err){
 
-                        if(currentData.alarm_high){
-                            tempRow.contents[6].datavalue = currentData.alarm_high;
-                        }else {
-                            tempRow.contents[6].datavalue = 'N/A';   
-                        }
-
-                        tempRow.contents[7].datavalue = currentData.units;
-
-                        if(currentData.notes !== ''){
-                            tempRow.contents[8].datavalue = currentData.notes;
-                        }else {
-                            tempRow.contents[8].datavalue = 'N/A';    
-                        }
                     }
-                } catch(err){
-
                 }
             } else {
                 if(dServiceObjVal.dIcon === "red"){

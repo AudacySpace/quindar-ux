@@ -16,7 +16,6 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
     var vehicles = [];
     var scH = {};
     var scS = {};
-    var datastatus = [];
     var orbits = [];
     var satIcons = [];
 
@@ -28,29 +27,31 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
     $scope.$watch('widget.settings.vehName', function(newVal,oldVal){
         $scope.timeObj = {};
         vehicles = newVal; 
+
+        for (var j=0; j< vehicles.length;j++) {
+            scS[j] = [];
+            scH[j] = [];
+        } 
     }, true);
-
-    $scope.$watch('widget.settings.scHolder',function(newVal,oldVal){
-        scH = newVal; 
-    },true);
-
-    $scope.$watch('widget.settings.scStates',function(newVal,oldVal){
-        scS = newVal; 
-    },true);
-
-    $scope.$watch('widget.settings.dataHolder',function(newVal,oldVal){
-        $scope.timeObj = {};
-        datastatus = newVal; 
-    },true);
 
     $scope.$watch('widget.settings.orbitHolder',function(newVal,oldVal){
         $scope.timeObj = {};
         orbits = newVal; 
+
+        for (var j=0; j< vehicles.length;j++) {
+            scS[j] = [];
+            scH[j] = [];
+        } 
     },true);
 
     $scope.$watch('widget.settings.iconHolder',function(newVal,oldVal){
         $scope.timeObj = {};
-        satIcons = newVal; 
+        satIcons = newVal;
+
+        for (var j=0; j< vehicles.length;j++) {
+            scS[j] = [];
+            scH[j] = [];
+        } 
     },true);
 
     var time, solarTime, latestdata;
@@ -260,25 +261,16 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                                  .attr("width",30)
                                  .attr("height",30)
                                  .append("svg:title").text(vehicles[i].name);
-                }
-            }
-        }
 
-        for (k=0; k<datastatus.length-1; k++) {
-            if (datastatus[k] === true && satIcons[k] === true) {
-                for (kk=k+1; kk<datastatus.length; kk++) {
-                    if (datastatus[kk] === true && satIcons[kk] === true) {
-                        commlink(scS[k][scS[k].length-1],scS[kk][scS[kk].length-1],scH[k][scH[k].length-1],scH[kk][scH[kk].length-1]); 
-                    }       
+                    for (kk=i+1; kk<vehicles.length; kk++) {
+                        if (satIcons[kk] === true) {
+                            commlink(scS[i][scS[i].length-1],scS[kk][scS[kk].length-1],scH[i][scH[i].length-1],scH[kk][scH[kk].length-1]); 
+                        }       
+                    }
+                    for (kk=0; kk<gs.length; kk++) {
+                        gsCommLink(station[kk], scH[i][scH[i].length-1], scS[i][scS[i].length-1], gsAng);           
+                    }
                 }
-            }
-        }
-
-        for (k=0; k<datastatus.length; k++) {
-            if(datastatus[k] === true && satIcons[k] === true) {
-                for (kk=0; kk<gs.length; kk++) {
-                    gsCommLink(station[kk], scH[k][scH[k].length-1], scS[k][scS[k].length-1], gsAng);           
-                }  
             }
         }
     }
