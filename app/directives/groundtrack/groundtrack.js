@@ -13,46 +13,14 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
     var telemetry = dashboardService.telemetry;
     var temp = $element[0].getElementsByTagName("div")[0];
     var el = temp.getElementsByTagName("div")[1];
-    var vehicles = [];
+    var prevSettings;
     var scH = {};
     var scS = {};
-    var orbits = [];
-    var satIcons = [];
 
     $scope.timeObj = {};
     $scope.checkboxModel = {
         value1 : true
     };
-
-    $scope.$watch('widget.settings.vehName', function(newVal,oldVal){
-        $scope.timeObj = {};
-        vehicles = newVal; 
-
-        for (var j=0; j< vehicles.length;j++) {
-            scS[j] = [];
-            scH[j] = [];
-        } 
-    }, true);
-
-    $scope.$watch('widget.settings.orbitHolder',function(newVal,oldVal){
-        $scope.timeObj = {};
-        orbits = newVal; 
-
-        for (var j=0; j< vehicles.length;j++) {
-            scS[j] = [];
-            scH[j] = [];
-        } 
-    },true);
-
-    $scope.$watch('widget.settings.iconHolder',function(newVal,oldVal){
-        $scope.timeObj = {};
-        satIcons = newVal;
-
-        for (var j=0; j< vehicles.length;j++) {
-            scS[j] = [];
-            scH[j] = [];
-        } 
-    },true);
 
     var time, solarTime, latestdata;
     var rEarth = 6378.16;   //Earth radius [km]
@@ -80,7 +48,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 
     var gs = ['GS1','GS2'];
     var station = [[-122.4, 37.7],[103.8, 1.4]];
-    var satRadius = 10000;//7000;
+    //var satRadius = 10000;//7000;
     var stationNames = ['Ground Station 01 - San Francisco ','Ground Station 02 - Singapore'];
 
     g.attr("id","g")
@@ -129,11 +97,6 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
             plotgs(station[j],stationNames[j]);
         }
 
-        //Plot ground station coverage
-        for (j=0; j<gs.length;j++) {
-            plotGsCover(station[j]);
-        }
-
         // Show dark region (night time)
         $scope.night = g.append("path")
                         .attr("class", "night")
@@ -159,16 +122,17 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
     }
 
     //Function to show enable or disable ground station coverage area.
-    $scope.showCoverage = function(checkedVal){
-        if(checkedVal === true){
-            g.selectAll("path.gslos").remove();
-            for (j=0; j<gs.length;j++) {
-                plotGsCover(station[j]);      
-            }
-        } else {
-            g.selectAll("path.gslos").remove();
-        }
-    }
+    //Commented out as coverage is shown whenever the vehicles/satellites are enabled on ground track
+    // $scope.showCoverage = function(checkedVal){
+    //     if(checkedVal === true){
+    //         g.selectAll("path.gslos").remove();
+    //         for (j=0; j<gs.length;j++) {
+    //             plotGsCover(station[j]);      
+    //         }
+    //     } else {
+    //         g.selectAll("path.gslos").remove();
+    //     }
+    // }
 
     $scope.interval = $interval(updatePlot, 1000);
 
@@ -187,6 +151,16 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
         g.selectAll("path.gslink").remove(); 
 
         showDayNight();
+        var vehicles = $scope.widget.settings.vehicles;
+
+        //reset plotData when there is a change in settings
+        if (JSON.stringify(prevSettings) !== JSON.stringify(vehicles)){
+            $scope.timeObj = {};
+            for(i=0; i<vehicles.length; i++){
+                scS[i] = [];
+                scH[i] = [];
+            }
+        } 
 
         for (i=0; i< vehicles.length; i++){
             latestdata = telemetry[vehicles[i].name];
@@ -196,83 +170,94 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                 //alert("Latest data not available.");         
             }
             else {
-                // update latestdata                                      
-                var x = latestdata.GNC.position.x.value;
-                var y = latestdata.GNC.position.y.value;
-                var z = latestdata.GNC.position.z.value;
-                            
-                // Calculate longitude and latitude from the satellite position x, y, z.
-                // The values (x,y,z) must be Earth fixed.
-                r = Math.sqrt(Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2));
-                longitude = Math.atan2(y,x)/Math.PI*180;
-                latitude = Math.asin(z/r)/Math.PI*180;
+                if(vehicles[i].dataStatus === true) {
+                    // remove previous Ground Station coverage
+                    g.selectAll("path.gslos").remove();
+
+                    // update latestdata
+                    var x = latestdata.GNC.position.x.value;
+                    var y = latestdata.GNC.position.y.value;
+                    var z = latestdata.GNC.position.z.value;
                                 
-                // Convert [longitude,latitude] to plot 
-                var sat_coord = projGround([longitude,latitude]);
+                    // Calculate longitude and latitude from the satellite position x, y, z.
+                    // The values (x,y,z) must be Earth fixed.
+                    r = Math.sqrt(Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2));
+                    longitude = Math.atan2(y,x)/Math.PI*180;
+                    latitude = Math.asin(z/r)/Math.PI*180;
 
-                //Timestamp array for each vehicle
-                if(!$scope.timeObj[i]){
-                    $scope.timeObj[i] = new Array();
-                }
+                    // Convert [longitude,latitude] to plot 
+                    var sat_coord = projGround([longitude,latitude]);
 
-                //get current time
-                var dateValue = new Date(telemetry['time']);
-                var timestamp = dateValue.getTime(); //time in milliseconds
-
-                //push values to the array
-                if(timestamp != $scope.timeObj[i][$scope.timeObj[i].length-1]){
-                    $scope.timeObj[i].push(timestamp);
-                }
-                var diffMins = Math.round(($scope.timeObj[i][$scope.timeObj[i].length-1] - $scope.timeObj[i][0])/60000);
-
-                // add longitude and latitude to data_plot
-                var scHData = [longitude, latitude];
-                if(scHData != scH[i][scH[i].length - 1]){
-                    scH[i].push(scHData);
-                }
-
-                var scSData = [x, y, z];
-                if(scSData != scS[i][scS[i].length - 1]){
-                    scS[i].push(scSData);
-                }
-
-                // Remove data points after 90 minutes (7200000ms)
-                if( diffMins >= 90) {
-                    scH[i].splice(0,1);
-                    scS[i].splice(0,1);
-                    $scope.timeObj[i].splice(0,1);
-                }
-				
-                if(orbits[i] === true){
-                    var route = g.append("path")
-                                 .datum({type: "LineString", coordinates: scH[i]})  
-                                 .attr("class", "route")
-                                 .attr("stroke", vehicles[i].color)
-                                 .attr("d", path);
-                }
-                    
-                if(satIcons[i] === true){
-                    var craft = g.append("svg:image")
-                                 .attr("xlink:href", "/icons/groundtrack-widget/satellite.svg")
-                                 .attr("id", "craft")
-                                 .attr("fill", "#000000")
-                                 .attr("x",sat_coord[0])
-                                 .attr("y",sat_coord[1]-15)
-                                 .attr("width",30)
-                                 .attr("height",30)
-                                 .append("svg:title").text(vehicles[i].name);
-
-                    for (kk=i+1; kk<vehicles.length; kk++) {
-                        if (satIcons[kk] === true) {
-                            commlink(scS[i][scS[i].length-1],scS[kk][scS[kk].length-1],scH[i][scH[i].length-1],scH[kk][scH[kk].length-1]); 
-                        }       
+                    //Plot ground station coverage
+                    for (j=0; j<gs.length;j++) {
+                        plotGsCover(station[j], r);
                     }
-                    for (kk=0; kk<gs.length; kk++) {
-                        gsCommLink(station[kk], scH[i][scH[i].length-1], scS[i][scS[i].length-1], gsAng);           
+
+                    //Timestamp array for each vehicle
+                    if(!$scope.timeObj[i]){
+                        $scope.timeObj[i] = new Array();
+                    }
+
+                    //get current time
+                    var dateValue = new Date(telemetry['time']);
+                    var timestamp = dateValue.getTime(); //time in milliseconds
+
+                    //push values to the array
+                    if(timestamp != $scope.timeObj[i][$scope.timeObj[i].length-1]){
+                        $scope.timeObj[i].push(timestamp);
+                    }
+                    var diffMins = Math.round(($scope.timeObj[i][$scope.timeObj[i].length-1] - $scope.timeObj[i][0])/60000);
+
+                    // add longitude and latitude to data_plot
+                    var scHData = [longitude, latitude];
+                    if(scHData != scH[i][scH[i].length - 1]){
+                        scH[i].push(scHData);
+                    }
+
+                    var scSData = [x, y, z];
+                    if(scSData != scS[i][scS[i].length - 1]){
+                        scS[i].push(scSData);
+                    }
+
+                    // Remove data points after 90 minutes (7200000ms)
+                    if( diffMins >= 90) {
+                        scH[i].splice(0,1);
+                        scS[i].splice(0,1);
+                        $scope.timeObj[i].splice(0,1);
+                    }
+    				
+                    if(vehicles[i].orbitStatus === true){
+                        var route = g.append("path")
+                                     .datum({type: "LineString", coordinates: scH[i]})  
+                                     .attr("class", "route")
+                                     .attr("stroke", vehicles[i].color)
+                                     .attr("d", path);
+                    }
+
+                    if(vehicles[i].iconStatus === true){
+                        var craft = g.append("svg:image")
+                                     .attr("xlink:href", "/icons/groundtrack-widget/satellite.svg")
+                                     .attr("id", "craft")
+                                     .attr("fill", "#000000")
+                                     .attr("x",sat_coord[0])
+                                     .attr("y",sat_coord[1]-15)
+                                     .attr("width",30)
+                                     .attr("height",30)
+                                     .append("svg:title").text(vehicles[i].name);
+
+                        for (kk=i+1; kk<vehicles.length; kk++) {
+                            if (vehicles[kk].iconStatus === true) {
+                                commlink(scS[i][scS[i].length-1],scS[kk][scS[kk].length-1],scH[i][scH[i].length-1],scH[kk][scH[kk].length-1]); 
+                            }
+                        }
+                        for (kk=0; kk<gs.length; kk++) {
+                            gsCommLink(station[kk], scH[i][scH[i].length-1], scS[i][scS[i].length-1], gsAng);
+                        }
                     }
                 }
             }
         }
+        prevSettings = angular.copy($scope.widget.settings.vehicles);
     }
 
     //Displays day and night regions on map according to time
@@ -283,8 +268,8 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
     }
     
     //Displays Ground station coverage area    
-    function plotGsCover(coord){
-        covAng = gsCoverage(satRadius, gsAng); // Coverage angle [deg]
+    function plotGsCover(coord, radius){
+        covAng = gsCoverage(radius, gsAng); // Coverage angle [deg]
         var gslos = svg.select('#g')
                         .append("path")
                         .datum(circle.center(coord).radius(covAng))

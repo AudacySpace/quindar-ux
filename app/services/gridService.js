@@ -101,11 +101,7 @@ app
         main: true,
         settings: {
             active: false,
-            contents : [],
-            vehName : [],
-            dataHolder : [],
-            orbitHolder :[],
-            iconHolder :[]
+            vehicles : []
         },
         saveLoad: false,
         delete: false

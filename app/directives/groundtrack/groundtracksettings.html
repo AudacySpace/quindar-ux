@@ -18,7 +18,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="row in widget.settings.contents">
+                        <tr ng-repeat="row in settings">
                             <td ng-repeat="cell in row" class="rowcell" style="{{cell.style}}" ng-show="true">{{cell.value}}<input ng-show="{{cell.active}}" class="rowinput gtcbox" type="checkbox" ng-model="cell.status"/>
                             </td>
                         </tr>
@@ -64,7 +64,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="row in widget.settings.contents">
+                    <tr ng-repeat="row in settings">
                         <td ng-repeat="cell in row" class="rowcell" ng-show="true" style="{{cell.cstyle}}">{{cell.value}}<input ng-show="{{cell.active}}" class="rowinput gtcbox" type="checkbox" ng-model="cell.status"/>
                         </td>
                     </tr>
@@ -98,7 +98,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="row in widget.settings.contents">
+                    <tr ng-repeat="row in settings">
                         <td ng-repeat="cell in row" class="rowcell" ng-show="true" style="{{cell.cstyle}}">{{cell.value}}<input ng-show="{{cell.active}}" class="rowinput gtcbox" type="checkbox" ng-model="cell.status"/>
                         </td>
                     </tr>
