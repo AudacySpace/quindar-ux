@@ -209,7 +209,7 @@ app
 	   	$scope.renderer.render($scope.scene,$scope.camera);	
 	}
 
-	$scope.interval = $interval(updateColors, 500, 0, false); 
+	$scope.interval = $interval(updateColors, 1000, 0, false); 
 
 	function updateColors(){
 		if($scope.widget.settings.vehicle && $scope.cube && telemetry[$scope.widget.settings.vehicle]){

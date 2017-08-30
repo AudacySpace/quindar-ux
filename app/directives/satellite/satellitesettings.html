@@ -10,7 +10,7 @@
                 <div>
                 	<ui-select tagging ng-model="selected.vehicle" theme="bootstrap">
         				<ui-select-match placeholder="Select Vehicle">{{$select.selected.value}}</ui-select-match>
-        				<ui-select-choices repeat="vehicle in vehicles | filter: $select.search track by vehicle.value">
+        				<ui-select-choices repeat="vehicle.value as vehicle in vehicles | filter: $select.search track by vehicle.value">
             				<div ng-bind="vehicle.value | highlight: $select.search"></div>
         				</ui-select-choices>
         			</ui-select>
@@ -46,7 +46,7 @@
         <div class="mbl-input-grp">
             <ui-select tagging ng-model="selected.vehicle" theme="bootstrap">
                 <ui-select-match placeholder="Select Vehicle">{{$select.selected.value}}</ui-select-match>
-                <ui-select-choices repeat="vehicle in vehicles | filter: $select.search track by vehicle.value">
+                <ui-select-choices repeat="vehicle.value as vehicle in vehicles | filter: $select.search track by vehicle.value">
                     <div ng-bind="vehicle.value | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>
@@ -69,7 +69,7 @@
                 <div class="mbl-input-grp">
                     <ui-select tagging ng-model="selected.vehicle" theme="bootstrap">
                         <ui-select-match placeholder="Select Vehicle">{{$select.selected.value}}</ui-select-match>
-                        <ui-select-choices repeat="vehicle in vehicles | filter: $select.search track by vehicle.value">
+                        <ui-select-choices repeat="vehicle.value as vehicle in vehicles | filter: $select.search track by vehicle.value">
                             <div ng-bind="vehicle.value | highlight: $select.search"></div>
                         </ui-select-choices>
                     </ui-select>

@@ -16,6 +16,7 @@ app
 				widget.settings.active = false;
 				widget.saveLoad = false;
 				widget.delete = false;
+				$scope.selected.vehicle = widget.settings.vehicle;
 			}
 
 			$scope.saveSettings = function(widget){
@@ -24,7 +25,7 @@ app
 					widget.settings.active = false;
 					widget.saveLoad = false;
 					widget.delete = false;
-					widget.settings.vehicle = $scope.selected.vehicle.value;
+					widget.settings.vehicle = $scope.selected.vehicle;
 				}
 			}
 
@@ -32,12 +33,9 @@ app
 				if(!$scope.widget.settings.vehicle){
 					$scope.selected = {};
 				}else {
-					$scope.selected = 
-					{ 
-						vehicle:{
-							value :$scope.widget.settings.vehicle
-						}
-					}
+					$scope.selected = {
+						vehicle : $scope.widget.settings.vehicle
+					};
 				}
 			}
 
@@ -56,7 +54,7 @@ app
 				                        $scope.vehicles.push({'key': count, 'value': key})
 				                    }
 				                }
-				            } 
+				            }
 				        });
 				        $interval.cancel(interval);
 				    }
