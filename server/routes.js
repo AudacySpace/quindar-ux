@@ -12,6 +12,8 @@ var ProxyStatus = require('./models/proxystatus');
 
 var configRole = require('./config/role');
 
+var StatusBoard = require('./models/statusboard');
+
 // normal routes ===============================================================
 
     // show the home page (will also have our login links)
@@ -253,7 +255,6 @@ var configRole = require('./config/role');
 
             user.save(function(err) {
                 if (err) throw err;
-
                 res.send(user);
             });
         });
@@ -295,6 +296,122 @@ var configRole = require('./config/role');
             res.send(missions);
         });
     });
+
+    //Save Alerts
+    app.post('/saveAlerts',function(req,res){
+
+        //Save logic
+        //If no ack for a channel update
+        //If ack for a channel push that;
+
+        var mission = req.body.missionname;
+        var statusdata = req.body.statusdata;
+        var vehiclecolors = req.body.vehicleColors;
+
+        StatusBoard.findOne({'mission':mission}, function(err, status) {
+            if (err)
+                console.log("Error finding alerts in DB: " + err);
+
+            if (status) {
+                status.mission = mission;
+                status.vehiclecolors = vehiclecolors;
+
+                for(var i=0;i<status.statusboard.length;i++){
+                    for(j=0;j<statusdata.length;j++){
+                        if(status.statusboard[i].channel === statusdata[j].channel){
+                            if(status.statusboard[i].alert === statusdata[j].alert){
+                                if(status.statusboard[i].bound === statusdata[j].bound){
+                                    if(status.statusboard[i].ack ===  statusdata[j].ack){
+                                        if(status.statusboard[i].ack === ""){
+                                           status.statusboard[i] = Object.assign({}, statusdata[j]); 
+                                        }else {
+                                            status.statusboard[i].time = statusdata[j].time;
+                                            status.statusboard[i].timestamp = statusdata[j].timestamp;
+                                        }
+
+                                    }else{
+                                        status.statusboard.push(statusdata[j]);
+                                    }
+                                }else {
+                                    status.statusboard.push(statusdata[j]);
+                                }
+                            }else{
+                                status.statusboard.push(statusdata[j]);
+                            }
+                        }else {
+                            status.statusboard.push(statusdata[j]);
+                        }
+                    }
+                }
+                status.statusboard  = uniqBy(status.statusboard,JSON.stringify);
+                status.markModified('statusboard');
+                status.markModified('vehiclecolors');
+                status.save(function(err,result){
+                    if(err){
+                        console.log(err);
+                    }
+                    if(result){
+                        res.json(result);
+                    }
+                });
+            }else {
+                //create a new document if not document exists
+                var statusTable = new StatusBoard();
+                statusTable.mission =  mission;
+                statusTable.vehiclecolors = vehiclecolors;
+                statusTable.statusboard = statusdata;
+                statusTable.save(function(err,result){
+                    if(err){
+                        console.log(err);
+                    }
+                    if(result){
+                        res.json(result);
+                    }
+                });
+            }
+        });
+    });
+
+    //Load Alerts
+    app.get('/loadAlerts', function(req, res){
+
+        var mission = req.query.missionname;
+
+        //Load the alerts from the statusboard collection
+        StatusBoard.findOne({ 'mission' : mission }, function(err, status) {
+            if(err){
+                console.log(err);
+            }
+            var statusboard = [];
+            if(status){
+                for(var k=0;k<status.statusboard.length;k++){
+                    statusboard.push(status.statusboard[k]);
+                }
+            }
+            res.send(statusboard);
+        });
+    });
+
+
+    //Load VehicleColors
+    app.get('/loadVehicleColors', function(req, res){
+
+        var mission = req.query.missionname;
+        //Load the vehicle color status from the statusboard collection
+        StatusBoard.findOne({ 'mission' : mission }, function(err, status) {
+            if(err){
+                console.log(err);
+            }
+            var vehiclecolors = [];
+            if(status){
+                for(var k=0;k<status.vehiclecolors.length;k++){
+                    vehiclecolors.push(status.vehiclecolors[k]);
+                }
+            }
+            res.send(vehiclecolors);
+        });
+    });
+
 };
    
 // route middleware to ensure user is logged in
@@ -327,4 +444,12 @@ function eachKeyValue(obj, fun) {
             fun(i, obj[i]);
         }
     }
+}
+
+function uniqBy(a, key) {
+    var seen = {};
+    return a.filter(function(item) {
+        var k = key(item);
+        return seen.hasOwnProperty(k) ? false : (seen[k] = true);
+    })
 }

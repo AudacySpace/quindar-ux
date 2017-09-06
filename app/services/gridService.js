@@ -141,8 +141,8 @@ app
         },
         saveLoad: false,
         delete: false
-     },
-     {
+    },
+    {
         sizeY: 3,
         sizeX: 4,
         name: "Alarm Panel",
@@ -156,10 +156,8 @@ app
         main: true,
         settings: {
             active: false,
-            contents : [],
-            colors : [],
             statusboard :{
-                status:false
+                status:true
             }
         },
         saveLoad: false,
@@ -312,6 +310,38 @@ app
         }
     }
 
+    function saveAlerts(statusdata,vehicleColors){
+        return $http({
+            url: "/saveAlerts",
+            method: "POST",
+            data:{"missionname" : $sessionStorage.dashboard["current"].mission.missionName,"statusdata":statusdata,"vehicleColors":vehicleColors}
+        });
+    }
+
+    function saveAckAlerts(statusdata,vehicleColors){
+        return $http({
+            url: "/saveAlerts",
+            method: "POST",
+            data:{"missionname" : $sessionStorage.dashboard["current"].mission.missionName,"statusdata":statusdata,"vehicleColors":vehicleColors}
+        });
+    }
+
+    function loadAlerts(){
+        return $http({
+            url: "/loadAlerts", 
+            method: "GET",
+            params: {"missionname" : $sessionStorage.dashboard["current"].mission.missionName}
+        });
+    }
+
+    function loadVehicleColors(){
+        return $http({
+            url: "/loadVehicleColors", 
+            method: "GET",
+            params: {"missionname" : $sessionStorage.dashboard["current"].mission.missionName}
+        });
+    }
+
 	return {
         gridsterOptions : gridsterOptions,
         clear : clear,
@@ -327,6 +357,10 @@ app
         save : save,
         load : load,
         showLayout : showLayout,
-        getMissionImage : getMissionImage
+        getMissionImage : getMissionImage,
+        saveAlerts : saveAlerts,
+        loadAlerts : loadAlerts,
+        saveAckAlerts : saveAckAlerts,
+        loadVehicleColors : loadVehicleColors
 	}
 }]);

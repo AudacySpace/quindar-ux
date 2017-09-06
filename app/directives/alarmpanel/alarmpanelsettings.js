@@ -23,10 +23,10 @@ app.directive('alarmpanelsettings', function() {
             $scope.statusboard.status = statusValue.status;
         }
     }
-  	}; 
+}; 
 });
 
 app.controller('SwitchDemoCtrl', function($scope) {
-  // $scope.widget.settings.statusboard = {"status":true};
+
 });
 
