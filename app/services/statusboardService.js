@@ -37,13 +37,14 @@ app
                     return b.timestamp - a.timestamp;
                 });
 
+
                 for(var k=0;k<masterAlarmColors.length;k++){
                     for(var j=0;j<byDate.length;j++){
                         if(masterAlarmColors[k].vehicle === byDate[j].vehicle && masterAlarmColors[k].color === colorValues.healthycolor){
                             //code to disable the row
                             byDate[j].rowstyle = colorValues.inactivecolor;
                         }else {
-                           byDate[j].rowstyle = colorValues.activecolor; 
+                           //byDate[j].rowstyle = colorValues.activecolor; 
                         }
                     }
                 }

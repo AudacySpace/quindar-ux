@@ -109,11 +109,11 @@ app.controller('AlarmPanelCtrl',function ($scope,$window,$element,$interval,dash
             }
             vehicleColors.push({"vehicle":$scope.contents[i].vehicle,"status":false});
         }
-
-        if(newtablearray.length > 0){
+        if(newtablearray.length > 0 && vehicleColors.length > 0){
             gridService.saveAlerts(newtablearray,vehicleColors); 
         }
         if($scope.contents.length > 0){
+            //gridService.saveAlerts(newtablearray,vehicleColors); 
             statusboardService.setSubSystemColors($scope.contents);//Function call to set sub system colors   
         }
         statusboardService.loadAlerts(); 

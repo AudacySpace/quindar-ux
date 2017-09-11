@@ -315,9 +315,12 @@ var StatusBoard = require('./models/statusboard');
             if (status) {
                 status.mission = mission;
                 status.vehiclecolors = vehiclecolors;
+               
 
-                for(var i=0;i<status.statusboard.length;i++){
-                    for(j=0;j<statusdata.length;j++){
+                //Save alerts to the database
+
+                for(j=0;j<statusdata.length;j++){
+                    for(var i=0;i<status.statusboard.length;i++){
                         if(status.statusboard[i].channel === statusdata[j].channel){
                             if(status.statusboard[i].alert === statusdata[j].alert){
                                 if(status.statusboard[i].bound === statusdata[j].bound){
@@ -343,6 +346,8 @@ var StatusBoard = require('./models/statusboard');
                         }
                     }
                 }
+
+
                 status.statusboard  = uniqBy(status.statusboard,JSON.stringify);
                 status.markModified('statusboard');
                 status.markModified('vehiclecolors');
@@ -359,7 +364,11 @@ var StatusBoard = require('./models/statusboard');
                 var statusTable = new StatusBoard();
                 statusTable.mission =  mission;
                 statusTable.vehiclecolors = vehiclecolors;
-                statusTable.statusboard = statusdata;
+                statusTable.statusboard = [];
+                for(var k=0;k<statusdata.length;k++){
+                    statusTable.statusboard.push(statusdata[k]);
+                }
+                //statusTable.statusboard = statusdata;
                 statusTable.save(function(err,result){
                     if(err){
                         console.log(err);
