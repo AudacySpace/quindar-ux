@@ -19,7 +19,7 @@ app
     var colorBoundObj = {
         alarm:{
             color:"#FF0000",
-            alert:"ALERT",
+            alert:"ALARM",
             bound:"",
         },
         caution:{
