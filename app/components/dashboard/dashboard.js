@@ -130,15 +130,7 @@ app.controller('missionModalCtrl', function($uibModalInstance,dashboardService,$
 		$ctrl.missions = newVal;
 	},true);
 
-	$ctrl.close = function() {
-		if(dashboardService.isEmpty($ctrl.currentMission) === true){
-			$uibModalInstance.dismiss('cancel'); 
-		}else {
-			alert("Please save the selected mission.");
-		}
-
-	};
-
+	//save mission and close modal
 	$ctrl.setMission = function(){
 		if(dashboardService.isEmpty($ctrl.currentMission) === false){
 			dashboardService.setCurrentMission($ctrl.currentMission);

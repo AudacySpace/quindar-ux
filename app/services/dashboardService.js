@@ -36,7 +36,8 @@ app
             $uibModal.open({
                 templateUrl: './components/dashboard/missionModal.html',
                 controller: 'missionModalCtrl',
-                controllerAs: '$ctrl'
+                controllerAs: '$ctrl',
+                backdrop: 'static'
             }).result.then(function(response){
                 if(response){
                     gridService.setMissionForLayout(response.missionName);
