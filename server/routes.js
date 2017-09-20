@@ -321,36 +321,29 @@ var StatusBoard = require('./models/statusboard');
 
                 for(j=0;j<statusdata.length;j++){
                     for(var i=0;i<status.statusboard.length;i++){
-                        if(status.statusboard[i].channel === statusdata[j].channel){
-                            if(status.statusboard[i].alert === statusdata[j].alert){
-                                if(status.statusboard[i].bound === statusdata[j].bound){
-                                    if(status.statusboard[i].ack ===  statusdata[j].ack){
-                                        if(status.statusboard[i].ack === ""){
-                                           status.statusboard[i] = Object.assign({}, statusdata[j]); 
-                                        }else {
-                                            status.statusboard[i].time = statusdata[j].time;
-                                            status.statusboard[i].timestamp = statusdata[j].timestamp;
-                                        }
-
-                                    }else{
-                                        status.statusboard.push(statusdata[j]);
-                                    }
-                                }else {
-                                    status.statusboard.push(statusdata[j]);
-                                }
-                            }else{
-                                status.statusboard.push(statusdata[j]);
+                        if(status.statusboard[i].channel === statusdata[j].channel &&
+                            status.statusboard[i].alert === statusdata[j].alert &&
+                                status.statusboard[i].bound === statusdata[j].bound &&
+                                    status.statusboard[i].ack ===  statusdata[j].ack) {
+                            
+                            if(status.statusboard[i].ack === ""){
+                                status.statusboard[i] = Object.assign({}, statusdata[j]); 
+                            } else {
+                                status.statusboard[i].time = statusdata[j].time;
+                                status.statusboard[i].timestamp = statusdata[j].timestamp;
                             }
-                        }else {
+                        }
+                        else {
                             status.statusboard.push(statusdata[j]);
                         }
                     }
                 }
 
-
                 status.statusboard  = uniqBy(status.statusboard,JSON.stringify);
+
                 status.markModified('statusboard');
                 status.markModified('vehiclecolors');
+
                 status.save(function(err,result){
                     if(err){
                         console.log(err);

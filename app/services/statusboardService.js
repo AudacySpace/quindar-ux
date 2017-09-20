@@ -1,5 +1,6 @@
 app
-.factory('statusboardService',['gridService','dashboardService','datastatesService', function(gridService,dashboardService,datastatesService) { 
+.factory('statusboardService',['$http', 'dashboardService', 'datastatesService', 
+    function($http, dashboardService, datastatesService) { 
 
     var alarmpanel = {
         statustable : []
@@ -25,9 +26,37 @@ app
     }
     var mission = dashboardService.getCurrentMission();
 
-    //set the alerts for the alerts board from the database
+    function saveAlerts(statusdata,vehicleColors){
+        return $http({
+            url: "/saveAlerts",
+            method: "POST",
+            data:{
+                "missionname" : mission.missionName,
+                "statusdata" : statusdata,
+                "vehicleColors" : vehicleColors
+            }
+        });
+    }
+
     function loadAlerts(){
-        gridService.loadAlerts().then(function(response) {
+        return $http({
+            url: "/loadAlerts", 
+            method: "GET",
+            params: {"missionname" : mission.missionName}
+        });
+    }
+
+    function loadVehicleColors(){
+        return $http({
+            url: "/loadVehicleColors", 
+            method: "GET",
+            params: {"missionname" : mission.missionName}
+        });
+    }
+
+    //set the alerts for the alerts board from the database
+    function setAlertsTable(){
+        loadAlerts().then(function(response) {
             if(response.data.length > 0){
                 var uniquetemparray = uniqBy(response.data,JSON.stringify);
                 var byDate = uniquetemparray.slice(0);
@@ -40,7 +69,8 @@ app
 
                 for(var k=0;k<masterAlarmColors.length;k++){
                     for(var j=0;j<byDate.length;j++){
-                        if(masterAlarmColors[k].vehicle === byDate[j].vehicle && masterAlarmColors[k].color === colorValues.healthycolor){
+                        if(masterAlarmColors[k].vehicle === byDate[j].vehicle && 
+                            masterAlarmColors[k].color === colorValues.healthycolor){
                             //code to disable the row
                             byDate[j].rowstyle = colorValues.inactivecolor;
                         }else {
@@ -115,7 +145,7 @@ app
 
     function setGlowingEffect(color,i,vehicle,contents){
         //check vehiclecolors status from db and set
-        gridService.loadVehicleColors().then(function(response) {
+        loadVehicleColors().then(function(response) {
             if(response.data.length > 0){
 
                 if(color.background === "#FF0000"){
@@ -166,12 +196,15 @@ app
     }
 
 	return {
-        alarmpanel : alarmpanel,
+        //alarmpanel : alarmpanel,
         getStatusTable : getStatusTable,
-        getHighPriorityColor : getHighPriorityColor,
+        //getHighPriorityColor : getHighPriorityColor,
         setSubSystemColors : setSubSystemColors,
         getMasterAlarmColors : getMasterAlarmColors,
+        setAlertsTable : setAlertsTable,
+        //uniqBy : uniqBy
+        saveAlerts : saveAlerts,
         loadAlerts : loadAlerts,
-        uniqBy : uniqBy
+        loadVehicleColors : loadVehicleColors
 	}
 }]);
