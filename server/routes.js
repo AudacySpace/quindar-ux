@@ -14,6 +14,10 @@ var configRole = require('./config/role');
 
 var StatusBoard = require('./models/statusboard');
 
+var Systemmap = require('./models/systemmap');
+
+var fs = require('fs');
+
 // normal routes ===============================================================
 
     // show the home page (will also have our login links)
@@ -418,6 +422,64 @@ var StatusBoard = require('./models/statusboard');
                 }
             }
             res.send(vehiclecolors);
+        });
+    });
+
+
+    //save system maps
+    app.post('/saveSystemMaps',function(req,res){
+        var mission = req.body.missionname;
+        var tlm = req.body.tlm;
+        var imgloc = req.body.imagelocation;
+        var imgname  = req.body.imagename;
+
+         Systemmap.findOne({ 'imageid' : imgname,'mission' : mission }, function(err, maps) {
+        //Systemmap.findOne({$and:[{"imageid":imgname},{"mission": mission}]},function(err,maps){
+            if(err){
+                console.log(err);
+            }
+
+            if(maps){
+            maps.image = fs.readFileSync("./public/systemmaps/ATest/image2.1.jpg");
+            maps.markModified('image');
+            maps.save(function(err) {
+                if (err) throw err;
+            });
+        }else {
+            //create a new document if not document exists
+                var systemmaps = new Systemmap();
+                systemmaps.mission =  mission;
+                systemmaps.contents = tlm;
+                systemmaps.image = fs.readFileSync("./public/systemmaps/ATest/image2.1.jpg");
+                systemmaps.imageid = imgname;
+                
+                systemmaps.save(function(err,result){
+                    if(err){
+                        console.log(err);
+                    }
+                    if(result){
+                    }
+                });
+        }
+        });
+
+    });
+
+     //Get systemmaps list
+    app.get('/loadSystemMaps', function(req, res){
+        var mission =  req.query.mission;
+        var allMaps = [];
+
+        Systemmap.find({'mission':mission},{},function(err, docs) {
+            if(err){ 
+                console.log(err);
+            }
+
+            for(var i=0;i<docs.length;i++){
+                allMaps.push(docs[i]);
+            }
+
+            res.send(allMaps);
         });
     });
 
