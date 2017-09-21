@@ -46,7 +46,7 @@ app.controller('AlarmPanelCtrl',
                                             "categoryColors": [],
                                             "tableArray":[],
                                             "subCategoryColors" :[],
-                                             "ackStatus":false
+                                            "ackStatus":false
                                         });
                                         vehicleColors.push({"vehicle":key,"status":false});
                                     }
@@ -126,6 +126,7 @@ app.controller('AlarmPanelCtrl',
                 }
                 newtablearray = newtablearray.concat($scope.contents[i].tableArray);
             }
+            vehicleColors[i].status = false;
         }
 
         //save alerts if any in newtablearray

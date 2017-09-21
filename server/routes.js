@@ -315,10 +315,8 @@ var StatusBoard = require('./models/statusboard');
             if (status) {
                 status.mission = mission;
                 status.vehiclecolors = vehiclecolors;
-               
 
                 //Save alerts to the database
-
                 for(j=0;j<statusdata.length;j++){
                     for(var i=0;i<status.statusboard.length;i++){
                         if(status.statusboard[i].channel === statusdata[j].channel &&
@@ -379,39 +377,16 @@ var StatusBoard = require('./models/statusboard');
 
         var mission = req.query.missionname;
 
-        //Load the alerts from the statusboard collection
-        StatusBoard.findOne({ 'mission' : mission }, function(err, status) {
-            if(err){
-                console.log(err);
-            }
-            var statusboard = [];
-            if(status){
-                for(var k=0;k<status.statusboard.length;k++){
-                    statusboard.push(status.statusboard[k]);
+        //Load the alerts and vehicles from the statusboard collection
+        StatusBoard.findOne({ 'mission' : mission }, 
+            { statusboard : 1, vehiclecolors : 1, _id : 0}, function(err, status) {
+
+                if(err){
+                    console.log(err);
                 }
-            }
-            res.send(statusboard);
-        });
-    });
 
-
-    //Load VehicleColors
-    app.get('/loadVehicleColors', function(req, res){
-
-        var mission = req.query.missionname;
-        //Load the vehicle color status from the statusboard collection
-        StatusBoard.findOne({ 'mission' : mission }, function(err, status) {
-            if(err){
-                console.log(err);
-            }
-            var vehiclecolors = [];
-            if(status){
-                for(var k=0;k<status.vehiclecolors.length;k++){
-                    vehiclecolors.push(status.vehiclecolors[k]);
-                }
-            }
-            res.send(vehiclecolors);
-        });
+                res.send(status);
+            });
     });
 
 };

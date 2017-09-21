@@ -26,6 +26,9 @@ app
     }
     var mission = dashboardService.getCurrentMission();
 
+    //statusboard from the database is saved in this variable
+    var alarmBoard = {};
+
     function saveAlerts(statusdata,vehicleColors){
         return $http({
             url: "/saveAlerts",
@@ -46,19 +49,12 @@ app
         });
     }
 
-    function loadVehicleColors(){
-        return $http({
-            url: "/loadVehicleColors", 
-            method: "GET",
-            params: {"missionname" : mission.missionName}
-        });
-    }
-
     //set the alerts for the alerts board from the database
     function setAlertsTable(){
-        loadAlerts().then(function(response) {
-            if(response.data.length > 0){
-                var uniquetemparray = uniqBy(response.data,JSON.stringify);
+        if(! dashboardService.isEmpty(alarmBoard)){
+            var statusboard = alarmBoard.statusboard;
+            if(statusboard.length > 0){
+                var uniquetemparray = uniqBy(statusboard,JSON.stringify);
                 var byDate = uniquetemparray.slice(0);
 
                 //Sort the array keeping the latest alerts to the first
@@ -66,15 +62,12 @@ app
                     return b.timestamp - a.timestamp;
                 });
 
-
                 for(var k=0;k<masterAlarmColors.length;k++){
                     for(var j=0;j<byDate.length;j++){
                         if(masterAlarmColors[k].vehicle === byDate[j].vehicle && 
                             masterAlarmColors[k].color === colorValues.healthycolor){
                             //code to disable the row
                             byDate[j].rowstyle = colorValues.inactivecolor;
-                        }else {
-                           //byDate[j].rowstyle = colorValues.activecolor; 
                         }
                     }
                 }
@@ -83,8 +76,7 @@ app
             }else {
                 alarmpanel.statustable = [];
             }
-        }).catch(function(error){
-        });
+        }
     }
 
     //Get the alerts for the alerts board
@@ -145,31 +137,35 @@ app
 
     function setGlowingEffect(color,i,vehicle,contents){
         //check vehiclecolors status from db and set
-        loadVehicleColors().then(function(response) {
-            if(response.data.length > 0){
 
-                if(color.background === "#FF0000"){
-                    masteralarmstatus.checkedstatus[i] = false; 
-                    if(response.data[i].status === true){
-                        contents[i].ackStatus = true;
-                        masteralarmstatus.colorclasses[i] = "buttonNone";   
-                    }else{
-                        masteralarmstatus.colorclasses[i] = "buttonred";
-                    }
-                }else if(color.background === "#FFFF00"){
-                    masteralarmstatus.checkedstatus[i] = false;
-                    if(response.data[i].status === true) {
-                         contents[i].ackStatus = true;
-                        masteralarmstatus.colorclasses[i] = "buttonNone";
+        loadAlerts().then(function(response) {
+            alarmBoard = response.data;
+
+            if(! dashboardService.isEmpty(alarmBoard)){
+                var vehiclecolors = alarmBoard.vehiclecolors;
+                if(vehiclecolors.length > 0){
+                    if(color.background === "#FF0000"){
+                        masteralarmstatus.checkedstatus[i] = false;
+                        if(vehiclecolors[i].status === true){
+                            contents[i].ackStatus = true;
+                            masteralarmstatus.colorclasses[i] = "buttonNone";
+                        }else{
+                            masteralarmstatus.colorclasses[i] = "buttonred";
+                        }
+                    }else if(color.background === "#FFFF00"){
+                        masteralarmstatus.checkedstatus[i] = false;
+                        if(vehiclecolors[i].status === true) {
+                             contents[i].ackStatus = true;
+                            masteralarmstatus.colorclasses[i] = "buttonNone";
+                        }else {
+                            masteralarmstatus.colorclasses[i] = "buttonyellow";
+                        }
                     }else {
-                        masteralarmstatus.colorclasses[i] = "buttonyellow";
-                    }           
-                }else {
-                    masteralarmstatus.colorclasses[i] = "buttonNone";
-                    masteralarmstatus.checkedstatus[i] = true;  
+                        masteralarmstatus.colorclasses[i] = "buttonNone";
+                        masteralarmstatus.checkedstatus[i] = true;
+                    }
                 }
             }
-        }).catch(function(error){
         });
     }
 
@@ -196,15 +192,11 @@ app
     }
 
 	return {
-        //alarmpanel : alarmpanel,
         getStatusTable : getStatusTable,
-        //getHighPriorityColor : getHighPriorityColor,
         setSubSystemColors : setSubSystemColors,
         getMasterAlarmColors : getMasterAlarmColors,
         setAlertsTable : setAlertsTable,
-        //uniqBy : uniqBy
         saveAlerts : saveAlerts,
-        loadAlerts : loadAlerts,
-        loadVehicleColors : loadVehicleColors
+        loadAlerts : loadAlerts
 	}
 }]);
