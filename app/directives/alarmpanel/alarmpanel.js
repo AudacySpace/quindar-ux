@@ -8,19 +8,23 @@ app.directive('alarmpanel',function() {
     }; 
 });
 
-app.controller('AlarmPanelCtrl',function ($scope,$window,$element,$interval,dashboardService,datastatesService,userService,gridService,statusboardService){  
+app.controller('AlarmPanelCtrl',
+    function ($scope,$interval,dashboardService,datastatesService,userService,statusboardService){ 
     
     var telemetry = dashboardService.telemetry;
     var flexprop = 100;
     $scope.alarmpanel = statusboardService.getStatusTable();//status board current alerts;
-    var time,name,callsign,ack = "";
+    var time, ack = "";
+    var name = userService.getUserName();
+    var callsign = userService.getCurrentCallSign();
     $scope.contents = [];
     $scope.masteralarmstatus = statusboardService.getMasterAlarmColors();
     $scope.class = []; // for glowing effect
     $scope.checked = []; //to enable or disable a button's clickable functionality
     $scope.statusboard = $scope.widget.settings.statusboard;//settings menu button
     var currentMission = dashboardService.getCurrentMission();
-    var vehicleColors = [];
+    var vehicleColors = []; //contains all the vehicles to be displayed for the mission
+    
     getVehicles();
 
     //Function to display master alarm and its sub systems
@@ -42,8 +46,9 @@ app.controller('AlarmPanelCtrl',function ($scope,$window,$element,$interval,dash
                                             "categoryColors": [],
                                             "tableArray":[],
                                             "subCategoryColors" :[],
-                                             "ackStatus":false
+                                            "ackStatus":false
                                         });
+                                        vehicleColors.push({"vehicle":key,"status":false});
                                     }
                                 }
                                 if($scope.contents.length > 0){   
@@ -63,41 +68,55 @@ app.controller('AlarmPanelCtrl',function ($scope,$window,$element,$interval,dash
 
     //Function to get colors of each telemetry data item of each vehicle's sub category
     function updateColors(){
-        time = dashboardService.getTime(0);
-        name = userService.getUserName();
-        callsign = userService.getCurrentCallSign();
-
         var alowValue,ahighValue,dataValue,wlowValue,whighValue,valueType;
         var newtablearray = [];
-        vehicleColors = [];
+
+        time = dashboardService.getTime(0);
 
         for(var i=0;i<$scope.contents.length;i++){
             $scope.contents[i].tableArray = [];
             $scope.contents[i].subCategoryColors = [];
             if($scope.contents[i].vehicle && dashboardService.isEmpty(telemetry) === false){
+                var vehicle = $scope.contents[i].vehicle;
                 if($scope.contents[i].categories.length > 0){
-                    for(var j=0;j<$scope.contents[i].categories.length;j++){
-                        for(var key in telemetry[$scope.contents[i].vehicle][$scope.contents[i].categories[j]]){
-                            if(telemetry[$scope.contents[i].vehicle][$scope.contents[i].categories[j]].hasOwnProperty(key)) {
-                                for(var keyval in telemetry[$scope.contents[i].vehicle][$scope.contents[i].categories[j]][key] ){
-                                    if(telemetry[$scope.contents[i].vehicle][$scope.contents[i].categories[j]][key].hasOwnProperty(keyval)){
-                                        alowValue = telemetry[$scope.contents[i].vehicle][$scope.contents[i].categories[j]][key][keyval].alarm_low;
-                                        ahighValue = telemetry[$scope.contents[i].vehicle][$scope.contents[i].categories[j]][key][keyval].alarm_high;
-                                        dataValue = telemetry[$scope.contents[i].vehicle][$scope.contents[i].categories[j]][key][keyval].value;
-                                        wlowValue = telemetry[$scope.contents[i].vehicle][$scope.contents[i].categories[j]][key][keyval].warn_low;
-                                        whighValue = telemetry[$scope.contents[i].vehicle][$scope.contents[i].categories[j]][key][keyval].warn_high;
-                                        valueType = typeof telemetry[$scope.contents[i].vehicle][$scope.contents[i].categories[j]][key][keyval].value;
+                    var categories = $scope.contents[i].categories;
+                    for(var j=0;j<categories.length;j++){
+                        for(var key in telemetry[vehicle][categories[j]]){
+                            if(telemetry[vehicle][categories[j]].hasOwnProperty(key)) {
+                                for(var keyval in telemetry[vehicle][categories[j]][key] ){
+                                    if(telemetry[vehicle][categories[j]][key].hasOwnProperty(keyval)){
+                                        var telemetryValue = telemetry[vehicle][categories[j]][key][keyval];
+                                        alowValue = telemetryValue.alarm_low;
+                                        ahighValue = telemetryValue.alarm_high;
+                                        dataValue = telemetryValue.value;
+                                        wlowValue = telemetryValue.warn_low;
+                                        whighValue = telemetryValue.warn_high;
+                                        valueType = typeof telemetryValue.value;
 
-                                        var status = datastatesService.getDataColorBound(alowValue,ahighValue,dataValue,wlowValue,whighValue,valueType);
+                                        //get colors from datastatesService
+                                        var status = datastatesService.getDataColorBound(alowValue,ahighValue,
+                                            dataValue,wlowValue,whighValue,valueType);
+                                        
                                         $scope.contents[i].subCategoryColors.push(status.color);
-                                        var vehicle = $scope.contents[i].vehicle;
-                                        var subsystem = $scope.contents[i].categories[j];
-                                        var channel = vehicle+"."+subsystem+"."+key+"."+keyval;
+
+                                        var subsystem = categories[j];
+                                        var channel = vehicle + "." + subsystem + "." + key + "." + keyval;
                                         var timestamp = Math.round(time.today/1000);
                                         ack = "";
+
                                         if(status.alert === "ALARM" || status.alert === "CAUTION"){
                                             $scope.contents[i].ackStatus = false; 
-                                            $scope.contents[i].tableArray.push({"alert":status.alert,"bound":status.bound,"vehicle":vehicle,"time":time.utc,"channel":channel,"ack":ack,"timestamp":timestamp});  
+                                            $scope.contents[i].tableArray.push(
+                                                {
+                                                    "alert" : status.alert,
+                                                    "bound" : status.bound,
+                                                    "vehicle" : vehicle,
+                                                    "time" : time.utc,
+                                                    "channel" : channel,
+                                                    "ack" : ack,
+                                                    "timestamp" : timestamp
+                                                }
+                                            );  
                                         }
                                     }   
                                 }
@@ -105,23 +124,26 @@ app.controller('AlarmPanelCtrl',function ($scope,$window,$element,$interval,dash
                         }
                     }
                 }
-              newtablearray = newtablearray.concat($scope.contents[i].tableArray);
+                newtablearray = newtablearray.concat($scope.contents[i].tableArray);
             }
-            vehicleColors.push({"vehicle":$scope.contents[i].vehicle,"status":false});
+            vehicleColors[i].status = false;
         }
+
+        //save alerts if any in newtablearray
         if(newtablearray.length > 0 && vehicleColors.length > 0){
-            gridService.saveAlerts(newtablearray,vehicleColors); 
+            statusboardService.saveAlerts(newtablearray,vehicleColors); 
         }
+
+        //Load alerts in the table and set sub system colors
         if($scope.contents.length > 0){
-            //gridService.saveAlerts(newtablearray,vehicleColors); 
-            statusboardService.setSubSystemColors($scope.contents);//Function call to set sub system colors   
+            statusboardService.setSubSystemColors($scope.contents);
+            statusboardService.setAlertsTable();  
         }
-        statusboardService.loadAlerts(); 
     }
 
     $scope.addtablerow = function(veh,$index,color){
         var newArray = [];
-        ack = name+" - "+callsign;
+        ack = name + " - " + callsign;
         var len = $scope.contents[$index].tableArray.length;
 
         if(color.background === "#FF0000" || color.background === "#FFFF00"){
@@ -140,11 +162,7 @@ app.controller('AlarmPanelCtrl',function ($scope,$window,$element,$interval,dash
             newArray.push($scope.contents[$index].tableArray[i]); 
         }
 
-        gridService.saveAckAlerts(newArray,vehicleColors)
-            .then(function success(response) {
-
-            },function error(response){
-        });
+        statusboardService.saveAlerts(newArray,vehicleColors);
     }
 
     $scope.$on("$destroy", 
