@@ -1,6 +1,5 @@
-app
-.factory('gridService', ['$http', '$sessionStorage', '$window', 'userService', 
-    function($http, $sessionStorage, $window, userService) { 
+
+function gridService ($http, $sessionStorage, $window, userService) { 
     var gridsterOptions = {
         margins: [20, 20],
         columns: 8,
@@ -363,4 +362,7 @@ app
         getMissionImage : getMissionImage,
         loadMaps : loadMaps
 	}
-}]);
+}
+
+app
+.factory('gridService', gridService); 
