@@ -3,11 +3,10 @@ app
     return {
         restrict: 'E',
         templateUrl:'./directives/systemmap/systemmapsettings.html',
-        controller: function($scope, dashboardService, $interval,gridService){
-
+        controller: function($scope, dashboardService, gridService){
 
         	$scope.mission = dashboardService.getCurrentMission();
-
+ 
         	loadSystemMaps();
 
         	function loadSystemMaps(){
@@ -38,8 +37,7 @@ app
 					for(var i=0;i<$scope.images.length;i++){
 						if($scope.images[i].imageid === $scope.selected.imageid){
 							widget.settings.imageid = $scope.images[i].imageid ;
-							widget.settings.image = $scope.images[i].image;
-							widget.settings.imglocation = 'data:image/gif;base64,'+widget.settings.image; 
+							widget.settings.imglocation = 'data:image/gif;base64,'+$scope.images[i].image; 
 							widget.settings.contents = $scope.images[i].contents;
 						}
 					}
