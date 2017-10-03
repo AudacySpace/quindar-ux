@@ -44,5 +44,5 @@ app.controller('SystemMapCtrl', function ($scope, dashboardService, $interval, d
 	// 		$interval.cancel( $scope.interval );
 	// 	}
 	// );  
+}
 
-});

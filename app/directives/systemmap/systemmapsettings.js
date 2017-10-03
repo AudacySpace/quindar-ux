@@ -38,6 +38,7 @@ app
 						if($scope.images[i].imageid === $scope.selected.imageid){
 							widget.settings.imageid = $scope.images[i].imageid ;
 							widget.settings.imglocation = 'data:image/gif;base64,'+$scope.images[i].image; 
+							widget.settings.image = $scope.images[i].image;
 							widget.settings.contents = $scope.images[i].contents;
 						}
 					}
