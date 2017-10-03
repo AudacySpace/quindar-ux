@@ -26,6 +26,7 @@ app.controller('SystemMapCtrl', function ($scope, dashboardService, $interval, d
         dServiceObjVal = newVal; 
     },true);
 
+    $scope.widget.settings.imglocation = "./directives/systemmap/image2.1.jpg";
     function updateSystemMap(){
 
     //Implement when data is available.
@@ -44,5 +45,5 @@ app.controller('SystemMapCtrl', function ($scope, dashboardService, $interval, d
 	// 		$interval.cancel( $scope.interval );
 	// 	}
 	// );  
-}
+});
 
