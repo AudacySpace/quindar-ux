@@ -26,7 +26,7 @@ module.exports = function(config) {
       './node_modules/angular-sanitize/angular-sanitize.js',                 // loads our modules for tests
       './node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',                 // loads our modules for tests
       './node_modules/angular-ui-select/select.js',                 // loads our modules for tests
-      './node_modules/ngStorage/ngStorage.js',                 // loads our modules for tests
+      './node_modules/ngstorage/ngStorage.js',                 // loads our modules for tests
       './public/scripts/gridster/angular-gridster.js',
       './public/scripts/angular-prompt.js',
       './public/scripts/datetimepicker.js',
@@ -87,7 +87,26 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    //browsers: ['Chrome'],
+    browsers: ['PhantomJS', 'PhantomJS_custom'],
+    // you can define custom flags
+    customLaunchers: {
+      'PhantomJS_custom': {
+        base: 'PhantomJS',
+        options: {
+          windowName: 'my-window',
+          settings: {
+            webSecurityEnabled: false
+          },
+        },
+        flags: ['--load-images=true'],
+        debug: true
+      }
+    },
+    phantomjsLauncher: {
+      // Have phantomjs exit if a ResourceError is encountered (useful if karma exits without killing phantom)
+      exitOnResourceError: true
+    },
 
 
     // Continuous Integration mode
