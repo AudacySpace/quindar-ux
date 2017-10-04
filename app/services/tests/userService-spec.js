@@ -169,7 +169,7 @@ describe('Testing userService', function () {
     		.respond(200, {});
 
     	userService.setAllowedRoles(windowMock.user, roles).then( function(response){
-        	expect(response.status).toBe(400);
+        	expect(response.status).toBe(200);
     	});
 
     	httpBackend.flush();
