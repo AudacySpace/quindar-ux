@@ -26,17 +26,18 @@ app.controller('SystemMapCtrl', function ($scope, dashboardService, $interval, d
         dServiceObjVal = newVal; 
     },true);
 
-    $scope.widget.settings.imglocation = "./directives/systemmap/image2.1.jpg";
+    //default image on adding qwidget for the first time.
+    $scope.widget.settings.imglocation = "/media/systemmaps/sysmap.jpg";
     function updateSystemMap(){
 
-    //Implement when data is available.
-        //0.Uncomment interval call to updateSystemMap
-    	//1.GET image data of the selected image from database.
-    	//2.SET mission name,sub system name ,subcategory name and data id from image data
-    	//3.Create a string datavalue to form an argument to dashboardService.getData(datavalue);
-    	//4.The datavalue should be a concatenated string mission.subsystem.subcategory.dataid;
-    	//5.GET data value of each data id from telemetry collection and check the data state color;
-    	//6.SET the value{{tlmdata.value}} and its color{{tlmdata.datacolor}} for display on the selected map at the designated area.
+        //Implement when data is available.
+            //0.Uncomment interval call to updateSystemMap
+        	//1.GET image data of the selected image from database.
+        	//2.SET mission name,sub system name ,subcategory name and data id from image data
+        	//3.Create a string datavalue to form an argument to dashboardService.getData(datavalue);
+        	//4.The datavalue should be a concatenated string mission.subsystem.subcategory.dataid;
+        	//5.GET data value of each data id from telemetry collection and check the data state color;
+        	//6.SET the value{{tlmdata.value}} and its color{{tlmdata.datacolor}} for display on the selected map at the designated area.
 
     }
 
