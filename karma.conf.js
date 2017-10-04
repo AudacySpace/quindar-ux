@@ -87,31 +87,19 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    //browsers: ['Chrome'],
-    browsers: ['PhantomJS', 'PhantomJS_custom'],
-    // you can define custom flags
+    browsers: ['Chrome_without_sandbox'],
+
     customLaunchers: {
-      'PhantomJS_custom': {
-        base: 'PhantomJS',
-        options: {
-          windowName: 'my-window',
-          settings: {
-            webSecurityEnabled: false
-          },
-        },
-        flags: ['--load-images=true'],
-        debug: true
+      Chrome_without_sandbox: {
+        base: 'Chrome',
+        flags: ['--no-sandbox'], // with sandbox it fails under Docker
+        displayName: 'Chrome w/o sandbox'
       }
     },
-    phantomjsLauncher: {
-      // Have phantomjs exit if a ResourceError is encountered (useful if karma exits without killing phantom)
-      exitOnResourceError: true
-    },
-
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: true,
 
     // Concurrency level
     // how many browser should be started simultaneous
