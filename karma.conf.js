@@ -15,18 +15,18 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      './node_modules/angular/angular.js',                             // angular
-      './node_modules/angular-ui-router/release/angular-ui-router.js', // ui-router
-      './node_modules/angular-mocks/angular-mocks.js',                 // loads our modules for tests
-      './node_modules/angular-aria/angular-aria.js',                 // loads our modules for tests
-      './node_modules/angular-route/angular-route.js',                 // loads our modules for tests
-      './node_modules/angular-animate/angular-animate.js',                 // loads our modules for tests
-      './node_modules/angular-messages/angular-messages.js',                 // loads our modules for tests
-      './node_modules/angular-material/angular-material.js',                 // loads our modules for tests
-      './node_modules/angular-sanitize/angular-sanitize.js',                 // loads our modules for tests
-      './node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',                 // loads our modules for tests
-      './node_modules/angular-ui-select/select.js',                 // loads our modules for tests
-      './node_modules/ngstorage/ngStorage.js',                 // loads our modules for tests
+      './node_modules/angular/angular.js',
+      './node_modules/angular-ui-router/release/angular-ui-router.js',
+      './node_modules/angular-mocks/angular-mocks.js',
+      './node_modules/angular-aria/angular-aria.js',
+      './node_modules/angular-route/angular-route.js',
+      './node_modules/angular-animate/angular-animate.js',
+      './node_modules/angular-messages/angular-messages.js',
+      './node_modules/angular-material/angular-material.js',
+      './node_modules/angular-sanitize/angular-sanitize.js',
+      './node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js',
+      './node_modules/angular-ui-select/select.js',
+      './node_modules/ngstorage/ngStorage.js',
       './public/scripts/gridster/angular-gridster.js',
       './public/scripts/angular-prompt.js',
       './public/scripts/datetimepicker.js',
@@ -37,17 +37,7 @@ module.exports = function(config) {
       './app/components/**/*.js',
       './app/services/*.js',
       './app/services/tests/*.js',
-      './app/directives/**/*.js',                                   
-      // './app/services/userService.js',
-      // './app/components/grid/grid.js',
-      // './app/services/tests/userService-spec.js',
-      // './app/components/grid/grid.spec.js',
-      // './app/components/saveMenu/saveMenu.js',
-      // './app/components/saveMenu/saveMenu.spec.js',
-      // './app/directives/clock/clock.js',
-      // './app/directives/clock/clock.spec.js',
-      // './app/directives/clock/clocksettings.js',
-      // './app/directives/clock/clocksettings.spec.js'
+      './app/directives/**/*.js'
     ],
 
 
