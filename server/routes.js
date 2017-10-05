@@ -14,6 +14,8 @@ var configRole = require('./config/role');
 
 var StatusBoard = require('./models/statusboard');
 
+var Imagemap = require('./models/imagemap');
+
 // normal routes ===============================================================
 
     // show the home page (will also have our login links)
@@ -387,6 +389,25 @@ var StatusBoard = require('./models/statusboard');
 
                 res.send(status);
             });
+    });
+
+     //Get systemmaps list
+    app.get('/loadSystemMaps', function(req, res){
+        var mission =  req.query.mission;
+        var allMaps = [];
+
+        Imagemap.findOne({'mission':mission}, function(err, mapdata) {
+            if (err) {
+                console.log("Error finding map data in DB: " + err);
+                throw err;
+            }
+            if(mapdata){
+                for(var i=0;i<mapdata.uploadedfiles.length;i++){
+                    allMaps.push(mapdata.uploadedfiles[i]);
+                }
+                res.send(allMaps);
+            }
+        });
     });
 
 };

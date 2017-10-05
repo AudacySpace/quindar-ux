@@ -162,7 +162,26 @@ app
         },
         saveLoad: false,
         delete: false
-     }];
+     },   
+    {
+        sizeY: 3,
+        sizeX: 8,
+        name: "System Map",
+        directive: "systemmap",
+        directiveSettings: "systemmapsettings",
+        id: "systemmap",
+        icon: {
+            id: "systemmap",
+            type: "fa-map-o"
+        },
+        main: true,
+        settings: {
+            active: false,
+        },
+        saveLoad: false,
+        delete: false
+     }
+     ];
 
     function checkDefaultDashboard(){
 
@@ -310,6 +329,22 @@ app
         }
     }
 
+    function loadMaps(){
+        return $http({
+            url: "/loadSystemMaps", 
+            method: "GET",
+            params: {"mission" :$sessionStorage.dashboard["current"].mission.missionName}
+        });
+    }
+
+    function loadMaps(){
+        return $http({
+            url: "/loadSystemMaps", 
+            method: "GET",
+            params: {"mission" :$sessionStorage.dashboard["current"].mission.missionName}
+        });
+    }
+
 	return {
         gridsterOptions : gridsterOptions,
         clear : clear,
@@ -325,6 +360,7 @@ app
         save : save,
         load : load,
         showLayout : showLayout,
-        getMissionImage : getMissionImage
+        getMissionImage : getMissionImage,
+        loadMaps : loadMaps
 	}
 }]);
