@@ -336,14 +336,6 @@ function gridService ($http, $sessionStorage, $window, userService) {
         });
     }
 
-    function loadMaps(){
-        return $http({
-            url: "/loadSystemMaps", 
-            method: "GET",
-            params: {"mission" :$sessionStorage.dashboard["current"].mission.missionName}
-        });
-    }
-
 	return {
         gridsterOptions : gridsterOptions,
         clear : clear,
