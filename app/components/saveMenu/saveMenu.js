@@ -4,7 +4,7 @@ app
     	widget: '='
     },
     templateUrl: "../components/saveMenu/save.html",
-    controller: function(gridService){
+    controller: function(){
     	var vm = this;
 
 		vm.closeSaveLoadSettings = function(widget){

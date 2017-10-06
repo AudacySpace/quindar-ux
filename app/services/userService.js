@@ -1,28 +1,28 @@
 app
-.factory('userService', ['$http', function($http) { 
+.factory('userService', ['$http', '$window', function($http, $window) { 
     var userRole = {
-        cRole : user.currentRole
+        cRole : $window.user.currentRole
     };
 
     function getUserName() {
-        if(user.google && user.google.name) {
-            return user.google.name;
+        if($window.user.google && $window.user.google.name) {
+            return $window.user.google.name;
         } else {
             return "";
         }
     }
 
     function getUserEmail() {
-        if(user.google && user.google.email) {
-            return user.google.email;
+        if($window.user.google && $window.user.google.email) {
+            return $window.user.google.email;
         } else {
             return "";
         }
     }
 
     function getCurrentCallSign() {
-        if(user.currentRole && user.currentRole.callsign) {
-            return user.currentRole.callsign;
+        if($window.user.currentRole && $window.user.currentRole.callsign) {
+            return $window.user.currentRole.callsign;
         } else {
             return "";
         }
@@ -32,7 +32,7 @@ app
         return $http({
             url: "/getCurrentRole", 
             method: "GET",
-            params: {"email": user.google.email}
+            params: {"email": $window.user.google.email}
         });
     }
 
@@ -40,7 +40,7 @@ app
         return $http({
             url: "/getAllowedRoles", 
             method: "GET",
-            params: {"email": user.google.email}
+            params: {"email": $window.user.google.email}
         });      
     }
 

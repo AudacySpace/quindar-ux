@@ -1,7 +1,7 @@
 angular.module('app')
 .component('grid', {
     templateUrl: "../components/grid/grid.html",
-    controller: function(gridService,$scope,$sessionStorage){
+    controller: function(gridService){
     	var vm = this;
 		vm.gridsterOptions = gridService.gridsterOptions;
 	   	vm.dashboard = gridService.getDashboard();

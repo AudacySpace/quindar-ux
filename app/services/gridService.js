@@ -1,6 +1,5 @@
-app
-.factory('gridService', ['$http', '$sessionStorage', '$window', 'userService', 
-    function($http, $sessionStorage, $window, userService) { 
+
+function gridService ($http, $sessionStorage, $window, userService) { 
     var gridsterOptions = {
         margins: [20, 20],
         columns: 8,
@@ -337,14 +336,6 @@ app
         });
     }
 
-    function loadMaps(){
-        return $http({
-            url: "/loadSystemMaps", 
-            method: "GET",
-            params: {"mission" :$sessionStorage.dashboard["current"].mission.missionName}
-        });
-    }
-
 	return {
         gridsterOptions : gridsterOptions,
         clear : clear,
@@ -363,4 +354,7 @@ app
         getMissionImage : getMissionImage,
         loadMaps : loadMaps
 	}
-}]);
+}
+
+app
+.factory('gridService', gridService); 

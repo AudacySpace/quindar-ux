@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "stop": "pkill --signal SIGINT node"
+    "stop": "pkill --signal SIGINT node",
+    "test": "karma start karma.conf.js"
   },
   "dependencies": {
     "body-parser": "~1.15.2",

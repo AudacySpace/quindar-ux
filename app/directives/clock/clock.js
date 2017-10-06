@@ -22,9 +22,7 @@ app.controller('ClockCtrl', function($scope, dashboardService, datastatesService
 		dServiceObj = newVal; 
     },true);
 
-    checkForClockData();
-
-    function checkForClockData(){
+    $scope.checkForClockData = function(){
     	if(!$scope.widget.settings.clocks){
 			$scope.widget.settings.clocks = [{
 				name : 'UTC',
@@ -49,7 +47,9 @@ app.controller('ClockCtrl', function($scope, dashboardService, datastatesService
 		}
 	}
 
-	function updateClock(){
+	$scope.checkForClockData();
+
+	$scope.updateClock = function(){
 		for (var i=0; i<$scope.widget.settings.clocks.length; i++){
 			
 			if(typeof $scope.clocks[i] !== "object"){
@@ -106,7 +106,7 @@ app.controller('ClockCtrl', function($scope, dashboardService, datastatesService
 		}
 	}
 
-	$scope.interval = $interval(updateClock, 500);
+	$scope.interval = $interval($scope.updateClock, 500);
 
 	$scope.remove = function($index) {
 		$scope.widget.settings.clocks.splice($index, 1);
