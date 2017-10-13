@@ -4,8 +4,6 @@ app
         restrict: 'E',
         templateUrl:'./directives/systemmap/systemmapsettings.html',
         controller: function($scope, dashboardService, gridService){
-
-        	$scope.mission = dashboardService.getCurrentMission();
  
         	loadSystemMaps();
 
@@ -15,7 +13,6 @@ app
         		});
         	}
 
-        	$scope.widget.settings.tlmdisplay = false;
 			$scope.isLoaded = false;
 
 			checkForImageModel();
