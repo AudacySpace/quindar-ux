@@ -5,8 +5,8 @@ app
         var vm = this;
   		vm.name = userService.getUserName();
         vm.email = userService.getUserEmail();
-        vm.userRole = getUserRole();
         var dashboard = gridService.getDashboard();
+        getUserRole();
 
         vm.addWidget = function() {
             gridService.addWidget();
@@ -93,7 +93,12 @@ app
             $uibModal.open({
                 templateUrl: './components/rightSidebar/adminModal.html',
                 controller: 'adminCtrl',
-                controllerAs: '$ctrl'
+                controllerAs: '$ctrl',
+                resolve: {
+                    mission: function () {
+                        return dashboardService.getCurrentMission();
+                    }
+                }
             }).result.then(
             function(response){
                 //handle modal close with response
@@ -115,14 +120,14 @@ app
 
         function getUserRole() {
             if ($window.innerWidth <= 768){
-                var role = {
-                    "name": "Observer",
-                    "callsign": "VIP"
+                vm.userRole = {
+                    cRole : {
+                        "name": "Observer",
+                        "callsign": "VIP"
+                    }
                 };
-                return role;
             } else {
-                var role = userService.userRole;
-                return role.cRole;
+                vm.userRole = userService.userRole;
             }
         }
     
@@ -137,11 +142,12 @@ app.controller('docController', ['$scope', 'close', function($scope, close) {
 
 }]);
 
-app.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userService) {
+app.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userService, mission) {
     var $ctrl = this;
 
     $ctrl.users = [];
     $ctrl.roles = [];
+    $ctrl.mission = mission.missionName;
 
     userService.getRoles()
     .then(function(response) {
@@ -160,7 +166,7 @@ app.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userSer
         }
     });
 
-    userService.getUsers()
+    userService.getUsers($ctrl.mission)
     .then(function(response) {
         if(response.status == 200) {
             var users = response.data;
