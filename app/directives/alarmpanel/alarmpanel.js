@@ -16,7 +16,7 @@ app.controller('AlarmPanelCtrl',
     $scope.alarmpanel = statusboardService.getStatusTable();//status board current alerts;
     var time, ack = "";
     var name = userService.getUserName();
-    var callsign = userService.getCurrentCallSign();
+    var role = userService.userRole;
     $scope.contents = [];
     $scope.masteralarmstatus = statusboardService.getMasterAlarmColors();
     $scope.class = []; // for glowing effect
@@ -143,7 +143,7 @@ app.controller('AlarmPanelCtrl',
 
     $scope.addtablerow = function(veh,$index,color){
         var newArray = [];
-        ack = name + " - " + callsign;
+        ack = name + " - " + role.cRole.callsign;
         var len = $scope.contents[$index].tableArray.length;
 
         if(color.background === "#FF0000" || color.background === "#FFFF00"){

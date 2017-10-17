@@ -315,6 +315,10 @@ function gridService ($http, $sessionStorage, $window, userService) {
             var sessionimage = getMissionImage($sessionStorage.dashboard["current"].mission.missionName);
             $sessionStorage.dashboard["current"].mission.missionImage = sessionimage;
         }
+        userService.setMissionForUser(email, mname)
+        .then(function(response){
+            userService.userRole.cRole = response.data.currentRole;
+        });
     }
 
     function getMissionImage(mname){

@@ -41,7 +41,7 @@
                             <li>
                                 <a class="dropdown-toggle" id="username" data-toggle="dropdown" href="#"
                                 >{{ $ctrl.name }}</a>
-                                <small id="callsign"> {{ $ctrl.callsign }} </small>
+                                <small id="callsign"> {{ $ctrl.role.cRole.callsign }} </small>
                                 <ul class="dropdown-menu logout-bar">
                                     <li ><a href="" ng-click="$ctrl.logout()" target="_self">Logout</a></li>
                                     <li ><a href="#" ng-click="$ctrl.showSettings()">Settings</a></li>

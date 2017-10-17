@@ -54,11 +54,12 @@ app
         });
     }
 
-    function getUsers() {
+    function getUsers(mission) {
         return $http({
-                url: "/getUsers", 
-                method: "GET"
-            });
+            url: "/getUsers",
+            method: "GET",
+            params: { "mission" : mission }
+        });
     }
 
     function getRoles() {
@@ -75,6 +76,15 @@ app
             data: {"email" : user.google.email, "roles" : roles}
         });
     }
+
+    //set mission name for user
+    function setMissionForUser(email, mission) {
+        return $http({
+            url: "/setMissionForUser",
+            method: "POST",
+            data: {"email" : email, "mission" : mission}
+        });
+    }
     
 	return {
         userRole : userRole,
@@ -86,6 +96,7 @@ app
         setCurrentRole : setCurrentRole,
         getUsers : getUsers,
         getRoles : getRoles,
-        setAllowedRoles : setAllowedRoles
+        setAllowedRoles : setAllowedRoles,
+        setMissionForUser : setMissionForUser
 	}
 }]);

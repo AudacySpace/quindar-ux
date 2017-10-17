@@ -12,7 +12,8 @@ var userSchema = mongoose.Schema({
     },
     grid : Array,
     currentRole : Object,
-    allowedRoles : Array
+    allowedRoles : Array,
+    mission: String
 
 });
 

@@ -212,9 +212,10 @@ var Imagemap = require('./models/imagemap');
 
     //Get Users list
     app.get('/getUsers', function(req, res){
+        var mission = req.query.mission;
         var allUsers = [];
 
-        User.find( {}, { google : 1, allowedRoles : 1, currentRole : 1 }, function(err, users) {
+        User.find( { 'mission' : mission }, { google : 1, allowedRoles : 1, currentRole : 1 }, function(err, users) {
             if(err){ 
                 console.log(err);
             }
@@ -407,6 +408,42 @@ var Imagemap = require('./models/imagemap');
                 }
                 res.send(allMaps);
             }
+        });
+    });
+
+    //set user's mission property and roles(if needed)
+    app.post('/setMissionForUser',function(req,res){
+        var email = req.body.email;
+        var mission = req.body.mission;
+
+        //count the number of users for this mission
+        User.count({ 'mission' : mission }, function(err, count) {
+            if(err){
+                console.log(err);
+            }
+
+            User.findOne({ 'google.email' : email }, function(err, user) {
+                if(err){
+                    console.log(err);
+                }
+
+                //If zero users for this mission, then assign user as Mission Director
+                if(count == 0){
+                    var userRole = {
+                        'name'     : configRole.roles['MD'].name,
+                        'callsign' : configRole.roles['MD'].callsign
+                    };
+
+                    user.currentRole = userRole;
+                    user.allowedRoles.push(userRole);
+                }
+                user.mission = mission;
+
+                user.save(function(err) {
+                    if (err) throw err;
+                    res.send(user);
+                });
+            });
         });
     });
 

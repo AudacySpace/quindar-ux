@@ -14,7 +14,7 @@ angular.module('app')
 		vm.telemetry = dashboardService.telemetry;
 		vm.name = userService.getUserName();
 		vm.email = userService.getUserEmail();
-		vm.callsign = userService.getCurrentCallSign();
+		vm.role = userService.userRole;
 		var dashboard = gridService.getDashboard();
 		var totalMissions = [];
 
@@ -69,7 +69,7 @@ angular.module('app')
 				controllerAs: '$ctrl'
 			}).result.then(function(response){
 				if(response) {
-					vm.callsign = response.callsign;
+					//vm.callsign = response.callsign;
 				}
 			},
 			function () {
