@@ -130,6 +130,7 @@ describe('Testing userService', function () {
     });
 
     it('userService should get all the users', function () {
+        var mission = "AZero";
     	var users;
     	var result = [{ 
     		_id: "594417df3d2dd966dcb43afd", 
@@ -137,12 +138,13 @@ describe('Testing userService', function () {
     			email: "chavi.malhotra@gmail.com", 
     			name: "Chavi Malhotra", 
     			id: "112313425445562239891"
-    		} 
+    		},
+            mission: "AZero"
     	}];
  
-        httpBackend.expectGET('/getUsers').respond(200, result);
+        httpBackend.expectGET('/getUsers?mission=AZero').respond(200, result);
  
-        userService.getUsers().then( function(response){
+        userService.getUsers("AZero").then( function(response){
         	users = response.data;
         	expect(response.status).toBe(200);
         	expect(users).toBeDefined();
@@ -153,7 +155,7 @@ describe('Testing userService', function () {
     	httpBackend.flush();
     });
 
-    it('userService should be able to post the current role of the user', function () {
+    it('userService should be able to set the allowed roles of the user', function () {
     	var roles = [
     		{
     			name: "Mission Director", 
@@ -173,6 +175,19 @@ describe('Testing userService', function () {
     	});
 
     	httpBackend.flush();
+    });
+
+    it('userService should be able to set the mission name for the user', function () {
+        var mission = "AZero";
+
+        httpBackend.expectPOST("/setMissionForUser")
+            .respond(200, {});
+
+        userService.setMissionForUser(windowMock.user.google.email, mission).then( function(response){
+            expect(response.status).toBe(200);
+        });
+
+        httpBackend.flush();
     });
  
 });
