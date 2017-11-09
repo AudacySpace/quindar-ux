@@ -108,6 +108,8 @@ label{
     background-color:#07D1EA;
     color:#fff;
     margin-right: 10px;
+    padding-left: 6px;
+    padding-right: 6px;
 }
 
 div.settingsMenu,div.deldatatable,div.saveloaddatatable{

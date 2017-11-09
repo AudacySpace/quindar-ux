@@ -16,6 +16,8 @@ var StatusBoard = require('./models/statusboard');
 
 var Imagemap = require('./models/imagemap');
 
+var Command = require('./models/command');
+
 // normal routes ===============================================================
 
     // show the home page (will also have our login links)
@@ -444,6 +446,43 @@ var Imagemap = require('./models/imagemap');
                     res.send(user);
                 });
             });
+        });
+    });
+
+    //save command in the database
+    app.post('/saveCommand',function(req,res){
+        var email = req.body.email;
+        var command = req.body.command;
+        var mission = req.body.mission;
+
+        var newCommand = new Command();
+        
+        newCommand.user = email;
+        newCommand.name = command.name;
+        newCommand.argument = command.argument;
+        newCommand.timestamp = command.timestamp;
+        newCommand.time = command.time;
+        newCommand.mission = mission;
+        newCommand.response = "";
+        newCommand.sent_to_satellite = false;
+
+        newCommand.save(function(err) {
+            if (err) throw err;
+
+            res.send(newCommand);
+        });
+    });
+
+    //get the command list for a particular mission
+    app.get('/getCommandList', function(req, res){
+        var mission = req.query.mission;
+
+        Command.find( { 'mission' : mission }, function(err, commands) {
+            if(err){ 
+                console.log(err);
+            }
+
+            res.send(commands);
         });
     });
 

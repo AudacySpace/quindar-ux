@@ -161,7 +161,7 @@ function gridService ($http, $sessionStorage, $window, userService) {
         },
         saveLoad: false,
         delete: false
-     },   
+    },   
     {
         sizeY: 3,
         sizeX: 8,
@@ -179,7 +179,26 @@ function gridService ($http, $sessionStorage, $window, userService) {
         },
         saveLoad: false,
         delete: false
-     }
+    },
+    {
+        sizeY: 3,
+        sizeX: 4,
+        name: "Command",
+        directive: "command",
+        directiveSettings: "commandsettings",
+        id: "command",
+        icon: {
+            id: "alarm",
+            type: "fa-window-maximize"
+        },
+        main: true,
+        settings: {
+            active: false,
+            commandlog: true
+        },
+        saveLoad: false,
+        delete: false
+    }
      ];
 
     function checkDefaultDashboard(){
