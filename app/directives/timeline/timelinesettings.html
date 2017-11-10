@@ -1,4 +1,4 @@
-<div class="saveloaddatatable mainclk">
+<div class="saveloaddatatable maintimeline">
 	<div class="settingstop">
         <div class="row settingsrightcol" style="display: table; height:23.33%;">
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
@@ -49,13 +49,13 @@
                     <label for="EventOrder">Event Order</label>
                 </div>
                 <div class="row settingsspace" style="display: table"></div>
-                    <div id="scrollable-container">
-                        <div class="sortable-row" as-sortable="sortableOptions" data-ng-model="itemsList.items1">
-                            <div ng-repeat="item in itemsList.items1" as-sortable-item>
-                                <div as-sortable-item-handle style="color:#000000">{{item.Label}}</div>
-                            </div>
+                <div id="scrollable-container">
+                    <div class="sortable-row" as-sortable="sortableOptions" data-ng-model="itemsList.items1">
+                        <div ng-repeat="item in itemsList.items1" as-sortable-item>
+                            <div as-sortable-item-handle style="color:#000000">{{item.Label}}</div>
                         </div>
                     </div>
+                </div>
             </div>
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
         </div>
@@ -70,7 +70,8 @@
 			<div class="row">
 				<div class="col-sm-1"></div>
 				<div class="col-sm-10 btndivider">
-					<button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="saveSettings(widget)">ADD</button>
+					<button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="saveSettings(widget)" ng-show="selected.type.value == 'Timezone'">ADD</button>
+                    <button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="saveSettings(widget)" ng-hide="selected.type.value == 'Timezone'">SAVE</button>
 					<button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="closeSettings(widget)">CLOSE</button>
 				</div>
 			</div>	
@@ -79,7 +80,7 @@
 </div>
 
 <!-- For Mobile Screens -->
-<div class="container mbl-clk">
+<div class="container mbl-timeline">
     <form>
         <label for="Type" class="mbl-label">Select Type</label>
         <div class="mbl-input-grp">
@@ -102,28 +103,32 @@
                 </ui-select-choices>
             </ui-select>
             <span ng-hide="selected.timezone" class="req-label"> Required </span>
-            <hr class="hr-double-col1-2-Timezone">
+            <hr class="hr-double-col1-2-timezone">
         </div>
-            <div ng-show="selected.type.value == 'Events'">
-                <div ng-dropdown-multiselect="" options="selectByGroupData" selected-model="selectByGroupModel" extra-settings="selectByGroupSettings" class="multidrpdown"></div>
-                <span ng-hide="selected.event"> Required </span>
-            </div>
-            <label for="Event Order" class="mbl-label" ng-show="selected.type.value == 'Events'">Event Order</label>
-                <div id="scrollable-container">
-                    <div class="sortable-row" as-sortable="sortableOptions" data-ng-model="itemsList.items1">
-                        <div ng-repeat="item in itemsList.items1" as-sortable-item>
-                            <div as-sortable-item-handle style="color:#000000">{{item.Label}}</div>
-                        </div>
+        <div ng-show="selected.type.value == 'Events'">
+            <div ng-dropdown-multiselect="" options="selectByGroupData" selected-model="selectByGroupModel" extra-settings="selectByGroupSettings" class="multidrpdown"></div>
+            <span ng-hide="selected.event" class="req-label"> Required </span>
+        </div>
+        <label for="Event Order" class="mbl-label" ng-show="selected.type.value == 'Events'">Event Order</label>
+        <div ng-show="selected.type.value == 'Events'">
+            <div id="scrollable-container">
+                <div class="sortable-row" as-sortable="sortableOptions" data-ng-model="itemsList.items1">
+                    <div ng-repeat="item in itemsList.items1" as-sortable-item>
+                        <div as-sortable-item-handle style="color:#000000">{{item.Label}}</div>
                     </div>
                 </div>
-        <hr class="hr-double-col1-2" ng-hide="selected.type.value == 'Timezone' || selected.type.value == 'EventGroup'">
-        <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveSettings(widget)">ADD</button>
+            </div>
+            <hr class="hr-double-col1-2-events">
+        </div>
+        <hr class="hr-double-col1-2" ng-hide="selected.type.value == 'Timezone' || selected.type.value == 'Events'">
+        <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveSettings(widget)" ng-show="selected.type.value == 'Timezone'">ADD</button>
+        <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveSettings(widget)" ng-hide="selected.type.value == 'Timezone'">SAVE</button>
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeSettings(widget)">CLOSE</button> 
     </form>
 </div>
 
 <!-- For Tablet Screens -->
-<div class="saveloaddatatable tablet-clk">
+<div class="saveloaddatatable tablet-timeline">
     <div class="settingstablettop">
         <div class="row settingstablet-col1-3el tablestyle">
             <div class="col-sm-1 tablecellstyle1"></div>
@@ -196,7 +201,8 @@
             <div class="row">
                 <div class="col-sm-1 tablecellstyle1"></div>
                 <div class="col-sm-10 btndivider tablecellstyle10">
-                    <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="saveSettings(widget)">ADD</button>
+                    <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="saveSettings(widget)" ng-show="selected.type.value == 'Timezone'">ADD</button>
+                    <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="saveSettings(widget)" ng-hide="selected.type.value == 'Timezone'">SAVE</button>
                     <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="closeSettings(widget)">CLOSE</button> 
                 </div>
                 <div class="col-sm-1 tablecellstyle1"></div>

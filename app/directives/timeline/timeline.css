@@ -1,146 +1,269 @@
-    #visualization {
-      box-sizing: border-box;
-      width: 100%;
-      height: 300px;
+#visualization {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+}
+div.vis-timeline.vis-bottom{
+/*    overflow:auto !important;*/
+}
+div.vis-item.vis-dot.vis-readonly{
+    border:none;
+}
+div.vis-item.vis-line.vis-readonly {
+    border:none;
+}
+div.vis-label.vis-nesting-group.collapsed,div.vis-label.vis-nesting-group.expanded{
+    background-color: grey;
+}
+div.vis-group.groupheader{
+    background-color: grey;
+    content: "\e259";
+}
+.vis-label.vis-nesting-group.collapsed:before {
+    content: "\203A" !important;
+    font-size: 22px;
+    font-weight: bold;
+    margin-left: 8px;
+}
+.vis-label.vis-nesting-group.expanded:before {
+    content: "\203A" !important;
+    font-size: 22px;
+    font-weight: bold;
+    margin-left: 8px;
+}
+.vis-inner {
+    padding-left:10px !important;
+}
+.datetime-input.datetime .display .placeholder {
+    font-size:14px !important;
+    line-height: 4em !important;
+}
+div#visualization div.vis-inner {
+    display:inline-flex !important;
+    min-width: 185px !important;
+}
+
+div.tzgroup div.vis-inner {
+    display:inline-flex !important;
+    min-width: 200px !important;
+}
+
+div.tzgroup div.vis-group{
+    background: #428bca;
+}
+
+div.event {
+    text-indent: -999px;
+}
+div.event:hover{
+    text-indent:0px;
+}
+
+.mbl-timeline {
+    display:none;
+}
+.tablet-timeline{
+    display:none;
+}
+.maintimeline span.btn.btn-default.form-control.ui-select-toggle{
+    outline: 0;
+    width:100%;
+}
+.maintimeline .ui-select-bootstrap>input.ui-select-search.form-control,#inlineFormInput {
+    border-radius:0px;
+}   
+.maintimeline .ui-select-bootstrap>.ui-select-choices, .ui-select-bootstrap>.ui-select-no-choice {
+    border-right:  1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-bottom:1px solid #ccc;;
+    width:100%;
+    border-radius: 0px;
+}
+
+div.multiselect-parent.btn-group.dropdown-multiselect,div.multiselect-parent.btn-group.dropdown-multiselect button.dropdown-toggle.ng-binding.ng-scope.btn.btn-default{
+    width:100% !important;
+    border-radius:0px !important;
+    text-align:left !important;
+}
+div.multiselect-parent.btn-group.dropdown-multiselect button.dropdown-toggle.ng-binding.ng-scope.btn.btn-default span.caret {
+    position: absolute;
+    height: 10px;
+    top: 50%;
+    right: 10px;
+    margin-top: -2px;
+}
+
+div.multiselect-parent.btn-group.dropdown-multiselect ul.dropdown-menu.dropdown-menu-form.ng-scope{
+    width:100% !important;
+    border-radius:0px !important;
+}
+div#scrollable-container{
+    height:100% !important;
+    overflow:auto !important;
+    border: solid 1px #fff;
+    background: #fff;
+}
+.as-sortable-item{
+    line-height: 1.8em !important
+    font-size:9px;
+    border-radius:0px !important;
+    width:50% !important;
+    background: grey !important;
+}
+
+/*Mobile screen styles*/
+@media only screen and (max-width: 599px) {
+    .mbl-timeline{
+       display:block;
     }
-    div.vis-item.vis-dot.vis-readonly{
-    	border:none;
+   .maintimeline{
+        display:none;
     }
-    div.vis-item.vis-line.vis-readonly {
-    	border:none;
+    .tablet-timeline{
+        display:none;
     }
-    .vis-item.itemMission{
-    	background-color: green;
-    	border-color:green;
-    	border-radius:0px;
+    .mbl-timeline span.btn.btn-default.form-control.ui-select-toggle{
+        outline: 0;
+        height: 25px;
+        width:100%;
+        padding:5px 10px;
+        font-size: 10px;
     }
-    .vis-item.itemContact{
-    	background-color: blue;
-    	border-color:blue;
-    	border-radius:0px;
-    }
-    .vis-item.itemEclipse{
-    	background-color: grey;
-    	border-color:grey;
-    	border-radius:0px;
-    }
-    div.vis-label.vis-nesting-group.collapsed,div.vis-label.vis-nesting-group.expanded{
-        background-color: grey;
-    }
-    div.vis-group.groupheader{
-        background-color: grey;
-        content: "\e259";
+    .mbl-timeline .ui-select-bootstrap>input.ui-select-search.form-control,#inlineFormInput {
+        height: 25px;
+        padding:2px 0px;
+        width:100%;
+        font-size: 10px;
+        border-radius:0px;
+    }   
+    .mbl-timeline .ui-select-bootstrap>.ui-select-choices{
+        border-right:  1px solid #ccc;
+        border-left: 1px solid #ccc;
+        border-bottom:1px solid #ccc;;
+        width:100%;
+        border-radius: 0px;
+        font-size: 10px;
     }
 
-    .vis-label.vis-nesting-group.collapsed:before {
-        content: "\203A" !important;
-        font-size: 22px;
-        font-weight: bold;
-        margin-left: 8px;
+    div.multiselect-parent.btn-group.dropdown-multiselect button.dropdown-toggle.ng-binding.ng-scope.btn.btn-default{
+        height:25px !important;
+        font-size:10px !important;
+        padding:5px 10px !important;
     }
 
-     .vis-label.vis-nesting-group.expanded:before {
-        content: "\203A" !important;
-        font-size: 22px;
-        font-weight: bold;
-        margin-left: 8px;
-     }
-
-     .vis-label.vis-nested-group.innerItem:before{
-/*        content: "\203A" !important;
-        font-size: 20px;
-        font-weight: bold;
-        margin-left: 8px;*/
-     }
-     .vis-inner {
-        padding-left:10px !important;
-     }
-
-     .datetime-input.datetime .display .placeholder {
-        font-size:14px !important;
-        line-height: 4em !important;
-     }
-     div#visualization div.vis-inner {
-        display:inline-flex !important;
-        min-width: 185px !important;
-     }
-
-    div.tzgroup div.vis-inner {
-        display:inline-flex !important;
-        min-width: 200px !important;
+    div.multiselect-parent.btn-group.dropdown-multiselect ul.dropdown-menu.dropdown-menu-form.ng-scope{
+        width:50% !important;
+        border-radius:0px !important;
     }
 
-    div.tzgroup div.vis-group{
-        background: #428bca;
+    div.multiselect-parent.btn-group.dropdown-multiselect ul.dropdown-menu.dropdown-menu-form.ng-scope,
+    div.multiselect-parent.btn-group.dropdown-multiselect ul.dropdown-menu.dropdown-menu-form.ng-scope li,
+    div.multiselect-parent.btn-group.dropdown-multiselect ul.dropdown-menu.dropdown-menu-form.ng-scope input{
+        font-size:8px !important;
     }
-
-    div.event {
-      text-indent: -999px;
+    div.multiselect-parent.btn-group.dropdown-multiselect ul.dropdown-menu.dropdown-menu-form.ng-scope input{
+        height:11px !important;
     }
-    div.event:hover{
-      text-indent:0px;
-    }
-    div.multidrpdown ul.dropdown-menu.dropdown-menu-form{
-      border-radius:0px !important;
-      min-width: 287px !important
-    }
-     div.multidrpdown button.dropdown-toggle {
-      min-width:287px !important;
-      border-radius: 0px !important;
-      text-align: left !important;
-    }
-
-    span.caret {
-      float:right !important;
-      margin-top: 7px !important;
-    }
-
-
-    /* Put your css in here */
-    .sortable-item,.sortable-placeholder {
-        display: inline-block;
-        width: 124px;
-        height: 110px;
-        float: left;
-    }
-
-    #scrollable-container {
-        position: absolute;
-        height: 100px;
-        width: 285px;
-        overflow: scroll !important;
-        border: solid 1px gray;
-    }
-
-    .pre-scrollable .panel {
-        margin-top: 20px;
-    }
-
-    .as-sortable-item,.as-sortable-placeholder {
-        width: 124px;
-        margin: 2px;
-        border: 1px solid #ff0000;
-        border-radius: 5px;
+    div#scrollable-container{
+        height:25px !important;
+        overflow:auto !important;
+        border: solid 1px #fff;
+        background: #fff;
     }
     .as-sortable-item{
+        font-size:10px;
         border-radius:0px !important;
-        border: 0px solid #ff0000 !important;
+        width:50% !important;
+        background: grey !important;
     }
-    .as-sortable-placeholder {
-        border: 1px dotted #0000ff !important;
+    div.sortable-row {
+        height:25px !important;
+    }
+}
+
+/*Tablet screen styles*/
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+    .tablet-timeline{
+        display:block;
+    }
+    .maintimeline{
+        display:none;
+    }
+    .mbl-timeline {
+        display:none;
+    }
+    .tablet-timeline span.btn.btn-default.form-control.ui-select-toggle{
+        outline: 0;
+        height: 15px;
+        width:100%;
+        padding:0px 10px;
+        font-size: 9px;
+    }
+    .tablet-timeline .ui-select-bootstrap>input.ui-select-search.form-control,#inlineFormInput {
+        height: 15px;
+        padding:2px 0px;
+        width:100%;
+        font-size: 10px;
+        border-radius:0px;
+    }   
+    .tablet-timeline .ui-select-bootstrap>.ui-select-choices{
+        border-right:  1px solid #ccc;
+        border-left: 1px solid #ccc;
+        border-bottom:1px solid #ccc;;
+        width:100%;
+        border-radius: 0px;
+        font-size: 10px;
+    }
+   .tablet-timeline .reftime-block{
+        height:10px;
+        line-height: 0;
+        padding:0px 3px;
+    }
+   .tablet-timeline .reftime-input{
+        height:15px;
+    }
+    .tablet-timeline .reftime-image{
+        height:10px;
+        line-height: 0;
+    } 
+    .tablet-timeline div.ui-select-no-choice{
+        border-bottom: 0px
+    }
+    .tablet-timeline div.ng-scope.ui-select-match{
+        outline:0;
+        outline-color:#242833;
+        outline-width:0px;
+        background-color: #242833;
+        -webkit-tap-highlight-color:#242833;
     }
 
-    /*#sortable-container {
-        display: inline-block;
-    }
-    */
-    .column {
-        border: 1px solid #000000;
-        border-radius: 5px;
+    div.multiselect-parent.btn-group.dropdown-multiselect button.dropdown-toggle.ng-binding.ng-scope.btn.btn-default{
+        height:16px !important;
+        font-size:9px !important;
+        padding:1px 6px !important;
     }
 
-    .as-sortable-dragging{
-        border: 1px dotted #000 !important;
+    div.multiselect-parent.btn-group.dropdown-multiselect ul.dropdown-menu.dropdown-menu-form.ng-scope,
+    div.multiselect-parent.btn-group.dropdown-multiselect ul.dropdown-menu.dropdown-menu-form.ng-scope li,
+    div.multiselect-parent.btn-group.dropdown-multiselect ul.dropdown-menu.dropdown-menu-form.ng-scope input{
+        font-size:8px !important;
     }
-
-
+    div.multiselect-parent.btn-group.dropdown-multiselect ul.dropdown-menu.dropdown-menu-form.ng-scope input{
+        height:11px !important;
+    }
+    div#scrollable-container{
+        height:15px !important;
+        overflow:auto !important;
+        border: solid 1px #fff;
+        background: #fff;
+    }
+    .as-sortable-item{
+        font-size:9px;
+        border-radius:0px !important;
+        width:50% !important;
+        background: grey !important;
+    }
+    div.sortable-row {
+        height:15px !important;
+    }
+}

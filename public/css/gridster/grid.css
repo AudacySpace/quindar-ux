@@ -200,6 +200,14 @@ div.settingsMenu,div.deldatatable,div.saveloaddatatable{
         color: #fff;
         margin-right: 5px;
     }
+    .hr-double-col1-2-timezone{
+        margin-top:62px;
+        margin-bottom:5px;
+    }
+    .hr-double-col1-2-events{
+        margin-top:14px;
+        margin-bottom:5px;
+    }
 }
 
 /*widget styles for tablet screens*/
