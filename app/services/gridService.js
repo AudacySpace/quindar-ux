@@ -198,7 +198,26 @@ function gridService ($http, $sessionStorage, $window, userService) {
         },
         saveLoad: false,
         delete: false
-    }
+    },
+    {
+        sizeY: 3,
+        sizeX: 4,
+        name: "Timeline",
+        directive: "timeLine",
+        directiveSettings: "timelinesettings",
+        id: "timeline",
+        icon: {
+            id: "timeline",
+            type: "fa-tasks"
+        },
+        main: true,
+        settings: {
+            active: false
+        },
+        saveLoad: false,
+        delete: false
+
+     }
      ];
 
     function checkDefaultDashboard(){
@@ -359,6 +378,14 @@ function gridService ($http, $sessionStorage, $window, userService) {
         });
     }
 
+    function loadTimelineEvents(){
+        return $http({
+            url: "/loadTimelineEvents", 
+            method: "GET",
+            params: {"mission" :$sessionStorage.dashboard["current"].mission.missionName}
+        });
+    }
+
 	return {
         gridsterOptions : gridsterOptions,
         clear : clear,
@@ -375,7 +402,8 @@ function gridService ($http, $sessionStorage, $window, userService) {
         load : load,
         showLayout : showLayout,
         getMissionImage : getMissionImage,
-        loadMaps : loadMaps
+        loadMaps : loadMaps,
+        loadTimelineEvents : loadTimelineEvents
 	}
 }
 
