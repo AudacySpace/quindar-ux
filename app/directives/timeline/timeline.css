@@ -1,0 +1,146 @@
+    #visualization {
+      box-sizing: border-box;
+      width: 100%;
+      height: 300px;
+    }
+    div.vis-item.vis-dot.vis-readonly{
+    	border:none;
+    }
+    div.vis-item.vis-line.vis-readonly {
+    	border:none;
+    }
+    .vis-item.itemMission{
+    	background-color: green;
+    	border-color:green;
+    	border-radius:0px;
+    }
+    .vis-item.itemContact{
+    	background-color: blue;
+    	border-color:blue;
+    	border-radius:0px;
+    }
+    .vis-item.itemEclipse{
+    	background-color: grey;
+    	border-color:grey;
+    	border-radius:0px;
+    }
+    div.vis-label.vis-nesting-group.collapsed,div.vis-label.vis-nesting-group.expanded{
+        background-color: grey;
+    }
+    div.vis-group.groupheader{
+        background-color: grey;
+        content: "\e259";
+    }
+
+    .vis-label.vis-nesting-group.collapsed:before {
+        content: "\203A" !important;
+        font-size: 22px;
+        font-weight: bold;
+        margin-left: 8px;
+    }
+
+     .vis-label.vis-nesting-group.expanded:before {
+        content: "\203A" !important;
+        font-size: 22px;
+        font-weight: bold;
+        margin-left: 8px;
+     }
+
+     .vis-label.vis-nested-group.innerItem:before{
+/*        content: "\203A" !important;
+        font-size: 20px;
+        font-weight: bold;
+        margin-left: 8px;*/
+     }
+     .vis-inner {
+        padding-left:10px !important;
+     }
+
+     .datetime-input.datetime .display .placeholder {
+        font-size:14px !important;
+        line-height: 4em !important;
+     }
+     div#visualization div.vis-inner {
+        display:inline-flex !important;
+        min-width: 185px !important;
+     }
+
+    div.tzgroup div.vis-inner {
+        display:inline-flex !important;
+        min-width: 200px !important;
+    }
+
+    div.tzgroup div.vis-group{
+        background: #428bca;
+    }
+
+    div.event {
+      text-indent: -999px;
+    }
+    div.event:hover{
+      text-indent:0px;
+    }
+    div.multidrpdown ul.dropdown-menu.dropdown-menu-form{
+      border-radius:0px !important;
+      min-width: 287px !important
+    }
+     div.multidrpdown button.dropdown-toggle {
+      min-width:287px !important;
+      border-radius: 0px !important;
+      text-align: left !important;
+    }
+
+    span.caret {
+      float:right !important;
+      margin-top: 7px !important;
+    }
+
+
+    /* Put your css in here */
+    .sortable-item,.sortable-placeholder {
+        display: inline-block;
+        width: 124px;
+        height: 110px;
+        float: left;
+    }
+
+    #scrollable-container {
+        position: absolute;
+        height: 100px;
+        width: 285px;
+        overflow: scroll !important;
+        border: solid 1px gray;
+    }
+
+    .pre-scrollable .panel {
+        margin-top: 20px;
+    }
+
+    .as-sortable-item,.as-sortable-placeholder {
+        width: 124px;
+        margin: 2px;
+        border: 1px solid #ff0000;
+        border-radius: 5px;
+    }
+    .as-sortable-item{
+        border-radius:0px !important;
+        border: 0px solid #ff0000 !important;
+    }
+    .as-sortable-placeholder {
+        border: 1px dotted #0000ff !important;
+    }
+
+    /*#sortable-container {
+        display: inline-block;
+    }
+    */
+    .column {
+        border: 1px solid #000000;
+        border-radius: 5px;
+    }
+
+    .as-sortable-dragging{
+        border: 1px dotted #000 !important;
+    }
+
+

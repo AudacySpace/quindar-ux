@@ -33,6 +33,8 @@ module.exports = function(config) {
       './public/scripts/angular-marked.min.js',
       './public/scripts/marked.js',
       './public/scripts/angular-modal-service.min.js',
+      './public/scripts/angularjs-dropdown-multiselect.js',
+      './public/scripts/ng-sortable.js',
       './app/app.js',
       './app/components/**/*.js',
       './app/services/*.js',
