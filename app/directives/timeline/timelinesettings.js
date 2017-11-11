@@ -79,7 +79,7 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
 						}
 				} 
 			} else if ($scope.selected.type.value == 'Events') {
-				if($scope.selectByGroupModel){
+				if($scope.selectByGroupModel.length > 0){
 					widget.settings.events = [];
 					for(var j=0;j<$scope.events.length;j++){
 						for(var k=0;k<$scope.selectByGroupModel.length;k++){
@@ -93,6 +93,8 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
 					widget.settings.active = false;
 					widget.saveLoad = false;
 					widget.delete =  false;
+				}else if($scope.selectByGroupModel.length === 0){
+					alert("Select atleast one event");
 				}
 			} 
 		} 
