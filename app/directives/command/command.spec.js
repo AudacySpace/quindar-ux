@@ -1,6 +1,10 @@
 describe('Testing command controller', function () {
     var controller, dashboardService, scope, commandService, userService, $intervalSpy, deferredSave, deferredCommandList;
 
+    var mission = {
+        missionName : 'ATest',
+    };
+    var email = "john.smith@gmail.com";
     var windowMock = {
         alert: function(message) {
             
@@ -35,6 +39,13 @@ describe('Testing command controller', function () {
                 }
             };
 
+            dashboardService.getCurrentMission.and.callFake(function() {
+                return mission;
+            });
+            userService.getUserEmail.and.callFake(function() {
+                return email;
+            });
+
             controller = $controller('CommandCtrl', {
                 $scope: scope, 
                 dashboardService: dashboardService,
@@ -46,7 +57,7 @@ describe('Testing command controller', function () {
 
     });
 
-    it('command controller should be defined', function() {
+    it('should define the command controller', function() {
         expect(controller).toBeDefined();
     });
 
@@ -73,21 +84,10 @@ describe('Testing command controller', function () {
     })
 
     it('should set the user email and current mission name', function(){
-        // var email = "chavi.malhotra@gmail.com";
-        // var mission = {
-        //     missionName : 'ATest',
-        // }
-
-        // dashboardService.getCurrentMission.and.callFake(function() {
-        //     return mission;
-        // });
-
-        // userService.getUserEmail.and.callFake(function() {
-        //     return email;
-        // });
-
-        // expect(scope.email).toEqual(email);
-        // expect(scope.mission).toEqual(mission);
+        expect(dashboardService.getCurrentMission).toHaveBeenCalled();
+        expect(userService.getUserEmail).toHaveBeenCalled();
+        expect(scope.mission).toEqual({missionName : 'ATest'});
+        expect(scope.email).toEqual("john.smith@gmail.com");
     })
 
     it('should initialise scope.sent as false', function(){
@@ -167,7 +167,7 @@ describe('Testing command controller', function () {
         expect(scope.disableEnter).toEqual(false);
     })
 
-    it('should enable enter and lock buttons when enter is diabled andscope.changeInput is called', function(){
+    it('should enable enter and lock buttons when enter is diabled and scope.changeInput is called', function(){
         scope.entered = false;
 
         scope.changeInput();
@@ -189,10 +189,6 @@ describe('Testing command controller', function () {
             today : ''
         };
 
-        scope.email = "chavi.malhotra@gmail.com";
-        scope.mission = {
-            missionName : 'ATest',
-        };
         scope.command = {
             name: "Null Command Echo",
             argument: "00"
@@ -204,6 +200,7 @@ describe('Testing command controller', function () {
         scope.sendCommand();
         //expect(scope.sent).toEqual(true);
         expect(scope.command.time).toEqual(time.utc);
+        expect(scope.command.timestamp).toEqual(time.today);
     })
 
     it('should call saveCommand route and reset all values when scope.sendCommand is called', function() {
@@ -215,11 +212,13 @@ describe('Testing command controller', function () {
             utc : '070.10:10:50 UTC',
             today : ''
         };
-
-        scope.email = "chavi.malhotra@gmail.com";
-        scope.mission = {
-            missionName : 'ATest',
+        var command = {
+            name: "Null Command Echo",
+            argument: "00",
+            timestamp: '',
+            time: '070.10:10:50 UTC'
         };
+
         scope.command = {
             name: "Null Command Echo",
             argument: "00"
@@ -229,15 +228,15 @@ describe('Testing command controller', function () {
         });
 
         deferredSave.resolve({ data : {}, status : 200 });
+        scope.sendCommand();
         // call digest cycle for this to work
         scope.$digest();
 
-        scope.sendCommand();
-
         expect(commandService.saveCommand)
-        .toHaveBeenCalledWith(scope.email, scope.command, scope.mission.missionName);
+        .toHaveBeenCalledWith(scope.email, command, scope.mission.missionName);
 
         //expect values to reset
+        expect(scope.command).toEqual({ name: '', argument: '', timestamp: '', time: '' });
         expect(scope.selected).toEqual({});
         expect(scope.argument).toEqual("");
         expect(scope.entered).toEqual(false);
@@ -256,11 +255,13 @@ describe('Testing command controller', function () {
             utc : '070.10:10:50 UTC',
             today : ''
         };
-
-        scope.email = "chavi.malhotra@gmail.com";
-        scope.mission = {
-            missionName : 'ATest',
+        var command = {
+            name: "Null Command Echo",
+            argument: "00",
+            timestamp: '',
+            time: '070.10:10:50 UTC'
         };
+
         scope.command = {
             name: "Null Command Echo",
             argument: "00"
@@ -270,20 +271,14 @@ describe('Testing command controller', function () {
         });
 
         deferredSave.resolve({ data : {}, status : 404 });
+        scope.sendCommand();
         // call digest cycle for this to work
         scope.$digest();
 
-        scope.sendCommand();
-
-        expect(commandService.saveCommand).toHaveBeenCalledWith(scope.email, scope.command, scope.mission.missionName);
+        expect(commandService.saveCommand).toHaveBeenCalledWith(scope.email, command, scope.mission.missionName);
 
         //expect values not to reset
-        expect(scope.command).toEqual({
-            name: 'Null Command Echo',
-            argument: '00',
-            timestamp: '',
-            time : '070.10:10:50 UTC'
-        });
+        expect(scope.command).toEqual(command);
     });
 
     it('should define function scope.updateCommandlog', function(){
@@ -300,23 +295,22 @@ describe('Testing command controller', function () {
             mission: "ATest",
             name: "Null Command Echo",
             timestamp: "010.16:52:44 UTC",
-            user: "chavi.malhotra@gmail.com"
+            user: "john.smith@gmail.com"
         }, { 
             argument: "00",
             mission: "ATest",
             name: "Dummy Command",
             timestamp: "010.22:52:44 UTC",
-            user: "chavi.malhotra@gmail.com"
+            user: "john.smith@gmail.com"
         }];
 
         deferredCommandList.resolve({ data : result, status: 200 });
+        scope.updateCommandlog();
         // call digest cycle for this to work
         scope.$digest();
 
-        scope.updateCommandlog();
-
         expect(commandService.getCommandList).toHaveBeenCalledWith(scope.mission.missionName);
-        //expect(scope.commandlog).toEqual(result);
+        expect(scope.commandLog).toEqual(result);
     });
 
     it('should call $interval one time', function(){
