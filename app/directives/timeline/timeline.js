@@ -9,8 +9,6 @@ app
 
 app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardService,$element) {
 
-
-    var newgroupContents = [];
     var globalgroups = [] ;
     var names = [];
     // create a data set with groups
@@ -25,8 +23,9 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
     $scope.tzcontainer = [];
     $scope.tzgroups = [];
     $scope.tzoptions = [];
-    var tempnames = [];
+    // var tempnames = [];
     var outercontainer = $element[0].getElementsByTagName("div")["timeline"];
+    $scope.datetime = "";
 
     checkForTimezoneData();
 
@@ -36,121 +35,79 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
 
     $scope.$watch("widget.settings.events",function(newval,oldval){
         if(newval !== undefined){
-            tempnames = [];
-            var tcount = 0;
-            names = [];
-            for(var c=0;c<$scope.widget.settings.grouporder.items1.length;c++){
-                for(var b=0;b<newval.length;b++){
-                    if($scope.widget.settings.grouporder.items1[c].groupstatus === false){
-                        if($scope.widget.settings.grouporder.items1[c].Label === newval[b].label){
-                            tempnames.push({
-                                id:tcount,
-                                label:$scope.widget.settings.grouporder.items1[c].Label,
-                                group:"Other",
-                                eventdata:newval[b].eventdata,
-                                eventinfo:newval[b].eventinfo
-                            });
-                            tcount++;
-                        }
-
-                    }else {
-                        if($scope.widget.settings.grouporder.items1[c].Label === newval[b].group){
-                            tempnames.push({
-                                id:tcount,
-                                label:newval[b].label,
-                                group:newval[b].group,
-                                eventdata:newval[b].eventdata,
-                                eventinfo:newval[b].eventinfo
-                            });
-                            tcount++;
-                        }
-
-                    }
-                }
-            }
-            names = buildEventProperties(tempnames);
-            groups = new vis.DataSet();
-            items =  new vis.DataSet();
-            var grps = createEvents(groups,names,$scope.widget.settings.grouporder.items1);
-            var itms = createEventTimeline(items,grps,tempnames);
-            $scope.widget.settings.groups = grps;
-            $scope.widget.settings.items = itms;
-            $scope.options = gettimelineOptions();
-            timeline.setOptions($scope.options);
-            timeline.setOptions({orientation: {axis: "none"}});
-            timeline.setGroups(grps);
-            timeline.setItems(itms);
-
-            if(!$scope.widget.settings.start && !$scope.widget.settings.start){
-                $scope.options = gettimelineOptions();
-                $scope.widget.settings.start = $scope.options.start;
-                $scope.widget.settings.end = $scope.options.end;
-            }else {
-                $scope.options = gettimelineOptions();
-
-            } 
+            displayEvents(newval,$scope.widget.settings.grouporder);
         }          
     },true);
 
     $scope.$watch("widget.settings.grouporder",function(newval,oldval){
         if(newval !== undefined){
-            var tempnames = [];
-            var tcount = 0;
-            names = [];
-            for(var c=0;c<newval.items1.length;c++){
-            for(var b=0;b<$scope.widget.settings.events.length;b++){
-                    if(newval.items1[c].groupstatus === false){
-                        if(newval.items1[c].Label === $scope.widget.settings.events[b].label){
-                            tempnames.push({
-                                id:tcount,
-                                label:newval.items1[c].Label,
-                                group:"Other",
-                                eventdata:$scope.widget.settings.events[b].eventdata,
-                                eventinfo:$scope.widget.settings.events[b].eventinfo
-                            });
-                            tcount++;
-                        }
-
-                    }else {
-                        if(newval.items1[c].Label === $scope.widget.settings.events[b].group){
-                            tempnames.push({
-                                id:tcount,
-                                label:$scope.widget.settings.events[b].label,
-                                group:$scope.widget.settings.events[b].group,
-                                eventdata:$scope.widget.settings.events[b].eventdata,
-                                eventinfo:$scope.widget.settings.events[b].eventinfo
-                            });
-                            tcount++;
-                        }
-
-                    }
-                }
-            }
-            names = buildEventProperties(tempnames);
-            groups = new vis.DataSet();
-            items =  new vis.DataSet();
-            var grps = createEvents(groups,names,$scope.widget.settings.grouporder.items1);
-            var itms = createEventTimeline(items,grps,tempnames);
-            $scope.widget.settings.groups = grps;
-            $scope.widget.settings.items = itms;
-            $scope.options = gettimelineOptions();
-            timeline.setOptions($scope.options);
-            timeline.setOptions({orientation: {axis: "none"}});
-            timeline.setGroups(grps);
-            timeline.setItems(itms);
-
-            if(!$scope.widget.settings.start && !$scope.widget.settings.start){
-                $scope.options = gettimelineOptions();
-                $scope.widget.settings.start = $scope.options.start;
-                $scope.widget.settings.end = $scope.options.end;
-            }else {
-                $scope.options = gettimelineOptions();
-
-            } 
+            displayEvents($scope.widget.settings.events,newval);
         }          
     },true);
 
+    function displayEvents(events,eventorder){
+        var tempnames = [];
+        var tcount = 0;
+        names = [];
+        groups = new vis.DataSet();
+        items =  new vis.DataSet();
+
+        for(var c=0;c<eventorder.items1.length;c++){
+            for(var b=0;b<events.length;b++){
+                if(eventorder.items1[c].groupstatus === false){
+                    if(eventorder.items1[c].Label === events[b].label){
+                        tempnames.push({
+                            id:tcount,
+                            label:eventorder.items1[c].Label,
+                            group:"Other",
+                            eventdata:events[b].eventdata,
+                            eventinfo:events[b].eventinfo
+                        });
+                        tcount++;
+                    }
+
+                }else {
+                    if(eventorder.items1[c].Label === events[b].group){
+                        tempnames.push({
+                            id:tcount,
+                            label:events[b].label,
+                            group:events[b].group,
+                            eventdata:events[b].eventdata,
+                            eventinfo:events[b].eventinfo
+                        });
+                        tcount++;
+                    }
+                }
+            }
+        }
+        names = buildEventProperties(tempnames);
+        var grps = createEvents(groups,names,eventorder.items1);
+        var itms = createEventTimeline(items,grps,tempnames);
+        $scope.widget.settings.groups = grps;
+        $scope.widget.settings.items = itms;
+        $scope.options = gettimelineOptions();
+        timeline.setOptions($scope.options);
+        timeline.setOptions({orientation: {axis: "none"}});
+        timeline.setGroups(grps);
+        timeline.setItems(itms);
+
+        if(!$scope.widget.settings.start && !$scope.widget.settings.start){
+            $scope.options = gettimelineOptions();
+            $scope.widget.settings.start = $scope.options.start;
+            $scope.widget.settings.end = $scope.options.end;
+        }else {
+            $scope.options = gettimelineOptions();
+        } 
+    }
+
     function checkForTimezoneData(){ 
+        $scope.timezones = new Array();
+        $scope.tztimeline = [];
+        $scope.tzcontainer = [];
+        $scope.tzgroups = [];
+        $scope.tzoptions = [];
+        var outercontainer = $element[0].getElementsByTagName("div")["timeline"];
+
         if($scope.widget.settings.start && $scope.widget.settings.end){
             $scope.options = gettimelineOptions();
         }       
@@ -163,16 +120,10 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                     labeloffset : "+ 00"
                 }];
         }
-        $scope.timezones = new Array();
 
         for(var t=0;t<$scope.widget.settings.timezones.length;t++){
             $scope.timezones.push($scope.widget.settings.timezones[t]);
         }
-        $scope.tztimeline = [];
-        $scope.tzcontainer = [];
-        $scope.tzgroups = [];
-        $scope.tzoptions = [];
-        var outercontainer = $element[0].getElementsByTagName("div")["timeline"];
 
         while (outercontainer.firstChild) {
             outercontainer.removeChild(outercontainer.firstChild);
@@ -259,10 +210,7 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
         $scope.widget.settings.end = properties.end;
     });
 
-    $scope.datetime = "";
-
     $scope.updateClock = function(){
-
         if(dashboardService.getTime(0).today){
             //sets current time in all timezones of the timeline 
             timeline.setCurrentTime(vis.moment(dashboardService.getTime(0).today).utc());
@@ -342,6 +290,9 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
             var tempArray1 = [];
             var tempArray2 = [];
 
+            //Check if all the events have group name other
+            var grpstatus = isGroupOther(names);
+
             //Non nested and other events
             for(var h=0;h<names.length;h++){
                 if(names[h].groupname !== "Nested" && names[h].groupname !== "Other"){
@@ -366,12 +317,16 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                     groups.add({id:a,content:tempArray1[a].ename,nestedGroups:[],className:'groupheader'});
                 }
                 else if(tempArray1[a].groupname === "Other"){
-                    groups.add({id:a,content:tempArray1[a].ename,className:'otherevent'});
+                    if(grpstatus === true){
+                        groups.add({id:a,content:tempArray1[a].ename,className:'onlyotherevents'});
+                    }else {
+                        groups.add({id:a,content:tempArray1[a].ename,className:'otherevent'});
+                    }
+                   
                 }else {
                     groups.add({id:a,content:tempArray1[a].ename});
                 }
-            }        
-   
+            }
 
             for(var b=0;b<tempArray1.length;b++){
                 for(var c=0;c<groups.length;c++){
@@ -419,54 +374,11 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
         var count = 0;
         for(var k=0;k<groups.length;k++){
             for (var i = 0; i < newgroupContents.length; i++) {
-                //Excel sheet
-                if(newgroupContents[i].hasOwnProperty('eventname')){
-                    if(groups._data[k].content === newgroupContents[i].eventname){
-                        if(newgroupContents[i].timerange.length > 0){
-                            var start = vis.moment(vis.moment.utc().format(newgroupContents[i].timerange[0]));
-                            var end = vis.moment(vis.moment.utc().format(newgroupContents[i].timerange[1]));
-                            items.add({
-                                id: i,
-                                content : newgroupContents[i].eventinfo,
-                                className : "event",
-                                group : groups._data[k].id,
-                                start : start,
-                                end : end
-                            });
-                        } else {
-                            var start = "";
-                            var end = "";
-                            items.add({
-                                id: i,
-                                content : newgroupContents[i].eventinfo,
-                                className : "event",
-                                group : groups._data[k].id,
-                                start : start,
-                                end : end
-                            });
-                        }
-                    }
-                //Database
-                }else if(newgroupContents[i].hasOwnProperty('label')) {
-                    if(groups._data[k].content === newgroupContents[i].label){
-                        if(newgroupContents[i].eventdata.length > 0){
-                            for(var j=0;j<newgroupContents[i].eventdata.length;j++){
-                                var start = vis.moment(vis.moment.utc().format(newgroupContents[i].eventdata[j].start));
-                                var end = vis.moment(vis.moment.utc().format(newgroupContents[i].eventdata[j].end));
-                                items.add({
-                                    id: count,
-                                    content : newgroupContents[i].eventinfo,
-                                    className : "event",
-                                    group : groups._data[k].id,
-                                    start : start,
-                                    end : end
-                                });
-                                count++;
-                            }
-
-                        } else {
-                            var start = "";
-                            var end = "";
+                if(groups._data[k].content === newgroupContents[i].label){
+                    if(newgroupContents[i].eventdata.length > 0){
+                        for(var j=0;j<newgroupContents[i].eventdata.length;j++){
+                            var start = vis.moment(vis.moment.utc().format(newgroupContents[i].eventdata[j].start));
+                            var end = vis.moment(vis.moment.utc().format(newgroupContents[i].eventdata[j].end));
                             items.add({
                                 id: count,
                                 content : newgroupContents[i].eventinfo,
@@ -477,7 +389,18 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                             });
                             count++;
                         }
-                       
+                    } else {
+                        var start = "";
+                        var end = "";
+                        items.add({
+                            id: count,
+                            content : newgroupContents[i].eventinfo,
+                            className : "event",
+                            group : groups._data[k].id,
+                            start : start,
+                            end : end
+                        });
+                        count++;
                     }
                 }
             }
@@ -537,10 +460,9 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                             button1.setAttribute('data-toggle', "dropdown");
                             button1.setAttribute('aria-haspopup', "true");
                             button1.setAttribute('aria-expanded', "false");
-                            button1.setAttribute('style', "padding:0px;margin-right:2px;background:none;");
+                            button1.setAttribute('style', "padding:0px;margin-right:2px;margin-bottom:3px;background:none;");
                             var arrow1 = button1.appendChild(arrow);
                             arrow1.className = "fa fa-chevron-right";
-                            arrow1.setAttribute('style', "font-size:12px");
                             var innerdiv1 = outerdiv.appendChild(innerdiv);
                             innerdiv1.className = "dropdown-menu";
                             innerdiv1.setAttribute('style', "min-width:100px !important;border-radius:0px");
@@ -681,7 +603,6 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                             button1.setAttribute('style', "padding:0px;margin-right:2px;background:none;");
                             var arrow1 = button1.appendChild(arrow);
                             arrow1.className = "fa fa-chevron-right";
-                            arrow1.setAttribute('style', "font-size:12px");
                             var innerdiv1 = outerdiv.appendChild(innerdiv);
                             innerdiv1.className = "dropdown-menu";
                             innerdiv1.setAttribute('style', "min-width:100px !important;border-radius:0px");
@@ -809,17 +730,17 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
         var tempeventinfo2 = "";
         for(var k=0;k<$scope.widget.settings.events.length;k++){
             if($scope.widget.settings.events[k].label === content1){
-                var tempindex1 = k;
-                var templabel1 = content1;
-                var tempgroup1 = $scope.widget.settings.events[k].group;
-                var tempeventdata1 = $scope.widget.settings.events[k].eventdata;
-                var tempeventinfo1 = $scope.widget.settings.events[k].eventinfo;
+                tempindex1 = k;
+                templabel1 = content1;
+                tempgroup1 = $scope.widget.settings.events[k].group;
+                tempeventdata1 = $scope.widget.settings.events[k].eventdata;
+                tempeventinfo1 = $scope.widget.settings.events[k].eventinfo;
             }else if($scope.widget.settings.events[k].label === content2){
-                var tempindex2 = k;
-                var templabel2 = content2;
-                var tempgroup2 = $scope.widget.settings.events[k].group;
-                var tempeventdata2 = $scope.widget.settings.events[k].eventdata;
-                var tempeventinfo2 = $scope.widget.settings.events[k].eventinfo;
+                tempindex2 = k;
+                templabel2 = content2;
+                tempgroup2 = $scope.widget.settings.events[k].group;
+                tempeventdata2 = $scope.widget.settings.events[k].eventdata;
+                tempeventinfo2 = $scope.widget.settings.events[k].eventinfo;
             }
         }
 
@@ -833,6 +754,23 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
         $scope.widget.settings.events[tempindex2].group = tempgroup1;
         $scope.widget.settings.events[tempindex2].eventdata = tempeventdata1;
         $scope.widget.settings.events[tempindex2].eventinfo = tempeventinfo1;
+   }
+
+    function isGroupOther(events){
+        var isGrpOtherStatus = false;
+        var allcount = 0;
+
+        for(var i=0;i<events.length;i++){
+            if(events[i].groupname === "Other"){
+                allcount++;
+            }
+        }
+        if(allcount === events.length){
+            isGrpOtherStatus = true;
+        }else {
+            isGrpOtherStatus = false;
+        }
+        return isGrpOtherStatus;
    }
 
     $scope.$on("$destroy", 
