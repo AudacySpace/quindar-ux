@@ -11,6 +11,72 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
 	$scope.selectByGroupData = [];
 	var ugrps = [];
 	loadTimelineEvents();
+	$scope.selectByGroupSettings = { 
+    	selectByGroups: ugrps,
+    	groupByTextProvider: function(groupValue) {
+    		for(var i=0;i<ugrps.length;i++){
+    			if(groupValue === ugrps[i]){
+    				return ugrps[i];
+    			}
+    		} 
+    	 }, 
+    	 groupBy: 'group',
+    	 scrollableHeight: '200px',
+    	 scrollable: true,
+    	 enableSearch: true
+    };
+	$scope.customFilter = '';
+	$scope.selectByGroupModel = []; 
+	$scope.selected = {};
+	$scope.isLoaded = false;
+
+	$scope.types = [
+	{
+        'key': 1,
+        'value': 'Timezone'
+    }, 
+	{
+		'key': 2,
+		'value': 'Events'
+	}];
+
+	$scope.timezones = [
+	{
+		name:"Luxembourg",
+        utcoffset: "+02:00",
+        id:"lux",
+        labeloffset : "+ 02"
+	},
+    {
+        name:"San Francisco",
+        utcoffset: "-08:00",
+        id:"sfo",
+        labeloffset : "- 08"
+    },
+    {
+        name:"Singapore",
+       	utcoffset : "+08:00",
+        id:"sgp",
+        labeloffset : "+ 08"
+    },
+    {
+        name:"UTC",
+        utcoffset : "+00:00",
+        id:"utc",
+        labeloffset : "+ 00"
+    }];
+
+	$scope.events = [];
+
+    $scope.sortableOptions = {
+        containment: '#scrollable-container',
+        scrollableContainer: '#scrollable-container',
+        //restrict move across columns. move only within column.
+        accept: function (sourceItemHandleScope, destSortableScope) {
+            return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
+        }
+    };
+
 
 	function checkForEvents(data){	
 		if($scope.widget.settings.events === undefined || $scope.selectByGroupModel === undefined){
@@ -21,34 +87,51 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
 					$scope.selectByGroupModel.push(data[a]);
 					$scope.widget.settings.events.push(data[a]);
 				}
-				var events = []
-    			for(var i=0;i<$scope.selectByGroupModel.length;i++){
-    				if($scope.selectByGroupModel[i].group === "Other"){
-    					events.push({name:$scope.selectByGroupModel[i].label,isgroup:false});
-    				}else {
-    					events.push({name:$scope.selectByGroupModel[i].group,isgroup:true});
-    				}
-    			}
-    			var uniqueeventgrps = unique(events);
-    		    	for (var j = 0; j < uniqueeventgrps.length; j += 1) {
-         				$scope.itemsList.items1.push({'Id': j, 'Label': uniqueeventgrps[j].name,'groupstatus':uniqueeventgrps[j].isgroup});
-    				}
-    			$scope.widget.settings.grouporder = $scope.itemsList;
+
+				makeEventOrder($scope.selectByGroupModel);
+    			$scope.widget.settings.grouporder = angular.copy($scope.itemsList);
 			}else if($scope.selectByGroupData.length === 0){
 				$scope.selectByGroupModel = [];
 				$scope.widget.settings.events = [];
 				$scope.widget.settings.grouporder = [];
 			}
 		}else if($scope.widget.settings.events.length > 0 && $scope.selectByGroupModel.length === 0){
-			for(var b=0;b<$scope.widget.settings.events.length;b++){
-				$scope.selectByGroupModel.push($scope.widget.settings.events[b]);
-			}
-			$scope.itemsList = {
-	        	items1: []
-	    	};
+			var ecount = 0;
+			var tempnames = [];
+			//set events
 			for(var c=0;c<$scope.widget.settings.grouporder.items1.length;c++){
-				$scope.itemsList.items1.push($scope.widget.settings.grouporder.items1[c]);
+            	for(var b=0;b<$scope.widget.settings.events.length;b++){
+                    if($scope.widget.settings.grouporder.items1[c].groupstatus === false){
+                        if($scope.widget.settings.grouporder.items1[c].Label === $scope.widget.settings.events[b].label){
+                            tempnames.push({
+                                id:ecount,
+                                label:$scope.widget.settings.grouporder.items1[c].Label,
+                                group:"Other",
+                                eventdata:$scope.widget.settings.events[b].eventdata,
+                                eventinfo:$scope.widget.settings.events[b].eventinfo
+                            });
+                            ecount++;
+                        }
+
+                    }else {
+                        if($scope.widget.settings.grouporder.items1[c].Label === $scope.widget.settings.events[b].group){
+                            tempnames.push({
+                                id:ecount,
+                                label:$scope.widget.settings.events[b].label,
+                                group:$scope.widget.settings.events[b].group,
+                                eventdata:$scope.widget.settings.events[b].eventdata,
+                                eventinfo:$scope.widget.settings.events[b].eventinfo
+                            });
+                            ecount++;
+                        }
+                    }
+                }
+            }
+
+			for(var b=0;b<tempnames.length;b++){
+				$scope.selectByGroupModel.push(tempnames[b]);
 			}
+			makeEventOrder($scope.selectByGroupModel);
 		}
 	}
 
@@ -135,98 +218,33 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
         });
     }
 
-    $scope.selectByGroupSettings = { 
-    	selectByGroups: ugrps,
-    	groupByTextProvider: function(groupValue) {
-    		for(var i=0;i<ugrps.length;i++){
-    			if(groupValue === ugrps[i]){
-    				return ugrps[i];
-    			}
-    		} 
-    	 }, 
-    	 groupBy: 'group',
-    	 scrollableHeight: '200px',
-    	 scrollable: true,
-    	 enableSearch: true
-    };
-	
-	$scope.customFilter = '';
-	$scope.selectByGroupModel = []; 
-	$scope.selected = {};
-	$scope.isLoaded = false;
-
-	$scope.types = [
-	{
-        'key': 1,
-        'value': 'Timezone'
-    }, 
-	{
-		'key': 2,
-		'value': 'Events'
-	}];
-
-	$scope.timezones = [
-	{
-		name:"Luxembourg",
-        utcoffset: "+02:00",
-        id:"lux",
-        labeloffset : "+ 02"
-	},
-    {
-        name:"San Francisco",
-        utcoffset: "-08:00",
-        id:"sfo",
-        labeloffset : "- 08"
-    },
-    {
-        name:"Singapore",
-       	utcoffset : "+08:00",
-        id:"sgp",
-        labeloffset : "+ 08"
-    },
-    {
-        name:"UTC",
-        utcoffset : "+00:00",
-        id:"utc",
-        labeloffset : "+ 00"
-    }];
-
-	$scope.events = [];
-
-    $scope.sortableOptions = {
-        containment: '#scrollable-container',
-        scrollableContainer: '#scrollable-container',
-        //restrict move across columns. move only within column.
-        accept: function (sourceItemHandleScope, destSortableScope) {
-            return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
-        }
-    };
-
     $scope.$watch("selectByGroupModel",function(newval,oldval){
-    	var itm;
-	    $scope.itemsList = {
-	        items1: []
-	    };
-    	$scope.groups = []
-    	for(var i=0;i<$scope.selectByGroupModel.length;i++){
-    		if($scope.selectByGroupModel[i].group === "Other"){
-    			$scope.groups.push({name:$scope.selectByGroupModel[i].label,isgroup:false});
-    		}else {
-    			$scope.groups.push({name:$scope.selectByGroupModel[i].group,isgroup:true});
-    		}
-    	}
-    	var arrUnique = unique($scope.groups);
-    	if(newval.length > 0){
-    		for (itm = 0; itm < arrUnique.length; itm += 1) {
-         		$scope.itemsList.items1.push({'Id': itm, 'Label': arrUnique[itm].name,'groupstatus':arrUnique[itm].isgroup});
-    		}
-    	}
-
+    	makeEventOrder(newval);
     },true);
 
 	$scope.$watch("itemsList",function(newval,oldval){
 		$scope.eventorder = newval;
 	},true);
+
+	function makeEventOrder(eventmodel){
+		$scope.itemsList = {
+	        items1: []
+	    };
+    	var events = [];
+    	for(var i=0;i<eventmodel.length;i++){
+    		if(eventmodel[i].group === "Other"){
+    			events.push({name:eventmodel[i].label,isgroup:false});
+    		}else {
+    			events.push({name:eventmodel[i].group,isgroup:true});
+    		}
+    	}
+    	var arrUnique = unique(events);
+    	if(eventmodel.length > 0){
+    		for (var itm = 0; itm < arrUnique.length; itm += 1) {
+         		$scope.itemsList.items1.push({'Id': itm, 'Label': arrUnique[itm].name,'groupstatus':arrUnique[itm].isgroup});
+    		}
+    	}
+	}
 
 	var unique = function(origArr) {
 	    var newArr = [],
