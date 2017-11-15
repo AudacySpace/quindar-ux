@@ -23,7 +23,7 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
     $scope.tzcontainer = [];
     $scope.tzgroups = [];
     $scope.tzoptions = [];
-    // var tempnames = [];
+
     var outercontainer = $element[0].getElementsByTagName("div")["timeline"];
     $scope.datetime = "";
 
@@ -57,25 +57,25 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                 if(eventorder.items1[c].groupstatus === false){
                     if(eventorder.items1[c].Label === events[b].label){
                         tempnames.push({
-                            id:tcount,
+                            id:events[b].id,
                             label:eventorder.items1[c].Label,
                             group:"Other",
                             eventdata:events[b].eventdata,
                             eventinfo:events[b].eventinfo
                         });
-                        tcount++;
+                       // tcount++;
                     }
 
                 }else {
                     if(eventorder.items1[c].Label === events[b].group){
                         tempnames.push({
-                            id:tcount,
+                            id:events[b].id,
                             label:events[b].label,
                             group:events[b].group,
                             eventdata:events[b].eventdata,
                             eventinfo:events[b].eventinfo
                         });
-                        tcount++;
+                       // tcount++;
                     }
                 }
             }
@@ -377,30 +377,49 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                 if(groups._data[k].content === newgroupContents[i].label){
                     if(newgroupContents[i].eventdata.length > 0){
                         for(var j=0;j<newgroupContents[i].eventdata.length;j++){
-                            var start = vis.moment(vis.moment.utc().format(newgroupContents[i].eventdata[j].start));
-                            var end = vis.moment(vis.moment.utc().format(newgroupContents[i].eventdata[j].end));
-                            items.add({
-                                id: count,
-                                content : newgroupContents[i].eventinfo,
-                                className : "event",
-                                group : groups._data[k].id,
-                                start : start,
-                                end : end
-                            });
-                            count++;
+                            if(newgroupContents[i].eventdata[j].start !== "" && newgroupContents[i].eventdata[j].end !== ""){
+                                //var start = vis.moment(vis.moment.utc().format(newgroupContents[i].eventdata[j].start));
+                                // var end = vis.moment(vis.moment.utc().format(newgroupContents[i].eventdata[j].end));
+                                var start = vis.moment.utc().format(newgroupContents[i].eventdata[j].start);
+                                var end = vis.moment.utc().format(newgroupContents[i].eventdata[j].end);
+                                var content = "";
+                                if(newgroupContents[i].eventdata[j].content){
+                                    content = newgroupContents[i].eventdata[j].content;
+                                }
+                                
+                                if(content !== ""){
+                                    items.add({
+                                        id: count,
+                                        content : content,
+                                        className : "event",
+                                        group : groups._data[k].id,
+                                        start : start,
+                                        end : end
+                                    });
+                                }else{
+                                    items.add({
+                                        id: count,
+                                        content : newgroupContents[i].eventinfo,
+                                        className : "event",
+                                        group : groups._data[k].id,
+                                        start : start,
+                                        end : end
+                                    });
+                                }
+                                count++;
+                            }else if(newgroupContents[i].eventdata[j].start !== "" && !newgroupContents[i].eventdata[j].end){
+                                //var start = vis.moment(vis.moment.utc().format(newgroupContents[i].eventdata[j].start));
+                                var start = vis.moment.utc().format(newgroupContents[i].eventdata[j].start);
+                                items.add({
+                                    id: count,
+                                    content : newgroupContents[i].eventinfo,
+                                    className : "event",
+                                    group : groups._data[k].id,
+                                    start : start
+                                });
+                                count++;
+                            }
                         }
-                    } else {
-                        var start = "";
-                        var end = "";
-                        items.add({
-                            id: count,
-                            content : newgroupContents[i].eventinfo,
-                            className : "event",
-                            group : groups._data[k].id,
-                            start : start,
-                            end : end
-                        });
-                        count++;
                     }
                 }
             }
@@ -412,11 +431,7 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
         var names = [];
 
         for(var a=0;a<sheet.length;a++){
-            if(sheet[a].hasOwnProperty('eventname')){
-                 names.push({"ename":sheet[a].eventname,"groupname":sheet[a].eventgroup});
-             }else {
-                names.push({"ename":sheet[a].label,"groupname":sheet[a].group});
-             }
+            names.push({"ename":sheet[a].label,"groupname":sheet[a].group});
         }
 
         for (var g = 0; g < names.length; g++) {

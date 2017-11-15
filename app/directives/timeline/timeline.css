@@ -167,6 +167,9 @@ div.innerItem:nth-last-child(1),div.innerItem:nth-last-child(2){
     border-bottom-width: 1px !important;
     overflow:auto !important;  
 }
+.vis-panel {
+    box-sizing: content-box !important;
+}
 
 /*Mobile screen styles*/
 @media only screen and (max-width: 599px) {
