@@ -23,7 +23,7 @@ describe('Testing command controller', function () {
 
             dashboardService = jasmine.createSpyObj('dashboardService', 
                 ['getTime', 'getCurrentMission']);
-            userService = jasmine.createSpyObj('commandService', ['getUserEmail']);
+            userService = jasmine.createSpyObj('userService', ['getUserEmail']);
 
             deferredSave = _$q_.defer();
             deferredCommandList = _$q_.defer();
