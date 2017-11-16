@@ -142,7 +142,7 @@ app.controller('docController', ['$scope', 'close', function($scope, close) {
 
 }]);
 
-app.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userService, mission) {
+app.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userService, mission, $window) {
     var $ctrl = this;
 
     $ctrl.users = [];
@@ -162,7 +162,6 @@ app.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userSer
                     $ctrl.roles.push(roles[role]);
                 }
             }
-
         }
     });
 
@@ -203,23 +202,25 @@ app.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userSer
                 userService.setAllowedRoles($ctrl.selected.user, newRoles)
                 .then(function(response) {
                     if(response.status == 200){
-                        alert("Allowed roles updated for " + $ctrl.selected.user.google.name);
+                        $window.alert("Allowed roles updated for " + $ctrl.selected.user.google.name);
                     }
                 })
             } else {
-                alert("Please choose at least one role");
+                $window.alert("Please choose at least one role");
             }
         } else {
-            alert("Please select the user from dropdown menu");
+            $window.alert("Please select the user from dropdown menu");
         }
     }
 
     $scope.$watch('$ctrl.selected.user', function(newValue, oldValue){
         for(var i=0; i<$ctrl.roles.length; i++) {
-            if($ctrl.roles[i].callsign in $ctrl.selected.user.allowedRoles){
-                $ctrl.roles[i].checked = true;
-            } else {
-                 $ctrl.roles[i].checked = false;
+            if($ctrl.selected.user.allowedRoles) {
+                if($ctrl.roles[i].callsign in $ctrl.selected.user.allowedRoles){
+                    $ctrl.roles[i].checked = true;
+                } else {
+                     $ctrl.roles[i].checked = false;
+                }
             }
         }
     })

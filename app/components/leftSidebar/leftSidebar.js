@@ -1,11 +1,11 @@
 app
 .component('leftSidebar', {
   	templateUrl: "./components/leftSidebar/left_sidebar.html",
-  	controller: function(sidebarService, dashboardService, $scope, $interval) {
+  	controller: function(sidebarService, dashboardService, $interval, $window) {
   		var vm = this;
 
         vm.searchID = "";
-        var previousTree = [];
+        vm.previousTree = [];
 
         getData();
 
@@ -20,7 +20,7 @@ app
         //function to filter data menu using search ID
         vm.filter = function(){
             //copy the data menu pulled from configuration
-            vm.dataTree = angular.copy(previousTree);
+            vm.dataTree = angular.copy(vm.previousTree);
 
             vm.dataTree = vm.dataTree.filter(function f(data) {
                 var name = data.name.toLowerCase();
@@ -38,8 +38,8 @@ app
             });
 
             if(vm.dataTree.length == 0){
-                alert("No match found!");
-                vm.dataTree = angular.copy(previousTree);
+                $window.alert("No match found!");
+                vm.dataTree = angular.copy(vm.previousTree);
             }
         }
 
@@ -52,7 +52,7 @@ app
                     .then(function(response) {
                         if(response.data) {
                             vm.dataTree = getDataTree(response.data);
-                            previousTree = angular.copy(vm.dataTree);
+                            vm.previousTree = angular.copy(vm.dataTree);
                         }
                     });
                     $interval.cancel(interval);
