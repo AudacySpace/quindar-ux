@@ -18,12 +18,13 @@ angular.module('app')
 		var dashboard = gridService.getDashboard();
 		var totalMissions = [];
 
-  		vm.interval = $interval(updateClock, 500);
   		vm.currentMission =  dashboardService.getCurrentMission();
 
-  		function updateClock(){
+  		vm.updateClock = function(){
   			vm.clock = dashboardService.getTime(0);
   		}
+
+  		vm.interval = $interval(vm.updateClock, 500);
 
 	    vm.openLeftNav = function(){
 	    	if ($window.innerWidth < 1400){
@@ -79,17 +80,17 @@ angular.module('app')
 	}
 })
 
-app.controller('modalCtrl', function($uibModalInstance, userService) {
+app.controller('modalCtrl', function($uibModalInstance, userService, $window) {
 	var $ctrl = this;
 
-	var cRole = {};
+	$ctrl.cRole = {};
 
 	userService.getCurrentRole()
 	.then(function(response) {
 		if(response.status == 200){
-			cRole = response.data;
+			$ctrl.cRole = response.data;
 			$ctrl.role = {
-				currentRole : cRole
+				currentRole : $ctrl.cRole
 			};
 		}
 	});
@@ -107,14 +108,14 @@ app.controller('modalCtrl', function($uibModalInstance, userService) {
 	});
 
 	$ctrl.updateRole = function(){
-		if(cRole.callsign == 'MD' && $ctrl.role.currentRole.callsign != 'MD') {
-			alert("No mission without the Mission Director. Your role cannot be updated");
-			$uibModalInstance.close(cRole);
+		if($ctrl.cRole.callsign == 'MD' && $ctrl.role.currentRole.callsign != 'MD') {
+			$window.alert("No mission without the Mission Director. Your role cannot be updated");
+			$uibModalInstance.close($ctrl.cRole);
 		} else {
 	        userService.setCurrentRole($ctrl.role.currentRole)
 	        .then(function(response) {
 	        	if(response.status == 200){
-	                alert("User's current role updated");
+	                $window.alert("User's current role updated");
 	                $uibModalInstance.close($ctrl.role.currentRole);
 	            }
 	        });
@@ -122,7 +123,7 @@ app.controller('modalCtrl', function($uibModalInstance, userService) {
     }
 });
 
-app.controller('missionModalCtrl', function($uibModalInstance,dashboardService,$scope) {
+app.controller('missionModalCtrl', function($uibModalInstance,dashboardService,$scope,$window) {
 	var $ctrl = this;
 	$scope.missions = dashboardService.missions;
 	$ctrl.currentMission = {};
@@ -135,9 +136,9 @@ app.controller('missionModalCtrl', function($uibModalInstance,dashboardService,$
 		if(dashboardService.isEmpty($ctrl.currentMission) === false){
 			dashboardService.setCurrentMission($ctrl.currentMission);
 	    	$uibModalInstance.close($ctrl.currentMission);
-	    	alert("Mission has been set");
+	    	$window.alert("Mission has been set");
 	    }else {
-	    	alert("Please select a mission before you save.");
+	    	$window.alert("Please select a mission before you save.");
 	    }   
 	}
 });
