@@ -47,7 +47,7 @@ app
                 alert("No mission selected!Reload the page for options.");
             }); 
         },function error(response){
-            console.log("No mission available!");
+            alert("No mission available!");
         });
     }
 

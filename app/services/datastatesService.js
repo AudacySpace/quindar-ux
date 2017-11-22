@@ -83,7 +83,7 @@ app
                 if(dataVal > wHighVal ){
                     return colorObj.colorCaution;
                 }else {
-                    colorObj.colorHealthy;
+                    return colorObj.colorHealthy;
                 }
             }else if(alowValue !==  null && ahighValue !== null && wlowValue === null && whighValue === null){
                 if(dataVal < aLowVal || dataVal > aHighVal){
@@ -114,10 +114,10 @@ app
                     return colorObj.colorHealthy;
             }
             }else {
-                colorObj.colorHealthy;
+                return colorObj.colorHealthy;
             }
         }else {
-            colorObj.colorHealthy;
+            return colorObj.colorHealthy;
         }
     }
 
@@ -187,7 +187,7 @@ app
                     colorBoundObj.caution.bound = "HIGH"; 
                     return colorBoundObj.caution;
                 }else {
-                    colorBoundObj.healthy;
+                    return colorBoundObj.healthy;
                 }
             }else if(alowValue !==  null && ahighValue !== null && wlowValue === null && whighValue === null){
                 if(dataVal < aLowVal || dataVal > aHighVal){
@@ -232,10 +232,10 @@ app
                     return colorBoundObj.healthy;
                 }
             }else {
-                colorBoundObj.healthy;
+                return colorBoundObj.healthy;
             }
         }else {
-            colorBoundObj.healthy;
+            return colorBoundObj.healthy;
         }
     }
 

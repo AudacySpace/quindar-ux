@@ -1,5 +1,5 @@
 app
-.factory('sidebarService', ['$http', function($http) { 
+.factory('sidebarService', function() { 
 
     var vehicleInfo = {
         vehicle : '',
@@ -23,4 +23,4 @@ app
         vehicleInfo : vehicleInfo,
         getVehicleInfo : getVehicleInfo
 	}
-}]);
+});
