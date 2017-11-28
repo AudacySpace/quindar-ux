@@ -11,6 +11,16 @@ function gridService ($http, $sessionStorage, $window, userService) {
 
     var email = userService.getUserEmail();
 
+    setDashboardRows();
+    function setDashboardRows(){
+       // console.log($window.innerHeight);
+        if($window.innerHeight >= 500 && $window.innerHeight < 1000){
+            gridsterOptions.maxRows = 3;
+        }else if($window.innerHeight >= 1000){
+            gridsterOptions.maxRows = 6;
+        }
+    }
+
     checkDefaultDashboard();
 
     var widgetDefinitions = [
