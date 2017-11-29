@@ -75,7 +75,28 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
         }
     };
 
+    //Function to created unique groups from a list of groups
+    function uniqueItems(origArr) {
+	    var newArr = [],
+	        origLen = origArr.length,
+	        found, x, y;
 
+	    for (x = 0; x < origLen; x++) {
+	        found = undefined;
+	        for (y = 0; y < newArr.length; y++) {
+	            if (origArr[x].name === newArr[y].name) {
+	                found = true;
+	                break;
+	            }
+	        }
+	        if (!found) {
+	            newArr.push(origArr[x]);
+	        }
+	    }
+    	return newArr;
+	}
+
+	//Function to display settings based on the data available from database.
 	function checkForEvents(data){	
 		if($scope.widget.settings.events === undefined){
 			if($scope.selectByGroupData.length > 0){
@@ -164,6 +185,7 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
 		} 
 	}
 
+	//Function to check if a timezone already exists in the widget.
 	function tzExists(tzArray,selectedname){
 		var status = false;
 		for(var t=0;t<tzArray.length;t++){
@@ -175,34 +197,34 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
 		return status;
 	}
 
+	//Function to load timeline data from the database and create data set for settings
     function loadTimelineEvents(){
+        var groups = [];
         gridService.loadTimelineEvents().then(function(response){
-        	var groups = [];
-        	for(var i=0;i<response.data.length;i++){
+			for(var i=0;i<response.data.length;i++){
         		$scope.selectByGroupData.push({
         			id:i,
         			label:response.data[i].eventname,
         			group:response.data[i].eventgroup,
-        			eventdata:response.data[i].eventdata,
-        			eventinfo:response.data[i].eventinfo
         		});
 
         		groups.push({name:response.data[i].eventgroup});
 
         	}
         	checkForEvents($scope.selectByGroupData);
-        	var uniquegroups = unique(groups);
+        	var uniquegroups = uniqueItems(groups);
         	for(var b=0;b<uniquegroups.length;b++){
         	 	ugrps.push(uniquegroups[b].name);
         	}
         });
+
     }
 
     $scope.$watch("selectByGroupModel",function(newval,oldval){
     	makeEventOrder($scope.selectByGroupModel,$scope.widget.settings.grouporder,reloaded);
     },true);
 
-
+    //Function to display previous saved selected events
 	function getPrevSavedEventModel(){
 		reloaded = true;
 		$scope.selectByGroupModel = [];
@@ -218,9 +240,7 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
                         tempnames.push({
                             id:$scope.widget.settings.events[b].id,
                             label:$scope.widget.settings.grouporder.items1[c].Label,
-                            group:"Other",
-                            eventdata:$scope.widget.settings.events[b].eventdata,
-                            eventinfo:$scope.widget.settings.events[b].eventinfo
+                            group:"Other"
                         });
                     }
 
@@ -229,9 +249,7 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
                         tempnames.push({
                             id:$scope.widget.settings.events[b].id,
                             label:$scope.widget.settings.events[b].label,
-                            group:$scope.widget.settings.events[b].group,
-                            eventdata:$scope.widget.settings.events[b].eventdata,
-                            eventinfo:$scope.widget.settings.events[b].eventinfo
+                            group:$scope.widget.settings.events[b].group
                         });
                     }
                 }
@@ -249,6 +267,7 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
         makeEventOrder($scope.selectByGroupModel,$scope.widget.settings.grouporder,reloaded);
 	}
 
+	//Function to selected events in selected event order
 	function makeEventOrder(eventmodel,order,loadstatus){
 
 		if(eventmodel !== undefined){
@@ -275,33 +294,12 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
 	    				events.push({name:eventmodel[i].group,isgroup:true});
 	    			}
 	    		}
-	    		var arrUnique = unique(events);
+	    		var arrUnique = uniqueItems(events);
 	    		for (var itm = 0; itm < arrUnique.length; itm += 1) {
 	         		$scope.itemsList.items1.push({'Id': itm, 'Label': arrUnique[itm].name,'groupstatus':arrUnique[itm].isgroup});
 	    		}
 		    }
 		}
-	}
-
-
-	var unique = function(origArr) {
-	    var newArr = [],
-	        origLen = origArr.length,
-	        found, x, y;
-
-	    for (x = 0; x < origLen; x++) {
-	        found = undefined;
-	        for (y = 0; y < newArr.length; y++) {
-	            if (origArr[x].name === newArr[y].name) {
-	                found = true;
-	                break;
-	            }
-	        }
-	        if (!found) {
-	            newArr.push(origArr[x]);
-	        }
-	    }
-    	return newArr;
 	}
 
 })
