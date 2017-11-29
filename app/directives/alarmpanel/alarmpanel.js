@@ -11,28 +11,27 @@ app.directive('alarmpanel',function() {
 app.controller('AlarmPanelCtrl',
     function ($scope,$interval,dashboardService,datastatesService,userService,statusboardService){ 
     
-    var telemetry = dashboardService.telemetry;
+    $scope.telemetry = dashboardService.telemetry;
     var flexprop = 100;
     $scope.alarmpanel = statusboardService.getStatusTable();//status board current alerts;
     var time, ack = "";
-    var name = userService.getUserName();
-    var role = userService.userRole;
+    $scope.name = userService.getUserName();
+    $scope.role = userService.userRole;
     $scope.contents = [];
     $scope.masteralarmstatus = statusboardService.getMasterAlarmColors();
     $scope.class = []; // for glowing effect
-    $scope.checked = []; //to enable or disable a button's clickable functionality
-    $scope.statusboard = $scope.widget.settings.statusboard;//settings menu button
-    var currentMission = dashboardService.getCurrentMission();
-    var vehicleColors = []; //contains all the vehicles to be displayed for the mission
+    
+    $scope.currentMission = dashboardService.getCurrentMission();
+    $scope.vehicleColors = []; //contains all the vehicles to be displayed for the mission
     
     getVehicles();
 
     //Function to display master alarm and its sub systems
     function getVehicles(){
         var interval = $interval(function(){
-            if(currentMission.missionName != ""){
+            if($scope.currentMission.missionName != ""){
                 if($scope.contents.length == 0){
-                    dashboardService.getConfig(currentMission.missionName)
+                    dashboardService.getConfig($scope.currentMission.missionName)
                         .then(function(response){
                             if(response.data) {
                                 var data = dashboardService.sortObject(response.data);
@@ -48,7 +47,7 @@ app.controller('AlarmPanelCtrl',
                                             "subCategoryColors" :[],
                                             "ackStatus":false
                                         });
-                                        vehicleColors.push({"vehicle":key,"status":false});
+                                        $scope.vehicleColors.push({"vehicle":key,"status":false});
                                     }
                                 }
                                 if($scope.contents.length > 0){   
@@ -64,10 +63,8 @@ app.controller('AlarmPanelCtrl',
         }, 1000);  
     }
 
-    $scope.interval = $interval(updateColors, 1000, 0, false); 
-
     //Function to get colors of each telemetry data item of each vehicle's sub category
-    function updateColors(){
+    $scope.updateColors = function(){
         var alowValue,ahighValue,dataValue,wlowValue,whighValue,valueType;
         var newtablearray = [];
 
@@ -76,16 +73,16 @@ app.controller('AlarmPanelCtrl',
         for(var i=0;i<$scope.contents.length;i++){
             $scope.contents[i].tableArray = [];
             $scope.contents[i].subCategoryColors = [];
-            if($scope.contents[i].vehicle && dashboardService.isEmpty(telemetry) === false){
+            if($scope.contents[i].vehicle && dashboardService.isEmpty($scope.telemetry) === false){
                 var vehicle = $scope.contents[i].vehicle;
                 if($scope.contents[i].categories.length > 0){
                     var categories = $scope.contents[i].categories;
                     for(var j=0;j<categories.length;j++){
-                        for(var key in telemetry[vehicle][categories[j]]){
-                            if(telemetry[vehicle][categories[j]].hasOwnProperty(key)) {
-                                for(var keyval in telemetry[vehicle][categories[j]][key] ){
-                                    if(telemetry[vehicle][categories[j]][key].hasOwnProperty(keyval)){
-                                        var telemetryValue = telemetry[vehicle][categories[j]][key][keyval];
+                        for(var key in $scope.telemetry[vehicle][categories[j]]){
+                            if($scope.telemetry[vehicle][categories[j]].hasOwnProperty(key)) {
+                                for(var keyval in $scope.telemetry[vehicle][categories[j]][key] ){
+                                    if($scope.telemetry[vehicle][categories[j]][key].hasOwnProperty(keyval)){
+                                        var telemetryValue = $scope.telemetry[vehicle][categories[j]][key][keyval];
                                         alowValue = telemetryValue.alarm_low;
                                         ahighValue = telemetryValue.alarm_high;
                                         dataValue = telemetryValue.value;
@@ -126,12 +123,12 @@ app.controller('AlarmPanelCtrl',
                 }
                 newtablearray = newtablearray.concat($scope.contents[i].tableArray);
             }
-            vehicleColors[i].status = false;
+            $scope.vehicleColors[i].status = false;
         }
 
         //save alerts if any in newtablearray
-        if(newtablearray.length > 0 && vehicleColors.length > 0){
-            statusboardService.saveAlerts(newtablearray,vehicleColors); 
+        if(newtablearray.length > 0 && $scope.vehicleColors.length > 0){
+            statusboardService.saveAlerts(newtablearray,$scope.vehicleColors); 
         }
 
         //Load alerts in the table and set sub system colors
@@ -143,7 +140,7 @@ app.controller('AlarmPanelCtrl',
 
     $scope.addtablerow = function(veh,$index,color){
         var newArray = [];
-        ack = name + " - " + role.cRole.callsign;
+        ack = $scope.name + " - " + $scope.role.cRole.callsign;
         var len = $scope.contents[$index].tableArray.length;
 
         if(color.background === "#FF0000" || color.background === "#FFFF00"){
@@ -153,7 +150,7 @@ app.controller('AlarmPanelCtrl',
 
         for(var k=0;k<$scope.contents.length;k++){
             if(k === $index){
-                vehicleColors[k].status = true;
+                $scope.vehicleColors[k].status = true;
             }
         }
 
@@ -162,8 +159,10 @@ app.controller('AlarmPanelCtrl',
             newArray.push($scope.contents[$index].tableArray[i]); 
         }
 
-        statusboardService.saveAlerts(newArray,vehicleColors);
+        statusboardService.saveAlerts(newArray,$scope.vehicleColors);
     }
+
+    $scope.interval = $interval($scope.updateColors, 1000, 0, false); 
 
     $scope.$on("$destroy", 
         function(event) {

@@ -8,8 +8,8 @@ app.directive('datalog',function() {
     }; 
 });
 
-app.controller('DataLogCtrl',function ($scope,$window,$element,$interval,dashboardService,datastatesService){  
-    var telemetry = dashboardService.telemetry;
+app.controller('DataLogCtrl',function ($scope,$interval,dashboardService,datastatesService){  
+    $scope.telemetry = dashboardService.telemetry;
     var colorAlarm = datastatesService.colorValues.alarmcolor; //Color red for alarm
     var colorCaution = datastatesService.colorValues.cautioncolor;// Color orange for caution
     var colorHealthy = datastatesService.colorValues.healthycolor;// Color green for healthy data
@@ -31,10 +31,8 @@ app.controller('DataLogCtrl',function ($scope,$window,$element,$interval,dashboa
         dServiceObjVal = newVal; 
     },true);
 
-    $scope.interval = $interval(updateLog, 1000, 0, false);   
-
     /*Function to update the log and set data state colors*/
-	function updateLog(){
+	$scope.updateLog = function(){
         if($scope.widget.settings.data) {
             if( $scope.widget.settings.data.id !== '' && $scope.widget.settings.data.vehicle !== ''){ 
                 if( prevData.key !== $scope.widget.settings.data.key ){
@@ -97,11 +95,13 @@ app.controller('DataLogCtrl',function ($scope,$window,$element,$interval,dashboa
             $scope.logData.push({
                     name : currentData.name,
                     value : currentData.value,
-                    timestamp : telemetry['time'],
+                    timestamp : $scope.telemetry['time'],
                     style : dataColor
             });
         } 
     }
+
+    $scope.interval = $interval($scope.updateLog, 1000, 0, false);   
 
 	$scope.$on("$destroy", 
 		function(event) {
