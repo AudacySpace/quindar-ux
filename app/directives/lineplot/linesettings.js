@@ -54,7 +54,7 @@ app.controller('LineSettingsCtrl',
                     dashboardService.setLeftLock($scope.lock.lockLeft);
                 }
             } else {
-                alert("Vehicle data not set. Please select from Data Menu");
+                $window.alert("Vehicle data not set. Please select from Data Menu");
             }
         }
 
@@ -90,7 +90,7 @@ app.controller('LineSettingsCtrl',
                     widget.settings.active = false;
                     previousSettings = angular.copy($scope.settings);
                 } else {
-                    alert("Please select atleast one vehicle and save!");
+                    $window.alert("Please select atleast one vehicle and save!");
                 }
             }
         }

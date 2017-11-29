@@ -155,9 +155,7 @@ function gridService ($http, $sessionStorage, $window, userService) {
         main: true,
         settings: {
             active: false,
-            statusboard :{
-                status:true
-            }
+            statusboard: true
         },
         saveLoad: false,
         delete: false

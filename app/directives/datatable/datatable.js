@@ -136,8 +136,8 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
         } else {
             $scope.lock = dashboardService.getLock();
             if($scope.lock.lockLeft !== true) {
-            $scope.lock.lockLeft = !$scope.lock.lockLeft;
-            dashboardService.setLeftLock($scope.lock.lockLeft);
+                $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                dashboardService.setLeftLock($scope.lock.lockLeft);
             }
         }
     }
@@ -161,7 +161,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             }
         } else {
             arrow.style.color = "#07D1EA";
-            alert("Vehicle data not set. Please select from Data Menu");
+            $window.alert("Vehicle data not set. Please select from Data Menu");
         }
     }
 
@@ -171,7 +171,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             $scope.table.rows.splice($index,0,{contents :[{"datavalue":"","headervalue":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false });
             $scope.widget.settings.data.splice($index, 0, {}); 
         }else {
-            alert("You have reached the maximum limit for rows!");
+            $window.alert("You have reached the maximum limit for rows!");
         }
        
     }
@@ -182,7 +182,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
            $scope.table.rows.splice($index+1,0,{contents :[{"datavalue":"","headervalue":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false });  
             $scope.widget.settings.data.splice($index+1, 0, {}); 
        }else {
-            alert("You have reached the maximum limit for rows!");
+            $window.alert("You have reached the maximum limit for rows!");
        }
        
     }
@@ -190,7 +190,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     //Function to delete the current row.
     $scope.deleteRow = function($index){
         if(($index === 0) && ($scope.table.rows.length) === 1){
-            alert("Please do not delete this row!Add row above to delete this row.");
+            $window.alert("Please do not delete this row!Add row above to delete this row.");
         }else {
             $scope.table.rows.splice($index, 1);
             $scope.widget.settings.data.splice($index,1);
@@ -208,7 +208,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             }, 500);
         }
         else{
-            alert("This row cannot be moved further up!");
+            $window.alert("This row cannot be moved further up!");
         }
     }
 
@@ -223,7 +223,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             }, 500);  
         }
         else{
-            alert("This row cannot be moved further down!You have reached the end of the table.");
+            $window.alert("This row cannot be moved further down!You have reached the end of the table.");
         }
     }
 
@@ -239,8 +239,6 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
         $scope.widget.settings.data[$index].type = "header";
         $scope.widget.settings.data[$index].value = $scope.table.rows[$index].contents[0].headervalue;
     } 
-
-    $scope.interval = $interval(updateRow, 500, 0, false);
 
     //Table row and column structure
     checkForRowData();
@@ -259,7 +257,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
         }
     } 
 
-    function updateRow() {
+    $scope.updateRow = function() {
         for (var i=0; i<$scope.table.rows.length; i++){
             var tempRow = $scope.table.rows[i];
             var data = $scope.widget.settings.data[i];
@@ -356,6 +354,8 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             }
         }
     }
+
+    $scope.interval = $interval($scope.updateRow, 500, 0, false);
 
     $scope.$on("$destroy", 
         function(event) {
