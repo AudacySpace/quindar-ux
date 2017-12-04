@@ -15,9 +15,11 @@ function gridService ($http, $sessionStorage, $window, userService) {
     function setDashboardRows(){
        // console.log($window.innerHeight);
         if($window.innerHeight >= 500 && $window.innerHeight < 1000){
-            gridsterOptions.maxRows = 3;
-        }else if($window.innerHeight >= 1000){
-            gridsterOptions.maxRows = 6;
+            gridsterOptions.maxRows = 4;
+        }else if($window.innerHeight >= 1000 && $window.innerHeight <= 2000){
+            gridsterOptions.maxRows = 8;
+        }else if($window.innerHeight > 2000){
+            gridsterOptions.maxRows = 10;
         }
     }
 

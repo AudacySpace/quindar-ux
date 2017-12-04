@@ -55,8 +55,8 @@
 		}
 	})
 
-	.controller('GridsterCtrl', ['gridsterConfig', '$timeout',
-		function(gridsterConfig, $timeout) {
+	.controller('GridsterCtrl', ['gridsterConfig', '$timeout','$sessionStorage',
+		function(gridsterConfig, $timeout,$sessionStorage) {
 
 			var gridster = this;
 
@@ -171,7 +171,17 @@
 						}
 					}
 				}
-				throw new Error('Unable to place item!');
+				var remArray = [];
+				for(var i=0;i<$sessionStorage.dashboard["current"].widgets.length;i++){
+					if(!$sessionStorage.dashboard["current"].widgets[i].col){
+						remArray.push(i);
+					}	
+				}
+				if(remArray.length > 0){
+						$sessionStorage.dashboard["current"].widgets.splice(remArray[remArray.length-1],1);
+				}
+				alert("No space for the qwidget!Please create space to add more qwidgets.");
+				//throw new Error('Unable to place item!');
 			};
 
 			/**
@@ -908,7 +918,9 @@
 		 * @param {Number} column
 		 */
 		this.setPosition = function(row, column) {
+			//console.log("hi2");
 			this.gridster.putItem(this, row, column);
+			//console.log(this.gridster);
 
 			if (!this.isMoving()) {
 				this.setElementPosition();
@@ -2031,8 +2043,8 @@
 	 * @param GridsterResizable
 	 * @param gridsterDebounce
 	 */
-	.directive('gridsterItem', ['$parse', 'GridsterDraggable', 'GridsterResizable', 'gridsterDebounce',
-		function($parse, GridsterDraggable, GridsterResizable, gridsterDebounce) {
+	.directive('gridsterItem', ['$parse', 'GridsterDraggable', 'GridsterResizable', 'gridsterDebounce','$sessionStorage',
+		function($parse, GridsterDraggable, GridsterResizable, gridsterDebounce,$sessionStorage) {
 			return {
 				scope: true,
 				restrict: 'EA',
@@ -2126,7 +2138,6 @@
 					function positionChanged() {
 						// call setPosition so the element and gridster controller are updated
 						item.setPosition(item.row, item.col);
-
 						// when internal item position changes, update externally bound values
 						if ($getters.row && $getters.row.assign) {
 							$getters.row.assign(scope, item.row);
@@ -2136,6 +2147,7 @@
 						}
 					}
 					scope.$watch(function() {
+						//console.log(item);
 						return item.row + ',' + item.col;
 					}, positionChanged);
 
