@@ -8,7 +8,7 @@ app.directive('groundtrack',function() {
     }; 
 });
 
-app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,dashboardService,gridService,solarService) { 
+app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,dashboardService,gridService,solarService,odeService) { 
   
     var telemetry = dashboardService.telemetry;
     var temp = $element[0].getElementsByTagName("div")[0];
@@ -16,7 +16,16 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
     var prevSettings;
     var scH = {};
     var scS = {};
-
+	var scHEst = {};
+	var dServiceObjVal = {};
+	var est = false;			// Is it estimation?
+	
+	$scope.dataStatus = dashboardService.icons;
+	//watch to check the database icon color to know about database status
+    $scope.$watch('dataStatus',function(newVal,oldVal){
+        dServiceObjVal = newVal; 
+    },true);
+	
     $scope.timeObj = {};
     $scope.checkboxModel = {
         value1 : true
@@ -50,7 +59,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
     var station = [[-122.4, 37.7],[103.8, 1.4]];
     //var satRadius = 10000;//7000;
     var stationNames = ['Ground Station 01 - San Francisco ','Ground Station 02 - Singapore'];
-
+	
     g.attr("id","g")
         .attr("x",0)
         .attr("y",0);
@@ -142,6 +151,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
         }
     );
 
+	//var counter = 0;
     // Function to update data to be plotted
     function updatePlot() {
         g.selectAll("path.route").remove(); 
@@ -159,9 +169,13 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
             for(i=0; i<vehicles.length; i++){
                 scS[i] = [];
                 scH[i] = [];
+				scHEst[i] = []; 
             }
         } 
 
+		// Increase counter
+		//counter++;
+		
         for (i=0; i< vehicles.length; i++){
             latestdata = telemetry[vehicles[i].name];
   
@@ -174,17 +188,78 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                     // remove previous Ground Station coverage
                     g.selectAll("path.gslos").remove();
 
-                    // update latestdata
-                    var x = latestdata.GNC.position.x.value;
-                    var y = latestdata.GNC.position.y.value;
-                    var z = latestdata.GNC.position.z.value;
-                                
+					if(dServiceObjVal.sIcon === "green" && dServiceObjVal.gIcon === "green" && 
+                    dServiceObjVal.pIcon === "green" && dServiceObjVal.dIcon === "green"){
+					//if(counter < 100 || (counter > 400 && counter < 600) || counter > 800 ){
+						// update latestdata
+						var x = latestdata.GNC.position.x.value;
+						var y = latestdata.GNC.position.y.value;
+						var z = latestdata.GNC.position.z.value;
+						
+						est = false;	// Not estimation
+						
+					}
+					else{
+						
+						// The equations of motion: two-body problem, earth-centered:
+						var x = latestdata.GNC.position.x.value;
+						var y = latestdata.GNC.position.y.value;
+						var z = latestdata.GNC.position.z.value;
+						var vx = latestdata.GNC.velocity.vx.value;
+						var vy = latestdata.GNC.velocity.vy.value;
+						var vz = latestdata.GNC.velocity.vz.value;
+						
+						var eom = function(xdot, x, t) {
+						
+							var mu = 3.9860043543609598E+05;	//[km³/sec²] from http://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/gm_de431.tpc
+
+							r = Math.sqrt(Math.pow(x[0],2)+Math.pow(x[1],2)+Math.pow(x[2],2));
+							xdot[0] = x[3]
+							xdot[1] = x[4]
+							xdot[2] = x[5]
+							xdot[3] = -mu /Math.pow(r,3) *x[0] 
+							xdot[4] = -mu /Math.pow(r,3) *x[1] 
+							xdot[5] = -mu /Math.pow(r,3) *x[2] 
+							
+						}
+
+						// Initialize:
+						var y0 = [x,y,z,vx,vy,vz],
+						t0 = 0,
+						dt0 = 1e-10,
+						integrator = odeService.IntegratorFactory( y0, eom, t0, dt0)
+						
+						// Integrate up to tmax:
+						var tmax = 1, tEst = [], yEst = []
+						while( integrator.step( tmax ) ) {
+							
+							// Store the solution at this timestep:
+							tEst.push( integrator.t )
+							yEst.push( integrator.y )						
+						}
+						
+						// Update with the estimated value
+						x = yEst.pop()[0];
+						y = yEst.pop()[1];
+						z = yEst.pop()[2];
+						vx = yEst.pop()[3];
+						vy = yEst.pop()[4];
+						vz = yEst.pop()[5];
+						
+						est = true;
+					}
+					
+					var scSData = [x, y, z];
+					if(scSData != scS[i][scS[i].length - 1]){
+						scS[i].push(scSData);
+					}
+						
                     // Calculate longitude and latitude from the satellite position x, y, z.
                     // The values (x,y,z) must be Earth fixed.
                     r = Math.sqrt(Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2));
                     longitude = Math.atan2(y,x)/Math.PI*180;
                     latitude = Math.asin(z/r)/Math.PI*180;
-
+					
                     // Convert [longitude,latitude] to plot 
                     var sat_coord = projGround([longitude,latitude]);
 
@@ -207,35 +282,86 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                         $scope.timeObj[i].push(timestamp);
                     }
                     var diffMins = Math.round(($scope.timeObj[i][$scope.timeObj[i].length-1] - $scope.timeObj[i][0])/60000);
+				
+					// Check if estimation or not
+					if (est == false){
+						// Not estimation
+						// add longitude and latitude to data_plot
+						var scHData = [longitude, latitude];
+						if(scHData != scH[i][scH[i].length - 1]){
+							scH[i].push(scHData);
+						}
 
-                    // add longitude and latitude to data_plot
-                    var scHData = [longitude, latitude];
-                    if(scHData != scH[i][scH[i].length - 1]){
-                        scH[i].push(scHData);
-                    }
-
-                    var scSData = [x, y, z];
-                    if(scSData != scS[i][scS[i].length - 1]){
-                        scS[i].push(scSData);
-                    }
-
-                    // Remove data points after 90 minutes (7200000ms)
-                    if( diffMins >= 90) {
-                        scH[i].splice(0,1);
-                        scS[i].splice(0,1);
-                        $scope.timeObj[i].splice(0,1);
-                    }
-    				
-                    if(vehicles[i].orbitStatus === true){
+						
+						// Remove data points after 90 minutes (7200000ms)
+						if( diffMins >= 90) {
+							scH[i].splice(0,1);
+							scS[i].splice(0,1);
+							$scope.timeObj[i].splice(0,1);
+						}
+					
+						if(vehicles[i].orbitStatus === true){
                         var route = g.append("path")
                                      .datum({type: "LineString", coordinates: scH[i]})  
                                      .attr("class", "route")
                                      .attr("stroke", vehicles[i].color)
                                      .attr("d", path);
-                    }
+						}
 
-                    if(vehicles[i].iconStatus === true){
-                        var craft = g.append("svg:image")
+						if(vehicles[i].iconStatus === true){
+
+							for (kk=i+1; kk<vehicles.length; kk++) {
+								if (vehicles[kk].iconStatus === true) {
+									commlink(scS[i][scS[i].length-1],scS[kk][scS[kk].length-1],scH[i][scH[i].length-1],scH[kk][scH[kk].length-1]); 
+								}
+							}
+							for (kk=0; kk<gs.length; kk++) {
+								gsCommLink(station[kk], scH[i][scH[i].length-1], scS[i][scS[i].length-1], gsAng);
+							}
+						
+						}
+					}
+					else{
+
+						// Estimation
+						// add longitude and latitude to data_plot
+						var scHData = [longitude, latitude];
+						if(scHData != scHEst[i][scHEst[i].length - 1]){
+							scHEst[i].push(scHData);
+						}  				
+
+						if(vehicles[i].iconStatus === true){
+
+							for (kk=i+1; kk<vehicles.length; kk++) {
+								if (vehicles[kk].iconStatus === true) {
+									commlink(scS[i][scS[i].length-1],scS[kk][scS[kk].length-1],scHEst[i][scHEst[i].length-1],scHEst[kk][scHEst[kk].length-1]); 
+								}
+							}
+							for (kk=0; kk<gs.length; kk++) {
+								gsCommLink(station[kk], scHEst[i][scHEst[i].length-1], scS[i][scS[i].length-1], gsAng);
+							}
+						}
+					}
+					
+					
+					if(vehicles[i].orbitStatus === true){
+						// Plot existing data first
+						var route = g.append("path")
+                                     .datum({type: "LineString", coordinates: scH[i]})  
+                                     .attr("class", "route")
+                                     .attr("stroke", vehicles[i].color)
+                                     .attr("d", path);
+						// Add estimation
+						var route = g.append("path")
+                                     .datum({type: "LineString", coordinates: scHEst[i]})  
+									 .attr("class", "route")
+									 .style("stroke-dasharray", ("10,3"))
+                                     .attr("stroke", vehicles[i].color)
+                                     .attr("d", path);
+					}
+					
+					if(vehicles[i].iconStatus === true){
+							var craft = g.append("svg:image")
                                      .attr("xlink:href", "/icons/groundtrack-widget/satellite.svg")
                                      .attr("id", "craft")
                                      .attr("fill", "#000000")
@@ -244,16 +370,8 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                                      .attr("width",30)
                                      .attr("height",30)
                                      .append("svg:title").text(vehicles[i].name);
-
-                        for (kk=i+1; kk<vehicles.length; kk++) {
-                            if (vehicles[kk].iconStatus === true) {
-                                commlink(scS[i][scS[i].length-1],scS[kk][scS[kk].length-1],scH[i][scH[i].length-1],scH[kk][scH[kk].length-1]); 
-                            }
-                        }
-                        for (kk=0; kk<gs.length; kk++) {
-                            gsCommLink(station[kk], scH[i][scH[i].length-1], scS[i][scS[i].length-1], gsAng);
-                        }
-                    }
+					}
+										
                 }
             }
         }
