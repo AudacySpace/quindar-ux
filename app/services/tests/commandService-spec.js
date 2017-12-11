@@ -60,9 +60,9 @@ describe('Testing commandService', function () {
             user: "chavi.malhotra@gmail.com"
         }];
  
-        httpBackend.expectGET('/getCommandList?mission=ATest').respond(200, result);
+        httpBackend.expectGET('/getCommandLog?mission=ATest').respond(200, result);
  
-        commandService.getCommandList(mission).then( function(response){
+        commandService.getCommandLog(mission).then( function(response){
         	commandLog = response.data;
         	expect(response.status).toBe(200);
         	expect(commandLog).toBeDefined();
@@ -71,6 +71,47 @@ describe('Testing commandService', function () {
     	});
 
     	httpBackend.flush();
+    });
+
+    it('should be able to retrieve command list from database', function () {
+        var mission = "ATest";
+        var commandList;
+        var result = [{
+            "value": "Null Command Echo",
+            "types": [
+                {
+                    "value": "Get"
+                },
+                {
+                    "value": "Set"
+                },
+                {
+                    "value": "Invoke"
+                }
+            ]
+        },{
+            "value": "Pointing",
+            "types": [
+                {
+                    "value": "Get"
+                },
+                {
+                    "value": "Set"
+                }
+            ]
+        }];
+ 
+        httpBackend.expectGET('/getCommandList?mission=ATest').respond(200, result);
+ 
+        commandService.getCommandList(mission).then( function(response){
+            commandList = response.data;
+            expect(response.status).toBe(200);
+            expect(commandList).toBeDefined();
+            expect(commandList.length).toBeGreaterThan(0);
+            expect(commandList.length).toEqual(2);
+        });
+
+        httpBackend.flush();
     });
  
 });

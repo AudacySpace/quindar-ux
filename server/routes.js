@@ -18,6 +18,8 @@ var Imagemap = require('./models/imagemap');
 
 var Command = require('./models/command');
 
+var CommandList = require('./models/commandList');
+
 var Timeline = require('./models/timeline');
 
 // normal routes ===============================================================
@@ -461,6 +463,7 @@ var Timeline = require('./models/timeline');
         
         newCommand.user = email;
         newCommand.name = command.name;
+        newCommand.type = command.type;
         newCommand.argument = command.argument;
         newCommand.timestamp = command.timestamp;
         newCommand.time = command.time;
@@ -475,8 +478,8 @@ var Timeline = require('./models/timeline');
         });
     });
 
-    //get the command list for a particular mission
-    app.get('/getCommandList', function(req, res){
+    //get the command log for a particular mission
+    app.get('/getCommandLog', function(req, res){
         var mission = req.query.mission;
 
         Command.find( { 'mission' : mission }, function(err, commands) {
@@ -485,6 +488,19 @@ var Timeline = require('./models/timeline');
             }
 
             res.send(commands);
+        });
+    });
+
+    //get the command list for a particular mission
+    app.get('/getCommandList', function(req, res){
+        var mission = req.query.mission;
+
+        CommandList.findOne( { 'mission' : mission }, function(err, list) {
+            if(err){ 
+                console.log(err);
+            }
+
+            res.send(list.commands);
         });
     });
 

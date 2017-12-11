@@ -10,7 +10,8 @@ var commandSchema = mongoose.Schema({
     mission : String,
     response : String,
     sent_to_satellite : Boolean,
-    time : String
+    time : String,
+    type : String
 
 });
 

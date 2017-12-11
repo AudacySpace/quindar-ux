@@ -1,10 +1,33 @@
 describe('Testing command controller', function () {
-    var controller, dashboardService, scope, commandService, userService, $intervalSpy, deferredSave, deferredCommandList;
+    var controller, dashboardService, scope, commandService, userService, 
+    $intervalSpy, deferredSave, deferredCommandLog, deferredCommandList;
 
     var mission = {
         missionName : 'ATest',
     };
     var email = "john.smith@gmail.com";
+    var list = [{
+        "value": "Null Command Echo",
+        "types": [
+            {
+                "value": "Get"
+            },
+            {
+                "value": "Set"
+            },
+            {
+                "value": "Invoke"
+            }]
+        },{
+        "value": "Pointing",
+        "types": [
+            {
+                "value": "Get"
+            },
+            {
+                "value": "Set"
+            }]
+        }];
     var windowMock = {
         alert: function(message) {
             
@@ -26,8 +49,10 @@ describe('Testing command controller', function () {
             userService = jasmine.createSpyObj('userService', ['getUserEmail']);
 
             deferredSave = _$q_.defer();
+            deferredCommandLog = _$q_.defer();
             deferredCommandList = _$q_.defer();
             spyOn(commandService, "saveCommand").and.returnValue(deferredSave.promise);
+            spyOn(commandService, "getCommandLog").and.returnValue(deferredCommandLog.promise);
             spyOn(commandService, "getCommandList").and.returnValue(deferredCommandList.promise);
 
             scope = $rootScope.$new();
@@ -45,6 +70,7 @@ describe('Testing command controller', function () {
             userService.getUserEmail.and.callFake(function() {
                 return email;
             });
+            deferredCommandList.resolve({ data : list, status: 200 });
 
             controller = $controller('CommandCtrl', {
                 $scope: scope, 
@@ -70,7 +96,8 @@ describe('Testing command controller', function () {
             name : "",
             argument : "",
             timestamp : "",
-            time : ""
+            time : "",
+            type: ""
         }
 
         expect(scope.selected).toEqual({});
@@ -81,6 +108,8 @@ describe('Testing command controller', function () {
         expect(scope.disableInput).toEqual(false);
         expect(scope.disableLock).toEqual(true);
         expect(scope.command).toEqual(nullCommand);
+        expect(scope.types).toEqual([]);
+        expect(commandService.getCommandList).toHaveBeenCalled();
     })
 
     it('should set the user email and current mission name', function(){
@@ -236,7 +265,7 @@ describe('Testing command controller', function () {
         .toHaveBeenCalledWith(scope.email, command, scope.mission.missionName);
 
         //expect values to reset
-        expect(scope.command).toEqual({ name: '', argument: '', timestamp: '', time: '' });
+        expect(scope.command).toEqual({ name: '', argument: '', timestamp: '', time: '', type: "" });
         expect(scope.selected).toEqual({});
         expect(scope.argument).toEqual("");
         expect(scope.entered).toEqual(false);
@@ -304,13 +333,35 @@ describe('Testing command controller', function () {
             user: "john.smith@gmail.com"
         }];
 
-        deferredCommandList.resolve({ data : result, status: 200 });
+        deferredCommandLog.resolve({ data : result, status: 200 });
         scope.updateCommandlog();
         // call digest cycle for this to work
         scope.$digest();
 
-        expect(commandService.getCommandList).toHaveBeenCalledWith(scope.mission.missionName);
+        expect(commandService.getCommandLog).toHaveBeenCalledWith(scope.mission.missionName);
         expect(scope.commandLog).toEqual(result);
+    });
+
+    it('should define function scope.updateTypes', function(){
+        expect(scope.updateTypes).toBeDefined();
+    })
+
+    it('should update the types list when the command is selected', function() {
+        var item = {
+            "value": "Pointing",
+            "types": [{
+                "value": "Get"
+            },
+            {
+                "value": "Set"
+            }]
+        };
+        var model = item.value;
+
+        scope.updateTypes(item, model);
+
+        expect(scope.selected.type).toEqual({});
+        expect(scope.types).toEqual(item.types);
     });
 
     it('should call $interval one time', function(){

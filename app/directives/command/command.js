@@ -27,23 +27,25 @@ app.controller('CommandCtrl',
 		$scope.command = {
 			name : "",
 			argument : "",
+			type : "",
 			timestamp : "",
 			time : ""
-		}
-	}
+		};
+		$scope.types = [];
 
-    $scope.commandList = [{
-    	'key': 0,
-    	'value': 'Null Command Echo'
-    }, {
-    	'key': 1,
-    	'value': 'Dummy Command'
-    }]
+		commandService.getCommandList($scope.mission.missionName)
+		.then(function(response) {
+	        if(response.status == 200) {
+	            $scope.commandList = response.data;
+	        }
+	    });
+	}
 
     $scope.enter = function(){
     	if($scope.selected.command) {
 			$scope.command.name = $scope.selected.command;
 		    $scope.command.argument = $scope.argument;
+		    $scope.command.type = $scope.selected.type;
 		   	$scope.entered = true;
 		   	$scope.disableEnter = true;
 	    } else {
@@ -86,12 +88,17 @@ app.controller('CommandCtrl',
     }
 
 	$scope.updateCommandlog = function(){
-		commandService.getCommandList($scope.mission.missionName)
+		commandService.getCommandLog($scope.mission.missionName)
 		.then(function(response) {
 	        if(response.status == 200) {
 	            $scope.commandLog = response.data;
 	        }
 	    });
+	}
+
+	$scope.updateTypes = function(item, model){
+		$scope.selected.type = {};
+		$scope.types = item.types;
 	}
 
 	$scope.initialise();

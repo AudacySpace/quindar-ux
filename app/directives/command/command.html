@@ -1,10 +1,10 @@
 <div layout="column" style="height:100%">
 <md-content flex-gt-sm="50" flex-xs="80" flex-sm="70" layout="column" layout-padding class="comm-widget">
     <div layout="row" flex="50" id="comm-row">
-        <md-input-container flex="50" class="input-container">
+        <md-input-container flex="30" class="input-container">
             <label>Command<span>*</span></label>
-                <ui-select tagging ng-model="selected.command" theme="bootstrap" class="select-command" ng-change="changeInput()" ng-disabled="disableInput">
-                    <ui-select-match class="selected-command" placeholder="Select Command">
+                <ui-select tagging ng-model="selected.command" theme="bootstrap" class="select-command" ng-change="changeInput()" ng-disabled="disableInput" on-select="updateTypes($item, $model)">
+                    <ui-select-match class="selected-command" placeholder="Select">
                         {{$select.selected.value}}
                     </ui-select-match>
                     <ui-select-choices repeat="command.value as command in commandList | filter: $select.search track by command.value">
@@ -15,8 +15,21 @@
         </md-input-container>
 
         <md-input-container flex="20" class="input-container">
+            <label>Type</label>
+            <ui-select tagging ng-model="selected.type" theme="bootstrap" class="select-command" ng-change="changeInput()" ng-disabled="disableInput">
+                <ui-select-match class="selected-command" placeholder="Type">
+                    {{$select.selected.value}}
+                </ui-select-match>
+                <ui-select-choices repeat="type.value as type in types | filter: $select.search track by type.value">
+                    <div ng-bind="type.value"></div>
+                    <!-- <div ng-bind="command.value | highlight: $select.selected.value"></div> -->
+                </ui-select-choices>
+            </ui-select>
+        </md-input-container>
+
+        <md-input-container flex="20" class="input-container">
             <label>Value</label>
-            <input ng-model="argument" placeholder="Argument" ng-change="changeInput()" ng-disabled="disableInput" ng-class="disableInput ? 'disabled' : 'input-arg'">
+            <input ng-model="argument" placeholder="Value" ng-change="changeInput()" ng-disabled="disableInput" ng-class="disableInput ? 'disabled' : 'input-arg'">
         </md-input-container>
 
         <md-input-container flex="30" class="input-container">
@@ -24,8 +37,12 @@
         </md-input-container>
     </div>
     <div layout="row" flex="50" id="lock-row">
-        <md-input-container flex="50" class="lock-container">
+        <md-input-container flex="30" class="lock-container">
             <input aria-label="command" ng-model="command.name" class="disabled" ng-disabled="true">
+        </md-input-container>
+
+        <md-input-container flex="20" class="lock-container">
+            <input aria-label="command" ng-model="command.type" class="disabled" ng-disabled="true">
         </md-input-container>
 
         <md-input-container flex="20" class="lock-container">
@@ -54,13 +71,16 @@
             <div flex="25" id="left-header">
                 Time
             </div>
-            <div flex="40" id="left-header">
+            <div flex="30" id="left-header">
                 Command
+            </div>
+            <div flex="15" id="left-header">
+                Type
             </div>
             <div flex="15" id="left-header">
                 Value
             </div>
-            <div flex="20" id="right-header">
+            <div flex="15" id="right-header">
                 Response
             </div>
         </div>
@@ -70,13 +90,16 @@
             <div flex="25" id="left-row">
                 {{comm.time}}
             </div>
-            <div flex="40" id="left-row" style="text-overflow:ellipsis; white-space: nowrap;">
+            <div flex="30" id="left-row" style="text-overflow:ellipsis; white-space: nowrap;">
                 {{comm.name}}
+            </div>
+            <div flex="15" id="left-row">
+                {{comm.type}}
             </div>
             <div flex="15" id="left-row">
                 {{comm.argument}}
             </div>
-            <div flex="20" id="right-row">
+            <div flex="15" id="right-row">
                 {{comm.response}}
             </div>
         </div>
