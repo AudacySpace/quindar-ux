@@ -40,6 +40,14 @@ describe('Testing sidebarService', function () {
         expect(sidebarService.vehicleInfo.key).toEqual('A0.GNC.attitude.q1');
     });
 
+    it('should be able to set the default vehicle info when setVehicleInfo is called with empty string', function () {
+        sidebarService.setVehicleInfo("");
+
+        expect(sidebarService.vehicleInfo.vehicle).toEqual('');
+        expect(sidebarService.vehicleInfo.id).toEqual('');
+        expect(sidebarService.vehicleInfo.key).toEqual('');
+    });
+
     it('should define the function getVehicleInfo', function () {
         expect(sidebarService.getVehicleInfo).toBeDefined();
     });

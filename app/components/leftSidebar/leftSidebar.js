@@ -13,6 +13,21 @@ app
             if(data.nodes.length == 0){
                 sidebarService.setVehicleInfo(data.value);
             } else {
+                var nodes = data.nodes;
+                var count = 0;
+
+                for(var i=0; i<nodes.length; i++){
+                    if(nodes[i].nodes.length > 0){
+                        count = count + 1;
+                    }
+                }
+
+                //if parent of leaf node, count will be 0
+                if(count==0){
+                    sidebarService.setVehicleInfo(data.value);
+                } else {
+                    sidebarService.setVehicleInfo("");
+                }
                 data.active = !data.active;
             }
         }

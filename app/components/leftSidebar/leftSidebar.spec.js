@@ -107,6 +107,32 @@ describe('Testing leftSidebar component', function () {
 
     it('should make toggle the active property if child nodes present, on selectData function call', function(){
         var data = {
+            "name":"GNC",
+            "nodes":[{
+                "name":"Attitude",
+                "nodes":[{
+                    "name":"q1",
+                    "nodes":[],
+                    "value":"A0.GNC.Attitude.q1",
+                    "active":false
+                }],
+                "value":"A0.GNC.Attitude",
+                "active":false
+            }],
+            "value":"A0.GNC",
+            "active":false
+        };
+
+        $controller.selectData(data);
+
+        expect(data.active).toEqual(true);
+        //set vehicleInfo on sidebarService to empty values
+        expect(sidebarService.setVehicleInfo).toHaveBeenCalled();
+        expect(sidebarService.setVehicleInfo).toHaveBeenCalledWith('');
+    });
+
+    it('should set vehicleInfo in sidebarService if no children of child nodes(parent of leaf node)', function(){
+        var data = {
             "name":"Attitude",
             "nodes":[{
                 "name":"q1",
@@ -121,14 +147,17 @@ describe('Testing leftSidebar component', function () {
         $controller.selectData(data);
 
         expect(data.active).toEqual(true);
+        //set vehicleInfo on sidebarService to empty values
+        expect(sidebarService.setVehicleInfo).toHaveBeenCalled();
+        expect(sidebarService.setVehicleInfo).toHaveBeenCalledWith('A0.GNC.Attitude');
     });
 
     it('should make a call to sidebarService setVehicleInfo if no child nodes, on selectData function call', function(){
         var data = {
             "name":"q1",
-                "nodes":[],
-                "value":"A0.GNC.Attitude.q1",
-                "active":false
+            "nodes":[],
+            "value":"A0.GNC.Attitude.q1",
+            "active":false
         };
 
         $controller.selectData(data);
