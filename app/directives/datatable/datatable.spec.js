@@ -145,6 +145,31 @@ describe('Testing data table controller', function () {
         expect(arrow.style.color).toEqual('#07D1EA');
     });
 
+    it('should alert the user if a group(not ID) is selected from the left menu', function() {
+        spyOn(windowMock, "alert");
+        sidebarService.getVehicleInfo.and.callFake(function(){
+            return { 
+                id: 'velocity',
+                vehicle: 'A0',
+                key: 'A0.GNC.velocity' 
+            }
+        });
+
+        dashboardService.getData.and.callFake(function() {
+            return {
+                "v": {},
+                "vx": {},
+                "vy": {},
+                "vz": {}
+            };
+        });
+
+        scope.getValue(ev, {}, 1);
+
+        expect(windowMock.alert).toHaveBeenCalledWith("Please select telemetry ID(leaf node) from Data Menu");
+        expect(arrow.style.color).toEqual('#07D1EA');
+    });
+
     it('should store the value of selected vehicle and id in scope.data variable', function() {
         windowMock.innerWidth = 1000;
         var index = 1;
@@ -156,6 +181,20 @@ describe('Testing data table controller', function () {
 
         sidebarService.getVehicleInfo.and.callFake(function(){
             return vehicleInfo;
+        });
+
+        dashboardService.getData.and.callFake(function() {
+            return {
+                "value": -0.3201368817947103,
+                "warn_high": "10",
+                "warn_low": "-10",
+                "alarm_high": "14",
+                "alarm_low": "-14",
+                "units": "km/s",
+                "name": "x velocity component in ECF",
+                "category": "velocity",
+                "notes": ""
+            };
         });
 
         scope.getValue(ev, {}, index);
@@ -179,10 +218,147 @@ describe('Testing data table controller', function () {
             return vehicleInfo;
         });
 
+        dashboardService.getData.and.callFake(function() {
+            return {
+                "value": -0.3201368817947103,
+                "warn_high": "10",
+                "warn_low": "-10",
+                "alarm_high": "14",
+                "alarm_low": "-14",
+                "units": "km/s",
+                "name": "x velocity component in ECF",
+                "category": "velocity",
+                "notes": ""
+            };
+        });
+
         scope.getValue(ev, {}, index);
 
         expect(scope.widget.settings.data[index].type).toEqual('data');
         expect(scope.widget.settings.data[index].value).toEqual('A0.GNC.velocity.vx');
+        expect(scope.lock.lockLeft).toEqual(false);
+        expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false);
+        expect(arrow.style.color).toEqual('#b3b3b3');
+    });
+
+    it('should define function applyGroup', function() {
+        expect(scope.applyGroup).toBeDefined();
+    });
+
+    it('should alert the user if the vehicle and id from the left menu are not available', function() {
+        spyOn(windowMock, "alert");
+        sidebarService.getVehicleInfo.and.callFake(function(){
+            return { 
+                id: '',
+                vehicle: '',
+                key: '' 
+            }
+        });
+
+        scope.applyGroup(ev, {}, 1);
+
+        expect(windowMock.alert).toHaveBeenCalledWith("Data not set. Please select from Data Menu");
+        expect(arrow.style.color).toEqual('#07D1EA');
+    });
+
+    it('should alert the user if an ID(not group) is selected from the left menu', function() {
+        spyOn(windowMock, "alert");
+        sidebarService.getVehicleInfo.and.callFake(function(){
+            return { 
+                id: 'vx',
+                vehicle: 'A0',
+                key: 'A0.GNC.velocity.vx' 
+            }
+        });
+
+        dashboardService.getData.and.callFake(function() {
+            return {
+                "value": -0.3201368817947103,
+                "warn_high": "10",
+                "warn_low": "-10",
+                "alarm_high": "14",
+                "alarm_low": "-14",
+                "units": "km/s",
+                "name": "x velocity component in ECF",
+                "category": "velocity",
+                "notes": ""
+            };
+        });
+
+        scope.applyGroup(ev, {}, 1);
+
+        expect(windowMock.alert).toHaveBeenCalledWith("Please select group(not ID) from Data Menu");
+        expect(arrow.style.color).toEqual('#07D1EA');
+    });
+
+    it('should store the value of selected group keys in widget settings variable', function() {
+        windowMock.innerWidth = 1000;
+        var index = 1;
+        var vehicleInfo = { 
+            id: 'velocity',
+            vehicle: 'A0',
+            key: 'A0.GNC.velocity' 
+        };
+
+        sidebarService.getVehicleInfo.and.callFake(function(){
+            return vehicleInfo;
+        });
+
+        dashboardService.getData.and.callFake(function() {
+            return {
+                "v": {},
+                "vx": {},
+                "vy": {},
+                "vz": {}
+            };
+        });
+
+        scope.applyGroup(ev, {}, index);
+
+        expect(scope.widget.settings.data[index].type).toEqual('data');
+        expect(scope.widget.settings.data[index].value).toEqual('A0.GNC.velocity.v');
+        expect(scope.widget.settings.data[index+1].type).toEqual('data');
+        expect(scope.widget.settings.data[index+1].value).toEqual('A0.GNC.velocity.vx');
+        expect(scope.widget.settings.data[index+2].type).toEqual('data');
+        expect(scope.widget.settings.data[index+2].value).toEqual('A0.GNC.velocity.vy');
+        expect(scope.widget.settings.data[index+3].type).toEqual('data');
+        expect(scope.widget.settings.data[index+3].value).toEqual('A0.GNC.velocity.vz');
+        expect(arrow.style.color).toEqual('#b3b3b3');
+    });
+
+    it('should close the left menu after storing keys of the group into settings variable(window width>1400)', function() {
+        windowMock.innerWidth = 1440;
+        scope.lock = { lockLeft : true, lockRight : false };
+        var index = 1;
+        var vehicleInfo = { 
+            id: 'velocity',
+            vehicle: 'A0',
+            key: 'A0.GNC.velocity' 
+        };
+
+        sidebarService.getVehicleInfo.and.callFake(function(){
+            return vehicleInfo;
+        });
+
+        dashboardService.getData.and.callFake(function() {
+            return {
+                "v": {},
+                "vx": {},
+                "vy": {},
+                "vz": {}
+            };
+        });
+
+        scope.applyGroup(ev, {}, index);
+
+        expect(scope.widget.settings.data[index].type).toEqual('data');
+        expect(scope.widget.settings.data[index].value).toEqual('A0.GNC.velocity.v');
+        expect(scope.widget.settings.data[index+1].type).toEqual('data');
+        expect(scope.widget.settings.data[index+1].value).toEqual('A0.GNC.velocity.vx');
+        expect(scope.widget.settings.data[index+2].type).toEqual('data');
+        expect(scope.widget.settings.data[index+2].value).toEqual('A0.GNC.velocity.vy');
+        expect(scope.widget.settings.data[index+3].type).toEqual('data');
+        expect(scope.widget.settings.data[index+3].value).toEqual('A0.GNC.velocity.vz');
         expect(scope.lock.lockLeft).toEqual(false);
         expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false);
         expect(arrow.style.color).toEqual('#b3b3b3');

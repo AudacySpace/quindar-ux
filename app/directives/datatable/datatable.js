@@ -148,20 +148,63 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
         var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
 
         if(vehicleInfo.key) {
-            $scope.widget.settings.data[$index] = new Object();
-            $scope.widget.settings.data[$index].type = "data";
-            $scope.widget.settings.data[$index].value = vehicleInfo.key;
+            var data = dashboardService.getData(vehicleInfo.key);
 
-            arrow.style.color = "#b3b3b3";
-            if ($window.innerWidth >= 1400){
-                if($scope.lock.lockLeft !== false){
-                    $scope.lock.lockLeft = !$scope.lock.lockLeft;
-                    dashboardService.setLeftLock($scope.lock.lockLeft);
+            if(data.hasOwnProperty("value")){
+                $scope.widget.settings.data[$index] = new Object();
+                $scope.widget.settings.data[$index].type = "data";
+                $scope.widget.settings.data[$index].value = vehicleInfo.key;
+
+                arrow.style.color = "#b3b3b3";
+                if ($window.innerWidth >= 1400){
+                    if($scope.lock.lockLeft !== false){
+                        $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                        dashboardService.setLeftLock($scope.lock.lockLeft);
+                    }
                 }
+            } else {
+                arrow.style.color = "#07D1EA";
+                $window.alert("Please select telemetry ID(leaf node) from Data Menu");
             }
         } else {
             arrow.style.color = "#07D1EA";
             $window.alert("Vehicle data not set. Please select from Data Menu");
+        }
+    }
+
+    //function to assign key to specific row indices for the selected group
+    $scope.applyGroup = function($event, row, $index){
+        var vehicleInfo = sidebarService.getVehicleInfo();
+        var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
+
+        var grpkey = vehicleInfo.key;
+        
+        if(grpkey) {
+            var data = dashboardService.getData(grpkey);
+
+            if(!data.hasOwnProperty("value")){
+                var idList = Object.keys(data);
+
+                for(var i=0; i<idList.length; i++){
+                    $scope.widget.settings.data[$index + i] = new Object();
+                    $scope.widget.settings.data[$index + i].type = "data";
+                    $scope.widget.settings.data[$index + i].value = grpkey + '.' + idList[i];
+                }
+
+                arrow.style.color = "#b3b3b3";
+                if ($window.innerWidth >= 1400){
+                    if($scope.lock.lockLeft !== false){
+                        $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                        dashboardService.setLeftLock($scope.lock.lockLeft);
+                    }
+                }
+            } else {
+                arrow.style.color = "#07D1EA";
+                $window.alert("Please select group(not ID) from Data Menu");
+            }
+        } else {
+            arrow.style.color = "#07D1EA";
+            $window.alert("Data not set. Please select from Data Menu");
         }
     }
 
