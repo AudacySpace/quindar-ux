@@ -23,7 +23,7 @@ app.controller("LineCtrl", function($scope, $element, $interval, $window, dashbo
         }, 
         //dateWindow: [0, 1], 
         legend: "always",
-        xlabel: "", 
+        xlabel: "timestamp", 
         axisLabelWidth : 80,
         xLabelHeight : 16,
         yLabelWidth : 16,
@@ -37,7 +37,7 @@ app.controller("LineCtrl", function($scope, $element, $interval, $window, dashbo
 
     function updatePlot() {
         graph.resize();
-        console.log("going")
+
         if($scope.widget.settings.data){
             if($scope.widget.settings.data.value !== "" && $scope.widget.settings.data.vehicles.length > 0) {
                 var paramY = $scope.widget.settings.data.value;
