@@ -215,8 +215,31 @@ function gridService ($http, $sessionStorage, $window, userService) {
         saveLoad: false,
         delete: false
 
-     }
-     ];
+    },
+    {
+        sizeY: 3,
+        sizeX: 4,
+        name: "Dygraph Line",
+        directive: "graph",
+        directiveSettings: "linesettings",
+        id: "addLine",
+        icon: {
+            id: "l-plot",
+            type: "fa-line-chart"
+        },
+        main: true,
+        settings: {
+            active: false,
+            data : {
+                vehicles : [],
+                value : "", 
+                key: ""
+            }
+        },
+        saveLoad: false,
+        delete: false
+    }
+    ];
 
     function checkDefaultDashboard(){
 
