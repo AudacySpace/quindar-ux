@@ -127,9 +127,9 @@ describe('Testing gridService', function () {
         expect(gridService.gridsterOptions).toEqual(gridsterOptions);
     });
 
-    it('should define the widget definitions with total of 10 widgets', function() {
+    it('should define the widget definitions with total of 11 widgets', function() {
         expect(gridService.widgetDefinitions).toBeDefined();
-        expect(gridService.widgetDefinitions.length).toEqual(10);
+        expect(gridService.widgetDefinitions.length).toEqual(11);
     });
 
     it('should define the getDashboardId function', function() {
