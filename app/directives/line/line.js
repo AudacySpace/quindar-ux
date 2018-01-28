@@ -42,7 +42,8 @@ app.controller("LineCtrl", function($scope, $element, $interval, $window, dashbo
             if($scope.widget.settings.data.value !== "" && $scope.widget.settings.data.vehicles.length > 0) {
                 var paramY = $scope.widget.settings.data.value;
                 var vehicles = $scope.widget.settings.data.vehicles;
-                var labels = ["x"]
+                var labels = ["time"];
+                var tTemp = parseTime(telemetry['time']);
 
                 //reset plotData when there is a change in settings
                 if (JSON.stringify(prevSettings) !== JSON.stringify($scope.widget.settings.data)){
@@ -60,7 +61,6 @@ app.controller("LineCtrl", function($scope, $element, $interval, $window, dashbo
                     var vehicle = vehicles[v];
 
                     if(telemetry[vehicle.name] !== undefined){  
-                        var tTemp = parseTime(telemetry['time']);
                         var currentData = dashboardService.getData(vehicle.key);
                         if(currentData){
                             var xTemp = parseFloat(currentData.value.toFixed(4));
