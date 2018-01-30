@@ -16,7 +16,7 @@
     background-color: #020613;
 }
 
-md-icon {
+md-icon.large {
   	width: 16px !important;
     height: 16px;
     margin-right: 16px !important;
@@ -42,21 +42,4 @@ md-icon.smaller {
 md-content#left {
     color: #ccc;
     background-color: #020613;
-}
-
-md-list-item#list4 .md-list-item-inner {
-    font-size: 14px;
-}
-
-md-list-item#list4 {
-    font-size: 14px;
-    padding-left: 52px;
-}
-
-md-list-item#list4:hover {
-    background-color: #242833 !important;
-}
-
-md-list-item#list4 .md-list-item-inner:hover {
-    background-color: #242833 !important;
 }

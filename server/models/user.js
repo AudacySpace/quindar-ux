@@ -10,7 +10,10 @@ var userSchema = mongoose.Schema({
         email        : String,
         name         : String
     },
-    grid : Array
+    grid : Array,
+    currentRole : Object,
+    allowedRoles : Array,
+    mission: String
 
 });
 

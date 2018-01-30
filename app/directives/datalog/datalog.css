@@ -1,0 +1,89 @@
+
+.dlog-center-row,.dlog-center-header {
+	margin-right: 2px;
+}
+.dlog-row {
+    background-color: #F2F3F4;
+    text-align: center;
+    font-weight: 400;
+    margin-top:1px;
+    margin-bottom:1px;
+}
+
+.dlog-header {
+    background-color: #ccc;
+    text-align: center;
+    font-size:14px;
+    font-weight:bold;
+    background-color: #b5b5b5;
+    padding:1px;
+    line-height:2em;
+    text-transform: uppercase;
+}
+
+.d-log-input{
+	width:100%;
+}
+
+.mbl-dl {
+    display:none;
+}
+.tablet-dl{
+    display:none;
+}
+
+@media only screen and (max-width: 599px) {
+    #datalogtable {
+        max-height: 200px;
+    }
+    .mbl-dl {
+       display:block;
+    }
+    .maindl{
+        display:none;
+    }
+    .tablet-dl{
+        display:none;
+    }
+    .dlog-header {
+        font-size:10px;
+    }
+    .dlog-row {
+        background-color: #F2F3F4;
+        font-size:9px;
+        text-align: center;
+        font-weight: 400;
+        margin-top:1px;
+        margin-bottom:1px;
+    }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+    #datalogtable {
+        max-height: 250px;
+    }
+    .tablet-dl{
+        display:block;
+    }
+    .maindl{
+        display:none;
+    }
+    .mbl-dl {
+        display:none;
+    }
+     .dlog-header {
+        font-size:10px;
+    }
+    .dlog-row {
+        background-color: #F2F3F4;
+        font-size:9px;
+        text-align: center;
+        font-weight: 400;
+        margin-top:1px;
+        margin-bottom:1px;
+    }
+}
+
+
+
+

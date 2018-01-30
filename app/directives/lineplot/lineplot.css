@@ -15,60 +15,21 @@
 	top: 0;
 	left: 0;
 }
-.homeicon{
-	position:absolute;
-	right:30px;
-	top:60px;
-	color: #8B8C94;
-	background-color: #FFFFFF;
-	padding: 0px 0px;
-	border: 0px;
-	width: 20 px;
-	line-height:0px;
-}
-.playicon{
-	position:absolute;
-	right:55px;
-	top:60px;
-	color: #8B8C94;
-	background-color: #FFFFFF;
-	padding: 0px 0px;
-	border-width: 0px;
-	width: 20 px;
-	line-height:0px;
-}
-.pauseicon{
-	position:absolute;
-	right:80px;
-	top:60px;
-	color: #8B8C94;
-	background-color: #FFFFFF;
-	padding: 0px 0px;
-	border-width: 0px;
-	width: 20 px;
-	line-height:0px;
-}
-.liveicon{
-	position:absolute;
-	right:105px;
-	top:60px;
-	color: #8B8C94;
-	background-color: #FFFFFF;
-	padding: 0px 0px;
-	border: 0px;
-	line-height:0px;
-}
-.lineplot{
+
+.lineplot {
 	fill: none;
 	stroke-linejoin: round;
 	stroke-linecap: round;
 	stroke-width: 1.5;
+	opacity:1;
 }
-.linelabel{
+
+.linelabel {
 	font-family: "Open Sans", Sans-serif;	
 	font-size:12px;
 }
-.settingstop{
+
+.settingstop {
 	width: 100%;
 	height: 70%;
 	margin: auto;
@@ -80,56 +41,101 @@
 	font-family: "Open Sans", Sans-serif;	
 	font-size:14px;
 }
-.settingsbottom{
+
+.settingsbottom {
 	width: 100%;
 	height: 20%;
 	font-family: "Open Sans", Sans-serif;	
 	font-size:14px;
 }
-.settingsrightcol{
+
+.settingsrightcol {
 	width: 100%;
 	height: 70%;
 	margin: 0;
 	top: 0;
-	margin: 0;
-	margin: 0;
 	bottom: 0;
 	font-family: "Open Sans", Sans-serif;	
 	font-size:14px;
 }
-.settingsspace{
+
+.settingsspace {
 	width: 100%;
 	height: 5%;
 	font-family: "Open Sans", Sans-serif;	
 }
-.setbtn{
-	width: 100%;
-	border-radius:0px;
-	overflow:hidden;
-	background-color:#ffffff;
-	color:#020613;
-}
-.linelive{
+
+.colorpicker {
+	background-color: #ccc;
+	border:0;
+	padding:0;
+	width:20px;
 	height:20px;
 }
-.linehome{
-	width:20px;
+
+.colorpicker:focus {
+	outline:none;
 }
-.linerange{
-	top:6px;
-	right:6px;
-	width:15px;
+
+.applybtn {
+	border-radius:0px;
+	color:black;
+	line-height:1.45em;
 }
-.linebtnlabel{
-	font-size: 12px;
+
+.mbl-lp {
+	display:none;
 }
-.linetableheader{
-	background-color: #bfbfbf;
-	font-family: "Open Sans", Sans-serif;	
-	font-size: 12px;
-	color:#000000;
+.tablet-lp{
+	display:none;
 }
-.linecell{
-	background-color: #ffffff;
-	color: #000000;
+.lpdata-input{
+	background-color: #fff;
 }
+
+div.valuetooltip {	
+    position: absolute;			
+    text-align: justify;			
+    width: 25%;					
+    height: auto;					
+    padding: 2px;				
+    font-size: 10px;
+    background-color:#F1F1F5;		
+    border: 0px;		
+    border-radius: 0px;			
+    pointer-events: none;			
+}
+
+@media only screen and (max-width: 599px) {
+    .mbl-lp {
+       display:block;
+    }
+    .mainlp{
+    	display:none;
+    }
+    .tablet-lp{
+		display:none;
+	}
+
+	.colorpicker {
+    	background-color: #ccc;
+   	 	border: 0;
+    	padding: 0;
+    	width: 15px;
+    	height: 17px;
+	}
+}
+
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+	.tablet-lp{
+		display:block;
+	}
+	.mainlp{
+    	display:none;
+    }
+    .mbl-lp {
+		display:none;
+	}
+
+}
+

@@ -5,7 +5,22 @@ var mongoose = require('mongoose');
 var User = require('./models/user');
 
 var Telemetry = require('./models/telemetry');
+
 var Config = require('./models/configuration');
+
+var ProxyStatus = require('./models/proxystatus');
+
+var configRole = require('./config/role');
+
+var StatusBoard = require('./models/statusboard');
+
+var Imagemap = require('./models/imagemap');
+
+var Command = require('./models/command');
+
+var CommandList = require('./models/commandList');
+
+var Timeline = require('./models/timeline');
 
 // normal routes ===============================================================
 
@@ -71,14 +86,22 @@ var Config = require('./models/configuration');
     //Load Layout from User collection of Quindar database
     app.get('/loadLayout', function(req,res){
         var email = req.query.email;
+        var missionname = req.query.missionname;
 
         //Load the layout from the User collection
         User.findOne({ 'google.email' : email }, function(err, user) {
             if(err){
                 console.log(err);
             }
-
-            res.send(user.grid);
+            var missionLayouts = [];
+            for(var i=0;i<user.grid.length;i++){
+                if(user.grid[i].mission){
+                    if(user.grid[i].mission.missionName === missionname){
+                        missionLayouts.push(user.grid[i]);
+                    }
+                }
+            }
+            res.send(missionLayouts);
         });
     });
   
@@ -119,22 +142,18 @@ var Config = require('./models/configuration');
 
     });
 
-    //Get telemetry data for the array of vehicles passed as a parameter
+    //Get telemetry data for the mission passed as a parameter
     app.get('/getTelemetry', function(req, res){
-        var vehicles = req.query.vehicles;
-        var telemetry = {};
+        var mission = req.query.mission;
 
-        if(vehicles) {
-            Telemetry.find( 
-                {'vehicleId.value' : { $in: vehicles} }, 
+        if(mission) {
+            Telemetry.findOne( 
+                {'mission' : mission }, 
                 {}, 
-                { sort: { '_id' : -1 }, limit : vehicles.length },
-                function(err, result) {
+                { sort: { 'timestamp' : -1 }},
+                function(err, telemetry) {
                     if(err) throw err;
 
-                    for(var i=0; i<result.length; i++) {
-                        telemetry[result[i].vehicleId.value] = result[i];
-                    }
                     res.send(telemetry);
                 }
             );
@@ -143,41 +162,367 @@ var Config = require('./models/configuration');
 
     //Get Configuration contents for the source name passed as a parameter
     app.get('/getConfig', function(req, res){
-        var source = req.query.source;
-        var contents;
-        var flags = [];
-        var configuration = [];
+        var mission = req.query.mission;
 
-        Config.findOne({ 'source.name' : source }, { '_id': 0 }, function(err, config) {
+        Config.findOne({ 'mission' : mission }, { '_id': 0 }, function(err, config) {
             if(err){
                 console.log(err);
             }
 
-            for (var item in config.contents){   
-                if(config.contents[item].category != "ground station" && 
-                    config.contents[item].category != "vehicle") {
-
-                    var category = config.contents[item].category;
-
-                    if( flags[category]) {
-                        for(var j=0; j<configuration.length; j++){
-                            if(configuration[j].category == category){
-                                configuration[j].values.push(item);
-                            }
-                        }
-                    } else {
-                        contents = {category:"", values:[]};
-                        contents.category = category;
-                        contents.values.push(item);
-                        flags[category] = true;
-                        configuration.push(contents);
-                    }
-                }
+            //splice keys to include tree from platform level
+            for (var point in config.contents) {
+                var nodes = point.split("_").slice(2);
+                var newPoint = nodes.join("_");
+                config.contents[newPoint] = config.contents[point];
+                delete config.contents[point];
             }
+
+            //create a hierarchial structure to support data menu on UI
+            var configuration = convert(config.contents)
+
             res.send(configuration);
         });
     });
-   
+
+    //Get Proxy Status
+    app.get('/getProxyStatus', function(req, res){
+        ProxyStatus.findOne({},{ '_id': 0 ,'__v':0}).sort({_id:-1}).exec(function(err,doc){
+            if(err){
+                console.log(err);
+            }
+            res.send(doc);
+        });
+    }); 
+
+    //set user's current role in the database
+    app.post('/setUserRole',function(req,res){
+        var email = req.body.email;
+        var role = req.body.role;
+
+        //update the current role of the user
+        User.findOne({ 'google.email' : email }, function(err, user) {
+            if(err){
+                console.log(err);
+            }
+
+            user.currentRole = role;
+
+            user.save(function(err) {
+                if (err) throw err;
+
+                res.send(user);
+            });
+        });
+
+    });
+
+    //Get Users list
+    app.get('/getUsers', function(req, res){
+        var mission = req.query.mission;
+        var allUsers = [];
+
+        User.find( { 'mission' : mission }, { google : 1, allowedRoles : 1, currentRole : 1 }, function(err, users) {
+            if(err){ 
+                console.log(err);
+            }
+
+            for(var i=0; i<users.length; i++){
+                allUsers[i] = new Object();
+                allUsers[i].google = users[i].google;
+                allUsers[i].currentRole = users[i].currentRole;
+                var aRoles = {};
+
+                var roles = users[i].allowedRoles;
+
+                for(var j=0; j<roles.length; j++){
+                    aRoles[roles[j].callsign] = 1;
+                }
+                allUsers[i].allowedRoles = aRoles;
+            }
+
+            res.send(allUsers);
+        });
+    });
+
+    //get roles configured in server code
+    app.get('/getRoles', function(req,res){
+        res.send(configRole);
+    });
+
+    //set user's allowed roles in the database
+    app.post('/setAllowedRoles',function(req,res){
+        var email = req.body.email;
+        var roles = req.body.roles;
+
+        //update allowed roles of the user
+        User.findOne({ 'google.email' : email }, function(err, user) {
+            if(err){
+                console.log(err);
+            }
+
+            user.allowedRoles = roles;
+
+            user.save(function(err) {
+                if (err) throw err;
+                res.send(user);
+            });
+        });
+
+    });
+
+    //get current role of the user
+    app.get('/getCurrentRole', function(req,res){
+        var email = req.query.email;
+
+        //update the current role of the user
+        User.findOne({ 'google.email' : email }, { currentRole : 1 }, function(err, user) {
+            if(err){
+                console.log(err);
+            }
+
+            res.send(user.currentRole);
+        });
+    });
+
+    //get allowed roles of the user
+    app.get('/getAllowedRoles', function(req,res){
+        var email = req.query.email;
+
+        //update allowed roles of the user
+        User.findOne({ 'google.email' : email }, { allowedRoles : 1 }, function(err, user) {
+            if(err){
+                console.log(err);
+            }
+
+            res.send(user.allowedRoles);
+        });
+    });
+
+    //Get all existing Missions
+    app.get('/getMissions', function(req, res){
+        Config.find({},{"mission":1,"_id": false},function(err,missions){
+            if(err) throw err;
+            res.send(missions);
+        });
+    });
+
+    //Save Alerts
+    app.post('/saveAlerts',function(req,res){
+
+        //Save logic
+        //If no ack for a channel update
+        //If ack for a channel push that;
+
+        var mission = req.body.missionname;
+        var statusdata = req.body.statusdata;
+        var vehiclecolors = req.body.vehicleColors;
+
+        StatusBoard.findOne({'mission':mission}, function(err, status) {
+            if (err)
+                console.log("Error finding alerts in DB: " + err);
+
+            if (status) {
+                status.mission = mission;
+                status.vehiclecolors = vehiclecolors;
+
+                //Save alerts to the database
+                for(j=0;j<statusdata.length;j++){
+                    for(var i=0;i<status.statusboard.length;i++){
+                        if(status.statusboard[i].channel === statusdata[j].channel &&
+                            status.statusboard[i].alert === statusdata[j].alert &&
+                                status.statusboard[i].bound === statusdata[j].bound &&
+                                    status.statusboard[i].ack ===  statusdata[j].ack) {
+                            
+                            if(status.statusboard[i].ack === ""){
+                                status.statusboard[i] = Object.assign({}, statusdata[j]); 
+                            } else {
+                                status.statusboard[i].time = statusdata[j].time;
+                                status.statusboard[i].timestamp = statusdata[j].timestamp;
+                            }
+                        }
+                        else {
+                            status.statusboard.push(statusdata[j]);
+                        }
+                    }
+                }
+
+                status.statusboard  = uniqBy(status.statusboard,JSON.stringify);
+
+                status.markModified('statusboard');
+                status.markModified('vehiclecolors');
+
+                status.save(function(err,result){
+                    if(err){
+                        console.log(err);
+                    }
+                    if(result){
+                        res.json(result);
+                    }
+                });
+            }else {
+                //create a new document if not document exists
+                var statusTable = new StatusBoard();
+                statusTable.mission =  mission;
+                statusTable.vehiclecolors = vehiclecolors;
+                statusTable.statusboard = [];
+                for(var k=0;k<statusdata.length;k++){
+                    statusTable.statusboard.push(statusdata[k]);
+                }
+                //statusTable.statusboard = statusdata;
+                statusTable.save(function(err,result){
+                    if(err){
+                        console.log(err);
+                    }
+                    if(result){
+                        res.json(result);
+                    }
+                });
+            }
+        });
+    });
+
+    //Load Alerts
+    app.get('/loadAlerts', function(req, res){
+
+        var mission = req.query.missionname;
+
+        //Load the alerts and vehicles from the statusboard collection
+        StatusBoard.findOne({ 'mission' : mission }, 
+            { statusboard : 1, vehiclecolors : 1, _id : 0}, function(err, status) {
+
+                if(err){
+                    console.log(err);
+                }
+
+                res.send(status);
+            });
+    });
+
+     //Get systemmaps list
+    app.get('/loadSystemMaps', function(req, res){
+        var mission =  req.query.mission;
+        var allMaps = [];
+
+        Imagemap.findOne({'mission':mission}, function(err, mapdata) {
+            if (err) {
+                console.log("Error finding map data in DB: " + err);
+                throw err;
+            }
+            if(mapdata){
+                for(var i=0;i<mapdata.uploadedfiles.length;i++){
+                    allMaps.push(mapdata.uploadedfiles[i]);
+                }
+                res.send(allMaps);
+            }
+        });
+    });
+
+    //set user's mission property and roles(if needed)
+    app.post('/setMissionForUser',function(req,res){
+        var email = req.body.email;
+        var mission = req.body.mission;
+
+        //count the number of users for this mission
+        User.count({ 'mission' : mission }, function(err, count) {
+            if(err){
+                console.log(err);
+            }
+
+            User.findOne({ 'google.email' : email }, function(err, user) {
+                if(err){
+                    console.log(err);
+                }
+
+                //If zero users for this mission, then assign user as Mission Director
+                if(count == 0){
+                    var userRole = {
+                        'name'     : configRole.roles['MD'].name,
+                        'callsign' : configRole.roles['MD'].callsign
+                    };
+
+                    user.currentRole = userRole;
+                    user.allowedRoles.push(userRole);
+                }
+                user.mission = mission;
+
+                user.save(function(err) {
+                    if (err) throw err;
+                    res.send(user);
+                });
+            });
+        });
+    });
+
+    //save command in the database
+    app.post('/saveCommand',function(req,res){
+        var email = req.body.email;
+        var command = req.body.command;
+        var mission = req.body.mission;
+
+        var newCommand = new Command();
+        
+        newCommand.user = email;
+        newCommand.name = command.name;
+        newCommand.type = command.type;
+        newCommand.argument = command.argument;
+        newCommand.timestamp = command.timestamp;
+        newCommand.time = command.time;
+        newCommand.mission = mission;
+        newCommand.response = "";
+        newCommand.sent_to_satellite = false;
+
+        newCommand.save(function(err) {
+            if (err) throw err;
+
+            res.send(newCommand);
+        });
+    });
+
+    //get the command log for a particular mission
+    app.get('/getCommandLog', function(req, res){
+        var mission = req.query.mission;
+
+        Command.find( { 'mission' : mission }, function(err, commands) {
+            if(err){ 
+                console.log(err);
+            }
+
+            res.send(commands);
+        });
+    });
+
+    //get the command list for a particular mission
+    app.get('/getCommandList', function(req, res){
+        var mission = req.query.mission;
+
+        CommandList.findOne( { 'mission' : mission }, function(err, list) {
+            if(err){ 
+                console.log(err);
+            }
+
+            res.send(list.commands);
+        });
+    });
+
+    //Get timeline list
+    app.get('/loadTimelineEvents', function(req, res){
+        var mission =  req.query.mission;
+        var allEvents = [];
+
+        Timeline.findOne({'mission':mission}, function(err, timelinedata) {
+            if (err) {
+                console.log("Error finding map data in DB: " + err);
+                throw err;
+            }
+            if(timelinedata){
+                for(var i=0;i<timelinedata.events.length;i++){
+                    allEvents.push(timelinedata.events[i]);
+                }
+                res.send(allEvents);
+            }
+        });
+    });
+
 };
    
 // route middleware to ensure user is logged in
@@ -187,4 +532,35 @@ function isLoggedIn(req, res, next) {
         return next();
 
     res.redirect('/');
+}
+
+//Function to convert flat structure object to hierarchial structure
+function convert(obj) {
+    var result = {};
+    eachKeyValue(obj, function(namespace, value) {
+        var parts = namespace.split("_");
+        var last = parts.pop();
+        var node = result;
+        parts.forEach(function(key) {
+            node = node[key] = node[key] || {};
+        });
+        node[last] = '';
+    });
+    return result;
+}
+
+function eachKeyValue(obj, fun) {
+    for (var i in obj) {
+        if (obj.hasOwnProperty(i)) {
+            fun(i, obj[i]);
+        }
+    }
+}
+
+function uniqBy(a, key) {
+    var seen = {};
+    return a.filter(function(item) {
+        var k = key(item);
+        return seen.hasOwnProperty(k) ? false : (seen[k] = true);
+    })
 }

@@ -1,118 +1,152 @@
-<div ng-controller="lineController as vm" class="settingstop">
-
-	<div class="row settingsrightcol" style="display: table">
-		
-		<div class="col-sm-1" style="display: table-cell; float:none"></div>
-		
-		<div class="col-sm-5" style="display: table-cell; float:none">
-			<div class="row">
-				Source:
-			</div>		
-			
-			<div class="row settingsspace" style="display: table"></div>
-			
-			<div class="row">
-				<table class="table table-bordered table-responsive col-md-12 table-condensed cf">
-					<thead id="telehead" class="linetableheader">
-						<tr>
-						<th id="category" style="width:5%"></th>
-						<th id="id" style="text-align:left;width:20%" class="id">ID</th>
-						<th id="name" style="text-align:left;width:30%" class="name">NAME</th>
-						<th id="color" style="text-align:left;width:20%;" class="name">COLOR</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="row in table.rows.data">
-							<td class="categoryID-arrow">
-								<div class="btn-group selectmenu">
-									<a href="#" style="width:100%" class="btn btn-default arrowbtn" data-toggle="dropdown"><span class="glyphicon glyphicon-menu-right side-arrow" id="side-arrow" style="font-weight:bolder"></span>
-										<span class="sr-only">Toggle Dropdown</span>
-									</a>
-									<ul class="dropdown-menu drpmenu" role="menu" id="drpmenu">
-										<li class="uldrpmenu"><a href="#" class="cat-id" ng-click="getTelemetrydata($event,$index)">Select Telemetry Id</a></li>
-										<li><a href="#" class="cat-id" ng-click="getValue($event,$index)">Apply Telemetry Id</a></li>
-										<!--<li class="divider liner"></li>
-										<li><a href="#" class="row-above" ng-click="addRowAbove($index)">Add Row Above</a></li>
-										<li><a href="#" class="row-below" ng-click="addRowBelow($index)">Add Row Below</a></li>
-										<li><a href="#" class="move-up" ng-click="moveRowUp($index)">Move Row Up</a></li>
-										<li><a href="#" class="move-down" ng-click="moveRowDown($index)">Move Row Down</a></li>
-										<li><a href="#" class="delete-row" ng-click="deleteRow($index)">Delete Row</a></li>
-										-->
-									</ul>
-								</div>
-							</td>
-							<td ng-repeat="cell in row" class="linecell" style="{{cell.style}}" colspan="{{cell.colspan}}" ng-show="{{cell.colshow}}">
-								<input class="rowinput {{cell.class}}" type="text" ng-readonly="{{cell.checked}}" value="{{cell.value}}" ng-blur="convertToReadonly($index)" placeholder="{{cell.placeholder}}" aria-label="Readonly field" />
-							</td>
-
-							<td class="linecell"><img src="../icons/line-plot-widget/aud_box_blue.svg" class="img_alow"/></td>
-
-						</tr>
-					</tbody>
-				</table>
-			</div>		
+<div class="saveloaddatatable mainlp">
+	<div class="settingstop">
+		<div class="row settingsrightcol" style="display: table">
+			<div class="col-sm-1" style="display: table-cell; float:none"></div>
+			<div class="col-sm-5" style="display: table-cell; float:none">
+				<div class="row">
+					<label for="SelectData">Select Data</label>
+  				</div>
+				<div class="row settingsspace" style="display: table"></div>
+				<div class="input-group">
+					<input type="text" class="form-control lpdata-input" style="border-radius:0px;background-color: #fff" ng-click="getTelemetrydata()" value="{{settings.data.id}}" placeholder="Click for data" readonly="readonly">
+            		<span class="input-group-btn">
+        				<button class="btn btn-secondary applybtn" type="button" ng-click="getValue()">Apply</button>
+      				</span>
+    			</div>
+    			<span ng-hide="settings.data.id"> Required </span>
+  			</div>
+  			<div class="col-sm-1"></div>
+			<div class="col-sm-1" style="display: table-cell; float:none"></div>
+			<div class="col-sm-4" style="display: table-cell; float:none">
+				<div class="row">
+    				<label for="SelectVehicle">Select Vehicle</label>
+  				</div>
+				<div class="row settingsspace" style="display: table"></div>
+				<div class="row">
+					<div class="dropdown">
+                        <button type="button" class="btn dropdown-toggle load-widget-styles" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="pull-left">Vehicles</span> <span class="caret caretstyles"></span>
+                        </button>
+                        <ul class="dropdown-menu categorydrpdown" style="padding-top:0px;padding-bottom:0px">
+                            <li ng-repeat="vehicle in settings.vehicles" class="checkbox cbox" style="font-size:14px">
+                            	<input style="margin-top: 2px;height:15px;width:15px" type="checkbox" value="" name="id" ng-model="vehicle.checked">
+                            	<span>{{vehicle.value}}</span>
+                            	<input type="color" ng-model="vehicle.color" class="colorpicker" style="margin-left:10px"/>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+			<div class="col-sm-1" style="display: table-cell; float:none"></div>
 		</div>
-		
-		<div class="col-sm-1" style="display: table-cell; float:none"></div>
-		
-		<div class="col-sm-4" style="display: table-cell; float:none">
-		
-			<div class="row">							
-				Custom Range:			
+		<div class="row settingsbottom" style="display: table">
+			<div class="row">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-10">
+					<hr>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-10 btndivider">
+					<button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="saveWidget(widget)">SAVE</button>
+					<button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="closeWidget(widget)">CLOSE</button>	
+				</div>
 			</div>	
-			
-			<div class="row settingsspace"></div>			
-			
-			<div class="row">
-				<div class="col-sm-6 dropdown" style="padding-left:0">
-					<a class="dropdown-toggle" id="dropdownstart"  role="button" data-toggle="dropdown" data-target="#" href="#">
-						<div class="input-group setbtn">
-							<input type="text" class="form-control linebtnlabel" data-ng-model="dateRangeStart">
-							<span class="input-group-addon"><img class="linerange" ng-src="/icons/line-plot-widget/aud_lineplot_customrange.svg">
-								</img></span>							
-						</div>	
-					</a>
-					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="color:#000000; border-radius: 0px">
-                        <datetimepicker data-ng-model="dateRangeStart"
-                                        data-datetimepicker-config="{ dropdownSelector: '#dropdownstart' }"></datetimepicker>
-                    </ul>
-				</div>
-				
-				<div class="col-sm-6 dropdown" style="padding-right:0">
-					<a class="dropdown-toggle" id="dropdownend"  role="button" data-toggle="dropdown" data-target="#" href="#">
-						<div class="input-group setbtn">
-							<input type="text" class="form-control linebtnlabel" data-ng-model="dateRangeEnd">
-							<span class="input-group-addon"><img class="linerange" ng-src="/icons/line-plot-widget/aud_lineplot_customrange.svg">
-								</img></span>							
-						</div>	
-					</a>
-					<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" style="color:#000000; border-radius: 0px">
-                        <datetimepicker data-ng-model="dateRangeEnd"
-                                        data-datetimepicker-config="{ dropdownSelector: '#dropdownend' }"></datetimepicker>
-                    </ul>
-				</div>
-			</div>			
-		</div>	
-
-		<div class="col-sm-1" style="display: table-cell; float:none"></div>
-		
-	</div>		
-	
-	<div class="row settingsbottom">
-		<div class="row">
-			<div class="col-sm-1"></div>
-			<div class="col-sm-10">
-				<hr>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-sm-1"></div>
-			<div class="col-sm-10 btndivider">
-				<button type="submit" class="btn btn-primary col-sm-2 savebtns" ng-click="saveWidget(widget)">SAVE</button>
-				<button type="submit" class="btn btn-primary col-sm-2 savebtns" ng-click="closeWidget(widget)">CLOSE</button>	
-			</div>
-		</div>	
-
-	</div>	
-
+		</div>		
+	</div>
 </div>
+
+<!-- For Mobile Screens -->
+<div class="container mbl-lp">
+  <form>
+    <label for="SelectData" class="mbl-label">Select Data</label>
+    <div class="input-group mbl-input-grp">
+		<input type="text" class="form-control mbl-label mbl-inputitems" style="background-color: #fff" ng-click="getTelemetrydata()" value="{{settings.data.id}}" placeholder="Click for data" readonly="readonly">
+        <span class="input-group-btn">
+            <button class="btn btn-secondary applybtn" type="button" ng-click="getValue()">Apply</button>
+      	</span>
+    </div>
+    <span ng-hide="settings.data.id" class="req-label"> Required </span>
+    <label for="SelectVehicle" class="mbl-label">Select Vehicle</label>
+    <div class="dropdown">
+        <button type="button" class="btn dropdown-toggle load-widget-styles mbl-label mbl-inputitems mbl-inneritems mbl-input-grp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="pull-left drpdwn-name">Vehicles</span>
+            <span class="caret pull-right drpdwn-caret"></span>
+        </button>
+        <ul class="dropdown-menu categorydrpdown" style="padding-top:0px;padding-bottom:0px;">
+            <li ng-repeat="vehicle in settings.vehicles" class="checkbox cbox drpdown-list-item">
+                <input class="drpdwn-input-item" type="checkbox" value="" name="id" ng-model="vehicle.checked">
+                <span>{{vehicle.value}}</span>
+                <input type="color" ng-model="vehicle.color" class="colorpicker" style="margin-left:10px"/>
+            </li>
+        </ul>
+    </div>
+    <hr class="hr-double-col1-1">
+    <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveWidget(widget)">SAVE</button>
+	<button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeWidget(widget)">CLOSE</button>	
+</form>
+</div>
+
+<!-- For Tablet Screens -->
+<div class="saveloaddatatable tablet-lp">
+    <div class="settingstablettop">
+        <div class="row settingstablet-col1-3el tablestyle">
+            <div class="col-sm-1 tablecellstyle1"></div>
+            <div class="col-sm-10 tablecellstyle10">
+                <div class="row" style="height:19px;">
+                    <label for="SelectData" class="mbl-label">Select Data</label>
+                </div>
+                <div class="input-group">
+                    <input type="text" class="form-control col1-2-data" ng-click="getTelemetrydata()" value="{{settings.data.id}}" placeholder="Click for data" readonly="readonly">
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary applybtn" type="button" ng-click="getValue()" style="">Apply</button>
+                    </span>
+                </div>
+                <span ng-hide="settings.data.id" class="pull-right req-label"> Required </span>
+            </div>
+            <div class="col-sm-1 tablecellstyle1"></div> 
+        </div>
+        <div class="row settingstablet-col1-3el tablestyle">
+            <div class="col-sm-1 tablecellstyle1"></div>
+            <div class="col-sm-10 tablecellstyle10">
+                <div class="row" style="height:16px;margin-bottom:0px">
+                    <label for="SelectVehicle" class="mbl-label">Select Vehicle</label>
+                </div>
+                <div class="dropdown">
+                    <button type="button" class="btn dropdown-toggle load-widget-styles mbl-label mbl-inputitems mbl-inneritems mbl-input-grp" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="pull-left">Vehicles</span> <span class="caret pull-right drpdwn-caret"></span>
+                    </button>
+                    <ul class="dropdown-menu categorydrpdown" style="padding-top:0px;padding-bottom:0px">
+                        <li ng-repeat="vehicle in settings.vehicles" class="checkbox cbox drpdown-list-item">
+                            <input type="checkbox" value="" name="id" ng-model="vehicle.checked" class="drpdwn-input-item">
+                                <span>{{vehicle.value}}</span>
+                                <input type="color" ng-model="vehicle.color" class="colorpicker"/>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-1 tablecellstyle1"></div>
+        </div>
+        <div class="row settingstablet-col1-3el tablestyle"></div>
+        <div class="row settingstabletbottom-col1-3el tablestyle">
+            <div class="row">
+                <div class="col-sm-1 tablecellstyle1"></div>
+                <div class="col-sm-10 tablecellstyle10">
+                    <hr class="col1-2-hr">
+                </div>
+                <div class="col-sm-1 tablecellstyle1"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1 tablecellstyle1"></div>
+                <div class="col-sm-10 btndivider tablecellstyle10">
+                    <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="saveWidget(widget)">SAVE</button>
+                    <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="closeWidget(widget)">CLOSE</button>
+                </div>
+                <div class="col-sm-1 tablecellstyle1"></div>
+            </div>  
+        </div>
+    </div>      
+</div>
+
+

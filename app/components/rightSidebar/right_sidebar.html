@@ -1,12 +1,12 @@
-<!--Right Side Nav -->
+<!-- Right Side Nav  -->
 <md-toolbar>
     <h1 class="md-toolbar-tools">Configuration Menu</h1>
 </md-toolbar>
 <md-content flex role="navigation" id="right">
     <md-list>
-        <md-subheader class="md-no-sticky show-hide">Hi {{ $ctrl.name }}</md-subheader>
+        <md-subheader class="md-no-sticky show-hide">Hi {{ $ctrl.name }} ({{$ctrl.userRole.cRole.callsign}})</md-subheader>
         <md-divider class="show-hide"></md-divider>
-        <md-list-item ng-click="$ctrl.showQwidgetMenu()">
+        <md-list-item ng-click="$ctrl.showQwidgetMenu()" id="list1">
             <span class="glyphicon glyphicon-modal-window" id="qwidgets"></span>Qwidgets
             <span flex></span>
             <span class="glyphicon glyphicon-menu-down"></span>
@@ -47,13 +47,13 @@
             </md-list-item>
             <md-divider></md-divider>
         </md-list>
-        <!-- <md-list-item ng-click="$ctrl.user()">
+        <md-list-item ng-click="$ctrl.showAdminModal()" ng-show="$ctrl.userRole.cRole.callsign == 'MD'">
             <span class="glyphicon glyphicon-user" id="user-admin"></span>User Administration
             <span flex></span>
             <span class="glyphicon glyphicon-menu-down"></span>
         </md-list-item>
-        <md-divider></md-divider>
-        <md-list-item ng-click="$ctrl.server()">
+        <md-divider ng-show="$ctrl.userRole.cRole.callsign == 'MD'"></md-divider>
+<!--         <md-list-item ng-click="$ctrl.server()">
             <i class="fa fa-server" aria-hidden="true" id="server-admin"></i></span>Server Administration
             <span flex></span>
             <span class="glyphicon glyphicon-menu-down"></span>
@@ -82,4 +82,4 @@
         <md-divider class="show-hide"></md-divider>
     </md-list>
 </md-content>
-<!--End of Right Side Nav -->
+<!-- End of Right Side Nav  -->

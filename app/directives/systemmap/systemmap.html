@@ -1,0 +1,5 @@
+<div id="sysmap">
+	<img ng-src="{{widget.settings.imglocation}}" width="90%" height="400" class="img"/>
+	<div ng-repeat="tlmdata in widget.settings.contents track by $index" class="tlmvalue" ng-style="tlmdata.coords"><span ng-style="tlmdata.datacolor">{{tlmdata.value}}</span></div>
+</div>
+

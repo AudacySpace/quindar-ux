@@ -1,0 +1,44 @@
+<div id="container">
+	<model model-url="modelUrl" widget="widget" quaternion="quaternion"></model>
+	<div id="vehicle" ng-show="widget.settings.vehicle">
+		<div id="canvas-box">
+			<ul id="box">
+				<li>
+					<b>Coordinate </b> ECI
+				</li>
+				<li>
+					<b>Vehicle </b> {{ widget.settings.vehicle }}
+				</li>
+				<li>
+					<b>q1 </b><span ng-style="quaternion.colorq1">{{ quaternion.q1 }}</span>
+				</li>
+				<li>
+					<b>q2 </b><span ng-style="quaternion.colorq2">{{ quaternion.q2 }}</span>
+				</li>
+				<li>
+					<b>q3 </b><span ng-style="quaternion.colorq3">{{ quaternion.q3 }}</span>
+				</li>
+				<li>
+					<b>qc </b><span ng-style="quaternion.colorqc">{{ quaternion.qc }}</span>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div id="axis">
+		<div id="canvas-box">
+			<ul id="box">
+			    <li style="color:red">X Axis</li>
+			    <li style="color:green">Y Axis</li>
+			    <li style="color:blue">Z Axis</li>
+				<li ng-show="widget.settings.vehicle" style="color:#111950">Earth Direction</li>
+				<li ng-show="widget.settings.vehicle" style="color:#FFAB00">Sun Direction</li>
+			</ul>
+		</div>
+	</div>
+	<div id="slider">
+		<input type="range" min="{{ min }}" max="{{ max }}" ng-model="widget.settings.zoom" step="{{ step }}">
+	</div>
+<!-- 	<button ng-click="changeModel()">Change Model</button>
+	<input ng-model="assimpModelUrl"/>
+ -->
+</div>

@@ -1,0 +1,221 @@
+/*Ground Track layout css*/
+.gtmain .gt-svg-container {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 65%;
+    padding-top: 0%;
+    vertical-align: top;
+    overflow: hidden;
+}
+.gtmain .gt-svg-content {
+    display: inline-block;
+    position: absolute;
+    height: 100%;
+    width: 100%
+    top: 0;
+    left: 0;
+}
+
+.gtbtns{
+    background-color: rgba(255,255,255,0.1);
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 6px 7px;
+    margin-bottom: 0;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.gtmain{
+    height:100%;
+    overflow:hidden;
+}
+button.btn.gtbtns:focus{
+    outline:none;
+}
+.link {
+    stroke: #FFFF00; 
+    fill: none  ;
+    stroke-width: 2px;
+}
+.gslink {
+    stroke: #FF6D00; 
+    fill: none  ;
+    stroke-width: 2px;
+}
+.divgt{
+    height:calc(100% - 53px);
+}
+.gtcbox{
+    height:15px;
+    width:15px;
+    margin-top:10px;
+}
+.night {
+    stroke: none;
+    fill: steelblue;
+    fill-opacity: .3;
+}
+.graticule {
+	fill: none;
+    stroke:#F1F1F5;
+	stroke-width: 1;
+}
+.graticule :nth-child(2n) {
+	stroke-dasharray: 2,2;
+}	
+.boundary {
+    stroke: #999;
+    stroke-width: 1px; 
+}
+.gtdiv1{
+    margin-top:5px;
+    margin-bottom:20px;
+}
+.gtspans {
+    float:right;
+    margin:10px 10px 10px 0px;
+    border:1px solid #000;
+    overflow:hidden;
+    border-radius:0px;
+}
+.gslos {
+    stroke: #FFAB40;
+    fill: #FFAB40;
+    opacity: .3;
+}
+ input.gtcbox[type=checkbox]
+{
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(1); /* IE */
+    -moz-transform: scale(1); /* FF */
+    -webkit-transform: scale(1); /* Safari and Chrome */
+    -o-transform: scale(1); /* Opera */
+    padding: 10px;
+}
+.route {
+    fill:  none;
+    stroke-width:3px;
+}
+.zoomicons{
+    width:18px;
+    height:15px;
+}
+.gtcoveragecbox{
+    float:right;margin:8px;height:15px;width:15px;
+}
+.covspan{
+    margin-right:16px
+}
+.gttableheader{
+    background-color: #bfbfbf;
+    color:#000;
+}
+.mbl-gt {
+    display:none;
+}
+.gtcovbox{
+    float:right;
+    margin:8px;
+    height:15px;
+    width:15px;
+}
+.mbl-gtmain{
+    display:none;
+}
+.tablet-gtmain{
+    display:none;
+}
+.tablet-gt{
+    display:none;
+}
+
+@media only screen and (max-width: 599px) {
+    .mbl-gtmain{
+        display:block;
+    }
+    .lrg-gtmain{
+        display:none;
+    }
+    .tablet-gtmain{
+        display:none;
+    }
+    .tablet-gt{
+        display:none;
+    }
+    .mbl-gt {
+        display:block;
+    }
+    .maingt{
+        display:none;
+    }
+    .gtcbox {
+        height: 11px;
+        margin-top: 10px;
+    }
+    .gtbtns {
+        padding: 2px 2px;
+        font-size: 8px;
+    }
+    .gtcovbox{
+        float:right;
+        margin:6px;
+        height:10px;
+        width:10px;
+    }
+    .hr-groundtrack{
+        margin-top:4px;
+        margin-bottom:5px;
+    }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+    .tablet-gt{
+        display:block;
+    }
+    .tablet-gtmain{
+        display:block;
+    }
+    .mbl-gtmain{
+        display:none;
+    }
+    .lrg-gtmain{
+        display:none;
+    }
+    .maingt{
+        display:none;
+    }
+    .mbl-gt {
+        display:none;
+    }
+    .gtcbox {
+        height: 11px;
+        margin-top: 10px;
+    }
+    .gtcovbox{
+        float:right;
+        margin:5px;
+        height:12px;
+        width:12px;
+    }
+    .gtbtns {
+        padding: 2px 2px;
+        font-size: 10px;
+    }
+    .tablet-gt .table-responsive{
+        margin-bottom:0px;
+    }
+}

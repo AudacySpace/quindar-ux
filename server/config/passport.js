@@ -5,6 +5,9 @@ var User       = require('../models/user');
 
 // load the auth variables
 var configAuth = require('./auth'); // use this one for testing
+var configRole = require('./role');
+
+var userRole;
 
 module.exports = function(passport) {
 
@@ -41,6 +44,10 @@ module.exports = function(passport) {
 
         // asynchronous
         process.nextTick(function() {
+            var defaultRole = {
+                'name'     : configRole.roles['VIP'].name,
+                'callsign' : configRole.roles['VIP'].callsign
+            };
 
             // check if the user is already logged in
             if (!req.user) {
@@ -60,7 +67,7 @@ module.exports = function(passport) {
                             user.save(function(err) {
                                 if (err)
                                     return done(err);
-                                    
+
                                 return done(null, user);
                             });
                         }
@@ -73,11 +80,13 @@ module.exports = function(passport) {
                         newUser.google.token = token;
                         newUser.google.name  = initCaps(profile.displayName);
                         newUser.google.email = (profile.emails[0].value || '').toLowerCase(); // pull the first email
+                        newUser.currentRole = defaultRole;
+                        newUser.allowedRoles.push(defaultRole);
 
                         newUser.save(function(err) {
                             if (err)
                                 return done(err);
-                                
+
                             return done(null, newUser);
                         });
                     }
@@ -95,14 +104,12 @@ module.exports = function(passport) {
                 user.save(function(err) {
                     if (err)
                         return done(err);
-                        
+
                     return done(null, user);
                 });
 
             }
-
         });
-
     }));
 
 };

@@ -1,0 +1,28 @@
+<div class="gtmain">
+    <div class="row">
+<!-- Commented out as Coverage is always On when the vehicles are enabled in Ground Track -->
+<!--     <span class="button-checkbox gtspans covspan lrg-gtmain">
+       <span class="gtbtns">Coverage</span>
+        <input type="checkbox" style="float:right;margin:8px;height:15px;width:15px;" ng-model="checkboxModel.value1" ng-click="showCoverage(checkboxModel.value1)" class="gtcovbox"/>
+    </span>
+    <span class="button-checkbox gtspans covspan mbl-gtmain">
+       <span class="gtbtns">Coverage</span>
+        <input type="checkbox" style="float:right;margin:6px;height:10px;width:10px;" ng-model="checkboxModel.value1" ng-click="showCoverage(checkboxModel.value1)" class="gtcovbox"/>
+    </span>
+    <span class="button-checkbox gtspans covspan tablet-gtmain">
+       <span class="gtbtns">Coverage</span>
+        <input type="checkbox" style="float:right;margin:5px;height:12px;width:12px;" ng-model="checkboxModel.value1" ng-click="showCoverage(checkboxModel.value1)" class="gtcovbox"/>
+    </span> -->
+    <span class="button-checkbox gtspans">
+        <button type="button" class="btn gtbtns" ng-click="zoomOut()"><img ng-src="/icons/groundtrack-widget/zoom-out.svg" class="zoomicons"></img></button>
+    </span>
+    <span class="button-checkbox gtspans">
+        <button type="button" class="btn gtbtns" ng-click="zoomIn()"><img ng-src="/icons/groundtrack-widget/zoom-in.svg" class="zoomicons"></img></button>
+    </span>
+    <span class="button-checkbox gtspans">
+        <button type="button" class="btn gtbtns" ng-click="resetted()"><img ng-src="/icons/groundtrack-widget/gtzoom_home.svg" class="zoomicons"></img></button>
+    </span>
+    </div>
+	<div class="gt-svg-container divgt" id="divgt"></div>
+</div>
+

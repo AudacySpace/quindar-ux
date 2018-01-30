@@ -16,6 +16,8 @@ md-list .md-subheader {
 md-toolbar {
     background-color: #020613 !important;
     border-bottom: 3px solid #07D1EA;
+    height: 53px;
+    min-height: 50px;
 }
 
 md-content#right {
@@ -24,7 +26,6 @@ md-content#right {
 }
 
 md-list-item, md-list-item .md-list-item-inner { 
-    font-size: 16px;
     height: 40px !important;
     min-height: 40px !important;
 }
@@ -33,17 +34,13 @@ md-list {
     padding: 0px 0px 0px 0px !important;
 }
 
+md-list-item#list1 {
+    font-size: 16px;
+}
+
 md-list-item#list2 {
     font-size: 15px;
     padding-left: 16px;
-}
-
-md-list-item#list2 .md-list-item-inner {
-    font-size: 15px;
-}
-
-md-list-item#list3 .md-list-item-inner {
-    font-size: 14px;
 }
 
 md-list-item#list3 {
@@ -51,19 +48,11 @@ md-list-item#list3 {
     padding-left: 34px;
 }
 
-md-list-item#list3:hover {
+md-list-item:hover {
     background-color: #242833 !important;
 }
 
-md-list-item#list3 .md-list-item-inner:hover {
-    background-color: #242833 !important;
-}
-
-md-list-item#list2:hover {
-    background-color: #242833 !important;
-}
-
-md-list-item#list2 .md-list-item-inner:hover {
+md-list-item .md-list-item-inner:hover {
     background-color: #242833 !important;
 }
 
@@ -93,7 +82,7 @@ md-content.main {
     overflow-x: hidden; 
 }
 
-@media only screen and (max-width: 736px) {
+@media only screen and (max-width: 768px) {
   .show-hide {
         display: block;
   }

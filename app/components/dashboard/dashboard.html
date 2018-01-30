@@ -8,7 +8,7 @@
         <!--Main Dashboard Navigation-->
         <md-content flex class="main">
             <div id="main">
-                <nav class="navbar navbar-default" id="navbar">
+                <nav class="navbar navbar-default">
                     <div class="container-fluid" id="top-header">
                         <div class="navbar-header">
                             <a class="navbar-brand" href="#" id="QRegular" ng-click="$ctrl.openLeftNav()">
@@ -18,32 +18,38 @@
                                 <img id="main-img" src="/media/logos/Quindar_Icon_Black.svg" alt="Quindar"/>
                             </a>
                         </div>
+                        <ul class="nav navbar-nav navbar-left">
+                            <li>
+                                <img ng-src="{{$ctrl.currentMission.missionImage}}" ng-show="$ctrl.currentMission.missionImage" id="missionImage"/>
+                               <span id="missionName" style="position:relative;top:10px;left:6px;font-size:16px">{{$ctrl.currentMission.missionName}}</span>
+
+                                    <!--                            <img ng-src="{{$ctrl.currentMission.mission.image}}" ng-show="$ctrl.currentMission.mission" id="missionImage"/>
+                               <span id="missionName" style="position:relative;top:10px;left:6px;font-size:16px">{{$ctrl.currentMission}}</span> -->
+                            </li>
+                        </ul>
                         <ul class="nav navbar-nav">
                             <li class="statusicons">
-                                <ul class="nav navbar-nav status-bar" id="s-icons">
-                                    <li ng-repeat="icon in $ctrl.icons">
-                                        <a href="#" class="status-icon">
-                                            <img id="{{icon.id}}" ng-src="{{icon.image}}" alt="Quindar"/>
-                                        </a>
-                                    </li>
-                                </ul>
+                                <status-icons></status-icons> 
                             </li>
                             <li>
                                 <ul class="nav navbar-nav time">
-                                    <li class="clock" id="txt">{{ $ctrl.clock.timestamp }}</li>
+                                    <li class="clock" id="txt">{{ $ctrl.clock.utc }}</li>
                                 </ul>
                             </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li>
-                                <a class="dropdown-toggle"  id="username" data-toggle="dropdown" href="#">{{ $ctrl.name }}</a>
+                                <a class="dropdown-toggle" id="username" data-toggle="dropdown" href="#"
+                                >{{ $ctrl.name }}</a>
+                                <small id="callsign"> {{ $ctrl.role.cRole.callsign }} </small>
                                 <ul class="dropdown-menu logout-bar">
-                                    <li ><a href="/logout">Logout</a></li>
+                                    <li ><a href="" ng-click="$ctrl.logout()" target="_self">Logout</a></li>
+                                    <li ><a href="#" ng-click="$ctrl.showSettings()">Settings</a></li>
                                 </ul>
                             </li>
                             <li id="cfgmenu">
                                 <a href="#" id="add-widget" ng-click="$ctrl.openRightNav()"> 
-                                    <span class="fa fa-bars" aria-hidden="true"> </span>
+                                    <span class="fa fa-bars bars" aria-hidden="true"> </span>
                                 </a>
                             </li>
                         </ul>

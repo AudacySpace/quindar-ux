@@ -1,22 +1,25 @@
 app
-.factory('sidebarService', ['$http', function($http) { 
+.factory('sidebarService', function() { 
 
     var vehicleInfo = {
         vehicle : '',
-        id : ''
+        id : '',
+        key : ''
     }
 
-    function getConfig(config) {
-        return $http({
-                url: "/getConfig", 
-                method: "GET",
-                params: {'source' : 'GMAT'}
-            });
-    }
-
-    function setVehicleInfo(name,data) {
-        vehicleInfo.vehicle = name;
-        vehicleInfo.id = data;
+    function setVehicleInfo(dataString) {
+        if(dataString){
+            var nodes = dataString.split(".");
+            vehicleInfo.vehicle = nodes[0];
+            vehicleInfo.id = nodes[nodes.length - 1];
+            vehicleInfo.key = dataString;
+        } else {
+            vehicleInfo = {
+                vehicle : '',
+                id : '',
+                key : ''
+            };
+        }
     }
 
     function getVehicleInfo(){
@@ -24,9 +27,8 @@ app
     }
 
 	return {
-        getConfig : getConfig,
         setVehicleInfo : setVehicleInfo,
         vehicleInfo : vehicleInfo,
         getVehicleInfo : getVehicleInfo
 	}
-}]);
+});

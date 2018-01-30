@@ -1,0 +1,156 @@
+md-input-container .md-input.enter-button {
+	background-color: #07D1EA;
+    color: #fff;
+    border-width: 1px;
+}
+
+md-input-container .md-input.enter-button:focus {
+	border-bottom-width: 0px !important;
+}
+
+md-input-container .md-input.enter-clicked {
+	background-color: #12C700;
+    color: #fff;
+    border-width: 1px;
+}
+
+md-input-container .md-input.enter-clicked:focus {
+	border-bottom-width: 0px !important;
+}
+
+md-input-container .md-input.send-clicked {
+	background-color: #FFEA00;
+    color: #fff;
+    border-width: 1px;
+}
+
+md-input-container .md-input.send-clicked:focus {
+	border-bottom-width: 0px !important;
+}
+
+md-input-container:not(.md-input-invalid).md-input-focused label,
+md-input-container:not(.md-input-invalid).md-input-has-value label{
+	color:black;
+} 
+
+
+md-input-container:not(.md-input-invalid).md-input-focused .md-input {
+	border-color : #eee;
+}
+
+md-input-container label {
+	color: black;
+}
+
+.selected-command>span.btn.btn-default.form-control.ui-select-toggle {
+	height : 30px;
+}
+
+md-content.comm-widget {
+/*	height: 100%;*/
+	overflow: visible;
+}
+
+.select-command {
+	height: 30px;
+}
+
+.ui-select-bootstrap.select-command>.ui-select-choices, .ui-select-bootstrap>.ui-select-no-choice {
+	border-bottom: 0px;
+}
+
+md-input-container .md-input.disabled {
+	border:1px solid #ccc;
+	background-color: #eee;
+}
+
+.header-log {
+	min-height: 17px;
+	padding-bottom: 10px;
+}
+
+md-input-container.input-container {
+	margin-bottom:0px;
+}
+
+md-input-container.lock-container {
+	margin:0px;
+}
+
+div#comm-row {
+    max-height: 65px;
+    min-height: 50px;
+}
+
+div#lock-row {
+    max-height: 46px;
+/*    min-height: 50px;
+*/}
+
+div#right-row {
+	padding-left: 10px;
+	background-color: #F2F3F4;
+    font-weight: 400;
+}
+
+div#right-header {
+	padding-left: 10px;
+    background-color: #ccc;
+}
+
+.command-log{
+	margin:16px; 
+	border: 1px solid lightgray;
+}
+
+.gateway {
+	background-color: white;
+    border: 0px !important;
+    color: black !important;
+    text-align: right;
+}
+
+md-input-container .md-input.greentext {
+	color: #12C700 !important;
+}
+
+md-input-container .md-input.input-arg {
+	border-width: 1px;
+}
+
+md-input-container:not(.md-input-invalid).md-input-focused .md-input.input-arg {
+	border : 1px solid #eee;
+}
+
+md-switch.comm-switch {
+	margin-top:0px;
+	margin-bottom:0px
+}
+
+@media only screen and (max-width: 599px) {
+	div#right-row {
+	    font-size: 8px;
+	}
+	div#right-header {
+		font-size: 10px;
+	}
+	div#right-header, div#left-header,
+	div#center-header, div#center-row,
+	div#left-row, div#right-row {
+		padding-left: 0px;
+	}
+}
+
+@media only screen and (max-width: 768px) and (min-width: 600px) {
+	div#right-row {
+	    font-size: 10px;
+	}
+	div#right-header {
+		font-size: 12px;
+	}
+	div#right-header, div#left-header,
+	div#center-header, div#center-row,
+	div#left-row, div#right-row {
+		padding-left: 0px;
+	}
+}

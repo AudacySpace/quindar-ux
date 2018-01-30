@@ -1,0 +1,46 @@
+
+ <div id="datalogtable">
+ <div layout="row">
+    <div flex="25" class="dlog-header dlog-center-header">
+        Name
+    </div>
+    <div flex="25" class="dlog-header dlog-center-header">
+        Value
+    </div>
+    <div flex="25" class="dlog-header dlog-center-header">
+        Time
+    </div>
+    <div flex="25" class="dlog-header">
+        Vehicle
+    </div>
+    
+</div>
+ <div layout="row">
+    <div flex="25" class="dlog-header dlog-center-header">
+         <input type="text" class="d-log-input" ng-model="search.name"/> 
+    </div>
+    <div flex="25" class="dlog-header dlog-center-header">
+        <input type="text" class="d-log-input" ng-model="search.value"/> 
+    </div>
+    <div flex="25" class="dlog-header dlog-center-header">
+      <input type="text" class="d-log-input" ng-model="search.timestamp"/> 
+    </div>  
+    <div flex="25" class="dlog-header">
+      <input type="text" class="d-log-input" ng-model="search.vehicle"/> 
+    </div>  
+</div>
+<div layout="row"  ng-repeat="data in logData | filter:search">
+    <div flex="25" class="dlog-row dlog-center-row">
+        {{data.name}}
+    </div>
+    <div flex="25" class="dlog-row dlog-center-row" ng-style="data.style">
+        {{data.value}}
+    </div>
+    <div flex="25" class="dlog-row dlog-center-row">
+        {{data.timestamp}}
+    </div>
+    <div flex="25" class="dlog-row">
+        {{widget.settings.data.vehicle}}
+    </div>
+</div>
+</div>
