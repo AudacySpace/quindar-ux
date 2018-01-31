@@ -65,11 +65,11 @@
 		</div>
 	</div>
 	<div id="image_credit_container">
-		<p id="image_credit"></p>
+		<p><a id="image_credit" href="" style="color:white"></a></p>
 	</div>
 
+	<script src="/scripts/unsplash-source.min.js"></script>
 	<script>
-
 		/* 
 			The list of available background images should be scraped from 
 			http://www.space.com/wallpapers. Select a random page, then a random
@@ -79,31 +79,31 @@
 		*/
 			
 		// local fallback in case Quindar can't reach space.com
-		var imgs=[]; cred=[];
+		// var imgs=[]; cred=[];
 		
-		imgs[0] = "/media/background/acidalia-planitia-1600.jpg";
-		cred[0] = "Acidalia Planitia (Mars) - NASA/JPL-Caltech/Univ. of Arizona";
+		// imgs[0] = "/media/background/acidalia-planitia-1600.jpg";
+		// cred[0] = "Acidalia Planitia (Mars) - NASA/JPL-Caltech/Univ. of Arizona";
 
-		imgs[1] = "/media/background/jezero-crater-1600.jpg";
-		cred[1] = "Jezero Crater (Mars) - NASA/JPL-Caltech/Univ. of Arizona";
+		// imgs[1] = "/media/background/jezero-crater-1600.jpg";
+		// cred[1] = "Jezero Crater (Mars) - NASA/JPL-Caltech/Univ. of Arizona";
 
-		imgs[2] = "/media/background/europa-remastered-1600.jpg";
-		cred[2] = "Jupiter's Moon Europa - NASA, JPL-Caltech, SETI Institute, Cynthia Phillips, Marty Valenti";
+		// imgs[2] = "/media/background/europa-remastered-1600.jpg";
+		// cred[2] = "Jupiter's Moon Europa - NASA, JPL-Caltech, SETI Institute, Cynthia Phillips, Marty Valenti";
 		
-		imgs[3] = "/media/background/cosmic-fireball-falling-over-alma-1920.jpg";
-		cred[3] = "Fiery Voyage Over ALMA - ESO/C. Malin";
+		// imgs[3] = "/media/background/cosmic-fireball-falling-over-alma-1920.jpg";
+		// cred[3] = "Fiery Voyage Over ALMA - ESO/C. Malin";
 		
-		imgs[4] = "/media/background/star-trails-eso-paranal-1920.jpg";
-		cred[4] = "Star Trails - Univ. of Arizona";
+		// imgs[4] = "/media/background/star-trails-eso-paranal-1920.jpg";
+		// cred[4] = "Star Trails - Univ. of Arizona";
 	
-		imgs[5] = "/media/background/mars-sand-dunes-1920.jpg";
-		cred[5] = "Martian Sand Dunes - NASA/JPL-Caltech";
+		// imgs[5] = "/media/background/mars-sand-dunes-1920.jpg";
+		// cred[5] = "Martian Sand Dunes - NASA/JPL-Caltech";
 
-		imgs[6] = "/media/background/messy-galaxy-hubble-1920.jpg";
-		cred[6] = "Hubble Galaxy - NASA/JPL-Caltech";
+		// imgs[6] = "/media/background/messy-galaxy-hubble-1920.jpg";
+		// cred[6] = "Hubble Galaxy - NASA/JPL-Caltech";
 		
-		imgs[7] = "/media/background/magellanic-clouds-1920.jpg";
-		cred[7] = "Magellanic Clouds above the Atacama Desert in Chile - ESO/Y. Beletsky";
+		// imgs[7] = "/media/background/magellanic-clouds-1920.jpg";
+		// cred[7] = "Magellanic Clouds above the Atacama Desert in Chile - ESO/Y. Beletsky";
 
 		
 		// get other possible choices remotely
@@ -111,12 +111,48 @@
 
 		
 		// determine array size, and get random index
-		idx = Math.floor(Math.random() * imgs.length);
+		// idx = Math.floor(Math.random() * imgs.length);
 		
 		//update the document display
-		document.body.style.backgroundImage = "url('" + imgs[idx] + "')";
-		document.getElementById("image_credit").innerHTML = cred[idx];
+		// document.body.style.backgroundImage = "url('" + imgs[idx] + "')";
+		// document.getElementById("image_credit").innerHTML = cred[idx];
 
+
+		//Method 1
+		//This involves knowing a collection id and its count
+
+		const getRandomNum = () => {
+  			return Math.floor(Math.random() * 15);
+		}
+
+		//Here id:1671900 is the id of Audacy's image collection in Unsplash;15 is the current count of images.These images are saved 
+		//from various other Space related collections.
+		document.body.style.backgroundImage = "url('https://source.unsplash.com/collection/1671900/${getRandomNum()}')";
+		document.getElementById("image_credit").innerHTML = "Feature Image by NASA | Unsplash";
+		document.getElementById("image_credit").href = "https://unsplash.com/@nasa";
+
+
+
+		//Method 2
+		//https://github.com/unsplash/unsplash-source-js
+		// var photo = new UnsplashPhoto();
+
+		// photo.all()
+  //    		.fromUser("nasa")
+  //    		.fromCategory("Space")
+  //    		.of(["Space"])
+  //    		.fetch();
+
+
+ 	// 	document.body.style.backgroundImage = "url('"+photo.url+"')";
+
+
+ 	// 	document.getElementById("image_credit").innerHTML = "Feature Image by NASA | Unsplash";
+		// document.getElementById("image_credit").href = "https://unsplash.com/@nasa";
+
+
+ 		//Method 3
+ 		//Use of API for more than 5k visits for our website.
 
 	</script>
 	

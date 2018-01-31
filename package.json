@@ -22,7 +22,8 @@
     "morgan": "~1.7.0",
     "passport": "~0.3.2",
     "passport-google-oauth": "~0.1.5",
-    "passport-google-oauth2": "^0.1.6"
+    "passport-google-oauth2": "^0.1.6",
+    "unsplash-js": "^4.8.0"
   },
   "engines": {
     "node": "4.0.0"
