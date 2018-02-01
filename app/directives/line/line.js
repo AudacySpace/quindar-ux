@@ -1,7 +1,7 @@
 app.directive('graph', function() {
     return {
         restrict: 'EA',
-        template: "<div class='graph-container'></div>",
+        templateUrl: "./directives/line/line.html",
         controller : "LineCtrl"
     }
 });
@@ -10,6 +10,15 @@ app.controller("LineCtrl", function($scope, $element, $interval, $window, dashbo
     var telemetry = dashboardService.telemetry;
     var parseTime = d3Service.timeParse("%Y-%m-%dT%H:%M:%S.%LZ");
     var prevSettings;
+    var axisWidth = 70;
+    var labelsDiv = $element[0].children[0].children[1];
+    var graphDiv = $element[0].children[0].children[0];
+
+    if ($window.innerWidth >= 600 && $window.innerWidth <= 768){
+        axisWidth = 50;
+    } else if ($window.innerWidth < 600){
+        axisWidth = 40;
+    }
             
     $scope.data = [[0]];
     $scope.opts = { 
@@ -24,12 +33,13 @@ app.controller("LineCtrl", function($scope, $element, $interval, $window, dashbo
         //dateWindow: [0, 1], 
         legend: "always",
         xlabel: "timestamp", 
-        axisLabelWidth : 70,
+        axisLabelWidth : axisWidth,
         xLabelHeight : 16,
         yLabelWidth : 16,
+        labelsDiv: labelsDiv
     };
 
-    var graph = new Dygraph($element[0].firstChild, $scope.data, $scope.opts );
+    var graph = new Dygraph(graphDiv, $scope.data, $scope.opts );
 
     $scope.interval = $interval(updatePlot, 1000);   
 
@@ -45,9 +55,10 @@ app.controller("LineCtrl", function($scope, $element, $interval, $window, dashbo
                 var labels = ["time"];
                 var series = {};
                 var typeFlag = false;
+
                 if(telemetry['time']){
-                    var tTemp = parseTime(telemetry['time']);
-                    var plotPoint = [tTemp];
+                    var xValue = parseTime(telemetry['time']);
+                    var plotPoint = [xValue];
 
                     //reset plotData when there is a change in settings
                     if (JSON.stringify(prevSettings) !== JSON.stringify($scope.widget.settings.data)){
@@ -65,10 +76,10 @@ app.controller("LineCtrl", function($scope, $element, $interval, $window, dashbo
                             var currentData = dashboardService.getData(vehicle.key);
                             if(currentData){
                                 if(typeof(currentData.value) == "number") {
-                                    var xTemp = parseFloat(currentData.value.toFixed(4));
+                                    var yValue = parseFloat(currentData.value.toFixed(4));
                                     var category = currentData.category;
                                     var yUnits = currentData.units;
-                                    plotPoint.push(xTemp);
+                                    plotPoint.push(yValue);
                                 } else {
                                     typeFlag = true;
                                     break;
@@ -76,7 +87,7 @@ app.controller("LineCtrl", function($scope, $element, $interval, $window, dashbo
                             }
                         }
 
-                        $scope.plotData.push(plotPoint)
+                        $scope.plotData.push(plotPoint);
                         labels.push(vehicle.name);
                         series[vehicle.name] = {
                             color : vehicle.color
@@ -105,16 +116,21 @@ app.controller("LineCtrl", function($scope, $element, $interval, $window, dashbo
                             },
                             legend: "always",
                             xlabel: "timestamp",
-                            axisLabelWidth : 70,
+                            ylabel: "",
+                            axisLabelWidth : axisWidth,
                             xLabelHeight : 16,
                             yLabelWidth : 16,
+                            labels : labels,
+                            series : series
                         });
+
                         //reset settings data
                         $scope.widget.settings.data = {
                             vehicles : [],
                             value : "",
                             key: ""
                         };
+
                         $window.alert(paramY + " is of datatype " + typeof(currentData.value) + 
                             ". Please select another ID from data menu.");
                     } else {
@@ -125,18 +141,24 @@ app.controller("LineCtrl", function($scope, $element, $interval, $window, dashbo
                             labels: labels,
                             axes: {
                                 y: {
-                                    //drawGrid: true,
+                                    drawGrid: true,
                                     valueFormatter: function(y) {
                                         return parseFloat(y.toFixed(4));
                                     },
                                     axisLabelFormatter: function(y) {
                                         return parseFloat(y.toFixed(2));
                                     }
+                                },
+                                x: {
+                                    valueFormatter: function(x) {
+                                        return dashboardService.getTime(0).utc;
+                                    }
                                 }
                             },
                             drawPoints: true,
-                            //yRangePad: 200,
-                            series: series
+                            //yRangePad: 0,
+                            series: series,
+                            axisLabelWidth : axisWidth,
                         });
                     }
                 }

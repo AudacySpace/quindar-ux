@@ -3,7 +3,91 @@
 	left: 10px;
     right: 10px;
     top: 50px;
-    bottom: 10px;
+    bottom: 50px;
     width:auto !important;
     height:auto !important;
+}
+
+#dygraph {
+	width:auto !important;
+    height:auto !important;
+}
+
+.labels {
+	position: absolute;
+    height: 30px;
+    width: -webkit-fill-available;
+    bottom: 10px;
+    text-align: center;
+}
+
+@media only screen and (max-width: 599px) {
+    .graph-container {
+        position: relative;
+        top: 5px;
+        bottom: 30px;
+        left: 0px;
+        min-height: 165px;
+    }
+
+    .labels {
+        position: relative;
+        bottom: 0px;
+        top: 5px;
+        text-align: center;
+        font-size: 8px;
+    }
+
+    div.dygraph-label.dygraph-ylabel {
+        font-size: 8px;
+    }
+
+    div.dygraph-axis-label.dygraph-axis-label-y {
+        font-size: 8px;
+    }
+
+    div.dygraph-label.dygraph-xlabel {
+        font-size: 8px;
+    }
+
+    div.dygraph-axis-label.dygraph-axis-label-x {
+        font-size: 8px;
+    }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+    .labels {
+        font-size: 10px;
+    }
+
+    div.dygraph-label.dygraph-ylabel {
+        font-size: 10px;
+    }
+
+    div.dygraph-axis-label.dygraph-axis-label-y {
+        font-size: 10px;
+    }
+
+    div.dygraph-label.dygraph-xlabel {
+        font-size: 10px;
+    }
+
+    div.dygraph-axis-label.dygraph-axis-label-x {
+        font-size: 10px;
+    }
+
+    .graph-container {
+        position: relative;
+        top: 5px;
+        bottom: 30px;
+        left: 0px;
+        min-height: 180px;
+    }
+
+    .labels {
+        position: relative;
+        bottom: 0px;
+        top: 5px;
+        font-size: 10px;
+    }
 }
