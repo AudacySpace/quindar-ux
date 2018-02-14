@@ -109,6 +109,7 @@ var Timeline = require('./models/timeline');
     app.post('/saveLayout',function(req,res){
         var email = req.body.email;
         var dashboard = req.body.dashboard;
+        var missionname = req.body.missionname;
         var count = 0;
 
         //Insert the layout into the user collection
@@ -120,11 +121,12 @@ var Timeline = require('./models/timeline');
             //Check if there are layouts stored
             if(user.grid.length != 0){
                 for(var i=0; i<user.grid.length; i++){
-                    if(dashboard.name == user.grid[i].name){
+                    if(dashboard.name === user.grid[i].name && dashboard.mission.missionName === user.grid[i].mission.missionName){
                         user.grid[i] = dashboard;
                         count ++;
                     }
                 }
+
                 //If the new name does not exist in the layout, push the new layout
                 if(count == 0){
                     user.grid.push(dashboard);
