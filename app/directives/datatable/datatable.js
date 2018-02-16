@@ -316,7 +316,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                         if(currentData) {
                             var valType = typeof currentData.value;
                             if(valType === "number"){
-                                currentData.value = currentData.value.toFixed(4);
+                                currentData.value = parseFloat(currentData.value.toFixed(4));
                             }
 
                             tempRow.contents[0].datavalue = id;
@@ -398,7 +398,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
         }
     }
 
-    $scope.interval = $interval($scope.updateRow, 500, 0, false);
+    $scope.interval = $interval($scope.updateRow, 1000, 0, false);
 
     $scope.$on("$destroy", 
         function(event) {

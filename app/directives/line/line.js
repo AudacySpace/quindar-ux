@@ -146,7 +146,7 @@ app.controller("LineCtrl", function($scope, $element, $interval, $window, dashbo
                                         return parseFloat(y.toFixed(4));
                                     },
                                     axisLabelFormatter: function(y) {
-                                        return parseFloat(y.toFixed(2));
+                                        return parseFloat(y.toFixed(4));
                                     }
                                 },
                                 x: {

@@ -35,7 +35,7 @@ describe('Testing grid component', function () {
             sizeY: 3,
             sizeX: 4,
             name: "Line Plot",
-            directive: "lineplot",
+            directive: "graph",
             directiveSettings: "linesettings",
             id: "addLine",
             icon: {
@@ -69,7 +69,7 @@ describe('Testing grid component', function () {
             sizeY: 3,
             sizeX: 4,
             name: "Line Plot",
-            directive: "lineplot",
+            directive: "graph",
             directiveSettings: "linesettings",
             id: "addLine",
             icon: {
@@ -103,7 +103,7 @@ describe('Testing grid component', function () {
             sizeY: 3,
             sizeX: 4,
             name: "Line Plot",
-            directive: "lineplot",
+            directive: "graph",
             directiveSettings: "linesettings",
             id: "addLine",
             icon: {
