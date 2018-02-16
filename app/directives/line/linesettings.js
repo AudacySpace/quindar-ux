@@ -2,7 +2,7 @@ app
 .directive('linesettings', function() { 
     return { 
         restrict: 'EA', 
-        templateUrl: './directives/lineplot/linesettings.html',
+        templateUrl: './directives/line/linesettings.html',
         controller: 'LineSettingsCtrl',
     }
 }); 
@@ -122,17 +122,15 @@ app.controller('LineSettingsCtrl',
                                     }); 
                                 }
                             }
-                                
+
                             if($scope.widget.settings.data.vehicles.length > 0){
                                 $scope.settings.data.id = $scope.widget.settings.data.value;
                                 $scope.settings.data.key = $scope.widget.settings.data.key;
-                                for(var i=0; i<$scope.widget.settings.data.vehicles.length; i++){
-                                        
-                                    if($scope.settings.vehicles[i].value == $scope.widget.settings.data.vehicles[i].name){
-                                        $scope.settings.vehicles[i].checked = true;
-                                    }
-                                    else{
-                                        $scope.settings.vehicles[i].checked = false;
+                                for(var i=0; i<$scope.settings.vehicles.length; i++){
+                                    for(var j=0; j<$scope.widget.settings.data.vehicles.length; j++){
+                                        if($scope.settings.vehicles[i].value == $scope.widget.settings.data.vehicles[j].name){
+                                            $scope.settings.vehicles[i].checked = true;
+                                        }
                                     }
                                 }
                             }

@@ -14,7 +14,7 @@ describe('Testing gridService', function () {
                 sizeY: 3,
                 sizeX: 4,
                 name: "Line Plot",
-                directive: "lineplot",
+                directive: "graph",
                 directiveSettings: "linesettings",
                 id: "addLine",
                 icon: {
@@ -127,9 +127,9 @@ describe('Testing gridService', function () {
         expect(gridService.gridsterOptions).toEqual(gridsterOptions);
     });
 
-    it('should define the widget definitions with total of 11 widgets', function() {
+    it('should define the widget definitions with total of 10 widgets', function() {
         expect(gridService.widgetDefinitions).toBeDefined();
-        expect(gridService.widgetDefinitions.length).toEqual(11);
+        expect(gridService.widgetDefinitions.length).toEqual(10);
     });
 
     it('should define the getDashboardId function', function() {
@@ -159,7 +159,7 @@ describe('Testing gridService', function () {
             sizeY: 3,
             sizeX: 4,
             name: "Line Plot",
-            directive: "lineplot",
+            directive: "graph",
             directiveSettings: "linesettings",
             id: "addLine",
             icon: {
@@ -193,7 +193,7 @@ describe('Testing gridService', function () {
             sizeY: 3,
             sizeX: 4,
             name: "Line Plot",
-            directive: "lineplot",
+            directive: "graph",
             directiveSettings: "linesettings",
             id: "addLine",
             icon: {

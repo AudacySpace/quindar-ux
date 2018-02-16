@@ -65,7 +65,7 @@ app.controller('DataLogCtrl',function ($scope,$interval,dashboardService,datasta
         if(currentData) {
             var valType = typeof currentData.value;
             if(valType === "number"){
-                currentData.value = currentData.value.toFixed(4);
+                currentData.value = parseFloat(currentData.value.toFixed(4));
             }
 
             if(prevLogData[prevLogData.length-1] === currentData.value){

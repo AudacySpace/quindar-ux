@@ -99,7 +99,7 @@ describe('Testing data log controller', function () {
         });
         var result1 = [{ 
             name: 'x velocity component in ECF', 
-            value: '-0.3201', 
+            value: -0.3201, 
             timestamp: '2018-02-16T00:26:41.439Z', 
             style: undefined 
         }];
@@ -123,12 +123,12 @@ describe('Testing data log controller', function () {
         });
         var result2 = [{ 
             name: 'x velocity component in ECF', 
-            value: '-0.3201', 
+            value: -0.3201, 
             timestamp: '2018-02-16T00:26:41.439Z', 
             style: undefined 
         },{ 
             name: 'x velocity component in ECF', 
-            value: '-0.3409', 
+            value: -0.3409, 
             timestamp: '2018-02-16T00:28:41.439Z', 
             style: undefined 
         }]
