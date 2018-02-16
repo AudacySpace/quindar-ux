@@ -494,7 +494,7 @@ describe('Testing data table controller', function () {
             },{ 
                 "datavalue":"-10"
             },{ 
-                "datavalue":"-0.3201",
+                "datavalue":-0.3201,
                 "datacolor": undefined
             },{ 
                 "datavalue":"10"
@@ -556,7 +556,7 @@ describe('Testing data table controller', function () {
     });
 
     it('should call $interval on updateRow function', function(){
-        expect($intervalSpy).toHaveBeenCalledWith(scope.updateRow, 500, 0, false);
+        expect($intervalSpy).toHaveBeenCalledWith(scope.updateRow, 1000, 0, false);
     });
 
     it('should cancel interval when scope is destroyed', function(){
