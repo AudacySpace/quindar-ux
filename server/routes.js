@@ -500,7 +500,9 @@ var Timeline = require('./models/timeline');
                 console.log(err);
             }
 
-            res.send(list.commands);
+            if(list) {
+                res.send(list.commands);
+            }
         });
     });
 
