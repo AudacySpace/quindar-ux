@@ -423,9 +423,15 @@ var Timeline = require('./models/timeline');
     app.post('/setMissionForUser',function(req,res){
         var email = req.body.email;
         var mission = req.body.mission;
+        var defaultRole = {
+            'name'     : configRole.roles['VIP'].name,
+            'callsign' : configRole.roles['VIP'].callsign
+        };
+        var missionCount = 0;
+        var missionObj;
 
         //count the number of users for this mission
-        User.count({ 'mission' : mission }, function(err, count) {
+        User.count({ 'missions.name' : mission }, function(err, count) {
             if(err){
                 console.log(err);
             }
@@ -441,15 +447,40 @@ var Timeline = require('./models/timeline');
                         'name'     : configRole.roles['MD'].name,
                         'callsign' : configRole.roles['MD'].callsign
                     };
+                    missionObj =  {
+                        'name' : mission,
+                        'currentRole' : userRole,
+                        'allowedRoles' : []
+                    };
+                    missionObj.allowedRoles.push(defaultRole);
+                    missionObj.allowedRoles.push(userRole);
 
-                    user.currentRole = userRole;
-                    user.allowedRoles.push(userRole);
+                    user.missions.push(missionObj);
+                } else {
+                    //check if the mission exists in the user's mission list
+                    for(var i=0; i<user.missions.length; i++){
+                        if(user.missions[i].name === mission){
+                            missionObj = user.missions[i];
+                            missionCount++;
+                        }
+                    }
+
+                    //If mission does not exist for this user, assign Observer role
+                    if(missionCount == 0) {
+                        missionObj =  {
+                            'name' : mission,
+                            'currentRole' : defaultRole,
+                            'allowedRoles' : []
+                        };
+                        missionObj.allowedRoles.push(defaultRole);
+
+                        user.missions.push(missionObj);
+                    }
                 }
-                user.mission = mission;
 
                 user.save(function(err) {
                     if (err) throw err;
-                    res.send(user);
+                    res.send(missionObj);
                 });
             });
         });
