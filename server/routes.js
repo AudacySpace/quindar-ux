@@ -223,7 +223,7 @@ var Timeline = require('./models/timeline');
         var mission = req.query.mission;
         var allUsers = [];
 
-        User.find( { 'mission' : mission }, { google : 1, allowedRoles : 1, currentRole : 1 }, function(err, users) {
+        User.find( { 'missions.name' : mission }, { 'google' : 1, 'missions.$' : 1 }, function(err, users) {
             if(err){ 
                 console.log(err);
             }
@@ -231,10 +231,10 @@ var Timeline = require('./models/timeline');
             for(var i=0; i<users.length; i++){
                 allUsers[i] = new Object();
                 allUsers[i].google = users[i].google;
-                allUsers[i].currentRole = users[i].currentRole;
+                allUsers[i].currentRole = users[i].missions[0].currentRole;
                 var aRoles = {};
 
-                var roles = users[i].allowedRoles;
+                var roles = users[i].missions[0].allowedRoles;
 
                 for(var j=0; j<roles.length; j++){
                     aRoles[roles[j].callsign] = 1;

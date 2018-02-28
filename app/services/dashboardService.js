@@ -16,6 +16,7 @@ app
     function getMissionLayout(){
         var currentLayout = gridService.getDashboard();
         if(currentLayout.current.mission.missionName !== ""){
+            gridService.setMissionForUser(currentLayout.current.mission.missionName);
             setCurrentMission(currentLayout.current.mission);
             getTelemetry(currentLayout.current.mission.missionName);
         }else {
