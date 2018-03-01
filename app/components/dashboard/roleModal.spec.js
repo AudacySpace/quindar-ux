@@ -9,8 +9,7 @@ describe('Testing role modal controller', function () {
         }
     };
     var modalInstance = { close: function() {}, dismiss: function() {}, open: function() {} };
-    var missions = [{ missionName : 'ATest', missionImage : '/media/icons/Audacy_Icon_White.svg'},
-                    { missionName : 'AZero', missionImage : '/media/icons/Audacy_Zero.svg'}];
+    var mission = { missionName : 'ATest', missionImage : '/media/icons/Audacy_Icon_White.svg'};
 
     beforeEach(function () {
         // load the module
@@ -32,6 +31,7 @@ describe('Testing role modal controller', function () {
                 $scope : scope,
                 $uibModalInstance: modalInstance,
                 userService: userService,
+                mission: mission
             });
             
         });
@@ -55,6 +55,7 @@ describe('Testing role modal controller', function () {
         scope.$digest();
 
         expect(userService.getCurrentRole).toHaveBeenCalled();
+        expect(userService.getCurrentRole).toHaveBeenCalledWith(mission.missionName);
         expect(controller.cRole).toEqual(cRole);
         expect(controller.role).toEqual(role);       
     });
@@ -65,6 +66,7 @@ describe('Testing role modal controller', function () {
         scope.$digest();
 
         expect(userService.getCurrentRole).toHaveBeenCalled();
+        expect(userService.getCurrentRole).toHaveBeenCalledWith(mission.missionName);
         expect(controller.cRole).toEqual({});
         expect(controller.role).not.toBeDefined();       
     });

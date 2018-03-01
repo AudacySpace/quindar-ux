@@ -71,11 +71,12 @@ describe('Testing userService', function () {
     		name: "Mission Director",
     		callsign: "MD"
     	};
+        var mission = "ATest";
 
     	httpBackend.expectGET("/getCurrentRole?email=chavi.malhotra@gmail.com&mission=ATest")
     		.respond(200, role);
 
-    	userService.getCurrentRole().then( function(response){
+    	userService.getCurrentRole(mission).then( function(response){
         	actualRole = response.data;
         	expect(response.status).toBe(200);
         	expect(actualRole).toBeDefined();
