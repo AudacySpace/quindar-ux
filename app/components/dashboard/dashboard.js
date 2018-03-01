@@ -67,7 +67,12 @@ angular.module('app')
 			$uibModal.open({
 				templateUrl: './components/dashboard/roleModal.html',
 				controller: 'modalCtrl',
-				controllerAs: '$ctrl'
+				controllerAs: '$ctrl',
+                resolve: {
+                    mission: function () {
+                        return dashboardService.getCurrentMission();
+                    }
+                }
 			}).result.then(function(response){
 				if(response) {
 					//vm.callsign = response.callsign;
@@ -80,12 +85,12 @@ angular.module('app')
 	}
 })
 
-app.controller('modalCtrl', function($uibModalInstance, userService, $window) {
+app.controller('modalCtrl', function($uibModalInstance, userService, mission, $window) {
 	var $ctrl = this;
 
 	$ctrl.cRole = {};
 
-	userService.getCurrentRole()
+	userService.getCurrentRole(mission.missionName)
 	.then(function(response) {
 		if(response.status == 200){
 			$ctrl.cRole = response.data;

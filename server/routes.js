@@ -275,14 +275,15 @@ var Timeline = require('./models/timeline');
     //get current role of the user
     app.get('/getCurrentRole', function(req,res){
         var email = req.query.email;
+        var mission = req.query.mission;
 
         //update the current role of the user
-        User.findOne({ 'google.email' : email }, { currentRole : 1 }, function(err, user) {
+        User.findOne({ 'google.email' : email, 'missions.name' : mission }, { 'missions.$' : 1 }, function(err, user) {
             if(err){
                 console.log(err);
             }
 
-            res.send(user.currentRole);
+            res.send(user.missions[0].currentRole);
         });
     });
 

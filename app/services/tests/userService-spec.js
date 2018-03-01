@@ -72,7 +72,7 @@ describe('Testing userService', function () {
     		callsign: "MD"
     	};
 
-    	httpBackend.expectGET("/getCurrentRole?email=chavi.malhotra@gmail.com")
+    	httpBackend.expectGET("/getCurrentRole?email=chavi.malhotra@gmail.com&mission=ATest")
     		.respond(200, role);
 
     	userService.getCurrentRole().then( function(response){

@@ -28,11 +28,11 @@ app
         }
     }
 
-    function getCurrentRole() {
+    function getCurrentRole(mission) {
         return $http({
             url: "/getCurrentRole", 
             method: "GET",
-            params: {"email": $window.user.google.email}
+            params: {"email": $window.user.google.email, "mission" : mission}
         });
     }
 
