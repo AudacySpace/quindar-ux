@@ -54,7 +54,6 @@ describe('Testing role modal controller', function () {
         // call digest cycle for this to work
         scope.$digest();
 
-        expect(userService.getCurrentRole).toHaveBeenCalled();
         expect(userService.getCurrentRole).toHaveBeenCalledWith(mission.missionName);
         expect(controller.cRole).toEqual(cRole);
         expect(controller.role).toEqual(role);       
@@ -65,7 +64,6 @@ describe('Testing role modal controller', function () {
         // call digest cycle for this to work
         scope.$digest();
 
-        expect(userService.getCurrentRole).toHaveBeenCalled();
         expect(userService.getCurrentRole).toHaveBeenCalledWith(mission.missionName);
         expect(controller.cRole).toEqual({});
         expect(controller.role).not.toBeDefined();       
@@ -84,7 +82,7 @@ describe('Testing role modal controller', function () {
         // call digest cycle for this to work
         scope.$digest();
 
-        expect(userService.getAllowedRoles).toHaveBeenCalled();
+        expect(userService.getAllowedRoles).toHaveBeenCalledWith(mission.missionName);
         expect(controller.roles).toEqual(roles);       
     });
 
@@ -93,7 +91,7 @@ describe('Testing role modal controller', function () {
         // call digest cycle for this to work
         scope.$digest();
 
-        expect(userService.getAllowedRoles).toHaveBeenCalled();
+        expect(userService.getAllowedRoles).toHaveBeenCalledWith(mission.missionName);
         expect(controller.roles).not.toBeDefined();       
     });
 

@@ -105,7 +105,7 @@ app.controller('modalCtrl', function($uibModalInstance, userService, mission, $w
 	};
 
 
-	userService.getAllowedRoles()
+	userService.getAllowedRoles(mission.missionName)
 	.then(function(response) {
 		if(response.status == 200){
 			$ctrl.roles = response.data;

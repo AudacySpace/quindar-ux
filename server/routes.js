@@ -290,14 +290,15 @@ var Timeline = require('./models/timeline');
     //get allowed roles of the user
     app.get('/getAllowedRoles', function(req,res){
         var email = req.query.email;
+        var mission = req.query.mission;
 
         //update allowed roles of the user
-        User.findOne({ 'google.email' : email }, { allowedRoles : 1 }, function(err, user) {
+        User.findOne({ 'google.email' : email, 'missions.name' : mission }, { 'missions.$' : 1 }, function(err, user) {
             if(err){
                 console.log(err);
             }
 
-            res.send(user.allowedRoles);
+            res.send(user.missions[0].allowedRoles);
         });
     });
 

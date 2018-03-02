@@ -98,11 +98,12 @@ describe('Testing userService', function () {
     			callsign: "VIP"
     		}
     	];
+        var mission = "ATest";
 
-    	httpBackend.expectGET("/getAllowedRoles?email=chavi.malhotra@gmail.com")
+    	httpBackend.expectGET("/getAllowedRoles?email=chavi.malhotra@gmail.com&mission=ATest")
     		.respond(200, allowedRoles);
 
-    	userService.getAllowedRoles().then( function(response){
+    	userService.getAllowedRoles(mission).then( function(response){
         	roles = response.data;
         	expect(response.status).toBe(200);
         	expect(roles).toBeDefined();

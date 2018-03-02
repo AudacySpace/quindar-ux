@@ -36,11 +36,11 @@ app
         });
     }
 
-    function getAllowedRoles() {
+    function getAllowedRoles(mission) {
         return $http({
             url: "/getAllowedRoles", 
             method: "GET",
-            params: {"email": $window.user.google.email}
+            params: {"email": $window.user.google.email, "mission" : mission}
         });      
     }
 
