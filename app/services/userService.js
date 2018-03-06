@@ -82,7 +82,6 @@ app
         userRole : userRole,
         getUserName : getUserName,
         getUserEmail : getUserEmail,
-        getCurrentCallSign : getCurrentCallSign,
         getCurrentRole : getCurrentRole,
         getAllowedRoles : getAllowedRoles,
         setCurrentRole : setCurrentRole,
