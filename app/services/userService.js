@@ -44,13 +44,13 @@ app
         });      
     }
 
-    function setCurrentRole(role) {
+    function setCurrentRole(role, mission) {
         userRole.cRole = role;
         var email = getUserEmail();
         return $http({
             url: "/setUserRole", 
             method: "POST",
-            data: {"email" : email, "role" : role}
+            data: {"email" : email, "role" : role, "mission" : mission}
         });
     }
 

@@ -117,7 +117,7 @@ app.controller('modalCtrl', function($uibModalInstance, userService, mission, $w
 			$window.alert("No mission without the Mission Director. Your role cannot be updated");
 			$uibModalInstance.close($ctrl.cRole);
 		} else {
-	        userService.setCurrentRole($ctrl.role.currentRole)
+	        userService.setCurrentRole($ctrl.role.currentRole, mission.missionName)
 	        .then(function(response) {
 	        	if(response.status == 200){
 	                $window.alert("User's current role updated");

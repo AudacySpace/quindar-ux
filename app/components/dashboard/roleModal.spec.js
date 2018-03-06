@@ -151,7 +151,7 @@ describe('Testing role modal controller', function () {
         // call digest cycle for this to work
         scope.$digest();
 
-        expect(userService.setCurrentRole).toHaveBeenCalledWith(controller.role.currentRole);
+        expect(userService.setCurrentRole).toHaveBeenCalledWith(controller.role.currentRole, mission.missionName);
         expect(modalInstance.close).toHaveBeenCalled();
         expect(windowMock.alert).toHaveBeenCalledWith("User's current role updated");
     });
@@ -177,7 +177,7 @@ describe('Testing role modal controller', function () {
         // call digest cycle for this to work
         scope.$digest();
 
-        expect(userService.setCurrentRole).toHaveBeenCalledWith(controller.role.currentRole);
+        expect(userService.setCurrentRole).toHaveBeenCalledWith(controller.role.currentRole, mission.missionName);
         expect(modalInstance.close).not.toHaveBeenCalled();
         expect(windowMock.alert).not.toHaveBeenCalledWith("User's current role updated");
     });

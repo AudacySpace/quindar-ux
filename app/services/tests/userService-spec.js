@@ -120,11 +120,12 @@ describe('Testing userService', function () {
     		name: "Mission Director",
     		callsign: "MD"
     	};
+        var mission = "ATest";
 
     	httpBackend.expectPOST("/setUserRole")
     		.respond(200, {});
 
-    	userService.setCurrentRole(email, role).then( function(response){
+    	userService.setCurrentRole(email, role, mission).then( function(response){
         	expect(response.status).toBe(200);
     	});
 

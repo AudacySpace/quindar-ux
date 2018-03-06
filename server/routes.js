@@ -200,15 +200,21 @@ var Timeline = require('./models/timeline');
     app.post('/setUserRole',function(req,res){
         var email = req.body.email;
         var role = req.body.role;
+        var mission = req.body.mission;
 
         //update the current role of the user
-        User.findOne({ 'google.email' : email }, function(err, user) {
+        User.findOne({ 'google.email' : email, 'missions.name' : mission }, function(err, user) {
             if(err){
                 console.log(err);
             }
 
-            user.currentRole = role;
+            for(var i=0; i<user.missions.length; i++) {
+                if(user.missions[i].name === mission) {
+                    user.missions[i].currentRole = role;
+                }
+            }
 
+            user.markModified('missions');
             user.save(function(err) {
                 if (err) throw err;
 
