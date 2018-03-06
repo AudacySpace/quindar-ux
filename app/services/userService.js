@@ -20,14 +20,6 @@ app
         }
     }
 
-    function getCurrentCallSign() {
-        if($window.user.currentRole && $window.user.currentRole.callsign) {
-            return $window.user.currentRole.callsign;
-        } else {
-            return "";
-        }
-    }
-
     function getCurrentRole(mission) {
         return $http({
             url: "/getCurrentRole", 

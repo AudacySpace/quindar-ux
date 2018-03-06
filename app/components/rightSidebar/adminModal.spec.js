@@ -292,7 +292,7 @@ describe('Testing adminModal controller', function () {
         //call digest cycle for resolve to work
         scope.$digest();
         expect(controller.selected.user.allowedRoles).toEqual({GCC : 1, NAV : 1});
-        expect(userService.setAllowedRoles).toHaveBeenCalled(email, controller.roles, controller.mission);
+        expect(userService.setAllowedRoles).toHaveBeenCalledWith(email, controller.roles, controller.mission);
         expect(windowMock.alert).toHaveBeenCalledWith('Allowed roles updated for John Smith');
     });
 

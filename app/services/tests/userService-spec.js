@@ -4,24 +4,32 @@ describe('Testing userService', function () {
     var windowMock = { user : 
     		{_id: "594417df3d2dd966dcb43afd", 
     		google: {
-    			email: "chavi.malhotra@gmail.com", 
-    			name: "Chavi Malhotra", 
+    			email: "john.smith@gmail.com", 
+    			name: "John Smith", 
     			id: "112313425445562239891"
     		},
-    		currentRole : {
-    			name: "Mission Director", 
-    			callsign: "MD"
-    		},
-    		allowedRoles : [
-    		{
-    			name: "Mission Director", 
-    			callsign: "MD"
-    		},
-    		{
-    			name: "Observer", 
-    			callsign: "VIP"
-    		}
-    		]
+    		missions : [
+            {
+                name: "ATest"
+                currentRole : {
+        			name: "Mission Director", 
+        			callsign: "MD"
+        		},
+        		allowedRoles : [
+        		{
+        			name: "Mission Director", 
+        			callsign: "MD"
+        		},
+        		{
+        			name: "Observer", 
+        			callsign: "VIP"
+        		},
+                { 
+                    name : 'Proxy Director', 
+                    callsign : 'PRX'
+                }
+        		]
+            }]
     	} 
     };
 
@@ -58,11 +66,6 @@ describe('Testing userService', function () {
     it('userService should get the user email', function () {
     	var email = "chavi.malhotra@gmail.com";
     	expect(userService.getUserEmail()).toEqual(email);
-    });
-
-    it('userService should get the user callsign', function () {
-    	var callsign = 'MD'
-    	expect(userService.getCurrentCallSign()).toEqual(callsign);
     });
 
     it('userService should get the user current role', function () {
@@ -117,9 +120,9 @@ describe('Testing userService', function () {
     it('userService should be able to post the current role of the user', function () {
     	var email = "chavi.malhotra@gmail.com";
     	var role = { 
-    		name: "Mission Director",
-    		callsign: "MD"
-    	};
+            name : 'Proxy Director',
+            callsign : 'PRX'
+        }
         var mission = "ATest";
 
     	httpBackend.expectPOST("/setUserRole")
@@ -133,21 +136,32 @@ describe('Testing userService', function () {
     });
 
     it('userService should get all the users', function () {
-        var mission = "AZero";
+        var mission = "ATest";
     	var users;
     	var result = [{ 
     		_id: "594417df3d2dd966dcb43afd", 
     		google: {
-    			email: "chavi.malhotra@gmail.com", 
-    			name: "Chavi Malhotra", 
+    			email: "john.smith@gmail.com", 
+    			name: "John Smith", 
     			id: "112313425445562239891"
     		},
-            mission: "AZero"
+            missions: [{
+                name: "ATest",
+                currentRole: {
+                    name: "Observer",
+                    callsign: "VIP"
+                },
+                allowedRoles: [
+                {
+                    name: "Observer",
+                    callsign: "VIP"
+                }]
+            }]
     	}];
  
-        httpBackend.expectGET('/getUsers?mission=AZero').respond(200, result);
+        httpBackend.expectGET('/getUsers?mission=ATest').respond(200, result);
  
-        userService.getUsers("AZero").then( function(response){
+        userService.getUsers(mission).then( function(response){
         	users = response.data;
         	expect(response.status).toBe(200);
         	expect(users).toBeDefined();
@@ -169,7 +183,7 @@ describe('Testing userService', function () {
     			callsign: "VIP"
     		}
     	];
-        var mission = "AZero";
+        var mission = "ATest";
 
     	httpBackend.expectPOST("/setAllowedRoles")
     		.respond(200, {});
@@ -182,7 +196,7 @@ describe('Testing userService', function () {
     });
 
     it('userService should be able to set the mission name for the user', function () {
-        var mission = "AZero";
+        var mission = "ATest";
 
         httpBackend.expectPOST("/setMissionForUser")
             .respond(200, {});
