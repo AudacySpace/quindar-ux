@@ -59,12 +59,12 @@ describe('Testing userService', function () {
     });
 
     it('userService should get the user name', function () {
-    	var userName = "Chavi Malhotra";
+    	var userName = "John Smith";
     	expect(userService.getUserName()).toEqual(userName);
     });
 
     it('userService should get the user email', function () {
-    	var email = "chavi.malhotra@gmail.com";
+    	var email = "john.smith@gmail.com";
     	expect(userService.getUserEmail()).toEqual(email);
     });
 
@@ -76,7 +76,7 @@ describe('Testing userService', function () {
     	};
         var mission = "ATest";
 
-    	httpBackend.expectGET("/getCurrentRole?email=chavi.malhotra@gmail.com&mission=ATest")
+    	httpBackend.expectGET("/getCurrentRole?email=john.smith@gmail.com&mission=ATest")
     		.respond(200, role);
 
     	userService.getCurrentRole(mission).then( function(response){
@@ -103,7 +103,7 @@ describe('Testing userService', function () {
     	];
         var mission = "ATest";
 
-    	httpBackend.expectGET("/getAllowedRoles?email=chavi.malhotra@gmail.com&mission=ATest")
+    	httpBackend.expectGET("/getAllowedRoles?email=john.smith@gmail.com&mission=ATest")
     		.respond(200, allowedRoles);
 
     	userService.getAllowedRoles(mission).then( function(response){
@@ -118,7 +118,7 @@ describe('Testing userService', function () {
     });
 
     it('userService should be able to post the current role of the user', function () {
-    	var email = "chavi.malhotra@gmail.com";
+    	var email = "john.smith@gmail.com";
     	var role = { 
             name : 'Proxy Director',
             callsign : 'PRX'
