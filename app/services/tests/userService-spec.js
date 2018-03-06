@@ -10,7 +10,7 @@ describe('Testing userService', function () {
     		},
     		missions : [
             {
-                name: "ATest"
+                name: "ATest",
                 currentRole : {
         			name: "Mission Director", 
         			callsign: "MD"
