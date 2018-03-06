@@ -261,14 +261,21 @@ var Timeline = require('./models/timeline');
     app.post('/setAllowedRoles',function(req,res){
         var email = req.body.email;
         var roles = req.body.roles;
+        var mission = req.body.mission;
 
         //update allowed roles of the user
-        User.findOne({ 'google.email' : email }, function(err, user) {
+        User.findOne({ 'google.email' : email, 'missions.name' : mission }, function(err, user) {
             if(err){
                 console.log(err);
             }
 
-            user.allowedRoles = roles;
+            for(var i=0; i<user.missions.length; i++) {
+                if(user.missions[i].name === mission) {
+                    user.missions[i].allowedRoles = roles;
+                }
+            }
+
+            user.markModified('missions');
 
             user.save(function(err) {
                 if (err) throw err;
@@ -468,6 +475,10 @@ var Timeline = require('./models/timeline');
                     //check if the mission exists in the user's mission list
                     for(var i=0; i<user.missions.length; i++){
                         if(user.missions[i].name === mission){
+                            if(!containsObject(user.missions[i].currentRole, user.missions[i].allowedRoles)){
+                                //update current role to default role if current role is not a part of allowed roles
+                                user.missions[i].currentRole = defaultRole;
+                            }
                             missionObj = user.missions[i];
                             missionCount++;
                         }
@@ -485,6 +496,8 @@ var Timeline = require('./models/timeline');
                         user.missions.push(missionObj);
                     }
                 }
+
+                user.markModified('missions');
 
                 user.save(function(err) {
                     if (err) throw err;
@@ -606,4 +619,39 @@ function uniqBy(a, key) {
         var k = key(item);
         return seen.hasOwnProperty(k) ? false : (seen[k] = true);
     })
+}
+
+//Check if an array list contains an object
+function containsObject(obj, list) {
+    var i;
+    for (i = 0; i < list.length; i++) {
+        if (isEquivalent(list[i], obj)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+//Equality of Objects
+function isEquivalent(a, b) {
+    // Create arrays of property names
+    var propA = Object.getOwnPropertyNames(a);
+    var propB = Object.getOwnPropertyNames(b);
+
+    // If number of properties are different
+    if (propA.length != propB.length) {
+        return false;
+    }
+
+    for (var i = 0; i < propA.length; i++) {
+        var property = propA[i];
+
+        // check values of same property
+        if (a[property] !== b[property]) {
+            return false;
+        }
+    }
+
+    return true;
 }

@@ -251,7 +251,8 @@ describe('Testing adminModal controller', function () {
         controller.selected = {
             user : {
                 'google' : {
-                    name : 'John Smith'
+                    name : 'John Smith',
+                    email : 'john.smith@gmail.com'
                 },
                 'currentRole' : {
                     name : 'Ground Communications Controller',
@@ -263,6 +264,9 @@ describe('Testing adminModal controller', function () {
                 }
             }
         };
+
+        var email = controller.selected.user.google.email;
+
         controller.roles = [{
             name : 'Observer',
             callsign : 'VIP',
@@ -288,7 +292,7 @@ describe('Testing adminModal controller', function () {
         //call digest cycle for resolve to work
         scope.$digest();
         expect(controller.selected.user.allowedRoles).toEqual({GCC : 1, NAV : 1});
-        expect(userService.setAllowedRoles).toHaveBeenCalled();
+        expect(userService.setAllowedRoles).toHaveBeenCalled(email, controller.roles, controller.mission);
         expect(windowMock.alert).toHaveBeenCalledWith('Allowed roles updated for John Smith');
     });
 

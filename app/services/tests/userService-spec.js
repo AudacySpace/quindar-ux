@@ -169,11 +169,12 @@ describe('Testing userService', function () {
     			callsign: "VIP"
     		}
     	];
+        var mission = "AZero";
 
     	httpBackend.expectPOST("/setAllowedRoles")
     		.respond(200, {});
 
-    	userService.setAllowedRoles(windowMock.user, roles).then( function(response){
+    	userService.setAllowedRoles(windowMock.user, roles, mission).then( function(response){
         	expect(response.status).toBe(200);
     	});
 

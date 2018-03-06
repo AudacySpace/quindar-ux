@@ -69,11 +69,11 @@ app
             });
     }
 
-    function setAllowedRoles(user, roles) {
+    function setAllowedRoles(user, roles, mission) {
         return $http({
             url: "/setAllowedRoles", 
             method: "POST",
-            data: {"email" : user.google.email, "roles" : roles}
+            data: {"email" : user.google.email, "roles" : roles, "mission": mission}
         });
     }
 
