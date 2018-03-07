@@ -24,7 +24,7 @@
                 <div class="checkbox"  ng-repeat="role in $ctrl.roles">
                     <label>
                         <input type="checkbox" ng-model="role.checked" ng-disabled="role.checked && role.callsign=='VIP'"> 
-                        {{ role.name}}
+                        {{ role.name}} ({{ role.callsign }})
                     </label>
                 </div>
             </div>
