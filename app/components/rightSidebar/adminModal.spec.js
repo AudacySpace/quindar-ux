@@ -265,8 +265,6 @@ describe('Testing adminModal controller', function () {
             }
         };
 
-        var user = controller.selected.user;
-
         controller.roles = [{
             name : 'Observer',
             callsign : 'VIP',
@@ -284,6 +282,15 @@ describe('Testing adminModal controller', function () {
             checked : true
         }];
 
+        var user = controller.selected.user;
+        var roles = [{
+            name : 'Ground Communications Controller',
+            callsign : 'GCC'
+        },{
+            name : 'Navigation and Control Specialist',
+            callsign : 'NAV'
+        }];
+
         deferredSet.resolve({ data : {}, status : 200 })
         controller.save();
 
@@ -292,7 +299,7 @@ describe('Testing adminModal controller', function () {
         //call digest cycle for resolve to work
         scope.$digest();
         expect(controller.selected.user.allowedRoles).toEqual({GCC : 1, NAV : 1});
-        expect(userService.setAllowedRoles).toHaveBeenCalledWith(user, controller.roles, controller.mission);
+        expect(userService.setAllowedRoles).toHaveBeenCalledWith(user, roles, controller.mission);
         expect(windowMock.alert).toHaveBeenCalledWith('Allowed roles updated for John Smith');
     });
 
