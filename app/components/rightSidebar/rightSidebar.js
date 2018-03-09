@@ -199,7 +199,7 @@ app.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userSer
 
                 $ctrl.selected.user.allowedRoles = objRoles;
 
-                userService.setAllowedRoles($ctrl.selected.user, newRoles)
+                userService.setAllowedRoles($ctrl.selected.user, newRoles, $ctrl.mission)
                 .then(function(response) {
                     if(response.status == 200){
                         $window.alert("Allowed roles updated for " + $ctrl.selected.user.google.name);

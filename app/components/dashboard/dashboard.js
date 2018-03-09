@@ -67,7 +67,12 @@ angular.module('app')
 			$uibModal.open({
 				templateUrl: './components/dashboard/roleModal.html',
 				controller: 'modalCtrl',
-				controllerAs: '$ctrl'
+				controllerAs: '$ctrl',
+                resolve: {
+                    mission: function () {
+                        return dashboardService.getCurrentMission();
+                    }
+                }
 			}).result.then(function(response){
 				if(response) {
 					//vm.callsign = response.callsign;
@@ -80,12 +85,12 @@ angular.module('app')
 	}
 })
 
-app.controller('modalCtrl', function($uibModalInstance, userService, $window) {
+app.controller('modalCtrl', function($uibModalInstance, userService, mission, $window) {
 	var $ctrl = this;
 
 	$ctrl.cRole = {};
 
-	userService.getCurrentRole()
+	userService.getCurrentRole(mission.missionName)
 	.then(function(response) {
 		if(response.status == 200){
 			$ctrl.cRole = response.data;
@@ -100,7 +105,7 @@ app.controller('modalCtrl', function($uibModalInstance, userService, $window) {
 	};
 
 
-	userService.getAllowedRoles()
+	userService.getAllowedRoles(mission.missionName)
 	.then(function(response) {
 		if(response.status == 200){
 			$ctrl.roles = response.data;
@@ -112,7 +117,7 @@ app.controller('modalCtrl', function($uibModalInstance, userService, $window) {
 			$window.alert("No mission without the Mission Director. Your role cannot be updated");
 			$uibModalInstance.close($ctrl.cRole);
 		} else {
-	        userService.setCurrentRole($ctrl.role.currentRole)
+	        userService.setCurrentRole($ctrl.role.currentRole, mission.missionName)
 	        .then(function(response) {
 	        	if(response.status == 200){
 	                $window.alert("User's current role updated");

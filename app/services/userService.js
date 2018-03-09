@@ -20,37 +20,29 @@ app
         }
     }
 
-    function getCurrentCallSign() {
-        if($window.user.currentRole && $window.user.currentRole.callsign) {
-            return $window.user.currentRole.callsign;
-        } else {
-            return "";
-        }
-    }
-
-    function getCurrentRole() {
+    function getCurrentRole(mission) {
         return $http({
             url: "/getCurrentRole", 
             method: "GET",
-            params: {"email": $window.user.google.email}
+            params: {"email": $window.user.google.email, "mission" : mission}
         });
     }
 
-    function getAllowedRoles() {
+    function getAllowedRoles(mission) {
         return $http({
             url: "/getAllowedRoles", 
             method: "GET",
-            params: {"email": $window.user.google.email}
+            params: {"email": $window.user.google.email, "mission" : mission}
         });      
     }
 
-    function setCurrentRole(role) {
+    function setCurrentRole(role, mission) {
         userRole.cRole = role;
         var email = getUserEmail();
         return $http({
             url: "/setUserRole", 
             method: "POST",
-            data: {"email" : email, "role" : role}
+            data: {"email" : email, "role" : role, "mission" : mission}
         });
     }
 
@@ -69,11 +61,11 @@ app
             });
     }
 
-    function setAllowedRoles(user, roles) {
+    function setAllowedRoles(user, roles, mission) {
         return $http({
             url: "/setAllowedRoles", 
             method: "POST",
-            data: {"email" : user.google.email, "roles" : roles}
+            data: {"email" : user.google.email, "roles" : roles, "mission": mission}
         });
     }
 
@@ -90,7 +82,6 @@ app
         userRole : userRole,
         getUserName : getUserName,
         getUserEmail : getUserEmail,
-        getCurrentCallSign : getCurrentCallSign,
         getCurrentRole : getCurrentRole,
         getAllowedRoles : getAllowedRoles,
         setCurrentRole : setCurrentRole,

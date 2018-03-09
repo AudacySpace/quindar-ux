@@ -9,8 +9,7 @@ describe('Testing role modal controller', function () {
         }
     };
     var modalInstance = { close: function() {}, dismiss: function() {}, open: function() {} };
-    var missions = [{ missionName : 'ATest', missionImage : '/media/icons/Audacy_Icon_White.svg'},
-                    { missionName : 'AZero', missionImage : '/media/icons/Audacy_Zero.svg'}];
+    var mission = { missionName : 'ATest', missionImage : '/media/icons/Audacy_Icon_White.svg'};
 
     beforeEach(function () {
         // load the module
@@ -32,6 +31,7 @@ describe('Testing role modal controller', function () {
                 $scope : scope,
                 $uibModalInstance: modalInstance,
                 userService: userService,
+                mission: mission
             });
             
         });
@@ -54,7 +54,7 @@ describe('Testing role modal controller', function () {
         // call digest cycle for this to work
         scope.$digest();
 
-        expect(userService.getCurrentRole).toHaveBeenCalled();
+        expect(userService.getCurrentRole).toHaveBeenCalledWith(mission.missionName);
         expect(controller.cRole).toEqual(cRole);
         expect(controller.role).toEqual(role);       
     });
@@ -64,7 +64,7 @@ describe('Testing role modal controller', function () {
         // call digest cycle for this to work
         scope.$digest();
 
-        expect(userService.getCurrentRole).toHaveBeenCalled();
+        expect(userService.getCurrentRole).toHaveBeenCalledWith(mission.missionName);
         expect(controller.cRole).toEqual({});
         expect(controller.role).not.toBeDefined();       
     });
@@ -82,7 +82,7 @@ describe('Testing role modal controller', function () {
         // call digest cycle for this to work
         scope.$digest();
 
-        expect(userService.getAllowedRoles).toHaveBeenCalled();
+        expect(userService.getAllowedRoles).toHaveBeenCalledWith(mission.missionName);
         expect(controller.roles).toEqual(roles);       
     });
 
@@ -91,7 +91,7 @@ describe('Testing role modal controller', function () {
         // call digest cycle for this to work
         scope.$digest();
 
-        expect(userService.getAllowedRoles).toHaveBeenCalled();
+        expect(userService.getAllowedRoles).toHaveBeenCalledWith(mission.missionName);
         expect(controller.roles).not.toBeDefined();       
     });
 
@@ -151,7 +151,7 @@ describe('Testing role modal controller', function () {
         // call digest cycle for this to work
         scope.$digest();
 
-        expect(userService.setCurrentRole).toHaveBeenCalledWith(controller.role.currentRole);
+        expect(userService.setCurrentRole).toHaveBeenCalledWith(controller.role.currentRole, mission.missionName);
         expect(modalInstance.close).toHaveBeenCalled();
         expect(windowMock.alert).toHaveBeenCalledWith("User's current role updated");
     });
@@ -177,7 +177,7 @@ describe('Testing role modal controller', function () {
         // call digest cycle for this to work
         scope.$digest();
 
-        expect(userService.setCurrentRole).toHaveBeenCalledWith(controller.role.currentRole);
+        expect(userService.setCurrentRole).toHaveBeenCalledWith(controller.role.currentRole, mission.missionName);
         expect(modalInstance.close).not.toHaveBeenCalled();
         expect(windowMock.alert).not.toHaveBeenCalledWith("User's current role updated");
     });

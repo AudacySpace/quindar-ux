@@ -351,6 +351,11 @@ function gridService ($http, $sessionStorage, $window, userService) {
             var sessionimage = getMissionImage($sessionStorage.dashboard["current"].mission.missionName);
             $sessionStorage.dashboard["current"].mission.missionImage = sessionimage;
         }
+
+        setMissionForUser(mname);
+    }
+
+    function setMissionForUser(mname){
         userService.setMissionForUser(email, mname)
         .then(function(response){
             userService.userRole.cRole = response.data.currentRole;
@@ -395,6 +400,7 @@ function gridService ($http, $sessionStorage, $window, userService) {
         addWidgets : addWidgets,
         widgetDefinitions : widgetDefinitions,
         setMissionForLayout : setMissionForLayout,
+        setMissionForUser : setMissionForUser,
         remove : remove, 
         save : save,
         load : load,
