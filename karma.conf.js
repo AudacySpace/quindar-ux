@@ -4,6 +4,12 @@
 module.exports = function(config) {
   config.set({
 
+    client: {
+      jasmine: {
+        random: false
+      }
+    },
+
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
