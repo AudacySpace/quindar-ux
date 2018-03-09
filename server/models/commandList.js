@@ -3,8 +3,11 @@ var mongoose = require('mongoose');
 // define the schema for our user model
 var commandListSchema = mongoose.Schema({
 
-    mission : String,
-    commands : Object
+    // mission : String,
+    // commands : Object
+
+    mission : {type:String,required:true},
+    commands : {type:Object,required:false}
 
 }, { collection: 'commandList' });
 

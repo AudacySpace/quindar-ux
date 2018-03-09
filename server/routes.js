@@ -22,6 +22,11 @@ var CommandList = require('./models/commandList');
 
 var Timeline = require('./models/timeline');
 
+var imaps = require('./controllers/imaps.controller');
+
+var userops = require('./controllers/userops.controller');
+
+
 // normal routes ===============================================================
 
     // show the home page (will also have our login links)
@@ -84,65 +89,12 @@ var Timeline = require('./models/timeline');
     // -------------------Save and Load Grid Layout ---------------------------------
 
     //Load Layout from User collection of Quindar database
-    app.get('/loadLayout', function(req,res){
-        var email = req.query.email;
-        var missionname = req.query.missionname;
-
-        //Load the layout from the User collection
-        User.findOne({ 'google.email' : email }, function(err, user) {
-            if(err){
-                console.log(err);
-            }
-            var missionLayouts = [];
-            for(var i=0;i<user.grid.length;i++){
-                if(user.grid[i].mission){
-                    if(user.grid[i].mission.missionName === missionname){
-                        missionLayouts.push(user.grid[i]);
-                    }
-                }
-            }
-            res.send(missionLayouts);
-        });
-    });
+    app.get('/loadLayout',userops.getLayouts);
   
     //Save Layout to User collection of Quindar database
-    app.post('/saveLayout',function(req,res){
-        var email = req.body.email;
-        var dashboard = req.body.dashboard;
-        var missionname = req.body.missionname;
-        var count = 0;
+    app.post('/saveLayout',userops.postLayout);
 
-        //Insert the layout into the user collection
-        User.findOne({ 'google.email' : email }, function(err, user) {
-            if(err){
-                console.log(err);
-            }
 
-            //Check if there are layouts stored
-            if(user.grid.length != 0){
-                for(var i=0; i<user.grid.length; i++){
-                    if(dashboard.name === user.grid[i].name && dashboard.mission.missionName === user.grid[i].mission.missionName){
-                        user.grid[i] = dashboard;
-                        count ++;
-                    }
-                }
-
-                //If the new name does not exist in the layout, push the new layout
-                if(count == 0){
-                    user.grid.push(dashboard);
-                }
-            } else {
-                user.grid.push(dashboard);
-            }
-            user.markModified('grid');
-            user.save(function(err) {
-                if (err) throw err;
-                
-                res.send(user);
-            });
-        });
-
-    });
 
     //Get telemetry data for the mission passed as a parameter
     app.get('/getTelemetry', function(req, res){
@@ -400,24 +352,9 @@ var Timeline = require('./models/timeline');
             });
     });
 
-     //Get systemmaps list
-    app.get('/loadSystemMaps', function(req, res){
-        var mission =  req.query.mission;
-        var allMaps = [];
+    //Get systemmaps list
+    app.get('/loadSystemMaps',imaps.getMaps);
 
-        Imagemap.findOne({'mission':mission}, function(err, mapdata) {
-            if (err) {
-                console.log("Error finding map data in DB: " + err);
-                throw err;
-            }
-            if(mapdata){
-                for(var i=0;i<mapdata.uploadedfiles.length;i++){
-                    allMaps.push(mapdata.uploadedfiles[i]);
-                }
-                res.send(allMaps);
-            }
-        });
-    });
 
     //set user's mission property and roles(if needed)
     app.post('/setMissionForUser',function(req,res){
