@@ -22,6 +22,25 @@ var CommandList = require('./models/commandList');
 
 var Timeline = require('./models/timeline');
 
+var imaps = require('./controllers/imagemap.controller');
+
+var layoutops = require('./controllers/dashboardlayout.controller');
+
+var clist = require('./controllers/commandList.controller');
+
+var pstatus = require('./controllers/proxystatus.controller');
+
+var cmd = require('./controllers/command.controller');
+
+var sboard = require('./controllers/statusboard.controller');
+
+var cfg = require('./controllers/configuration.controller');
+
+var tm = require('./controllers/telemetry.controller');
+
+var tl = require('./controllers/timeline.controller');
+
+
 // normal routes ===============================================================
 
     // show the home page (will also have our login links)
@@ -84,117 +103,59 @@ var Timeline = require('./models/timeline');
     // -------------------Save and Load Grid Layout ---------------------------------
 
     //Load Layout from User collection of Quindar database
-    app.get('/loadLayout', function(req,res){
-        var email = req.query.email;
-        var missionname = req.query.missionname;
-
-        //Load the layout from the User collection
-        User.findOne({ 'google.email' : email }, function(err, user) {
-            if(err){
-                console.log(err);
-            }
-            var missionLayouts = [];
-            for(var i=0;i<user.grid.length;i++){
-                if(user.grid[i].mission){
-                    if(user.grid[i].mission.missionName === missionname){
-                        missionLayouts.push(user.grid[i]);
-                    }
-                }
-            }
-            res.send(missionLayouts);
-        });
-    });
+    app.get('/loadLayout',layoutops.getLayouts);
   
     //Save Layout to User collection of Quindar database
-    app.post('/saveLayout',function(req,res){
-        var email = req.body.email;
-        var dashboard = req.body.dashboard;
-        var missionname = req.body.missionname;
-        var count = 0;
-
-        //Insert the layout into the user collection
-        User.findOne({ 'google.email' : email }, function(err, user) {
-            if(err){
-                console.log(err);
-            }
-
-            //Check if there are layouts stored
-            if(user.grid.length != 0){
-                for(var i=0; i<user.grid.length; i++){
-                    if(dashboard.name === user.grid[i].name && dashboard.mission.missionName === user.grid[i].mission.missionName){
-                        user.grid[i] = dashboard;
-                        count ++;
-                    }
-                }
-
-                //If the new name does not exist in the layout, push the new layout
-                if(count == 0){
-                    user.grid.push(dashboard);
-                }
-            } else {
-                user.grid.push(dashboard);
-            }
-            user.markModified('grid');
-            user.save(function(err) {
-                if (err) throw err;
-                
-                res.send(user);
-            });
-        });
-
-    });
+    app.post('/saveLayout',layoutops.postLayout);
 
     //Get telemetry data for the mission passed as a parameter
-    app.get('/getTelemetry', function(req, res){
-        var mission = req.query.mission;
+    // app.get('/getTelemetry', function(req, res){
+    //     var mission = req.query.mission;
 
-        if(mission) {
-            Telemetry.findOne( 
-                {'mission' : mission }, 
-                {}, 
-                { sort: { 'timestamp' : -1 }},
-                function(err, telemetry) {
-                    if(err) throw err;
+    //     if(mission) {
+    //         Telemetry.findOne( 
+    //             {'mission' : mission }, 
+    //             {}, 
+    //             { sort: { 'timestamp' : -1 }},
+    //             function(err, telemetry) {
+    //                 if(err) throw err;
 
-                    res.send(telemetry);
-                }
-            );
-        }
-    });
+    //                 res.send(telemetry);
+    //             }
+    //         );
+    //     }
+    // });
+
+    app.get('/getTelemetry',tm.getTelemetry);
 
     //Get Configuration contents for the source name passed as a parameter
-    app.get('/getConfig', function(req, res){
-        var mission = req.query.mission;
+    // app.get('/getConfig', function(req, res){
+    //     var mission = req.query.mission;
 
-        Config.findOne({ 'mission' : mission }, { '_id': 0 }, function(err, config) {
-            if(err){
-                console.log(err);
-            }
+    //     Config.findOne({ 'mission' : mission }, { '_id': 0 }, function(err, config) {
+    //         if(err){
+    //             console.log(err);
+    //         }
 
-            //splice keys to include tree from platform level
-            for (var point in config.contents) {
-                var nodes = point.split("_").slice(2);
-                var newPoint = nodes.join("_");
-                config.contents[newPoint] = config.contents[point];
-                delete config.contents[point];
-            }
+    //         //splice keys to include tree from platform level
+    //         for (var point in config.contents) {
+    //             var nodes = point.split("_").slice(2);
+    //             var newPoint = nodes.join("_");
+    //             config.contents[newPoint] = config.contents[point];
+    //             delete config.contents[point];
+    //         }
 
-            //create a hierarchial structure to support data menu on UI
-            var configuration = convert(config.contents)
+    //         //create a hierarchial structure to support data menu on UI
+    //         var configuration = convert(config.contents)
 
-            res.send(configuration);
-        });
-    });
+    //         res.send(configuration);
+    //     });
+    // });
+
+    app.get('/getConfig',cfg.getConfiguration);
 
     //Get Proxy Status
-    app.get('/getProxyStatus', function(req, res){
-        ProxyStatus.findOne({},{ '_id': 0 ,'__v':0}).sort({_id:-1}).exec(function(err,doc){
-            if(err){
-                console.log(err);
-            }
-            res.send(doc);
-        });
-    }); 
+    app.get('/getProxyStatus',pstatus.getCurrentStatus);
 
     //set user's current role in the database
     app.post('/setUserRole',function(req,res){
@@ -301,123 +262,114 @@ var Timeline = require('./models/timeline');
     });
 
     //Get all existing Missions
-    app.get('/getMissions', function(req, res){
-        Config.find({},{"mission":1,"_id": false},function(err,missions){
-            if(err) throw err;
-            res.send(missions);
-        });
-    });
+    // app.get('/getMissions', function(req, res){
+    //     Config.find({},{"mission":1,"_id": false},function(err,missions){
+    //         if(err) throw err;
+    //         res.send(missions);
+    //     });
+    // });
+
+    app.get('/getMissions',cfg.getMissions);
 
     //Save Alerts
-    app.post('/saveAlerts',function(req,res){
+    // app.post('/saveAlerts',function(req,res){
 
-        //Save logic
-        //If no ack for a channel update
-        //If ack for a channel push that;
+    //     //Save logic
+    //     //If no ack for a channel update
+    //     //If ack for a channel push that;
 
-        var mission = req.body.missionname;
-        var statusdata = req.body.statusdata;
-        var vehiclecolors = req.body.vehicleColors;
+    //     var mission = req.body.missionname;
+    //     var statusdata = req.body.statusdata;
+    //     var vehiclecolors = req.body.vehicleColors;
 
-        StatusBoard.findOne({'mission':mission}, function(err, status) {
-            if (err)
-                console.log("Error finding alerts in DB: " + err);
+    //     StatusBoard.findOne({'mission':mission}, function(err, status) {
+    //         if (err)
+    //             console.log("Error finding alerts in DB: " + err);
 
-            if (status) {
-                status.mission = mission;
-                status.vehiclecolors = vehiclecolors;
+    //         if (status) {
+    //             status.mission = mission;
+    //             status.vehiclecolors = vehiclecolors;
 
-                //Save alerts to the database
-                for(j=0;j<statusdata.length;j++){
-                    for(var i=0;i<status.statusboard.length;i++){
-                        if(status.statusboard[i].channel === statusdata[j].channel &&
-                            status.statusboard[i].alert === statusdata[j].alert &&
-                                status.statusboard[i].bound === statusdata[j].bound &&
-                                    status.statusboard[i].ack ===  statusdata[j].ack) {
+    //             //Save alerts to the database
+    //             for(j=0;j<statusdata.length;j++){
+    //                 for(var i=0;i<status.statusboard.length;i++){
+    //                     if(status.statusboard[i].channel === statusdata[j].channel &&
+    //                         status.statusboard[i].alert === statusdata[j].alert &&
+    //                             status.statusboard[i].bound === statusdata[j].bound &&
+    //                                 status.statusboard[i].ack ===  statusdata[j].ack) {
                             
-                            if(status.statusboard[i].ack === ""){
-                                status.statusboard[i] = Object.assign({}, statusdata[j]); 
-                            } else {
-                                status.statusboard[i].time = statusdata[j].time;
-                                status.statusboard[i].timestamp = statusdata[j].timestamp;
-                            }
-                        }
-                        else {
-                            status.statusboard.push(statusdata[j]);
-                        }
-                    }
-                }
+    //                         if(status.statusboard[i].ack === ""){
+    //                             status.statusboard[i] = Object.assign({}, statusdata[j]); 
+    //                         } else {
+    //                             status.statusboard[i].time = statusdata[j].time;
+    //                             status.statusboard[i].timestamp = statusdata[j].timestamp;
+    //                         }
+    //                     }
+    //                     else {
+    //                         status.statusboard.push(statusdata[j]);
+    //                     }
+    //                 }
+    //             }
 
-                status.statusboard  = uniqBy(status.statusboard,JSON.stringify);
+    //             status.statusboard  = uniqBy(status.statusboard,JSON.stringify);
 
-                status.markModified('statusboard');
-                status.markModified('vehiclecolors');
+    //             status.markModified('statusboard');
+    //             status.markModified('vehiclecolors');
 
-                status.save(function(err,result){
-                    if(err){
-                        console.log(err);
-                    }
-                    if(result){
-                        res.json(result);
-                    }
-                });
-            }else {
-                //create a new document if not document exists
-                var statusTable = new StatusBoard();
-                statusTable.mission =  mission;
-                statusTable.vehiclecolors = vehiclecolors;
-                statusTable.statusboard = [];
-                for(var k=0;k<statusdata.length;k++){
-                    statusTable.statusboard.push(statusdata[k]);
-                }
-                //statusTable.statusboard = statusdata;
-                statusTable.save(function(err,result){
-                    if(err){
-                        console.log(err);
-                    }
-                    if(result){
-                        res.json(result);
-                    }
-                });
-            }
-        });
-    });
+    //             status.save(function(err,result){
+    //                 if(err){
+    //                     console.log(err);
+    //                 }
+    //                 if(result){
+    //                     res.json(result);
+    //                 }
+    //             });
+    //         }else {
+    //             //create a new document if not document exists
+    //             var statusTable = new StatusBoard();
+    //             statusTable.mission =  mission;
+    //             statusTable.vehiclecolors = vehiclecolors;
+    //             statusTable.statusboard = [];
+    //             for(var k=0;k<statusdata.length;k++){
+    //                 statusTable.statusboard.push(statusdata[k]);
+    //             }
+    //             //statusTable.statusboard = statusdata;
+    //             statusTable.save(function(err,result){
+    //                 if(err){
+    //                     console.log(err);
+    //                 }
+    //                 if(result){
+    //                     res.json(result);
+    //                 }
+    //             });
+    //         }
+    //     });
+    // });
+
+    app.post('/saveAlerts',sboard.postAlerts);
 
     //Load Alerts
-    app.get('/loadAlerts', function(req, res){
+    // app.get('/loadAlerts', function(req, res){
 
-        var mission = req.query.missionname;
+    //     var mission = req.query.missionname;
 
-        //Load the alerts and vehicles from the statusboard collection
-        StatusBoard.findOne({ 'mission' : mission }, 
-            { statusboard : 1, vehiclecolors : 1, _id : 0}, function(err, status) {
+    //     //Load the alerts and vehicles from the statusboard collection
+    //     StatusBoard.findOne({ 'mission' : mission }, 
+    //         { statusboard : 1, vehiclecolors : 1, _id : 0}, function(err, status) {
 
-                if(err){
-                    console.log(err);
-                }
+    //             if(err){
+    //                 console.log(err);
+    //             }
 
-                res.send(status);
-            });
-    });
+    //             res.send(status);
+    //         });
+    // });
 
-     //Get systemmaps list
-    app.get('/loadSystemMaps', function(req, res){
-        var mission =  req.query.mission;
-        var allMaps = [];
+    app.get('/loadAlerts',sboard.getAlerts);
 
-        Imagemap.findOne({'mission':mission}, function(err, mapdata) {
-            if (err) {
-                console.log("Error finding map data in DB: " + err);
-                throw err;
-            }
-            if(mapdata){
-                for(var i=0;i<mapdata.uploadedfiles.length;i++){
-                    allMaps.push(mapdata.uploadedfiles[i]);
-                }
-                res.send(allMaps);
-            }
-        });
-    });
+    //Get systemmaps list
+    app.get('/loadSystemMaps',imaps.getMaps);
+
 
     //set user's mission property and roles(if needed)
     app.post('/setMissionForUser',function(req,res){
@@ -456,76 +408,34 @@ var Timeline = require('./models/timeline');
     });
 
     //save command in the database
-    app.post('/saveCommand',function(req,res){
-        var email = req.body.email;
-        var command = req.body.command;
-        var mission = req.body.mission;
-
-        var newCommand = new Command();
-        
-        newCommand.user = email;
-        newCommand.name = command.name;
-        newCommand.type = command.type;
-        newCommand.argument = command.argument;
-        newCommand.timestamp = command.timestamp;
-        newCommand.time = command.time;
-        newCommand.mission = mission;
-        newCommand.response = "";
-        newCommand.sent_to_satellite = false;
-
-        newCommand.save(function(err) {
-            if (err) throw err;
-
-            res.send(newCommand);
-        });
-    });
+    app.post('/saveCommand',cmd.postCommand);
 
     //get the command log for a particular mission
-    app.get('/getCommandLog', function(req, res){
-        var mission = req.query.mission;
-
-        Command.find( { 'mission' : mission }, function(err, commands) {
-            if(err){ 
-                console.log(err);
-            }
-
-            res.send(commands);
-        });
-    });
+    app.get('/getCommandLog',cmd.getCommandLog);
 
     //get the command list for a particular mission
-    app.get('/getCommandList', function(req, res){
-        var mission = req.query.mission;
-
-        CommandList.findOne( { 'mission' : mission }, function(err, list) {
-            if(err){ 
-                console.log(err);
-            }
-
-            if(list) {
-                res.send(list.commands);
-            }
-        });
-    });
+    app.get('/getCommandList',clist.getCommandList);
 
     //Get timeline list
-    app.get('/loadTimelineEvents', function(req, res){
-        var mission =  req.query.mission;
-        var allEvents = [];
+    // app.get('/loadTimelineEvents', function(req, res){
+    //     var mission =  req.query.mission;
+    //     var allEvents = [];
 
-        Timeline.findOne({'mission':mission}, function(err, timelinedata) {
-            if (err) {
-                console.log("Error finding map data in DB: " + err);
-                throw err;
-            }
-            if(timelinedata){
-                for(var i=0;i<timelinedata.events.length;i++){
-                    allEvents.push(timelinedata.events[i]);
-                }
-                res.send(allEvents);
-            }
-        });
-    });
+    //     Timeline.findOne({'mission':mission}, function(err, timelinedata) {
+    //         if (err) {
+    //             console.log("Error finding map data in DB: " + err);
+    //             throw err;
+    //         }
+    //         if(timelinedata){
+    //             for(var i=0;i<timelinedata.events.length;i++){
+    //                 allEvents.push(timelinedata.events[i]);
+    //             }
+    //             res.send(allEvents);
+    //         }
+    //     });
+    // });
+
+    app.get('/loadTimelineEvents',tl.getTimelineEvents);
 
 };
    
