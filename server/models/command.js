@@ -13,15 +13,15 @@ var commandSchema = mongoose.Schema({
     // time : String,
     // type : String
 
-    name : {type:String,required:true},
-    argument : {type:String,required:true},
-    timestamp : {type:Date,required:true},
-    user : {type:String,required:true},
-    mission : {type:String,required:true},
-    response : {type:String,required:true},
-    sent_to_satellite : {type:Boolean,required:true},
-    time : {type:String,required:true},
-    type : {type:String,required:true}
+    name : {type:String,required:false},
+    argument : {type:String,required:false},
+    timestamp : {type:Date,required:false},
+    user : {type:String,required:false},
+    mission : {type:String,required:false},
+    response : {type:String,required:false},
+    sent_to_satellite : {type:Boolean,required:false},
+    time : {type:String,required:false},
+    type : {type:String,required:false}
 
 });
 

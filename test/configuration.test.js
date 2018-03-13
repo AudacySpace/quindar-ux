@@ -9,33 +9,18 @@ chai.use(spies);
 var chaiAsPromised = require("chai-as-promised");
 var sinon = require('sinon');
 var mongoose = require('mongoose');
-var passport = require('passport');
 mongoose.Promise = global.Promise;
 chai.use(chaiAsPromised);
 
-// // Then either:
 var expect = chai.expect;
-// or:
 var assert = chai.assert;
 
-var PStatus = require('../server/models/proxystatus');
-var IMap = require('../server/models/imagemap');
-var SBoard = require('../server/models/statusboard');
-var CList = require('../server/models/commandList');
-var TM = require('../server/models/telemetry');
-var CMD = require('../server/models/command');
 var CFG = require('../server/models/configuration');
-var TL = require('../server/models/timeline');
-// var Usr = require('../server/models/user');
-
-var routes = require('../server/routes');
-
 var proxyquire = require('proxyquire');
 
 
 describe('Test Suite for Configuration Controller', function() {
-    var configurationmodule,mongooseStub;
-    var ispy;
+    var configurationmodule,mongooseStub,mongooseErrStub,configurationErrmodule;
  
     before(function() {
         mongooseStub = {
@@ -83,13 +68,14 @@ describe('Test Suite for Configuration Controller', function() {
                                     "category": "command",
                                     "notes": ""
                                 }
-                            }
+                            },
+                            "status":200
                         };
                         var err;
                         callback(err,config); 
                     },
                     find: function(query,condition,callback){
-                        var missions = [];
+                        var missions = {data:["ATest","Azero"],status:200};
                         var err;
                         callback(err,missions);
                     } 
@@ -97,6 +83,29 @@ describe('Test Suite for Configuration Controller', function() {
             } 
         };
         configurationmodule = proxyquire('../server/controllers/configuration.controller', {'mongoose': mongooseStub});
+
+        mongooseErrStub = {
+            model: function() {
+                return {
+                    findOne: function(query,condition,callback) {
+                        var config = {
+                            "contents": null,
+                            "status":400
+                        };
+                        var err = {name:"MongoError"};
+                        callback(err,config); 
+                    },
+                    find: function(query,condition,callback){
+                        var missions = {"status":400};
+                        var err = {name:"MongoError"};
+                        callback(err,missions);
+                    } 
+                };
+            } 
+        };
+        configurationErrmodule = proxyquire('../server/controllers/configuration.controller', {'mongoose': mongooseErrStub});
+
+
     });
 
     it("should get configuration of the mission requested", function() {
@@ -108,11 +117,44 @@ describe('Test Suite for Configuration Controller', function() {
         var res = {
             send: sinon.spy()
         }
+
+        var output = {
+            Audacy3: {
+                GNC: {
+                    command: { 
+                        arg: "", 
+                        name: "", 
+                        time:"" 
+                    }
+                }
+            }
+        }
     
         var spy = chai.spy.on(configurationmodule, 'getConfiguration');
         configurationmodule.getConfiguration(req, res);
         expect(spy).to.have.been.called();
         expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,output);
+    });
+
+    it("should not get configuration when error", function() {
+        var req = {
+            query : {
+                mission:'Azero'
+            }
+        }
+        var res = {
+            send: sinon.spy()
+        }
+
+        var output = {};
+    
+        var spy = chai.spy.on(configurationErrmodule, 'getConfiguration');
+        configurationErrmodule.getConfiguration(req, res);
+        expect(spy).to.have.been.called();
+        expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,output);
+
     });
 
     it("should get all missions", function() {
@@ -122,11 +164,31 @@ describe('Test Suite for Configuration Controller', function() {
         var res = {
             send: sinon.spy()
         }
+
+        var output = {data:["ATest","Azero"],status:200}
     
         var spy = chai.spy.on(configurationmodule, 'getMissions');
         configurationmodule.getMissions(req, res);
         expect(spy).to.have.been.called();
         expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,output);
+    });
+
+    it("should not get missions when error", function() {
+        var req = {
+
+        }
+        var res = {
+            send: sinon.spy()
+        }
+
+        var output = {"status":400};
+    
+        var spy = chai.spy.on(configurationErrmodule, 'getMissions');
+        configurationErrmodule.getMissions(req, res);
+        expect(spy).to.have.been.called();
+        expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,output);
     });
 
 });

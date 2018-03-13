@@ -9,7 +9,7 @@ module.exports = {
         Timeline.findOne({'mission':mission}, function(err, timelinedata) {
             if (err) {
                 console.log("Error finding map data in DB: " + err);
-                throw err;
+                // throw err;
             }
             if(timelinedata){
                 for(var i=0;i<timelinedata.events.length;i++){

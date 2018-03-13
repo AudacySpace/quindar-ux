@@ -30,10 +30,14 @@ module.exports = {
         newCommand.response = "";
         newCommand.sent_to_satellite = false;
 
-        newCommand.save(function(err) {
-            if (err) throw err;
+        newCommand.save(function(err,result) {
+            if (err){
+                console.log(err);
+            }
 
-            res.send(newCommand);
+            if(result){
+                res.send(result);
+            }
         });
     }
 

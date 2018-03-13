@@ -9,33 +9,18 @@ chai.use(spies);
 var chaiAsPromised = require("chai-as-promised");
 var sinon = require('sinon');
 var mongoose = require('mongoose');
-var passport = require('passport');
 mongoose.Promise = global.Promise;
 chai.use(chaiAsPromised);
 
-// // Then either:
 var expect = chai.expect;
-// or:
 var assert = chai.assert;
 
 var PStatus = require('../server/models/proxystatus');
-var IMap = require('../server/models/imagemap');
-var SBoard = require('../server/models/statusboard');
-var CList = require('../server/models/commandList');
-var TM = require('../server/models/telemetry');
-var CMD = require('../server/models/command');
-var CFG = require('../server/models/configuration');
-var TL = require('../server/models/timeline');
-// var Usr = require('../server/models/user');
-
-var routes = require('../server/routes');
-
 var proxyquire = require('proxyquire');
 
 
 describe('Test Suite for Proxy Status Route Controller', function() {
-    var pstatusmodule,mongooseStub;
-    var ispy;
+    var pstatusmodule,mongooseStub,mongooseErrStub,pstatusErrmodule;
 
     before(function() {
         mongooseStub = {
@@ -47,7 +32,7 @@ describe('Test Suite for Proxy Status Route Controller', function() {
                                 return {
                                     exec: function(callback){
                                         var err;
-                                        var doc = {};
+                                        var doc = { proxytimestamp:1000000,status:200};
                                         callback(err,doc);
                                     }
                                 };
@@ -58,6 +43,27 @@ describe('Test Suite for Proxy Status Route Controller', function() {
             } 
         };
         pstatusmodule = proxyquire('../server/controllers/proxystatus.controller', {'mongoose': mongooseStub});
+
+        mongooseErrStub = {
+            model: function() {
+                return {
+                    findOne: function(query,limits) {
+                        return {
+                            sort: function(qry){
+                                return {
+                                    exec: function(callback){
+                                        var err = {name:"MongoError"};
+                                        var doc = {status:400};
+                                        callback(err,doc);
+                                    }
+                                };
+                            }
+                        };
+                    }
+                };
+            } 
+        };
+        pstatusErrmodule = proxyquire('../server/controllers/proxystatus.controller', {'mongoose': mongooseErrStub});
     });
 
     it("should get proxy status", function() {
@@ -69,11 +75,33 @@ describe('Test Suite for Proxy Status Route Controller', function() {
         var res = {
             send: sinon.spy()
         }
+
+        var output = { proxytimestamp:1000000,status:200};
     
         var spy = chai.spy.on(pstatusmodule, 'getCurrentStatus');
         pstatusmodule.getCurrentStatus(req, res);
         expect(spy).to.have.been.called();
         expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,output);
+    });
+
+    it("should not get proxy status when error", function() {
+        var req = {
+            query : {
+                mission:'Azero'
+            }
+        }
+        var res = {
+            send: sinon.spy()
+        }
+
+        var output = {status:400};
+    
+        var spy = chai.spy.on(pstatusErrmodule, 'getCurrentStatus');
+        pstatusErrmodule.getCurrentStatus(req, res);
+        expect(spy).to.have.been.called();
+        expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,output);
     });
 
 });

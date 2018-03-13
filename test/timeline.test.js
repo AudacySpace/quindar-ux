@@ -9,27 +9,12 @@ chai.use(spies);
 var chaiAsPromised = require("chai-as-promised");
 var sinon = require('sinon');
 var mongoose = require('mongoose');
-var passport = require('passport');
 mongoose.Promise = global.Promise;
 chai.use(chaiAsPromised);
 
-// // Then either:
 var expect = chai.expect;
-// or:
 var assert = chai.assert;
-
-var PStatus = require('../server/models/proxystatus');
-var IMap = require('../server/models/imagemap');
-var SBoard = require('../server/models/statusboard');
-var CList = require('../server/models/commandList');
-var TM = require('../server/models/telemetry');
-var CMD = require('../server/models/command');
-var CFG = require('../server/models/configuration');
 var TL = require('../server/models/timeline');
-// var Usr = require('../server/models/user');
-
-var routes = require('../server/routes');
-
 var proxyquire = require('proxyquire');
 
 
@@ -42,7 +27,33 @@ describe('Test Suite for Timeline Route Controller', function() {
             model: function() {
                 return {
                     findOne: function(query, callback) {
-                        var timelinedata = {events:[]};
+                        var timelinedata = {events:[
+                                    {
+                                        "eventinfo": "Command to point SG Earth station",
+                                        "eventgroup": "SG",
+                                        "eventdata": [
+                                            {
+                                                "content": "",
+                                                "end": "",
+                                                "start": ""
+                                            }
+                                        ],
+                                        "eventname": "SG_ESPointing"
+                                    },
+                                    {
+                                        "eventinfo": "Command to point Sun",
+                                        "eventgroup": "SG",
+                                        "eventdata": [
+                                            {
+                                                "content": "",
+                                                "end": "",
+                                                "start": ""
+                                            }
+                                        ],
+                                        "eventname": "SG_SunPointing"
+                                    }
+                                ]
+                            };
                         var err;
                         callback(err,timelinedata); 
                     } 
@@ -50,6 +61,19 @@ describe('Test Suite for Timeline Route Controller', function() {
             } 
         };
         timelinemodule = proxyquire('../server/controllers/timeline.controller', {'mongoose': mongooseStub});
+
+        mongooseErrStub = {
+            model: function() {
+                return {
+                    findOne: function(query, callback) {
+                        var timelinedata = {events:[],status:400};
+                        var err= {name:"MongoError"};
+                        callback(err,timelinedata); 
+                    } 
+                };
+            } 
+        };
+        timelineErrmodule = proxyquire('../server/controllers/timeline.controller', {'mongoose': mongooseErrStub});
     });
 
     it("should get timeline event data for the mission requested", function() {
@@ -61,11 +85,56 @@ describe('Test Suite for Timeline Route Controller', function() {
         var res = {
             send: sinon.spy()
         }
+
+        var output = [
+                        {
+                            "eventinfo": "Command to point SG Earth station",
+                            "eventgroup": "SG",
+                            "eventdata": [
+                                {
+                                    "content": "",
+                                    "end": "",
+                                    "start": ""
+                                }
+                            ],
+                            "eventname": "SG_ESPointing"
+                        },
+                        {
+                            "eventinfo": "Command to point Sun",
+                            "eventgroup": "SG",
+                            "eventdata": [
+                                {
+                                    "content": "",
+                                    "end": "",
+                                    "start": ""
+                                }
+                            ],
+                            "eventname": "SG_SunPointing"
+                        }
+                    ]
     
         var spy = chai.spy.on(timelinemodule, 'getTimelineEvents');
         timelinemodule.getTimelineEvents(req, res);
         expect(spy).to.have.been.called();
         expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,output);
+    });
+
+    it("should not get timeline event data when error", function() {
+        var req = {
+            query : {
+                mission:'Azero'
+            }
+        }
+        var res = {
+            send: sinon.spy()
+        }
+    
+        var spy = chai.spy.on(timelineErrmodule, 'getTimelineEvents');
+        timelineErrmodule.getTimelineEvents(req, res);
+        expect(spy).to.have.been.called();
+        expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,[]);
     });
 
 });

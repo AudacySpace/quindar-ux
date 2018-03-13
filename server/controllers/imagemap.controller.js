@@ -8,7 +8,7 @@ module.exports = {
         Imagemap.findOne({'mission':mission}, function(err, mapdata) {
             if (err) {
                 console.log("Error finding map data in DB: " + err);
-                throw err;
+                // throw err;
             }
             if(mapdata){
                 for(var i=0;i<mapdata.uploadedfiles.length;i++){

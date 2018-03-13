@@ -11,7 +11,9 @@ module.exports = {
                 {}, 
                 { sort: { 'timestamp' : -1 }},
                 function(err, telemetry) {
-                    if(err) throw err;
+                    if(err){
+                        console.log(err);
+                    };
 
                     res.send(telemetry);
                 }

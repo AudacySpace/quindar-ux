@@ -9,40 +9,49 @@ chai.use(spies);
 var chaiAsPromised = require("chai-as-promised");
 var sinon = require('sinon');
 var mongoose = require('mongoose');
-var passport = require('passport');
 mongoose.Promise = global.Promise;
 chai.use(chaiAsPromised);
-
-// // Then either:
 var expect = chai.expect;
-// or:
 var assert = chai.assert;
 
-var PStatus = require('../server/models/proxystatus');
-var IMap = require('../server/models/imagemap');
-var SBoard = require('../server/models/statusboard');
 var CList = require('../server/models/commandList');
-var TM = require('../server/models/telemetry');
-var CMD = require('../server/models/command');
-var CFG = require('../server/models/configuration');
-var TL = require('../server/models/timeline');
-// var Usr = require('../server/models/user');
-
-var routes = require('../server/routes');
-
 var proxyquire = require('proxyquire');
 
 
 describe('Test Suite for Command List Route Controller', function() {
-    var clistmodule,mongooseStub;
-    var ispy;
- 
+    var clistmodule,mongooseStub,mongooseStubErr,clistErrmodule;
+
     before(function() {
         mongooseStub = {
             model: function() {
                 return {
                     findOne: function(query, callback) {
-                        var list = {commands:{}};
+                        var list = {
+                            "commands": [
+                                {
+                                    "value": "Pointing",
+                                    "types": [
+                                        {
+                                            "value": "Get"
+                                        },
+                                        {
+                                            "value": "Set"
+                                        },
+                                        {
+                                            "value": "Invoke"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "value": "Echo",
+                                    "types": [
+                                        {
+                                            "value": "Invoke"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
                         var err;
                         callback(err,list); 
                     } 
@@ -50,6 +59,21 @@ describe('Test Suite for Command List Route Controller', function() {
             } 
         };
         clistmodule = proxyquire('../server/controllers/commandList.controller', {'mongoose': mongooseStub});
+
+        mongooseStubErr = {
+            model: function() {
+                return {
+                    findOne: function(query, callback) {
+                        var list = {
+                            "commands":null
+                        }
+                        var err = {name:"MongoError"};
+                        callback(err,list); 
+                    } 
+                };
+            } 
+        };
+        clistErrmodule = proxyquire('../server/controllers/commandList.controller', {'mongoose': mongooseStubErr});
     });
 
     it("should get command list", function() {
@@ -61,11 +85,57 @@ describe('Test Suite for Command List Route Controller', function() {
         var res = {
             send: sinon.spy()
         }
+
+        var output = [
+            {
+                "value": "Pointing",
+                "types": [
+                    {
+                        "value": "Get"
+                    },
+                    {
+                        "value": "Set"
+                    },
+                    {
+                        "value": "Invoke"
+                    }
+                ]
+            },
+            {
+                "value": "Echo",
+                "types": [
+                    {
+                        "value": "Invoke"
+                    }
+                 ]
+            }
+        ];
     
         var spy = chai.spy.on(clistmodule, 'getCommandList');
         clistmodule.getCommandList(req, res);
         expect(spy).to.have.been.called();
         expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,output)
+    });
+
+    it("should not get command list if an error and status 400", function() {
+        var req = {
+            query : {
+                mission:'Azero'
+            }
+        }
+        var res = {
+            send: sinon.spy()
+        }
+
+        var output = null;
+
+        var spy = chai.spy.on(clistErrmodule, 'getCommandList');
+        clistErrmodule.getCommandList(req, res);
+        expect(spy).to.have.been.called();
+        expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,output);
+    
     });
 
 });

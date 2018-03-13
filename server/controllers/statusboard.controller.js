@@ -12,7 +12,6 @@ module.exports = {
                 if(err){
                     console.log(err);
                 }
-
                 res.send(status);
             });
     },

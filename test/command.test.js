@@ -9,62 +9,130 @@ chai.use(spies);
 var chaiAsPromised = require("chai-as-promised");
 var sinon = require('sinon');
 var mongoose = require('mongoose');
-var passport = require('passport');
 mongoose.Promise = global.Promise;
 chai.use(chaiAsPromised);
 
-// // Then either:
+
 var expect = chai.expect;
-// or:
 var assert = chai.assert;
 
-var PStatus = require('../server/models/proxystatus');
-var IMap = require('../server/models/imagemap');
-var SBoard = require('../server/models/statusboard');
-var CList = require('../server/models/commandList');
-var TM = require('../server/models/telemetry');
 var CMD = require('../server/models/command');
-var CFG = require('../server/models/configuration');
-var TL = require('../server/models/timeline');
-// var Usr = require('../server/models/user');
-
-var routes = require('../server/routes');
-
 var proxyquire = require('proxyquire');
+
+describe('Test Suite for Command Route Controller New Instance', function() {
+    beforeEach(function() {
+        sinon.stub(CMD.prototype, 'save');
+    });
+ 
+ 
+    afterEach(function() {
+        CMD.prototype.save.restore();
+    });
+ 
+    it('should post command', function() {
+        command = require('../server/controllers/command.controller');
+        CMD.prototype.save.yields(null,{"data":"100","status":200});
+               var req = {
+            body : {
+                mission:'Azero',
+                command: {
+                    "mission": "AZero",
+                    "time": "040.13:09:17 UTC",
+                    "timestamp": "2018-02-09T13:09:17.471Z",
+                    "argument": "earth",
+                    "type": "Set",
+                    "name": "pointing"
+                },
+                email:'tgattu@gmail.com'
+            }
+        }
+        var res = {
+            send: sinon.spy()
+        }
+
+        command.postCommand(req, res);
+        expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send, {"data":"100","status":200});
+    });
+
+    it('should not post command if there is any error', function() {
+        command = require('../server/controllers/command.controller');
+        var error = {name:"MongoError"};
+        var output = {"status":400}
+        CMD.prototype.save.yields(error,output);
+               var req = {
+            body : {
+                mission:'Azero',
+                command: {
+                    "mission": "AZero",
+                    "time": "040.13:09:17 UTC",
+                    "timestamp": "2018-02-09T13:09:17.471Z",
+                    "argument": "earth",
+                    "type": "Set",
+                    "name": "pointing"
+                },
+                email:'tgattu@gmail.com'
+            }
+        }
+        var res = {
+            send: sinon.spy()
+        }
+
+        command.postCommand(req, res);
+        expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,output);
+    });
+});
 
 
 describe('Test Suite for Command Route Controller', function() {
-    var cmdmodule,mongooseStub,cmodule;
+    var cmdmodule,mongooseStub,mongooseStubErr,cmodule,cmdErrmodule;
     var ispy;
  
     before(function() {
-        var 
         mongooseStub = {
             model: function() {
                 return {
                     find: function(query, callback) {
-                        var list = {commands:{}};
-                        var err;
-                        callback(err,list); 
-                    }, 
-                    user: "",
-                    name:"",
-                    type:"",
-                    argument:"",
-                    timestamp:"",
-                    time:"",
-                    mission:"",
-                    response:"",
-                    sent_to_satellite:"",
-                    save: function(cb){
-                        var err;
-                        cb(err);
+                        var list = {
+                            "data":{
+                                "_id": "5a86044641ecd2166aeace46",
+                                "sent_to_satellite": true,
+                                "response": "success",
+                                "mission": "AZero",
+                                "time": "040.13:09:17 UTC",
+                                "timestamp": "2018-02-09T13:09:17.471Z",
+                                "argument": "earth",
+                                "type": "Set",
+                                "name": "pointing",
+                                "user": "tgattu@gmail.com",
+                            },
+                            "status":200
+                        }
+                    var err;
+                    callback(err,list); 
                     }
-
                 };
             } 
         };
         cmdmodule = proxyquire('../server/controllers/command.controller', {'mongoose': mongooseStub});
+
+        mongooseStubErr = {
+            model: function() {
+                return {
+                    find: function(query, callback) {
+                        var list = {
+                            "status":400
+                        }
+                        var err = {"name":"MongoError"};
+                        callback(err,list); 
+                    }, 
+                };
+            } 
+        };
+
+        cmdErrmodule = proxyquire('../server/controllers/command.controller', {'mongoose': mongooseStubErr});
+
     });
 
     it("should get command log", function() {
@@ -76,52 +144,47 @@ describe('Test Suite for Command Route Controller', function() {
         var res = {
             send: sinon.spy()
         }
+        var output = {
+                "data":{
+                    "_id": "5a86044641ecd2166aeace46",
+                    "sent_to_satellite": true,
+                    "response": "success",
+                    "mission": "AZero",
+                    "time": "040.13:09:17 UTC",
+                    "timestamp": "2018-02-09T13:09:17.471Z",
+                    "argument": "earth",
+                    "type": "Set",
+                    "name": "pointing",
+                    "user": "tgattu@gmail.com",
+                },
+                "status":200
+            }
     
         var spy = chai.spy.on(cmdmodule, 'getCommandLog');
         cmdmodule.getCommandLog(req, res);
         expect(spy).to.have.been.called();
         expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,output);
     });
 
-//     it("should post command", function() {
-//         var 
-//         mongooseStub = {
-//             model: function(msg) {
-//                 this.user =  "",
-//                 this.name = "",
-//                 this.type = "",
-//                 this.argument = "",
-//                 this.timestamp = "",
-//                 this.time = "",
-//                 this.mission = "",
-//                 this.response = "",
-//                 this.sent_to_satellite = ""
-//         }
-//     }
-//         cmodule = proxyquire('../server/controllers/command.controller', {'mongoose': mongooseStub});
-//         var req = {
-//             body : {
-//                 mission:'Azero',
-//                 command: {
-//                     "mission": "AZero",
-//                     "time": "040.13:09:17 UTC",
-//                     "timestamp": "2018-02-09T13:09:17.471Z",
-//                     "argument": "earth",
-//                     "type": "Set",
-//                     "name": "pointing"
-//                 },
-//                 email:'tgattu@gmail.com'
-//             }
-//         }
-//         var res = {
-//             send: sinon.spy()
-//         }
+    it("should get not get command log on error and return 400 status", function() {
+        var req = {
+            query : {
+                mission:'Azero'
+            }
+        }
+        var res = {
+            send: sinon.spy()
+        }
 
-//         var spy = chai.spy.on(cmodule, 'postCommand');
-//         cmodule.postCommand(req, res);
-//         expect(spy).to.have.been.called();
-//         expect(res.send.calledOnce).to.be.true;
-//     });
+        var erroutput = {"status":400};
+    
+        var spy = chai.spy.on(cmdErrmodule, 'getCommandLog');
+        cmdErrmodule.getCommandLog(req, res);
+        expect(spy).to.have.been.called();
+        expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,erroutput);
+    });
 
 });
 

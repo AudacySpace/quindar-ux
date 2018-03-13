@@ -26,7 +26,9 @@ module.exports = {
     },
     getMissions: function(req,res){
         Config.find({},{"mission":1,"_id": false},function(err,missions){
-            if(err) throw err;
+            if(err){
+                console.log(err);
+            };
             res.send(missions);
         });
     }
