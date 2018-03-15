@@ -4,15 +4,14 @@ var mongoose = require('mongoose');
 // define the schema for our user model
 var userSchema = mongoose.Schema({
 
-    google           : {
-        id           : String,
-        token        : String,
-        email        : String,
-        name         : String
+    "google"           : {
+        "id"           : {type:String,required:true},
+        "token"        : {type:String,required:true},
+        "email"        : {type:String,required:true},
+        "name"       : {type:String,required:true}
     },
-    grid : Array,
-    missions: Array
-
+    "grid" : {type:Array,required:false},
+    "missions": {type:Array,required:true}
 });
 
 // create the model for users and expose it to our app
