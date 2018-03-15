@@ -108,7 +108,7 @@ describe('Test Suite for Proxy Status Schema Model ', function() {
     it('should validate proxytimestamp is a valid number type', function() {
         var m = new PStatus({proxytimestamp: 156788888});
         m.validate(function(err){
-            assert.isUndefined(err.errors);
+            assert.isUndefined(err);
         });  
     });
 

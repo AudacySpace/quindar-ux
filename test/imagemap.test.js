@@ -124,7 +124,7 @@ describe('Test Suite for System Image Map Schema Model ', function() {
     it('should validate mission is a valid String type and uploadedfiles is an array', function() {
         var m = new IMap({mission: 'AZero',uploadedfiles: [{},{}]});
         m.validate(function(err){
-            assert.isUndefined(err.errors);
+            assert.isUndefined(err);
         });    
 
     });
@@ -135,7 +135,8 @@ describe('Test Suite for System Image Map Schema Model ', function() {
         m.validate(function(err) {
             expect(err.errors.mission).to.exist;
             expect(err.errors.mission.name).toEqual('CastError');
-            assert.isUndefined(err.errors.uploadedfiles);
+            expect(err.errors.uploadedfiles).toEqual('undefined');
+            //assert.isUndefined(err.errors.uploadedfiles);
         });
      
     });
@@ -145,7 +146,8 @@ describe('Test Suite for System Image Map Schema Model ', function() {
         m.validate(function(err) {
             expect(err.errors.uploadedfiles).to.exist;
             expect(err.errors.uploadedfiles.name).toEqual('ValidatorError');
-            assert.isUndefined(err.errors.mission);
+            expect(err.errors.mission).toEqual('undefined');
+           // assert.isUndefined(err.errors.mission);
         });
     });
 

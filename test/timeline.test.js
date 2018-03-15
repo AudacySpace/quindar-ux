@@ -150,7 +150,7 @@ describe('Test Suite for Timeline Model ', function() {
             file: 'timeline.xlsx'
         });
         m.validate(function(err){
-            assert.isUndefined(err.errors);
+            assert.isUndefined(err);
         });  
     });
 

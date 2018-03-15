@@ -550,11 +550,11 @@ describe('Test Suite for User Model ', function() {
     it('should be invalid if the model is empty', function() {
         var m = new Usr();
         m.validate(function(err) {
-            expect(err.errors.google.id).to.exist;
-            expect(err.errors.google.token).to.exist;
-            expect(err.errors.google.email).to.exist;
-            expect(err.errors.google.name).to.exist;
-            expect(err.errors.grid).to.exist;
+            expect(err.errors['google.id']).to.exist;
+            expect(err.errors['google.token']).to.exist;
+            expect(err.errors['google.email']).to.exist;
+            expect(err.errors['google.name']).to.exist;
+            // expect(err.errors.grid).to.exist;
             expect(err.errors.missions).to.exist;
         });
     });
@@ -572,7 +572,7 @@ describe('Test Suite for User Model ', function() {
             missions: [{},{}]
         });
         m.validate(function(err){
-            assert.isUndefined(err.errors);
+            assert.isUndefined(err);
         });  
     });
 

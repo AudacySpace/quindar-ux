@@ -188,9 +188,9 @@ describe('Test Suite for Configuration Model ', function() {
     it('should be invalid if the model is empty', function() {
         var m = new CFG();
         m.validate(function(err) {
-            expect(err.errors.source.name).to.exist;
-            expect(err.errors.source.ipaddress).to.exist;
-            expect(err.errors.source.filename).to.exist;
+            expect(err.errors['source.name']).to.exist;
+            expect(err.errors['source.ipaddress']).to.exist;
+            expect(err.errors['source.filename']).to.exist;
             expect(err.errors.contents).to.exist;
             expect(err.errors.mission).to.exist;
         });
@@ -208,7 +208,7 @@ describe('Test Suite for Configuration Model ', function() {
             mission: 'Azero'
         });
         m.validate(function(err){
-            assert.isUndefined(err.errors);
+            assert.isUndefined(err);
         });  
     });
 
@@ -224,8 +224,8 @@ describe('Test Suite for Configuration Model ', function() {
             mission: 'Azero'
         });
         m.validate(function(err){
-            expect(err.errors.source.name.name).to.exist;
-            expect(err.errors.source.name.name).toEqual('CastError');
+            expect(err.errors['source.name'].name).to.exist;
+            expect(err.errors['source.name'].name).toEqual('CastError');
         });  
     });
 
@@ -242,8 +242,8 @@ describe('Test Suite for Configuration Model ', function() {
             mission: 'Azero'
         });
         m.validate(function(err){
-            expect(err.errors.source.ipaddress.name).to.exist;
-            expect(err.errors.source.ipaddress.name).toEqual('CastError');
+            expect(err.errors['source.ipaddress'].name).to.exist;
+            expect(err.errors['source.ipaddress'].name).toEqual('CastError');
         });  
     });
 
@@ -259,8 +259,8 @@ describe('Test Suite for Configuration Model ', function() {
             mission: 'Azero'
         });
         m.validate(function(err){
-            expect(err.errors.source.filename.name).to.exist;
-            expect(err.errors.source.filename.name).toEqual('ValidatorError');
+            expect(err.errors['source.filename'].name).to.exist;
+            expect(err.errors['source.filename'].name).toEqual('CastError');
         });  
     });
 

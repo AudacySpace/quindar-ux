@@ -187,7 +187,7 @@ describe('Test Suite for Command Model ', function() {
             expect(err.errors.timestamp).to.exist;
             expect(err.errors.user).to.exist;
             expect(err.errors.mission).to.exist;
-            expect(err.errors.response).to.exist;
+            // expect(err.errors.response).to.exist;
             expect(err.errors.sent_to_satellite).to.exist;
             expect(err.errors.time).to.exist;
             expect(err.errors.type).to.exist;
@@ -223,7 +223,6 @@ describe('Test Suite for Command Model ', function() {
             type:'Set'
         });
         m.validate(function(err){
-            // console.log(err)
             expect(err.errors.name).to.exist;
             expect(err.errors.name.name).toEqual('ValidatorError');
         });  
