@@ -207,7 +207,8 @@ describe('Test Suite for Command Model ', function() {
             type:'Set'
         });
         m.validate(function(err){
-            assert.isUndefined(err);
+            expect(err).toEqual(null);
+            //assert.isUndefined(err);
         });  
     });
 
