@@ -661,8 +661,7 @@ describe('Test Suite for User Model ', function() {
             missions: [{},{}]
         });
         m.validate(function(err){
-            expect(err.errors.grid.name).to.exist;
-            expect(err.error.grid.name).toEqual('ValidatorError');
+            assert.isUndefined(err);
         });  
     });
 
