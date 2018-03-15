@@ -572,7 +572,7 @@ describe('Test Suite for User Model ', function() {
             missions: [{},{}]
         });
         m.validate(function(err){
-            assert.isUndefined(err);
+            assert.isNull(err);
         });  
     });
 
@@ -590,7 +590,7 @@ describe('Test Suite for User Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors['google.id'].name).to.exist;
-            expect(err.errors['google.id'].name).toEqual('CastError');
+            expect(err.errors['google.id'].name).to.equal('CastError');
         });  
     });
 
@@ -609,7 +609,7 @@ describe('Test Suite for User Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors['google.token'].name).to.exist;
-            expect(err.errors['google.token'].name).toEqual('CastError');
+            expect(err.errors['google.token'].name).to.equal('CastError');
         });  
     });
 
@@ -627,7 +627,7 @@ describe('Test Suite for User Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors['google.email'].name).to.exist;
-            expect(err.errors['google.email'].name).toEqual('CastError');
+            expect(err.errors['google.email'].name).to.equal('CastError');
         });  
     });
 
@@ -645,7 +645,7 @@ describe('Test Suite for User Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors['google.name'].name).to.exist;
-            expect(err.errors['google.name'].name).toEqual('CastError');
+            expect(err.errors['google.name'].name).to.equal('CastError');
         });  
     });
 
@@ -661,7 +661,7 @@ describe('Test Suite for User Model ', function() {
             missions: [{},{}]
         });
         m.validate(function(err){
-            assert.isUndefined(err);
+            assert.isNull(err);
         });  
     });
 
@@ -678,7 +678,7 @@ describe('Test Suite for User Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors.missions.name).to.exist;
-            expect(err.errors.missions.name).toEqual('ValidatorError');
+            expect(err.errors.missions.name).to.equal('ValidatorError');
         });  
     });
 

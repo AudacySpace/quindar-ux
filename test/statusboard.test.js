@@ -578,7 +578,7 @@ describe('Test Suite for Status Board Model ', function() {
     it('should validate when mission is a valid String type and vehiclecolors and statusboard is an array', function() {
         var m = new SBoard({mission: 'AZero',vehiclecolors: [{},{}],statusboard: [{},{},{}] });
         m.validate(function(err){
-            assert.isUndefined(err);
+            assert.isNull(err);
         });    
 
     });
@@ -588,11 +588,9 @@ describe('Test Suite for Status Board Model ', function() {
 
         m.validate(function(err) {
             expect(err.errors.mission).to.exist;
-            expect(err.errors.mission.name).toEqual('CastError');
-            expect(err.errors.vehiclecolors).toEqual('undefined');
-            expect(err.errors.statusboard).toEqual('undefined');
-            // assert.isUndefined(err.errors.vehiclecolors);
-            // assert.isUndefined(err.errors.statusboard);
+            expect(err.errors.mission.name).to.equal('CastError');
+            assert.isUndefined(err.errors.vehiclecolors);
+            assert.isUndefined(err.errors.statusboard);
         });
      
     });
@@ -602,11 +600,10 @@ describe('Test Suite for Status Board Model ', function() {
 
         m.validate(function(err) {
             expect(err.errors.mission).to.exist;
-            expect(err.errors.mission.name).toEqual('CastError');
+            expect(err.errors.mission.name).to.equal('CastError');
             expect(err.errors.vehiclecolors).to.exist;
-            expect(err.errors.vehiclecolors.name).toEqual('ValidatorError');
-            expect(err.errors.statusboard).toEqual('undefined');
-           // assert.isUndefined(err.errors.statusboard);
+            expect(err.errors.vehiclecolors.name).to.equal('ValidatorError');
+            assert.isUndefined(err.errors.statusboard);
         });
      
     });
@@ -615,11 +612,9 @@ describe('Test Suite for Status Board Model ', function() {
         var m = new SBoard({mission: 'AZero',vehiclecolors:[],statusboard: [{},{},{}]});
         m.validate(function(err) {
             expect(err.errors.vehiclecolors).to.exist;
-            expect(err.error.vehiclecolors.name).toEqual('ValidatorError');
-            expect(err.errors.mission).toEqual('undefined');
-            expect(err.errors.statusboard).toEqual('undefined');
-            // assert.isUndefined(err.errors.mission);
-            // assert.isUndefined(err.errors.statusboard);
+            expect(err.errors.vehiclecolors.name).to.equal('ValidatorError');
+            assert.isUndefined(err.errors.mission);
+            assert.isUndefined(err.errors.statusboard);
         });
     });
 
@@ -627,11 +622,9 @@ describe('Test Suite for Status Board Model ', function() {
         var m = new SBoard({mission: 'AZero',vehiclecolors:[{},{}],statusboard:[]});
         m.validate(function(err) {
             expect(err.errors.statusboard).to.exist;
-            expect(err.error.statusboard.name).toEqual('ValidatorError');
-            expect(err.errors.mission).toEqual('undefined');
-            expect(err.errors.vehiclecolors).toEqual('undefined');
-            // assert.isUndefined(err.errors.mission);
-            // assert.isUndefined(err.errors.vehiclecolors);
+            expect(err.errors.statusboard.name).to.equal('ValidatorError');
+            assert.isUndefined(err.errors.mission);
+            assert.isUndefined(err.errors.vehiclecolors);
         });
     });
 });

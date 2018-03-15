@@ -207,8 +207,9 @@ describe('Test Suite for Command Model ', function() {
             type:'Set'
         });
         m.validate(function(err){
-            expect(err).toEqual(null);
+            // expect(err).toEqual(null);
             //assert.isUndefined(err);
+            assert.isNull(err);
         });  
     });
 
@@ -225,7 +226,7 @@ describe('Test Suite for Command Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors.name).to.exist;
-            expect(err.errors.name.name).toEqual('ValidatorError');
+            expect(err.errors.name.name).to.equal('ValidatorError');
         });  
     });
 
@@ -242,7 +243,7 @@ describe('Test Suite for Command Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors.timestamp).to.exist;
-            expect(err.errors.timestamp.name).toEqual('ValidatorError');
+            expect(err.errors.timestamp.name).to.equal('ValidatorError');
         });  
     });
 
@@ -259,7 +260,7 @@ describe('Test Suite for Command Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors.argument).to.exist;
-            expect(err.errors.argument.name).toEqual('ValidatorError');
+            expect(err.errors.argument.name).to.equal('ValidatorError');
         });  
     });
 
@@ -276,7 +277,7 @@ describe('Test Suite for Command Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors.user).to.exist;
-            expect(err.errors.user.name).toEqual('ValidatorError');
+            expect(err.errors.user.name).to.equal('ValidatorError');
         });  
     });
 
@@ -293,7 +294,7 @@ describe('Test Suite for Command Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors.mission).to.exist;
-            expect(err.errors.mission.name).toEqual('ValidatorError');
+            expect(err.errors.mission.name).to.equal('ValidatorError');
         });  
     });
 
@@ -310,7 +311,7 @@ describe('Test Suite for Command Model ', function() {
             type:'Set'
         });
         m.validate(function(err){
-            assert.isUndefined(err);
+            assert.isNull(err);
         });  
     });
 
@@ -327,7 +328,7 @@ describe('Test Suite for Command Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors.sent_to_satellite).to.exist;
-            expect(err.errors.sent_to_satellite.name).toEqual('ValidatorError');
+            expect(err.errors.sent_to_satellite.name).to.equal('ValidatorError');
         });  
     });
 
@@ -344,7 +345,7 @@ describe('Test Suite for Command Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors.time).to.exist;
-            expect(err.errors.time.name).toEqual('ValidatorError');
+            expect(err.errors.time.name).to.equal('ValidatorError');
         });  
     });
 
@@ -361,7 +362,7 @@ describe('Test Suite for Command Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors.type).to.exist;
-            expect(err.errors.type.name).toEqual('ValidatorError');
+            expect(err.errors.type.name).to.equal('ValidatorError');
         });  
     });
 

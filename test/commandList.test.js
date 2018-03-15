@@ -144,7 +144,7 @@ describe('Test Suite for Command List Model ', function() {
     it('should validate mission is a valid string type and commands is an object type', function() {
         var m = new CList({mission: 'AZero',commands:{}});
         m.validate(function(err){
-            assert.isUndefined(err);
+            assert.isNull(err);
         });  
     });
 
@@ -152,14 +152,14 @@ describe('Test Suite for Command List Model ', function() {
         var m = new CList({mission: {},commands:{}});
         m.validate(function(err) {
             expect(err.errors.mission).to.exist;
-            expect(err.errors.mission.name).toEqual('CastError');
+            expect(err.errors.mission.name).to.equal('CastError');
         });
     });
 
     it('should validate if mission is defined and commands are not as required is false for it', function () {
         var m = new CList({mission:'AZero'});
         m.validate(function(err) {
-            assert.isUndefined(err);
+            assert.isNull(err);
         });
     });
 });

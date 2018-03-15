@@ -124,7 +124,7 @@ describe('Test Suite for System Image Map Schema Model ', function() {
     it('should validate mission is a valid String type and uploadedfiles is an array', function() {
         var m = new IMap({mission: 'AZero',uploadedfiles: [{},{}]});
         m.validate(function(err){
-            assert.isUndefined(err);
+            assert.isNull(err);
         });    
 
     });
@@ -134,9 +134,8 @@ describe('Test Suite for System Image Map Schema Model ', function() {
 
         m.validate(function(err) {
             expect(err.errors.mission).to.exist;
-            expect(err.errors.mission.name).toEqual('CastError');
-            expect(err.errors.uploadedfiles).toEqual('undefined');
-            //assert.isUndefined(err.errors.uploadedfiles);
+            expect(err.errors.mission.name).to.equal('CastError');
+            assert.isUndefined(err.errors.uploadedfiles);
         });
      
     });
@@ -145,9 +144,8 @@ describe('Test Suite for System Image Map Schema Model ', function() {
         var m = new IMap({mission: 'AZero',uploadedfiles:[]});
         m.validate(function(err) {
             expect(err.errors.uploadedfiles).to.exist;
-            expect(err.errors.uploadedfiles.name).toEqual('ValidatorError');
-            expect(err.errors.mission).toEqual('undefined');
-           // assert.isUndefined(err.errors.mission);
+            expect(err.errors.uploadedfiles.name).to.equal('ValidatorError');
+            assert.isUndefined(err.errors.mission);
         });
     });
 
@@ -155,9 +153,9 @@ describe('Test Suite for System Image Map Schema Model ', function() {
         var m = new IMap({mission: {},uploadedfiles: []});
         m.validate(function(err) {
             expect(err.errors.mission).to.exist;
-            expect(err.errors.mission.name).toEqual('CastError');
+            expect(err.errors.mission.name).to.equal('CastError');
             expect(err.errors.uploadedfiles).to.exist;
-            expect(err.errors.uploadedfiles.name).toEqual('ValidatorError');
+            expect(err.errors.uploadedfiles.name).to.equal('ValidatorError');
         });
     });
 });

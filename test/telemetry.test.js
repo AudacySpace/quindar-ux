@@ -91,7 +91,7 @@ describe('Test Suite for Telemetry Model ', function() {
     it('should validate mission is a valid string type and telemetry is an object type and timestamp is date type', function() {
         var m = new TM({mission: 'AZero',timestamp:'2018-02-01T09:42:01.287Z',telemetry:{}});
         m.validate(function(err){
-            assert.isUndefined(err);
+            assert.isNull(err);
         });  
     });
 
@@ -99,7 +99,7 @@ describe('Test Suite for Telemetry Model ', function() {
         var m = new TM({mission: {},timestamp:'2018-02-01T09:42:01.287Z',telemetry:{}});
         m.validate(function(err) {
             expect(err.errors.mission).to.exist;
-            expect(err.errors.mission.name).toEqual('CastError');
+            expect(err.errors.mission.name).to.equal('CastError');
         });
     });
 
@@ -107,7 +107,7 @@ describe('Test Suite for Telemetry Model ', function() {
         var m = new TM({mission: 'AZero',telemetry:{}});
         m.validate(function(err) {
             expect(err.errors.timestamp).to.exist;
-            expect(err.errors.timestamp.name).toEqual('ValidatorError');
+            expect(err.errors.timestamp.name).to.equal('ValidatorError');
         });
     });
 
@@ -115,7 +115,7 @@ describe('Test Suite for Telemetry Model ', function() {
         var m = new TM({mission: 'AZero',timestamp:'2018-02-01T09:42:01.287Z'});
         m.validate(function(err) {
             expect(err.errors.telemetry).to.exist;
-            expect(err.errors.telemetry.name).toEqual('ValidatorError');
+            expect(err.errors.telemetry.name).to.equal('ValidatorError');
         });
     });
 

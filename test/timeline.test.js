@@ -150,7 +150,7 @@ describe('Test Suite for Timeline Model ', function() {
             file: 'timeline.xlsx'
         });
         m.validate(function(err){
-            assert.isUndefined(err);
+            assert.isNull(err);
         });  
     });
 
@@ -163,7 +163,7 @@ describe('Test Suite for Timeline Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors.mission.name).to.exist;
-            expect(err.errors.mission.name).toEqual('CastError');
+            expect(err.errors.mission.name).to.equal('CastError');
         });  
     });
 
@@ -175,7 +175,7 @@ describe('Test Suite for Timeline Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors.events.name).to.exist;
-            expect(err.errors.events.name).toEqual('ValidatorError');
+            expect(err.errors.events.name).to.equal('ValidatorError');
         });  
     });
 
@@ -187,7 +187,7 @@ describe('Test Suite for Timeline Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors.filename.name).to.exist;
-            expect(err.errors.filename.name).toEqual('ValidatorError');
+            expect(err.errors.filename.name).to.equal('ValidatorError');
         });  
     });
 
@@ -199,7 +199,7 @@ describe('Test Suite for Timeline Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors.file.name).to.exist;
-            expect(err.errors.file.name).toEqual('ValidatorError');
+            expect(err.errors.file.name).to.equal('ValidatorError');
         });  
     });
 });

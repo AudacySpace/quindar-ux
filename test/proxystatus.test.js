@@ -108,7 +108,7 @@ describe('Test Suite for Proxy Status Schema Model ', function() {
     it('should validate proxytimestamp is a valid number type', function() {
         var m = new PStatus({proxytimestamp: 156788888});
         m.validate(function(err){
-            assert.isUndefined(err);
+            assert.isNull(err);
         });  
     });
 
@@ -116,7 +116,7 @@ describe('Test Suite for Proxy Status Schema Model ', function() {
         var m = new PStatus({proxytimestamp: '123abc'});
         m.validate(function(err) {
             expect(err.errors.proxytimestamp).to.exist;
-            expect(err.errors.proxytimestamp.name).toEqual('CastError');
+            expect(err.errors.proxytimestamp.name).to.equal('CastError');
         });
     });
 });

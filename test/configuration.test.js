@@ -208,7 +208,7 @@ describe('Test Suite for Configuration Model ', function() {
             mission: 'Azero'
         });
         m.validate(function(err){
-            assert.isUndefined(err);
+            assert.isNull(err);
         });  
     });
 
@@ -225,7 +225,7 @@ describe('Test Suite for Configuration Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors['source.name'].name).to.exist;
-            expect(err.errors['source.name'].name).toEqual('CastError');
+            expect(err.errors['source.name'].name).to.equal('CastError');
         });  
     });
 
@@ -243,7 +243,7 @@ describe('Test Suite for Configuration Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors['source.ipaddress'].name).to.exist;
-            expect(err.errors['source.ipaddress'].name).toEqual('CastError');
+            expect(err.errors['source.ipaddress'].name).to.equal('CastError');
         });  
     });
 
@@ -260,7 +260,7 @@ describe('Test Suite for Configuration Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors['source.filename'].name).to.exist;
-            expect(err.errors['source.filename'].name).toEqual('CastError');
+            expect(err.errors['source.filename'].name).to.equal('CastError');
         });  
     });
 
@@ -276,7 +276,7 @@ describe('Test Suite for Configuration Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors.contents.name).to.exist;
-            expect(err.errors.contents.name).toEqual('ValidatorError');
+            expect(err.errors.contents.name).to.equal('ValidatorError');
         });  
     });
 
@@ -292,7 +292,7 @@ describe('Test Suite for Configuration Model ', function() {
         });
         m.validate(function(err){
             expect(err.errors.mission.name).to.exist;
-            expect(err.errors.mission.name).toEqual('ValidatorError');
+            expect(err.errors.mission.name).to.equal('ValidatorError');
         });  
     });
 
