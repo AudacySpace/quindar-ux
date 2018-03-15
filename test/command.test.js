@@ -3,7 +3,7 @@ var spies = require('chai-spies');
 chai.use(spies);
 var sinon = require('sinon');
 var mongoose = require('mongoose');
-// mongoose.Promise = global.Promise;
+mongoose.Promise = global.Promise;
 var expect = chai.expect;
 var assert = chai.assert;
 var CMD = require('../server/models/command');
@@ -182,6 +182,7 @@ describe('Test Suite for Command Model ', function() {
     it('should be invalid if the model is empty', function() {
         var m = new CMD();
         m.validate(function(err) {
+            console.log(err);
             expect(err.errors.name).to.exist;
             expect(err.errors.argument).to.exist;
             expect(err.errors.timestamp).to.exist;

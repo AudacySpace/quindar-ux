@@ -3,7 +3,7 @@ var spies = require('chai-spies');
 chai.use(spies);
 var sinon = require('sinon');
 var mongoose = require('mongoose');
-// mongoose.Promise = global.Promise;
+mongoose.Promise = global.Promise;
 var expect = chai.expect;
 var assert = chai.assert;
 var Usr = require('../server/models/user');
