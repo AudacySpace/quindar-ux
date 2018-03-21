@@ -7,7 +7,7 @@ var commandListSchema = mongoose.Schema({
     // commands : Object
 
     mission : {type:String,required:true},
-    commands : {type:Object,required:false}
+    commands : {type:Object}
 
 }, { collection: 'commandList' });
 

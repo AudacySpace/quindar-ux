@@ -554,8 +554,6 @@ describe('Test Suite for User Model ', function() {
             expect(err.errors['google.token']).to.exist;
             expect(err.errors['google.email']).to.exist;
             expect(err.errors['google.name']).to.exist;
-            // expect(err.errors.grid).to.exist;
-            expect(err.errors.missions).to.exist;
         });
     });
 
@@ -649,7 +647,7 @@ describe('Test Suite for User Model ', function() {
         });  
     });
 
-    it('should invalidate if grid is not defined', function() {
+    it('should validate if grid is not defined', function() {
         var m = new Usr({
             google : {
                 id : '102010',
@@ -665,7 +663,7 @@ describe('Test Suite for User Model ', function() {
         });  
     });
 
-    it('should invalidate if mission is not defined', function() {
+    it('should validate if missions is not defined', function() {
         var m = new Usr({
             google : {
                 id : '102010',
@@ -677,8 +675,7 @@ describe('Test Suite for User Model ', function() {
             grid : [{},{}]
         });
         m.validate(function(err){
-            expect(err.errors.missions.name).to.exist;
-            expect(err.errors.missions.name).to.equal('ValidatorError');
+            assert.isNull(err);
         });  
     });
 

@@ -18,7 +18,7 @@ var commandSchema = mongoose.Schema({
     timestamp : {type:Date,required:true},
     user : {type:String,required:true},
     mission : {type:String,required:true},
-    response : {type:String,required:false},
+    response : {type:String},
     sent_to_satellite : {type:Boolean,required:true},
     time : {type:String,required:true},
     type : {type:String,required:true}

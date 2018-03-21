@@ -11,7 +11,7 @@ var userSchema = mongoose.Schema({
         "name"       : {type:String,required:true}
     },
     "grid" : {type:Array,required:false},
-    "missions": {type:Array,required:true}
+    "missions": {type:Array}
 });
 
 // create the model for users and expose it to our app
