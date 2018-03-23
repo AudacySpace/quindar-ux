@@ -22,7 +22,9 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 	var scHEstOld = {};	// Save old data
 	var scEstTime = {};// Save timestamp during estimation
 	var dServiceObjVal = {};
-	var est = false;			// Is it estimation?
+	var est = {};			// Is it estimation?
+	var prev_est = {};
+	var scHCurrent = {};
 	
 	$scope.dataStatus = dashboardService.icons;
 	//watch to check the database icon color to know about database status
@@ -155,10 +157,11 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
         }
     );
 
-	//var counter = 0;
+	// var counter = 0;
     // Function to update data to be plotted
     function updatePlot() {
-        g.selectAll("path.route").remove(); 
+        g.selectAll("path.route").remove();
+        g.selectAll("path.est_route").remove(); 
         g.selectAll("#craft").remove();
         g.selectAll("path.link").remove();
         g.selectAll("line").remove();
@@ -178,351 +181,202 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 				scHEst[i] = []; 
 				scHEstOld[i] = [];
 				scEstTime[i] = [];
+				scHCurrent[i] = "";
+				prev_est[i] = "";
+				est[i] = false;
             }
         } 
 
 		// Increase counter
-		//counter++;
+		// counter++;
 		
         for (i=0; i< vehicles.length; i++){
             latestdata = telemetry[vehicles[i].name];
+  
+            // Check if the latestdata is available for the selected s/c
+            if (latestdata == null) {
+                //alert("Latest data not available.");
+            }
+            else {
+                if(vehicles[i].dataStatus === true) {
+                    // remove previous Ground Station coverage
+                    g.selectAll("path.gslos").remove();
 
-            if(vehicles[i].dataStatus === true) {
-            	g.selectAll("path.gslos").remove();
-
-				//Timestamp array for each vehicle
-				if(!$scope.timeObj[i]){
-					$scope.timeObj[i] = new Array();
-				}
-				
-				if(dServiceObjVal.sIcon === "green" && dServiceObjVal.gIcon === "green" && 
-				dServiceObjVal.pIcon === "green" && dServiceObjVal.dIcon === "green"){
-	//					if(counter < 10 || (counter > 20 && counter < 30) || counter > 40 ){
-					
-					//get current time
-					var dateValue = new Date(telemetry['time']);
-					var timestamp = dateValue.getTime(); //time in milliseconds
-
-					//push values to the array
-					if(timestamp != $scope.timeObj[i][$scope.timeObj[i].length-1]){
-						$scope.timeObj[i].push(timestamp);
-					}
-				
-					// update latestdata
-					var x = latestdata.GNC.position.x.value;
-					var y = latestdata.GNC.position.y.value;
-					var z = latestdata.GNC.position.z.value;
-					var vx = latestdata.GNC.velocity.vx.value;
-					var vy = latestdata.GNC.velocity.vy.value;
-					var vz = latestdata.GNC.velocity.vz.value;						
-			
-					// Save timestamp 
-					scTime[i].push(timestamp);							
-					
-					est = false;	// Not estimation					
-				}
-				else{
-					// The initial x is from the data base
-					if (scS[i] != ""){
-						var x = scS[i][scS[i].length-1][0];
-						var y = scS[i][scS[i].length-1][1];
-						var z = scS[i][scS[i].length-1][2];
-						var vx = scS[i][scS[i].length-1][3];
-						var vy = scS[i][scS[i].length-1][4];
-						var vz = scS[i][scS[i].length-1][5];
-					}
-					else{
-
-						var x = latestdata.GNC.position.x.value;
-						var y = latestdata.GNC.position.y.value;
-						var z = latestdata.GNC.position.z.value;
-						var vx = latestdata.GNC.velocity.vx.value;
+                    //Actual Data If block
+                    if(dServiceObjVal.sIcon === "green" && dServiceObjVal.gIcon === "green" &&
+						dServiceObjVal.pIcon === "green" && dServiceObjVal.dIcon === "green"){
+                    // if(counter < 100 || (counter > 300 && counter < 500) || counter > 900 ){
+	                    // update latestdata
+	                    var x = latestdata.GNC.position.x.value;
+	                    var y = latestdata.GNC.position.y.value;
+	                    var z = latestdata.GNC.position.z.value;
+	                    var vx = latestdata.GNC.velocity.vx.value;
 						var vy = latestdata.GNC.velocity.vy.value;
 						var vz = latestdata.GNC.velocity.vz.value;
-					}
 
-					// The equations of motion: two-body problem, earth-centered:
-					var eom = function(xdot, x, t) {
-					
-						var mu = 3.9860043543609598E+05;	//[km³/sec²] from http://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/gm_de431.tpc
+						est[i] = false;
 
-						r = Math.sqrt(Math.pow(x[0],2)+Math.pow(x[1],2)+Math.pow(x[2],2));
-						xdot[0] = x[3]
-						xdot[1] = x[4]
-						xdot[2] = x[5]
-						xdot[3] = -mu /Math.pow(r,3) *x[0] 
-						xdot[4] = -mu /Math.pow(r,3) *x[1] 
-						xdot[5] = -mu /Math.pow(r,3) *x[2] 
+					} else { //Estimated data else block
+						// The initial x is from the data base
+						if (scS[i] != ""){
+							var x = scS[i][scS[i].length-1][0];
+							var y = scS[i][scS[i].length-1][1];
+							var z = scS[i][scS[i].length-1][2];
+							var vx = scS[i][scS[i].length-1][3];
+							var vy = scS[i][scS[i].length-1][4];
+							var vz = scS[i][scS[i].length-1][5];
+						}
+						else{
+							var x = latestdata.GNC.position.x.value;
+							var y = latestdata.GNC.position.y.value;
+							var z = latestdata.GNC.position.z.value;
+							var vx = latestdata.GNC.velocity.vx.value;
+							var vy = latestdata.GNC.velocity.vy.value;
+							var vz = latestdata.GNC.velocity.vz.value;
+						}
+
+						// The equations of motion: two-body problem, earth-centered:
+						var eom = function(xdot, x, t) {
+							var mu = 3.9860043543609598E+05;	//[km³/sec²] from http://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/gm_de431.tpc
+
+							r = Math.sqrt(Math.pow(x[0],2)+Math.pow(x[1],2)+Math.pow(x[2],2));
+							xdot[0] = x[3];
+							xdot[1] = x[4];
+							xdot[2] = x[5];
+							xdot[3] = -mu /Math.pow(r,3) *x[0];
+							xdot[4] = -mu /Math.pow(r,3) *x[1];
+							xdot[5] = -mu /Math.pow(r,3) *x[2];
+						}
+
+						// Initialize:
+						var y0 = [x,y,z,vx,vy,vz],
+						t0 = 0,
+						dt0 = 1e-10,
+						integrator = odeService.IntegratorFactory( y0, eom, t0, dt0)
 						
+						// Integrate up to tmax:
+						var tmax = 1, tEst = [], yEst = []
+						while( integrator.step( tmax ) ) {
+							// Store the solution at this timestep:
+							tEst.push( integrator.t );
+							yEst.push( integrator.y );
+						}
+
+						// Update with the estimated value
+						x = yEst.pop()[0];
+						y = yEst.pop()[1];
+						z = yEst.pop()[2];
+						vx = yEst.pop()[3];
+						vy = yEst.pop()[4];
+						vz = yEst.pop()[5];
+
+						est[i] = true;
 					}
 
-					// Initialize:
-					var y0 = [x,y,z,vx,vy,vz],
-					t0 = 0,
-					dt0 = 1e-10,
-					integrator = odeService.IntegratorFactory( y0, eom, t0, dt0)
-					
-					// Integrate up to tmax:
-					var tmax = 1, tEst = [], yEst = []
-					while( integrator.step( tmax ) ) {
-						
-						// Store the solution at this timestep:
-						tEst.push( integrator.t )
-						yEst.push( integrator.y )						
-					}
-					
-					// Update with the estimated value
-					x = yEst.pop()[0];
-					y = yEst.pop()[1];
-					z = yEst.pop()[2];
-					vx = yEst.pop()[3];
-					vy = yEst.pop()[4];
-					vz = yEst.pop()[5];
-					
-					// Save timestamp 
-					scEstTime[i].push(timestamp);							
-					
-					var timestamp = $scope.timeObj[i][$scope.timeObj[i].length-1] + tmax*1000; //time in milliseconds
+                    // Calculate longitude and latitude from the satellite position x, y, z.
+                    // The values (x,y,z) must be Earth fixed.
+                    r = Math.sqrt(Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2));
+                    longitude = Math.atan2(y,x)/Math.PI*180;
+                    latitude = Math.asin(z/r)/Math.PI*180;
 
-					//push values to the array
-					if(timestamp != $scope.timeObj[i][$scope.timeObj[i].length-1]){
-						$scope.timeObj[i].push(timestamp);
-					}
+                    // Convert [longitude,latitude] to plot
+                    var sat_coord = projGround([longitude,latitude]);
 
-					est = true;
-				}
-				
-				var scSData = [x, y, z, vx, vy, vz];
-				if(scSData != scS[i][scS[i].length - 1]){
-					scS[i].push(scSData);
-				}
-					
-				// Calculate longitude and latitude from the satellite position x, y, z.
-				// The values (x,y,z) must be Earth fixed.
-				r = Math.sqrt(Math.pow(x,2)+Math.pow(y,2)+Math.pow(z,2));
-				longitude = Math.atan2(y,x)/Math.PI*180;
-				latitude = Math.asin(z/r)/Math.PI*180;
-				
-				// Convert [longitude,latitude] to plot 
-				var sat_coord = projGround([longitude,latitude]);
+                    //Plot ground station coverage
+                    for (j=0; j<gs.length;j++) {
+                        plotGsCover(station[j], r);
+                    }
 
-				//Plot ground station coverage
-				for (j=0; j<gs.length;j++) {
-					plotGsCover(station[j], r);
-				}
-		
-				var diffMins = Math.round(($scope.timeObj[i][$scope.timeObj[i].length-1] - $scope.timeObj[i][0])/60000);
-				
-				// Remove data points after 90 minutes (7200000ms)					
-				if( diffMins >= 90) {
-						if (scHOld[i] == "" && scHEstOld[i] == ""){
-							scH[i].splice(0,1);
-							scTime[i].splice(0,1);
-							scHEst[i].splice(0,1);
-							scEstTime[i].splice(0,1);
-						}
-						else if (scHEstOld[i] == ""){
-												
-							// When scHOld[i][0] is empty, remove it
-							if (scHOld[i][0] == ""){
-								scHOld[i].splice(0,1);
-							}
-								
-							scHOld[i][0].splice(0,1);
-							scTime[i].splice(0,1);
-						}
-						else if (scHOld[i] == ""){
-							
-							// When scHEstOld[i][0] is empty, remove it
-							if (scHEstOld[i][0] == ""){
-								scHEstOld[i].splice(0,1);
-							}
-								
-							scHEstOld[i][0].splice(0,1);
-							scEstTime[i].splice(0,1);
-						}
-						else {
-							if (scTime[i][0] < scEstTime[i][0]){
-								
-								// When scHOld[i][0] is empty, remove it
-								if (scHOld[i][0] == ""){
-									scHOld[i].splice(0,1);
-								}
-								
-								scHOld[i][0].splice(0,1);
-								scTime[i].splice(0,1);
-								//console.log(scHOld[i][0])
-							}else{
-								
-								// When scHEstOld[i][0] is empty, remove it
-								if (scHEstOld[i][0] == ""){
-									scHEstOld[i].splice(0,1);
-								}
-								
-								scHEstOld[i][0].splice(0,1);
-								scEstTime[i].splice(0,1);
-								//console.log(scHEstOld[i][0])
-							}
-						}
-						
-						scS[i].splice(0,1);
-						$scope.timeObj[i].splice(0,1);
-				}
-					
-				// Check if estimation or not
-				if (est == false){
-					// Not estimation
-					
-					// Clean data when switched from estimation
-					if (scH[i] != ""){
-						if (scH[i][scH[i].length-1][0] == 400){
-							scH[i] = []
-						}
-					}
-					
-					// add longitude and latitude to data_plot
-					var scHData = [longitude, latitude];
-					if(scHData != scH[i][scH[i].length - 1]){
-						scH[i].push(scHData);
-					}
+                    //Timestamp array for each vehicle
+                    // if(!$scope.timeObj[i]){
+                    //     $scope.timeObj[i] = new Array();
+                    // }
 
-					// If scH is switched to scH, save scHEst to scHEstOld
-					if (scHEst[i] != ""){
-						if (scHEst[i][scHEst[i].length-1][0] != 400){
-							scHEstOld[i].push(scHEst[i]);
-							scHEst[i]= [];	// Clean scH
-						}
-					}
-					
-					// Assign 400 when no data
-					scHEst[i].push([400, 400]);
-					
-					// Show link when iconStatus is true
-					if(vehicles[i].iconStatus === true){
-						// scH for all vehicles exist
-						if (scH[vehicles.length-1] != "") {
-							if (scH[vehicles.length-1][scH[vehicles.length-1].length-1][0] != 400){
-								for (kk=i+1; kk<vehicles.length; kk++) {
-									if (vehicles[kk].iconStatus === true) {
-										commlink(scS[i][scS[i].length-1],scS[kk][scS[kk].length-1],scH[i][scH[i].length-1],scH[kk][scH[kk].length-1]); 
-									}
-								}
-								for (kk=0; kk<gs.length; kk++) {
-									gsCommLink(station[kk], scH[i][scH[i].length-1], scS[i][scS[i].length-1], gsAng);
-								}
-							}
-						}					
-					}
-					
-					// Plot live trajectory when orbitStatus is true
-					if(vehicles[i].orbitStatus === true){
-						
-						// Plot existing data first
-						var route = g.append("path")
-								 .datum({type: "LineString", coordinates: scH[i]})  
-								 .attr("class", "route")
-								 .attr("stroke", vehicles[i].color)
-								 .attr("d", path);		 
-					}			
-				}
-				else{
-					// Estimation
-					
-					// Clean data when switched from live data
-					if (scHEst[i] != ""){
-						if (scHEst[i][scHEst[i].length-1][0] == 400){
-							scHEst[i] = []
-						}
-					}
-					
-					// add longitude and latitude to data_plot
-					var scHData = [longitude, latitude];
-					if(scHData != scHEst[i][scHEst[i].length - 1]){
-						scHEst[i].push(scHData);
-					}  				
+                    // //get current time
+                    // var dateValue = new Date(telemetry['time']);
+                    // var timestamp = dateValue.getTime(); //time in milliseconds
 
-					// If scH is switched to scHEst, save scH to scHOld
-					if (scH[i] != ""){
-						if (scH[i][scH[i].length-1][0] != 400){
-							scHOld[i].push(scH[i]);
-							scH[i]= [];	// Clean scH
-						}
-					}
-					
-					// Assign 400 when no data
-					scH[i].push([400, 400]);
-								 
-					// Show link when iconStatus is true
-					if(vehicles[i].iconStatus === true){
-						// scHEst for all vehicles exist
-						if (scHEst[vehicles.length-1] != ""){	
-							if (scHEst[vehicles.length-1][scHEst[vehicles.length-1].length-1][0] != 400) {
-								//console.log(scHEst[vehicles.length-1][scHEst[vehicles.length-1].length-1])
-								for (kk=i+1; kk<vehicles.length; kk++) {
-									if (vehicles[kk].iconStatus === true) {
-										commlink(scS[i][scS[i].length-1],scS[kk][scS[kk].length-1],scHEst[i][scHEst[i].length-1],scHEst[kk][scHEst[kk].length-1]); 
-									}
-								}
-								for (kk=0; kk<gs.length; kk++) {
-									gsCommLink(station[kk], scHEst[i][scHEst[i].length-1], scS[i][scS[i].length-1], gsAng);
-								}
-							}
-						}
-					}
-					
-					// Plot estimated trajectory when orbitStatus is true
-					if(vehicles[i].orbitStatus === true){
-						// Add estimation
-						var route = g.append("path")
-								 .datum({type: "LineString", coordinates: scHEst[i]})  
-								 .attr("class", "route")
-								 .style("stroke-dasharray", ("10,3"))
-								 .attr("stroke", vehicles[i].color)
-								 .attr("d", path);											
-					}
-					
-				}
-											
-				// Plot old trajectory when orbitStatus is true						
-				if(vehicles[i].orbitStatus === true){
-					
-					// Plot trajectory from saved data
-					if (scHOld[i].length != 0){
-						for (kOld=0; kOld<scHOld[i].length; kOld++){
-							var route = g.append("path")
-								 .datum({type: "LineString", coordinates: scHOld[i][kOld]})  
-								 .attr("class", "route")
-								 .attr("stroke", vehicles[i].color)
-								 .attr("d", path);
-						}
-					}
-					
-					// Plot trajectory from saved estimation data
-					if (scHEstOld[i].length != 0){
-						for (kOld=0; kOld<scHEstOld[i].length; kOld++){
-							var route = g.append("path")
-								 .datum({type: "LineString", coordinates: scHEstOld[i][kOld]})  
-								 .attr("class", "route")
-								 .style("stroke-dasharray", ("10,3"))
-								 .attr("stroke", vehicles[i].color)
-								 .attr("d", path);
-						}
-					}												
-				}
-				
-				// Show icon when iconStatus is true
-				if(vehicles[i].iconStatus === true){
-						var craft = g.append("svg:image")
-								 .attr("xlink:href", "/icons/groundtrack-widget/satellite.svg")
-								 .attr("id", "craft")
-								 .attr("fill", "#000000")
-								 .attr("x",sat_coord[0])
-								 .attr("y",sat_coord[1]-15)
-								 .attr("width",30)
-								 .attr("height",30)
-								 .append("svg:title").text(vehicles[i].name);
-				}
-			}
+                    // //push values to the array
+                    // if(timestamp != $scope.timeObj[i][$scope.timeObj[i].length-1]){
+                    //     $scope.timeObj[i].push(timestamp);
+                    // }
+                    // var diffMins = Math.round(($scope.timeObj[i][$scope.timeObj[i].length-1] - $scope.timeObj[i][0])/60000);
+
+                    //Flag is true when there is a switch between actual and estimated data
+                    if(est[i] !== prev_est[i]){
+                    	flag = true;
+                    } else {
+                    	flag = false;
+                    }
+
+                    // add longitude and latitude to data_plot
+                    var scHData = [longitude, latitude];
+                    scHCurrent[i] = scHData;
+
+                    //Push current latitude,longitude to the main array of points
+                    if(!est[i]) {
+                    	if(flag){
+                    		scH[i][scH[i].length] = new Array();
+                    	}
+                    	scH[i][scH[i].length-1].push(scHData);
+	                } else {
+	                	if(flag){
+	                		scHEst[i][scHEst[i].length] = new Array();
+	                	}
+	                	scHEst[i][scHEst[i].length-1].push(scHData);
+	                }
+
+	                //Data containing position and velocity of the satellite
+	                var scSData = [x, y, z, vx, vy, vz];
+	                scS[i].push(scSData);
+
+                    // Remove data points after 90 minutes (7200000ms)
+                    // if( diffMins >= 90) {
+                    //     scH[i].splice(0,1);
+                    //     scS[i].splice(0,1);
+                    //     $scope.timeObj[i].splice(0,1);
+                    // }
+
+                    if(vehicles[i].orbitStatus === true){
+                    	//Orbit path using actual telemetry
+                    	var route = g.append("path")
+                    					.datum({type: "MultiLineString", coordinates: scH[i]})
+                    					.attr("class", "route")
+                    					.attr("stroke", vehicles[i].color)
+                    					.attr("d", path);
+                   		//Orbit path using estimated data
+                    	var est_route = g.append("path")
+                    					.datum({type: "MultiLineString", coordinates: scHEst[i]})
+                    					.attr("class", "est_route")
+                    					.attr("stroke", vehicles[i].color)
+                    					.attr("d", path);
+                	}
+
+                	//Satellite icon and communication links between satellites and ground stations
+                    if(vehicles[i].iconStatus === true){
+                        var craft = g.append("svg:image")
+                                     .attr("xlink:href", "/icons/groundtrack-widget/satellite.svg")
+                                     .attr("id", "craft")
+                                     .attr("fill", "#000000")
+                                     .attr("x",sat_coord[0])
+                                     .attr("y",sat_coord[1]-15)
+                                     .attr("width",30)
+                                     .attr("height",30)
+                                     .append("svg:title").text(vehicles[i].name);
+
+                        for (kk=i+1; kk<vehicles.length; kk++) {
+                            if (vehicles[kk].iconStatus === true) {
+                                commlink(scS[i][scS[i].length-1],scS[kk][scS[kk].length-1],scHCurrent[i],scHCurrent[kk]);
+                            }
+                        }
+                        for (kk=0; kk<gs.length; kk++) {
+                            gsCommLink(station[kk], scHCurrent[i], scS[i][scS[i].length-1], gsAng);
+                        }
+                    }
+
+                    prev_est[i] = est[i];
+                }
+            }
         }
 		
         prevSettings = angular.copy($scope.widget.settings.vehicles);

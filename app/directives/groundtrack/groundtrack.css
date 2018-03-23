@@ -110,6 +110,12 @@ button.btn.gtbtns:focus{
     fill:  none;
     stroke-width:3px;
 }
+
+.est_route {
+    fill:  none;
+    stroke-width:3px;
+    stroke-dasharray: 5,3;
+}
 .zoomicons{
     width:18px;
     height:15px;
