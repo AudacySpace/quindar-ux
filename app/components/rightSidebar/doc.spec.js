@@ -1,5 +1,6 @@
 describe('Testing document controller', function () {
-    var controller, scope, close;
+    var controller, scope;
+    var modalInstance = { dismiss: function() {} };
 
     beforeEach(function () {
         // load the module
@@ -10,7 +11,7 @@ describe('Testing document controller', function () {
             close = jasmine.createSpy();
             controller = $controller('docController', {
                 $scope: scope,
-                close: close
+                $uibModalInstance: modalInstance,
             });
         });
     });
@@ -23,9 +24,9 @@ describe('Testing document controller', function () {
     	expect(scope.close).toBeDefined();
     });
 
-    it('should call the function close on closing the documentation', function() {
+    it('should call the function dismiss on closing the documentation', function() {
+        spyOn(modalInstance, 'dismiss');
         scope.close();
-
-        expect(close).toHaveBeenCalled();
+        expect(modalInstance.dismiss).toHaveBeenCalled();
     });
 });

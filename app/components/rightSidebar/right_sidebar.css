@@ -17,7 +17,7 @@ md-toolbar {
     background-color: #020613 !important;
     border-bottom: 3px solid #07D1EA;
     height: 53px;
-    min-height: 50px;
+    min-height: 50px !important;
 }
 
 md-content#right {
@@ -62,7 +62,8 @@ md-list-item:hover {
 }
 
 .md-button:not([disabled]):hover {
-    background-color: #242833;
+   /* background-color: #242833;*/
+    background-color: transparent; !important;
 }
 
 md-divider {

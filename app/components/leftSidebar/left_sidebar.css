@@ -17,23 +17,29 @@
 }
 
 md-icon.large {
+    min-width:16px !important;
+    min-height:16px !important;
   	width: 16px !important;
-    height: 16px;
+    height: 16px !important;
     margin-right: 16px !important;
     margin-top: 12px !important;
 }
 
 md-icon.small {
+    min-width:12px !important;
+    min-height:12px !important;
   	width: 12px !important;
-    height: 12px;
+    height: 12px !important;
     margin-right: 16px !important;
     margin-top: 14px !important;
     margin-bottom: 14px !important;
 }
 
 md-icon.smaller {
+    min-width:8px !important;
+    min-height:8px !important;
     width: 8px !important;
-    height: 8px;
+    height: 8px !important;
     margin-right: 16px !important;
     margin-top: 16px !important;
     margin-bottom: 16px !important;
