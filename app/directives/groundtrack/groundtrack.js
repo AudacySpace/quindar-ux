@@ -393,7 +393,10 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
     function showDayNight() {
         time = dashboardService.getTime(0);
         solarTime = time.today;
-        $scope.night.datum(circle.center(antipode(solarService.solarPosition(solarTime))).radius(90)).attr("d", path);
+        if($scope.night){
+            $scope.night.datum(circle.center(antipode(solarService.solarPosition(solarTime))).radius(90)).attr("d", path);
+        }
+        
     }
     
     //Displays Ground station coverage area    
