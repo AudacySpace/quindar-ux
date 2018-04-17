@@ -251,10 +251,18 @@ describe('Testing right sidebar component', function () {
     });
 
     it('should call the modal service to show the readme file', function(){
-        spyOn(ModalService, 'showModal');
+        var fakeModal = {
+            result: {
+                then: function(cancelCallback) {
+                    //Store the callbacks for later when the user clicks on the OK or Cancel button of the dialog
+                    this.cancelCallback = cancelCallback;
+                }
+            }
+        };
+        spyOn(modalInstance, 'open').and.returnValue(fakeModal);
         $controller.showReadme();
 
-        expect(ModalService.showModal).toHaveBeenCalled();
+        expect(modalInstance.open).toHaveBeenCalled();
         expect(sideNavCloseMock).toHaveBeenCalled();
     });
 
@@ -263,10 +271,18 @@ describe('Testing right sidebar component', function () {
     });
 
     it('should call the modal service to show the contributing file', function(){
-        spyOn(ModalService, 'showModal');
+        var fakeModal = {
+            result: {
+                then: function(cancelCallback) {
+                    //Store the callbacks for later when the user clicks on the OK or Cancel button of the dialog
+                    this.cancelCallback = cancelCallback;
+                }
+            }
+        };
+        spyOn(modalInstance, 'open').and.returnValue(fakeModal);
         $controller.showContributing();
 
-        expect(ModalService.showModal).toHaveBeenCalled();
+        expect(modalInstance.open).toHaveBeenCalled();
         expect(sideNavCloseMock).toHaveBeenCalled();
     });
 

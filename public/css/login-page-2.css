@@ -8,26 +8,7 @@ body {
     background-repeat: no-repeat;
     font-family: "Open Sans", sans-serif;
 }
-body.image1 {
-    background-image:url("../media/background/quindar-space-bg.jpg");
-}
-body.image2 {
-    background-image: url('../media/background/quindar-earth-bg.jpg');
-}
-body.image3 {
-    background-image: url('../media/background/quindar-moon-bg.jpg');
-}
-body.image4 {
-    background-image: url('../media/background/quindar-night-bg.jpg');
-}
 
-body.image5 {
-    background-image: url('../media/background/quindar-sat-bg.jpg');
-}
-
-body.image6 {
-    background-image: url('../media/background/quindar-sky-bg.jpg');
-}
 .logo img {
 /*  margin-top: 200px;*/
 /*  width: 200px;*/
@@ -138,4 +119,16 @@ div#image_credit_container p {
 .sign-in {
   padding-left: 45px;
   padding-right: 45px;
+}
+
+body#login-page .btn-primary {
+    background: #07d1ea;
+}
+body#login-page .btn-primary:hover, body#login-page .btn-primary:focus, body#login-page .btn-primary:active, body#login-page .btn-primary.active {
+    background: #0aaccf;
+}
+body#login-page .btn {
+    padding: 9px 12px;
+    background: #07d1ea;
+    border: 0 none;
 }

@@ -1,7 +1,7 @@
 app
 .component('rightSidebar', {
   	templateUrl: "./components/rightSidebar/right_sidebar.html",
-  	controller: function(gridService, dashboardService, prompt, $window, $mdSidenav, ModalService, userService, $uibModal) {
+  	controller: function(gridService, dashboardService, prompt, $window, $mdSidenav, userService, $uibModal) {
         var vm = this;
   		vm.name = userService.getUserName();
         vm.email = userService.getUserEmail();
@@ -69,21 +69,33 @@ app
 
 		vm.showReadme = function() {
 
-			// Just provide a template url, a controller and call 'showModal'.
-			ModalService.showModal({
-				templateUrl: "./components/rightSidebar/documentation.html",
-				controller: "docController",
-			});
+			// Just provide a template url, a controller and call 'open'.
+            $uibModal.open({
+                templateUrl: "./components/rightSidebar/documentation.html",
+                controller: 'docController'
+            }).result.then(
+            function(response){
+                //handle modal close with response
+            },
+            function () {
+                //handle modal dismiss
+            });
 			closeSidebar();	
 		};
 		
 		vm.showContributing = function() {
 
-			// Just provide a template url, a controller and call 'showModal'.
-			ModalService.showModal({
-				templateUrl: "./components/rightSidebar/contributing.html",
-				controller: "docController",
-			});
+			// Just provide a template url, a controller and call 'open'.
+            $uibModal.open({
+                templateUrl: "./components/rightSidebar/contributing.html",
+                controller: 'docController'
+            }).result.then(
+            function(response){
+                //handle modal close with response
+            },
+            function () {
+                //handle modal dismiss
+            });
 			closeSidebar();		
 		};
 
@@ -134,11 +146,11 @@ app
 	}
 })
 
-app.controller('docController', ['$scope', 'close', function($scope, close) {
+app.controller('docController', ['$scope','$uibModalInstance', function($scope,$uibModalInstance) {
 	
-	$scope.close = function(result) {
-		close(result); // close
-	};
+    $scope.close = function() {
+        $uibModalInstance.dismiss('cancel');
+    };
 
 }]);
 
