@@ -34,8 +34,11 @@ app
     var q2tempval = '';
 	var q3tempval = '';
     var qctempval = '';
+    var quaternionDataX,quaternionDataY,quaternionDataZ,quaternionDataW;
+    var positionDataX,positionDataY,positionDataZ;
 	$scope.statusIcons = dashboardService.icons;
 	var dServiceObj = {};
+
 
 	$scope.$watch('statusIcons',function(newVal,oldVal){
         	dServiceObj = newVal; 
@@ -151,28 +154,37 @@ app
 	}
  	var count =0;
 	var render = function(){
-
+		var posX,posY,posZ;
 		requestAnimationFrame(render);
 		controls.update();
-		if($scope.cube && $scope.widget.settings.vehicle){
+		if($scope.cube && $scope.widget.settings.vehicle && $scope.widget.settings.attitudeData.length > 0 && $scope.widget.settings.positionData.length > 0){
 			if(telemetry[$scope.widget.settings.vehicle]) {
-		
 				//set quaternion values for rotation
-				$scope.cube.quaternion.x = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q1.value;
-				$scope.cube.quaternion.y = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q2.value;
-				$scope.cube.quaternion.z = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q3.value;
-				$scope.cube.quaternion.w = telemetry[$scope.widget.settings.vehicle].GNC.attitude.qc.value;
+				quaternionDataX = dashboardService.getData($scope.widget.settings.attitudeData[0].key);
+				quaternionDataY = dashboardService.getData($scope.widget.settings.attitudeData[1].key);
+				quaternionDataZ = dashboardService.getData($scope.widget.settings.attitudeData[2].key);
+				quaternionDataW = dashboardService.getData($scope.widget.settings.attitudeData[3].key);
+
+
+				$scope.cube.quaternion.x = quaternionDataX.value;
+				$scope.cube.quaternion.y = quaternionDataY.value;
+				$scope.cube.quaternion.z = quaternionDataZ.value;
+				$scope.cube.quaternion.w = quaternionDataW.value;
 
 				//set quaternion values for displaying on widget
-				$scope.quaternion.q1 = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q1.value.toFixed(4);
-				$scope.quaternion.q2 = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q2.value.toFixed(4);
-				$scope.quaternion.q3 = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q3.value.toFixed(4);
-				$scope.quaternion.qc = telemetry[$scope.widget.settings.vehicle].GNC.attitude.qc.value.toFixed(4);
+				$scope.quaternion.q1 = quaternionDataX.value.toFixed(4);
+				$scope.quaternion.q2 = quaternionDataY.value.toFixed(4);
+				$scope.quaternion.q3 = quaternionDataZ.value.toFixed(4);
+				$scope.quaternion.qc = quaternionDataW.value.toFixed(4);
+
 				
 				//set direction to Earth
-				var posX = telemetry[$scope.widget.settings.vehicle].GNC.position.x.value;
-				var posY = telemetry[$scope.widget.settings.vehicle].GNC.position.y.value;
-				var posZ = telemetry[$scope.widget.settings.vehicle].GNC.position.z.value;
+				positionDataX = dashboardService.getData($scope.widget.settings.positionData[0].key);
+				positionDataY = dashboardService.getData($scope.widget.settings.positionData[1].key);
+				positionDataZ = dashboardService.getData($scope.widget.settings.positionData[2].key);
+				posX = positionDataX.value;
+				posY = positionDataY.value;
+				posZ = positionDataZ.value;
 
 				//Transform position from ECEF to ECI
 				var earthECI = ECEF2ECI(posX,posY,posZ);
@@ -212,17 +224,22 @@ app
 	$scope.interval = $interval(updateColors, 1000, 0, false); 
 
 	function updateColors(){
-		if($scope.widget.settings.vehicle && $scope.cube && telemetry[$scope.widget.settings.vehicle]){
+		if($scope.widget.settings.vehicle && $scope.cube && telemetry[$scope.widget.settings.vehicle] && $scope.widget.settings.attitudeData){
 
-			var valTypeq1 = typeof telemetry[$scope.widget.settings.vehicle].GNC.attitude.q1.value;
-			var valTypeq2 = typeof telemetry[$scope.widget.settings.vehicle].GNC.attitude.q2.value;
-			var valTypeq3 = typeof telemetry[$scope.widget.settings.vehicle].GNC.attitude.q3.value;
-			var valTypeqc = typeof telemetry[$scope.widget.settings.vehicle].GNC.attitude.qc.value;	
+			var currentData1 = dashboardService.getData($scope.widget.settings.attitudeData[0].key);
+			var currentData2 = dashboardService.getData($scope.widget.settings.attitudeData[1].key);
+			var currentData3 = dashboardService.getData($scope.widget.settings.attitudeData[2].key);
+			var currentData4 = dashboardService.getData($scope.widget.settings.attitudeData[3].key);
 
-			var q1 = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q1;
-			var q2 = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q2;
-			var q3 = telemetry[$scope.widget.settings.vehicle].GNC.attitude.q3;
-			var qc = telemetry[$scope.widget.settings.vehicle].GNC.attitude.qc;	
+			var valTypeq1 = typeof currentData1.value;
+			var valTypeq2 = typeof currentData2.value;
+			var valTypeq3 = typeof currentData3.value;
+			var valTypeqc = typeof currentData4.value;	
+
+			var q1 = currentData1;
+			var q2 = currentData2;
+			var q3 = currentData3;
+			var qc = currentData4;	
 
 			//color of q1 
 			if(q1tempval === q1.value){
