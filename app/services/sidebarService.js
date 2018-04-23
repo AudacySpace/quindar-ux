@@ -1,34 +1,45 @@
 app
 .factory('sidebarService', function() { 
 
-    var vehicleInfo = {
-        vehicle : '',
-        id : '',
-        key : ''
-    }
+    var data = {
+        parameters:[]
+    };
 
     function setVehicleInfo(dataString) {
+        var vehicleInfo = {
+            vehicle : '',
+            id : '',
+            key : '',
+            category:''
+        }
         if(dataString){
             var nodes = dataString.split(".");
             vehicleInfo.vehicle = nodes[0];
             vehicleInfo.id = nodes[nodes.length - 1];
+            vehicleInfo.category = nodes[nodes.length-2];
             vehicleInfo.key = dataString;
+            var item = vehicleInfo;
+            data.parameters.push(item);
         } else {
             vehicleInfo = {
                 vehicle : '',
                 id : '',
-                key : ''
+                key : '',
+                category:''
             };
         }
     }
 
     function getVehicleInfo(){
-        return vehicleInfo;
+        var newData = data;
+        data = {
+            parameters:[]
+        }
+        return newData;
     }
 
 	return {
         setVehicleInfo : setVehicleInfo,
-        vehicleInfo : vehicleInfo,
         getVehicleInfo : getVehicleInfo
 	}
 });

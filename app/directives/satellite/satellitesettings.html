@@ -3,22 +3,47 @@
         <div class="row settingsrightcol" style="display: table">
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
             <div class="col-sm-4" style="display: table-cell; float:none">
+                <!-- Multi selection of data from data menu -->
                 <div class="row">
-                    <label for="Vehicle">Select Vehicle</label>
+                    <label for="Vehicle">Select Attitude</label>
                 </div>
                 <div class="row settingsspace" style="display: table"></div>
-                <div>
-                	<ui-select tagging ng-model="selected.vehicle" theme="bootstrap">
-        				<ui-select-match placeholder="Select Vehicle">{{$select.selected.value}}</ui-select-match>
-        				<ui-select-choices repeat="vehicle.value as vehicle in vehicles | filter: $select.search track by vehicle.value">
-            				<div ng-bind="vehicle.value | highlight: $select.search"></div>
-        				</ui-select-choices>
-        			</ui-select>
-                    <span ng-hide="selected.vehicle"> Required </span>
-                </div>          
+                <div class="btn-group" style="width:100%" uib-dropdown>
+                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata()" style="width:88%;border-radius:0;color:grey" >{{attitudeDisplay}}</button>
+                    <button type="button" class="btn btn-default" style="width:12%;border-radius:0" uib-dropdown-toggle>
+                        <span class="caret"></span>
+                        <span class="sr-only">Split button!</span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0" aria-labelledby="split-button">
+                        <li role="menuitem"><a href="#" ng-click="getValue('attitude')">Apply</a></li>
+                        <li role="menuitem"><a href="#" ng-click="openAttitudeList()">Open List</a></li>
+                    </ul>
+                </div>
+                    <span ng-hide="attitudeDisplay"> Required </span>
+                <!-- End of Multi Selection of Data from Data menu -->
             </div>
             <div class="col-sm-2" style="display: table-cell; float:none"></div>
-            <div class="col-sm-4" style="display: table-cell; float:none"></div>
+            <div class="col-sm-4" style="display: table-cell; float:none">
+                <!-- Multi selection of data from data menu -->
+                <div class="row">
+                    <label for="Vehicle">Select Position</label>
+                </div>
+                <div class="row settingsspace" style="display: table"></div>
+                <div class="btn-group" style="width:100%" uib-dropdown>
+                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata()" style="width:88%;border-radius:0;color:grey" >{{positionDisplay}}</button>
+                    <button type="button" class="btn btn-default" style="width:12%;border-radius:0" uib-dropdown-toggle>
+                        <span class="caret"></span>
+                        <span class="sr-only">Split button!</span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0" aria-labelledby="split-button">
+                        <li role="menuitem"><a href="#" ng-click="getValue('position')">Apply</a></li>
+                        <li role="menuitem"><a href="#" ng-click="openPositionList()">Open List</a></li>
+                    </ul>
+            </div>
+                    <span ng-hide="positionDisplay"> Required </span>
+                <!-- End of Multi Selection of Data from Data menu -->
+
+            </div>
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
         </div>
 		<div class="row settingsbottom" style="display:table">
