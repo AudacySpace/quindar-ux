@@ -31,7 +31,7 @@ app
     }
 
     function getVehicleInfo(){
-        var newData = data;
+        var newData = angular.copy(data);
         data = {
             parameters:[]
         }
@@ -40,6 +40,7 @@ app
 
 	return {
         setVehicleInfo : setVehicleInfo,
-        getVehicleInfo : getVehicleInfo
+        getVehicleInfo : getVehicleInfo,
+        data : data
 	}
 });

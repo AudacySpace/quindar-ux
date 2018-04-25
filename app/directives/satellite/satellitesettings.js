@@ -71,7 +71,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 	$scope.saveSettings = function(widget){
 		var status = checkforSameVehicle($scope.settings.attitudeData,$scope.settings.positionData);
 		if($scope.settings.attitudeData.length === 4 && $scope.settings.positionData.length === 3 && status === true){
-			$ngConfirm({
+            $ngConfirm({
             	title: 'Confirm!',
             	content: 'Is the quaternion coordinates selected order is:q1,q2,q3,qc and position coordinates selected order: x,y,z?',
             	scope: $scope,
@@ -90,14 +90,12 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 							scope.attitudeDisplay = "";
 							scope.positionDisplay = "";
 
-							
-							widget.settings.attitudeData = getSelectedAttitude(scope.settings.attitudeData);
+							widget.settings.attitudeData = getSelectedArray(scope.settings.attitudeData);
 							scope.attitudeDisplay = displayStringForInput(scope.settings.attitudeData);
-							widget.settings.positionData = getSelectedAttitude(scope.settings.positionData);
+							widget.settings.positionData = getSelectedArray(scope.settings.positionData);
 							scope.positionDisplay = displayStringForInput(scope.settings.positionData);
 							widget.settings.vehicle = scope.vehicle;
-
-							return true; // prevent close;
+                            return true; // to close after done ,if given false it will not close the confirm box
                     	}
                 	},
                 	NotSure: {
@@ -108,14 +106,14 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                    		}
                 	},
                 	ReorderAttitude: {
-                		text: 'Re-order Attitude',
+                		text: 'Reorder Attitude',
                     	btnClass: 'btn-orange',
                     	action: function(scope, button){
                         	scope.openAttitudeList();
                    		}
                 	},
                 	ReorderPosition: {
-             			text: 'Re-order Position',
+             			text: 'Reorder Position',
                     	btnClass: 'btn-orange',
                     	action: function(scope, button){
                         	scope.openPositionList();
@@ -128,15 +126,23 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
             	}
         	});
 		}else if(status === false){
-			alert("Both Attitude and Position Values should be of the same vehicle.");
+			$window.alert("Both Attitude and Position Values should be of the same vehicle.");
 		}else if($scope.settings.attitudeData.length < 4 && $scope.settings.positionData.length < 3){
-			alert("Please select all the quaternion coordinates:q1,q2,q3,qc and position coordinates:x,y,z");
+			$window.alert("Please select all the quaternion coordinates:q1,q2,q3,qc and position coordinates:x,y,z");
+            $scope.settings.attitudeData = [];
+            $scope.attitudeDisplay = "Click for data";
+            $scope.settings.positionData = [];
+            $scope.positionDisplay = "Click for data";
 		}
-		else if($scope.settings.attitudeData.length < 4){
-			alert("Please select all the quaternion coordinates:q1,q2,q3,qc");
-		}else if($scope.settings.positionData.length < 3){
-			alert("Please select all the position coordinates:x,y,z");
-		}
+		else if($scope.settings.attitudeData.length < 4 && $scope.settings.positionData.length === 3){
+            $scope.settings.attitudeData = [];
+            $scope.attitudeDisplay = "Click for data";
+			$window.alert("Please select all the quaternion coordinates:q1,q2,q3,qc");
+		}else if($scope.settings.positionData.length < 3 && $scope.settings.attitudeData.length === 4){
+            $scope.settings.positionData = [];
+            $scope.positionDisplay = "Click for data";
+			$window.alert("Please select all the position coordinates:x,y,z");		
+        }
 	}
 
 	$scope.getTelemetrydata = function(){
@@ -188,10 +194,15 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
     			$scope.attitudeDisplay = displayStringForInput($scope.settings.attitudeData);
 
 				if($scope.settings.attitudeData.length !== 4){
-            		$scope.attitudeDisplay = "";
+            		$scope.attitudeDisplay = "Click for data";
             		$scope.settings.attitudeData = [];
-            		alert("Please select all attitude values! ");
-            	}
+            		$window.alert("Please select all attitude values:q1,q2,q3,qc");
+            	}else {
+                    if ($window.innerWidth >= 1400){
+                        $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                        dashboardService.setLeftLock($scope.lock.lockLeft);
+                    }
+                }
 
     		}else if(category === "position"){
     			$scope.settings.positionData = [];
@@ -209,24 +220,19 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
     			$scope.positionDisplay = displayStringForInput($scope.settings.positionData);
 
 				if($scope.settings.positionData.length !== 3){
-            		$scope.positionDisplay = "";
+            		$scope.positionDisplay = "Click for data";
             		$scope.settings.positionData = [];
-            		alert("Please select all position values! ");
-            	}
+            		$window.alert("Please select all position values:x,y,z");
+            	}else {
+                    if ($window.innerWidth >= 1400){
+                        $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                        dashboardService.setLeftLock($scope.lock.lockLeft);
+                    }
+                }
             }
     	}else if(vehicleInfo.parameters.length ===  0){
-    		alert("Please select the parameters before apply!");
+    		$window.alert("Please select the parameters before apply!");
     	}
-		if ($window.innerWidth >= 1400){
-            $scope.lock.lockLeft = !$scope.lock.lockLeft;
-            dashboardService.setLeftLock($scope.lock.lockLeft);
-        }
-    }
-
-    function createDisplayArray(dstring){
-    	var delimiterIndex = dstring.lastIndexOf(',');
-    	var displayString = dstring.substring(0, delimiterIndex);
-    	return displayString;
     }
 
     function filterSelectedData(selectedArray){
@@ -319,7 +325,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
         return dString;
     }
 
-    function getSelectedAttitude(selectedArray){
+    function getSelectedArray(selectedArray){
     	var data = [];
     	for(var b=0;b<selectedArray.length;b++){
 			data.push(selectedArray[b]);
@@ -332,7 +338,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 		// Just provide a template url, a controller and call 'open'.
         $uibModal.open({
             templateUrl: "./directives/satellite/quaternionList.html",
-            controller: 'dataListCtrl',
+            controller: 'attitudeListCtrl',
             controllerAs: '$ctrl',
             resolve: {
                 attitudeItems: function () {
@@ -415,7 +421,7 @@ app.controller('positionListCtrl',function($scope,$uibModalInstance,positionItem
     }
 });
 
-app.controller('dataListCtrl',function($scope,$uibModalInstance,attitudeItems,$ngConfirm) {
+app.controller('attitudeListCtrl',function($scope,$uibModalInstance,attitudeItems,$ngConfirm) {
 	var $ctrl = this;
     $ctrl.data = attitudeItems;
     var values = angular.copy(attitudeItems);
