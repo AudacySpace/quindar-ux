@@ -9,17 +9,8 @@
 				<li>
 					<b>Vehicle </b> {{ widget.settings.vehicle }}
 				</li>
-				<li>
-					<b>q1 </b><span ng-style="quaternion.colorq1">{{ quaternion.q1 }}</span>
-				</li>
-				<li>
-					<b>q2 </b><span ng-style="quaternion.colorq2">{{ quaternion.q2 }}</span>
-				</li>
-				<li>
-					<b>q3 </b><span ng-style="quaternion.colorq3">{{ quaternion.q3 }}</span>
-				</li>
-				<li>
-					<b>qc </b><span ng-style="quaternion.colorqc">{{ quaternion.qc }}</span>
+				<li ng-repeat = "q in widget.settings.attitudeData track by $index">
+					<b>{{q.id}} </b><span ng-style="quaternion.color[$index]">{{ quaternion[q.id] }}</span>
 				</li>
 			</ul>
 		</div>

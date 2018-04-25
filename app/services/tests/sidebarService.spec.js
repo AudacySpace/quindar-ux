@@ -16,14 +16,12 @@ describe('Testing sidebarService', function () {
     	expect(sidebarService).toBeDefined();
     });
 
-    it('should define the default value for vehicleInfo', function() {
-        var vehicleInfo = vehicleInfo = {
-            vehicle : '',
-            id : '',
-            key : ''
+    it('should define data object', function() {
+        var data = {
+            parameters : []
         }
-        expect(sidebarService.vehicleInfo).toBeDefined();
-        expect(sidebarService.vehicleInfo).toEqual(vehicleInfo);
+        expect(sidebarService.data).toBeDefined();
+        expect(sidebarService.data).toEqual(data);
     });
 
     it('should define the function setVehicleInfo', function () {
@@ -32,20 +30,29 @@ describe('Testing sidebarService', function () {
 
     it('should be able to set the vehicle info when setVehicleInfo is called', function () {
         var datastring = 'A0.GNC.attitude.q1';
+        var vehicleInfo = {
+            vehicle:'A0',
+            id:'q1',
+            key:'A0.GNC.attitude.q1',
+            category:'attitude'
+        }
         
         sidebarService.setVehicleInfo(datastring);
 
-        expect(sidebarService.vehicleInfo.vehicle).toEqual('A0');
-        expect(sidebarService.vehicleInfo.id).toEqual('q1');
-        expect(sidebarService.vehicleInfo.key).toEqual('A0.GNC.attitude.q1');
+        expect(sidebarService.data.parameters.length).toEqual(1);
+        expect(sidebarService.data.parameters[0]).toEqual(vehicleInfo);
     });
 
     it('should be able to set the default vehicle info when setVehicleInfo is called with empty string', function () {
         sidebarService.setVehicleInfo("");
+        var vehicleInfo = {
+            vehicle:'',
+            id:'',
+            key:'',
+            category:''
+        }
+        expect(sidebarService.data.parameters.length).toEqual(0);
 
-        expect(sidebarService.vehicleInfo.vehicle).toEqual('');
-        expect(sidebarService.vehicleInfo.id).toEqual('');
-        expect(sidebarService.vehicleInfo.key).toEqual('');
     });
 
     it('should define the function getVehicleInfo', function () {
@@ -60,10 +67,11 @@ describe('Testing sidebarService', function () {
         var vehicleInfo = { 
             vehicle: 'A0', 
             id: 'q1', 
-            key: 'A0.GNC.attitude.q1' 
+            key: 'A0.GNC.attitude.q1',
+            category: 'attitude' 
         }
 
-        expect(sidebarService.getVehicleInfo()).toEqual(vehicleInfo);
+        expect(sidebarService.getVehicleInfo().parameters).toEqual([vehicleInfo]);
     });
  
 });
