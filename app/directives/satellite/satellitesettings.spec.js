@@ -20,7 +20,7 @@ describe('Testing satellite settings controller', function () {
 
         inject(function($controller, $rootScope){
             dashboardService = jasmine.createSpyObj('dashboardService', 
-                ['getLock', 'setLeftLock']);
+                ['getLock', 'setLeftLock','getData']);
 
             sidebarService = jasmine.createSpyObj('sidebarService',['getVehicleInfo'
                 ]);
@@ -149,6 +149,20 @@ describe('Testing satellite settings controller', function () {
 
     it('should store the value of selected attitude parameters when category is attitude', function() {
         windowMock.innerWidth = 1440;
+        dashboardService.getData.and.callFake(function(){
+            return {
+                "value":0.688,
+                "warn_high": "1",
+                "warn_low": "-1",
+                "alarm_high": "1.1",
+                "alarm_low": "-1.1",
+                "units": "",
+                "name": "quaternion q1",
+                "category": "attitude",
+                "notes": ""
+            }
+        });
+
         var data = { 
             parameters:[
                 {vehicle:'A0',id:'q1',key:'A0.GNC.attitude.q1',category:'attitude'},
@@ -178,6 +192,19 @@ describe('Testing satellite settings controller', function () {
 
     it('should store only the value of last four selected attitude parameters when category is attitude and number of paramters selected is more than 4', function() {
         windowMock.innerWidth = 1440;
+        dashboardService.getData.and.callFake(function(){
+            return {
+                "value":0.688,
+                "warn_high": "1",
+                "warn_low": "-1",
+                "alarm_high": "1.1",
+                "alarm_low": "-1.1",
+                "units": "",
+                "name": "quaternion q1",
+                "category": "attitude",
+                "notes": ""
+            }
+        });
         var data = { 
             parameters:[
                 {vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
@@ -223,13 +250,26 @@ describe('Testing satellite settings controller', function () {
 
         scope.getValue('attitude');
         expect(scope.settings.attitudeData).toEqual([]);
-        expect(scope.vehicle).toEqual('A0');
+        expect(scope.vehicle).toEqual('');
         expect(scope.attitudeDisplay).toEqual('Click for data');
         expect(windowMock.alert).toHaveBeenCalledWith("Please select all attitude values:q1,q2,q3,qc");
     });
 
     it('should store the value of selected position parameters when category is position', function() {
         windowMock.innerWidth = 1440;
+        dashboardService.getData.and.callFake(function(){
+            return {
+                "value":0.688,
+                "warn_high": "1",
+                "warn_low": "-1",
+                "alarm_high": "1.1",
+                "alarm_low": "-1.1",
+                "units": "",
+                "name": "position x",
+                "category": "attitude",
+                "notes": ""
+            }
+        });
         var data = { 
             parameters:[
                 {vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
@@ -257,6 +297,19 @@ describe('Testing satellite settings controller', function () {
 
     it('should store only the value of last three selected position parameters when category is position and number of paramters selected is more than 3', function() {
         windowMock.innerWidth = 1440;
+        dashboardService.getData.and.callFake(function(){
+            return {
+                "value":0.688,
+                "warn_high": "1",
+                "warn_low": "-1",
+                "alarm_high": "1.1",
+                "alarm_low": "-1.1",
+                "units": "",
+                "name": "position x",
+                "category": "attitude",
+                "notes": ""
+            }
+        });
         var data = { 
             parameters:[
                 {vehicle:'A0',id:'q1',key:'A0.GNC.attitude.q1',category:'attitude'},
@@ -301,7 +354,7 @@ describe('Testing satellite settings controller', function () {
 
         scope.getValue('position');
         expect(scope.settings.positionData).toEqual([]);
-        expect(scope.vehicle).toEqual('A0');
+        expect(scope.vehicle).toEqual('');
         expect(scope.positionDisplay).toEqual('Click for data');
         expect(windowMock.alert).toHaveBeenCalledWith("Please select all position values:x,y,z");
     });
