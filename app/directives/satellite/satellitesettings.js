@@ -71,60 +71,40 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 	$scope.saveSettings = function(widget){
 		var status = checkforSameVehicle($scope.settings.attitudeData,$scope.settings.positionData);
 		if($scope.settings.attitudeData.length === 4 && $scope.settings.positionData.length === 3 && status === true){
-            $ngConfirm({
-            	title: 'Confirm!',
-            	content: 'Is the quaternion coordinates selected order is:q1,q2,q3,qc and position coordinates selected order: x,y,z?',
-            	scope: $scope,
-            	columnClass: 'col-md-8 col-md-offset-2',
-            	buttons: {
-                	Yes: {
-                    	text: 'Yes',
-                    	btnClass: 'btn-blue',
-                    	action: function(scope, button){
-                       		widget.main = true;
-							widget.settings.active = false;
-							widget.saveLoad = false;
-							widget.delete = false;
-							widget.settings.attitudeData = [];
-							widget.settings.positionData = [];
-							scope.attitudeDisplay = "";
-							scope.positionDisplay = "";
+            $uibModal.open({
+                templateUrl: "./directives/satellite/confirmSettings.html",
+                controller: 'confirmCtrl',
+                controllerAs: '$ctrl',
+                 bindToController: true,
+                 scope: $scope,
+                resolve: {
+                    dataLabel: function () {
+                        return "Is the quaternion coordinates selected order is:q1,q2,q3,qc and position coordinates selected order: x,y,z?";
+                    },
+                    dataItems: function(){
+                        return $scope.settings;
+                    }
+                }
+            }).result.then(function(dataItems){
+                //handle modal close with response
+                widget.main = true;
+                widget.settings.active = false;
+                widget.saveLoad = false;
+                widget.delete = false;
+                widget.settings.attitudeData = [];
+                widget.settings.positionData = [];
+                $scope.attitudeDisplay = "";
+                $scope.positionDisplay = "";
 
-							widget.settings.attitudeData = getSelectedArray(scope.settings.attitudeData);
-							scope.attitudeDisplay = displayStringForInput(scope.settings.attitudeData);
-							widget.settings.positionData = getSelectedArray(scope.settings.positionData);
-							scope.positionDisplay = displayStringForInput(scope.settings.positionData);
-							widget.settings.vehicle = scope.vehicle;
-                            return true; // to close after done ,if given false it will not close the confirm box
-                    	}
-                	},
-                	NotSure: {
-                    	text: 'Not Sure',
-                    	btnClass: 'btn-orange',
-                    	action: function(scope, button){
-                        	$ngConfirm('Please change the coordinates order to the desired order and then save!');
-                   		}
-                	},
-                	ReorderAttitude: {
-                		text: 'Reorder Attitude',
-                    	btnClass: 'btn-orange',
-                    	action: function(scope, button){
-                        	scope.openAttitudeList();
-                   		}
-                	},
-                	ReorderPosition: {
-             			text: 'Reorder Position',
-                    	btnClass: 'btn-orange',
-                    	action: function(scope, button){
-                        	scope.openPositionList();
-                   		}
-                	},
-                	close: function(scope, button){
-                    	// closes the modal
-                
-                	}
-            	}
-        	});
+                widget.settings.attitudeData = getSelectedArray(dataItems.attitudeData);
+                $scope.attitudeDisplay = displayStringForInput(dataItems.attitudeData);
+                widget.settings.positionData = getSelectedArray(dataItems.positionData);
+                $scope.positionDisplay = displayStringForInput(dataItems.positionData);
+                widget.settings.vehicle = $scope.vehicle;
+            },
+            function () {
+            //handle modal dismiss
+        });
 		}else if(status === false){
 			$window.alert("Both Attitude and Position Values should be of the same vehicle.");
 		}else if($scope.settings.attitudeData.length < 4 && $scope.settings.positionData.length < 3){
@@ -174,7 +154,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
         }
     };
 
-  $scope.getValue = function(category){
+    $scope.getValue = function(category){
         var vehicleInfo = sidebarService.getVehicleInfo();
         if(vehicleInfo.parameters.length > 0){
 
@@ -195,7 +175,6 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                 }
                 
                 if(attitudeSettings.length === 4){
-
                     var attitudeSettingsfiltered1 = filterSelectedData(attitudeSettings);
                     var attitudeSettingsfiltered2 = removeCategories(attitudeSettingsfiltered1);
                     var attitudeSettingsfiltered3 = removeDuplicates(attitudeSettingsfiltered2,"id");
@@ -442,9 +421,10 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 	};
 });
 
-app.controller('positionListCtrl',function($scope,$uibModalInstance,positionItems,$ngConfirm) {
-	var $ctrl = this;
-	$ctrl.data = positionItems;
+
+app.controller('positionListCtrl',function($scope,$uibModalInstance,positionItems,$uibModal) {
+    var $ctrl = this;
+    $ctrl.data = positionItems;
     var values = angular.copy(positionItems);
 
     $ctrl.close = function() {
@@ -453,34 +433,30 @@ app.controller('positionListCtrl',function($scope,$uibModalInstance,positionItem
     };
 
     $ctrl.save = function(){
-		$ngConfirm({
-            title: 'Confirm!',
-            content: 'Is the position coordinates selected order is:x,y,z?',
-            scope: $scope,
-            buttons: {
-                Yes: {
-                    text: 'Yes',
-                    btnClass: 'btn-blue',
-                    action: function(scope, button){
-                    	$uibModalInstance.close($ctrl.data);
-						return true; 
-                    }
+        $uibModal.open({
+            templateUrl: "./directives/satellite/confirmParameter.html",
+            controller: 'confirmCtrl',
+            controllerAs: '$ctrl',
+            resolve: {
+                dataLabel: function () {
+                    return "Is the position coordinates selected order is:x,y,z?";
                 },
-                No: {
-                	text: 'No',
-                    btnClass: 'btn-default',
-                    action: function(scope, button){
-						return true;
-                    }
-
+                dataItems: function(){
+                    return $ctrl.data;
                 }
             }
+        }).result.then(function(dataItems){
+            //handle modal close with response
+            $uibModalInstance.close(dataItems);
+        },
+        function () {
+            //handle modal dismiss
         });
     }
 });
 
-app.controller('attitudeListCtrl',function($scope,$uibModalInstance,attitudeItems,$ngConfirm) {
-	var $ctrl = this;
+app.controller('attitudeListCtrl',function($scope,$uibModalInstance,attitudeItems,$uibModal) {
+    var $ctrl = this;
     $ctrl.data = attitudeItems;
     var values = angular.copy(attitudeItems);
 
@@ -490,29 +466,40 @@ app.controller('attitudeListCtrl',function($scope,$uibModalInstance,attitudeItem
     };
 
     $ctrl.save = function(){
-		$ngConfirm({
-            title: 'Do you Confirm!',
-            content: 'Quaternion coordinates selected order is:q1,q2,q3,qc?',
-            scope: $scope,
-            buttons: {
-                Yes: {
-                    text: 'Yes',
-                    btnClass: 'btn-blue',
-                    action: function(scope, button){
-                    	$uibModalInstance.close($ctrl.data);
-						return true; 
-                    }
+        $uibModal.open({
+            templateUrl: "./directives/satellite/confirmParameter.html",
+            controller: 'confirmCtrl',
+            controllerAs: '$ctrl',
+            resolve: {
+                dataLabel: function () {
+                    return "Quaternion coordinates selected order is:q1,q2,q3,qc?";
                 },
-                No: {
-                	text: 'No',
-                    btnClass: 'btn-default',
-                    action: function(scope, button){
-						return true;
-                    }
-
+                dataItems: function(){
+                    return $ctrl.data;
                 }
             }
+        }).result.then(function(dataItems){
+            //handle modal close with response
+            $uibModalInstance.close(dataItems);
+        },
+        function () {
+            //handle modal dismiss
         });
+
     }
 
 });
+
+app.controller('confirmCtrl',function($scope,$uibModalInstance,dataLabel,dataItems) {
+    var $ctrl = this;
+    $ctrl.modalLabel = dataLabel;
+    $ctrl.finalData = dataItems;
+    $ctrl.close = function() {
+        $uibModalInstance.dismiss('cancel');
+    };
+
+    $ctrl.save = function(){
+        $uibModalInstance.close($ctrl.finalData);
+    }
+});
+
