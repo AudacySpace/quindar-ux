@@ -37,23 +37,37 @@ app.controller('LineSettingsCtrl',
 
         $scope.getValue = function(){
             var vehicleInfo = sidebarService.getVehicleInfo();
-
-            for(var i=0; i<$scope.settings.vehicles.length; i++){
-                if($scope.settings.vehicles[i].value === vehicleInfo.vehicle){
-                    $scope.settings.vehicles[i].checked = true;
+            var data = vehicleInfo.parameters[vehicleInfo.parameters.length - 1]; // get the last selected id from the data menu
+            if(data){
+                for(var i=0; i<$scope.settings.vehicles.length; i++){
+                    if($scope.settings.vehicles[i].value === data.vehicle){
+                        $scope.settings.vehicles[i].checked = true;
+                    }
+                    else{
+                        $scope.settings.vehicles[i].checked = false;
+                    }
                 }
-                else{
-                    $scope.settings.vehicles[i].checked = false;
+                if(data.key !== ""){
+                    var datavalue = dashboardService.getData(data.key);
+                    if(datavalue){
+                        if(datavalue.hasOwnProperty("value")){
+                            $scope.settings.data = angular.copy(data);
+                            if ($window.innerWidth >= 1400){
+                                $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                                dashboardService.setLeftLock($scope.lock.lockLeft);
+                            }
+                        }else {
+                            $window.alert("Please select telemetry ID(leaf node) from Data Menu");
+                        }
+                    }else {
+                        //when no telemetry value available for the telemetry id,set the value in the input but also alert the user.
+                        $scope.settings.data = angular.copy(data);
+                        $window.alert("Currently there is no data available for this telemetry Id.");
+                    }
+                }else { 
+                    $window.alert("Vehicle data not set. Please select from Data Menu");
                 }
-            }
-
-            if(vehicleInfo.key !== "") {
-                $scope.settings.data = angular.copy(vehicleInfo);
-                if ($window.innerWidth >= 1400){
-                    $scope.lock.lockLeft = !$scope.lock.lockLeft;
-                    dashboardService.setLeftLock($scope.lock.lockLeft);
-                }
-            } else {
+            }else {
                 $window.alert("Vehicle data not set. Please select from Data Menu");
             }
         }
@@ -130,6 +144,8 @@ app.controller('LineSettingsCtrl',
                                     for(var j=0; j<$scope.widget.settings.data.vehicles.length; j++){
                                         if($scope.settings.vehicles[i].value == $scope.widget.settings.data.vehicles[j].name){
                                             $scope.settings.vehicles[i].checked = true;
+                                            $scope.settings.vehicles[i].color = $scope.widget.settings.data.vehicles[j].color;
+
                                         }
                                     }
                                 }

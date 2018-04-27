@@ -21,6 +21,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      './public/scripts/jquery.js',
       './public/scripts/angular.min.js',
       './node_modules/angular-mocks/angular-mocks.js',
       './public/scripts/angular-aria.min.js',
@@ -38,6 +39,7 @@ module.exports = function(config) {
       './public/scripts/marked.js',
       './public/scripts/angularjs-dropdown-multiselect.js',
       './public/scripts/ng-sortable.js',
+      './public/scripts/angular-confirm.min.js',
       './app/app.js',
       './app/components/**/*.js',
       './app/services/*.js',

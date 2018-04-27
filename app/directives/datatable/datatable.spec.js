@@ -131,28 +131,32 @@ describe('Testing data table controller', function () {
 
     it('should alert the user if the vehicle and id from the left menu are not available', function() {
         spyOn(windowMock, "alert");
+        var data = {
+            parameters:[]
+        };
         sidebarService.getVehicleInfo.and.callFake(function(){
-            return { 
-                id: '',
-                vehicle: '',
-                key: '' 
-            }
+            return data;
         });
 
         scope.getValue(ev, {}, 1);
-
         expect(windowMock.alert).toHaveBeenCalledWith("Vehicle data not set. Please select from Data Menu");
         expect(arrow.style.color).toEqual('#07D1EA');
     });
 
     it('should alert the user if a group(not ID) is selected from the left menu', function() {
         spyOn(windowMock, "alert");
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return { 
+        var data = {
+            parameters:[]
+        };
+        data.parameters[0] = { 
                 id: 'velocity',
                 vehicle: 'A0',
-                key: 'A0.GNC.velocity' 
+                key: 'A0.GNC.velocity',
+                category: 'GNC'
+
             }
+        sidebarService.getVehicleInfo.and.callFake(function(){
+            return data;
         });
 
         dashboardService.getData.and.callFake(function() {
@@ -176,11 +180,17 @@ describe('Testing data table controller', function () {
         var vehicleInfo = { 
             id: 'vx',
             vehicle: 'A0',
-            key: 'A0.GNC.velocity.vx' 
+            key: 'A0.GNC.velocity.vx',
+            category: 'category' 
         };
+        var data = {
+            parameters:[]
+        };
+        data.parameters[0] = vehicleInfo;
+
 
         sidebarService.getVehicleInfo.and.callFake(function(){
-            return vehicleInfo;
+            return data;
         });
 
         dashboardService.getData.and.callFake(function() {
@@ -211,11 +221,17 @@ describe('Testing data table controller', function () {
         var vehicleInfo = { 
             id: 'vx',
             vehicle: 'A0',
-            key: 'A0.GNC.velocity.vx' 
+            key: 'A0.GNC.velocity.vx',
+            category: 'category' 
         };
+        var data = {
+            parameters:[]
+        };
+        data.parameters[0] = vehicleInfo;
+
 
         sidebarService.getVehicleInfo.and.callFake(function(){
-            return vehicleInfo;
+            return data;
         });
 
         dashboardService.getData.and.callFake(function() {
@@ -247,12 +263,14 @@ describe('Testing data table controller', function () {
 
     it('should alert the user if the vehicle and id from the left menu are not available', function() {
         spyOn(windowMock, "alert");
+
+        var data = {
+            parameters:[]
+        };
+
+
         sidebarService.getVehicleInfo.and.callFake(function(){
-            return { 
-                id: '',
-                vehicle: '',
-                key: '' 
-            }
+            return data;
         });
 
         scope.applyGroup(ev, {}, 1);
@@ -263,12 +281,18 @@ describe('Testing data table controller', function () {
 
     it('should alert the user if an ID(not group) is selected from the left menu', function() {
         spyOn(windowMock, "alert");
+        var vehicleInfo = { 
+            id: 'vx',
+            vehicle: 'A0',
+            key: 'A0.GNC.velocity.vx',
+            category: 'category' 
+        };
+        var data = {
+            parameters:[]
+        };
+        data.parameters[0] = vehicleInfo;
         sidebarService.getVehicleInfo.and.callFake(function(){
-            return { 
-                id: 'vx',
-                vehicle: 'A0',
-                key: 'A0.GNC.velocity.vx' 
-            }
+            return data;
         });
 
         dashboardService.getData.and.callFake(function() {
@@ -297,11 +321,17 @@ describe('Testing data table controller', function () {
         var vehicleInfo = { 
             id: 'velocity',
             vehicle: 'A0',
-            key: 'A0.GNC.velocity' 
+            key: 'A0.GNC.velocity',
+            category: 'GNC' 
         };
 
+        var data = {
+            parameters:[]
+        };
+        data.parameters[0] = vehicleInfo;
+
         sidebarService.getVehicleInfo.and.callFake(function(){
-            return vehicleInfo;
+            return data;
         });
 
         dashboardService.getData.and.callFake(function() {
@@ -336,8 +366,13 @@ describe('Testing data table controller', function () {
             key: 'A0.GNC.velocity' 
         };
 
+        var data = {
+            parameters:[]
+        };
+        data.parameters[0] = vehicleInfo;
+
         sidebarService.getVehicleInfo.and.callFake(function(){
-            return vehicleInfo;
+            return data;
         });
 
         dashboardService.getData.and.callFake(function() {

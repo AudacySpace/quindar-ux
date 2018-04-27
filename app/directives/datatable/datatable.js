@@ -146,25 +146,29 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     $scope.getValue = function($event, row, $index){
         var vehicleInfo = sidebarService.getVehicleInfo();
         var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
+        var data = vehicleInfo.parameters[vehicleInfo.parameters.length-1];
+        if(data && data.key) {
+            var datavalue = dashboardService.getData(data.key);
+            if(datavalue){
+                if(datavalue.hasOwnProperty("value")){
+                    $scope.widget.settings.data[$index] = new Object();
+                    $scope.widget.settings.data[$index].type = "data";
+                    $scope.widget.settings.data[$index].value = data.key;
 
-        if(vehicleInfo.key) {
-            var data = dashboardService.getData(vehicleInfo.key);
-
-            if(data.hasOwnProperty("value")){
-                $scope.widget.settings.data[$index] = new Object();
-                $scope.widget.settings.data[$index].type = "data";
-                $scope.widget.settings.data[$index].value = vehicleInfo.key;
-
-                arrow.style.color = "#b3b3b3";
-                if ($window.innerWidth >= 1400){
-                    if($scope.lock.lockLeft !== false){
-                        $scope.lock.lockLeft = !$scope.lock.lockLeft;
-                        dashboardService.setLeftLock($scope.lock.lockLeft);
+                    arrow.style.color = "#b3b3b3";
+                    if ($window.innerWidth >= 1400){
+                        if($scope.lock.lockLeft !== false){
+                            $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                            dashboardService.setLeftLock($scope.lock.lockLeft);
+                        }
                     }
+                } else {
+                    arrow.style.color = "#07D1EA";
+                    $window.alert("Please select telemetry ID(leaf node) from Data Menu");
                 }
-            } else {
+            }else {
                 arrow.style.color = "#07D1EA";
-                $window.alert("Please select telemetry ID(leaf node) from Data Menu");
+                $window.alert("Currently there is no data streaming available for this telemetry id.");
             }
         } else {
             arrow.style.color = "#07D1EA";
@@ -176,32 +180,36 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     $scope.applyGroup = function($event, row, $index){
         var vehicleInfo = sidebarService.getVehicleInfo();
         var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
+        var data = vehicleInfo.parameters[vehicleInfo.parameters.length - 1];
+    
+        if(data && data.key) {
+            var datavalue = dashboardService.getData(data.key);
+            if(datavalue){
+                if(!datavalue.hasOwnProperty("value")){
+                    var idList = Object.keys(datavalue);
 
-        var grpkey = vehicleInfo.key;
-        
-        if(grpkey) {
-            var data = dashboardService.getData(grpkey);
-
-            if(!data.hasOwnProperty("value")){
-                var idList = Object.keys(data);
-
-                for(var i=0; i<idList.length; i++){
-                    $scope.widget.settings.data[$index + i] = new Object();
-                    $scope.widget.settings.data[$index + i].type = "data";
-                    $scope.widget.settings.data[$index + i].value = grpkey + '.' + idList[i];
-                }
-
-                arrow.style.color = "#b3b3b3";
-                if ($window.innerWidth >= 1400){
-                    if($scope.lock.lockLeft !== false){
-                        $scope.lock.lockLeft = !$scope.lock.lockLeft;
-                        dashboardService.setLeftLock($scope.lock.lockLeft);
+                    for(var i=0; i<idList.length; i++){
+                        $scope.widget.settings.data[$index + i] = new Object();
+                        $scope.widget.settings.data[$index + i].type = "data";
+                        $scope.widget.settings.data[$index + i].value = data.key + '.' + idList[i];
                     }
+
+                    arrow.style.color = "#b3b3b3";
+                    if ($window.innerWidth >= 1400){
+                        if($scope.lock.lockLeft !== false){
+                            $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                            dashboardService.setLeftLock($scope.lock.lockLeft);
+                        }
+                    }
+                } else {
+                    arrow.style.color = "#07D1EA";
+                    $window.alert("Please select group(not ID) from Data Menu");
                 }
-            } else {
+            }else {
                 arrow.style.color = "#07D1EA";
-                $window.alert("Please select group(not ID) from Data Menu");
+                $window.alert("Currently there is no data streaming available for the telemetry ids in this group.");
             }
+
         } else {
             arrow.style.color = "#07D1EA";
             $window.alert("Data not set. Please select from Data Menu");
