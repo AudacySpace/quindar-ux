@@ -37,15 +37,41 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
         }
     }
 
+    // $scope.getValue = function(){
+    //     var vehicleInfo = sidebarService.getVehicleInfo();
+    //     if(vehicleInfo.vehicle !== "" && vehicleInfo.id !== "") {
+    //         $scope.data = angular.copy(vehicleInfo);
+    //         if ($window.innerWidth >= 1400){
+    //             $scope.lock.lockLeft = !$scope.lock.lockLeft;
+    //             dashboardService.setLeftLock($scope.lock.lockLeft);
+    //         }
+    //     } else {
+    //         $window.alert("Vehicle data not set. Please select from Data Menu");
+    //     }
+    // }
+
     $scope.getValue = function(){
         var vehicleInfo = sidebarService.getVehicleInfo();
-        if(vehicleInfo.vehicle !== "" && vehicleInfo.id !== "") {
-            $scope.data = angular.copy(vehicleInfo);
-            if ($window.innerWidth >= 1400){
-                $scope.lock.lockLeft = !$scope.lock.lockLeft;
-                dashboardService.setLeftLock($scope.lock.lockLeft);
+        var data = vehicleInfo.parameters[vehicleInfo.parameters.length - 1];
+        if(data && data.vehicle !== "" && data.id !== ""){
+            var datavalue = dashboardService.getData(data.key);
+            if(datavalue){
+                if(datavalue.hasOwnProperty("value")){
+                    $scope.data = angular.copy(data);
+                    if ($window.innerWidth >= 1400){
+                        $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                        dashboardService.setLeftLock($scope.lock.lockLeft);
+                    }
+
+                }else{
+                   $window.alert("Please select telemetry ID(leaf node) from Data Menu"); 
+                }
+
+            }else{
+                $scope.data = angular.copy(data);
+                $window.alert("Currently there is no data available for this telemetry id.");
             }
-        } else {
+        }else {
             $window.alert("Vehicle data not set. Please select from Data Menu");
         }
     }

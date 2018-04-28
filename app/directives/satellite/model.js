@@ -157,7 +157,7 @@ app
 		var posX,posY,posZ;
 		requestAnimationFrame(render);
 		controls.update();
-		if($scope.cube && $scope.widget.settings.vehicle && $scope.widget.settings.attitudeData.length > 0 && $scope.widget.settings.positionData.length > 0){
+		if($scope.cube && $scope.widget.settings.vehicle && $scope.widget.settings.attitudeData && $scope.widget.settings.positionData){
 			if(telemetry[$scope.widget.settings.vehicle]) {
 				//set quaternion values for rotation
 				quaternionDataX = dashboardService.getData($scope.widget.settings.attitudeData[0].key);
@@ -212,6 +212,8 @@ app
 				$scope.quaternion[$scope.widget.settings.attitudeData[2].id] = "N/A";
 				$scope.quaternion[$scope.widget.settings.attitudeData[3].id] = "N/A";
 			}
+	 	}else {
+	 		
 	 	}
 	
 	 	$scope.camera.fov = fov * $scope.widget.settings.zoom;

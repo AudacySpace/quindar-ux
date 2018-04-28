@@ -1,10 +1,11 @@
 describe('Testing satellite settings controller', function () {
-    var controller, scope, dashboardService,sidebarService,sideNavOpenMock;
+    var controller, scope, dashboardService,sidebarService,sideNavOpenMock,$q;
 
     var windowMock = {
         alert : function(message) {},
         innerWidth: 1000
     };
+    var modalInstance = { open: function() {} };
 
     beforeEach(function () {
         // load the module
@@ -18,7 +19,7 @@ describe('Testing satellite settings controller', function () {
             });
         });
 
-        inject(function($controller, $rootScope){
+        inject(function($controller, $rootScope, _$q_){
             dashboardService = jasmine.createSpyObj('dashboardService', 
                 ['getLock', 'setLeftLock','getData']);
 
@@ -36,10 +37,13 @@ describe('Testing satellite settings controller', function () {
                 }
             };
 
+            $q = _$q_;
+
             controller = $controller('SatSettingsCtrl', {
                 $scope: scope, 
                 dashboardService: dashboardService,
-                sidebarService: sidebarService
+                sidebarService: sidebarService,
+                $uibModal : modalInstance
             });
         });
 
@@ -429,5 +433,138 @@ describe('Testing satellite settings controller', function () {
         
         expect(windowMock.alert).toHaveBeenCalledWith("Please select all the quaternion coordinates:q1,q2,q3,qc");
     });
+
+    it('should close the settings menu on save if data is selected', function() {
+        scope.settings.attitudeData = [
+            {vehicle:'A0',id:'q1',key:'A0.GNC.attitude.q1',category:'attitude'},
+            {vehicle:'A0',id:'q2',key:'A0.GNC.attitude.q2',category:'attitude'},
+            {vehicle:'A0',id:'q3',key:'A0.GNC.attitude.q3',category:'attitude'},
+            {vehicle:'A0',id:'qc',key:'A0.GNC.attitude.qc',category:'attitude'}
+        ];
+        scope.settings.positionData = [
+            {vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
+            {vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'},
+            {vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'}
+        ];
+        scope.vehicle = 'A0';
+        scope.widget.main = false;
+        scope.widget.settings.active = true;
+
+        var fakeModal = {
+            result: {
+                then: function(confirmCallback, cancelCallback) {
+                    //Store the callbacks for later when the user clicks on the OK or Cancel button of the dialog
+                    this.confirmCallBack = confirmCallback;
+                    this.cancelCallback = cancelCallback;
+                }
+            }
+        };
+
+        var modalResult = scope.settings;
+        var mockModalInstance = { result: $q.resolve(modalResult) };
+        spyOn(mockModalInstance.result, 'then').and.callThrough();
+        spyOn(modalInstance, 'open').and.returnValue(mockModalInstance);
+
+        scope.saveSettings(scope.widget);
+        scope.$digest();
+
+        expect(modalInstance.open).toHaveBeenCalled();
+        expect(mockModalInstance.result.then).toHaveBeenCalledWith(jasmine.any(Function),jasmine.any(Function));
+        expect(scope.widget.main).toEqual(true);
+        expect(scope.widget.settings.active).toEqual(false);
+        expect(scope.widget.settings.vehicle).toEqual('A0');
+        expect(scope.widget.settings.attitudeData).toEqual([
+            {vehicle:'A0',id:'q1',key:'A0.GNC.attitude.q1',category:'attitude'},
+            {vehicle:'A0',id:'q2',key:'A0.GNC.attitude.q2',category:'attitude'},
+            {vehicle:'A0',id:'q3',key:'A0.GNC.attitude.q3',category:'attitude'},
+            {vehicle:'A0',id:'qc',key:'A0.GNC.attitude.qc',category:'attitude'}
+        ]);
+        expect(scope.widget.settings.positionData).toEqual([
+            {vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
+            {vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'},
+            {vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'}
+        ]);
+    });
+
+    it('should open quaternion coordinate list on call to openAttitudeList function', function() {
+        scope.settings.attitudeData = [
+            {vehicle:'A0',id:'q1',key:'A0.GNC.attitude.q1',category:'attitude'},
+            {vehicle:'A0',id:'q2',key:'A0.GNC.attitude.q2',category:'attitude'},
+            {vehicle:'A0',id:'q3',key:'A0.GNC.attitude.q3',category:'attitude'},
+            {vehicle:'A0',id:'qc',key:'A0.GNC.attitude.qc',category:'attitude'}
+        ];
+        scope.settings.positionData = [
+            {vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
+            {vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'},
+            {vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'}
+        ];
+        scope.vehicle = 'A0';
+        scope.widget.main = false;
+        scope.widget.settings.active = true;
+
+        var fakeModal = {
+            result: {
+                then: function(confirmCallback, cancelCallback) {
+                    //Store the callbacks for later when the user clicks on the OK or Cancel button of the dialog
+                    this.confirmCallBack = confirmCallback;
+                    this.cancelCallback = cancelCallback;
+                }
+            }
+        };
+
+        var modalResult = scope.settings;
+        var mockModalInstance = { result: $q.resolve(modalResult) };
+        spyOn(mockModalInstance.result, 'then').and.callThrough();
+        spyOn(modalInstance, 'open').and.returnValue(mockModalInstance);
+
+        scope.openAttitudeList();
+        scope.$digest();
+
+        expect(modalInstance.open).toHaveBeenCalled();
+        expect(mockModalInstance.result.then).toHaveBeenCalledWith(jasmine.any(Function),jasmine.any(Function));
+        expect(scope.attitudeDisplay).toEqual('q1,q2,q3,qc');
+
+    });
+
+    it('should open position coordinate list on call to openPositionList function', function() {
+        scope.settings.attitudeData = [
+            {vehicle:'A0',id:'q1',key:'A0.GNC.attitude.q1',category:'attitude'},
+            {vehicle:'A0',id:'q2',key:'A0.GNC.attitude.q2',category:'attitude'},
+            {vehicle:'A0',id:'q3',key:'A0.GNC.attitude.q3',category:'attitude'},
+            {vehicle:'A0',id:'qc',key:'A0.GNC.attitude.qc',category:'attitude'}
+        ];
+        scope.settings.positionData = [
+            {vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
+            {vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'},
+            {vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'}
+        ];
+        scope.vehicle = 'A0';
+        scope.widget.main = false;
+        scope.widget.settings.active = true;
+
+        var fakeModal = {
+            result: {
+                then: function(confirmCallback, cancelCallback) {
+                    //Store the callbacks for later when the user clicks on the OK or Cancel button of the dialog
+                    this.confirmCallBack = confirmCallback;
+                    this.cancelCallback = cancelCallback;
+                }
+            }
+        };
+
+        var modalResult = scope.settings;
+        var mockModalInstance = { result: $q.resolve(modalResult) };
+        spyOn(mockModalInstance.result, 'then').and.callThrough();
+        spyOn(modalInstance, 'open').and.returnValue(mockModalInstance);
+
+        scope.openPositionList();
+        scope.$digest();
+
+        expect(modalInstance.open).toHaveBeenCalled();
+        expect(mockModalInstance.result.then).toHaveBeenCalledWith(jasmine.any(Function),jasmine.any(Function));
+        expect(scope.positionDisplay).toEqual('x,y,z');
+
+    });
+
 
 })

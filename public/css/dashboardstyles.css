@@ -57,7 +57,10 @@ span#qwidgetPlus,i#g-track,i#t-table,i#s-table,i#d-table,i#l-plot,i#clock,i#d-lo
 }
 
 img#main-img {
-    height:50px;
+/*    height:50px;*/
+    height:95%;
+    padding-top:4px;
+    padding-bottom:2px;
 }
 
 a#QRegular.navbar-brand {
@@ -216,10 +219,16 @@ ul.nav.navbar-nav.navbar-right {
     height:50px;
 }
 #missionImage {
-    position:relative;
+/*    position:relative;
     top:7px;
     height:35px;
+    left:2px;*/
+
+    position:relative;
+    top:11px;
+    height:28px;
     left:2px;
+
 }
 
 @media (min-width: 768px) {

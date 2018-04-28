@@ -168,7 +168,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                 }
             }else {
                 arrow.style.color = "#07D1EA";
-                $window.alert("Currently there is no data streaming available for this telemetry id.");
+                $window.alert("Currently there is no data available for this telemetry id.");
             }
         } else {
             arrow.style.color = "#07D1EA";
@@ -207,7 +207,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                 }
             }else {
                 arrow.style.color = "#07D1EA";
-                $window.alert("Currently there is no data streaming available for the telemetry ids in this group.");
+                $window.alert("Currently there is no data available for the selected group.");
             }
 
         } else {

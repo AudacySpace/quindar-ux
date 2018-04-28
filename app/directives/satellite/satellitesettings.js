@@ -7,11 +7,7 @@ app
     }
 });
 
-app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarService, $window, $mdSidenav,$uibModal,$ngConfirm){
-	$scope.checkboxModel = {
-		value1:false,
-		value2:false,
-	}
+app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarService, $window, $mdSidenav,$uibModal){
 
     checkforPreSavedData();
 	$scope.closeSettings = function(widget){
@@ -75,8 +71,8 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                 templateUrl: "./directives/satellite/confirmSettings.html",
                 controller: 'confirmCtrl',
                 controllerAs: '$ctrl',
-                 bindToController: true,
-                 scope: $scope,
+                bindToController: true,
+                scope: $scope,
                 resolve: {
                     dataLabel: function () {
                         return "Is the quaternion coordinates selected order is:q1,q2,q3,qc and position coordinates selected order: x,y,z?";
@@ -156,18 +152,24 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 
     $scope.getValue = function(category){
         var vehicleInfo = sidebarService.getVehicleInfo();
-        if(vehicleInfo.parameters.length > 0){
+        var dataLen = vehicleInfo.parameters.length;
 
+        //this condition checks if there is any selected data
+        if(dataLen > 0){
+            //this condition checks if the dropdown is attitude 
             if(category === "attitude"){
                 var attitudeArray = [];
                 var attvehicleName = "";
                 var attitudeSettings = [];
                 var attitudeDisplayText = "";
-                for(var i=0;i<vehicleInfo.parameters.length;i++){
+
+                //for loop to form a temp attitude/quaternion coordinate array from the data array
+                for(var i=0;i<dataLen;i++){
                     attitudeArray.push(vehicleInfo.parameters[i]);
                     attvehicleName = vehicleInfo.parameters[i].vehicle;
                 }
 
+                //if the temp attitude array has length more than 4 then reduce its size to recent 4
                 if(attitudeArray.length > 4){
                     attitudeSettings = getRecentSelectedValues(attitudeArray,4);
                 }else {
@@ -178,7 +180,6 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                     var attitudeSettingsfiltered1 = filterSelectedData(attitudeSettings);
                     var attitudeSettingsfiltered2 = removeCategories(attitudeSettingsfiltered1);
                     var attitudeSettingsfiltered3 = removeDuplicates(attitudeSettingsfiltered2,"id");
-    
                     if(attitudeSettingsfiltered3.length === 4){  
                         attitudeDisplayText = displayStringForInput(attitudeSettingsfiltered3);
                         $scope.settings.attitudeData = attitudeSettingsfiltered3;
@@ -189,22 +190,25 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                             dashboardService.setLeftLock($scope.lock.lockLeft);
                         }
                     }else if(attitudeSettingsfiltered3.length < 4){
-                        $window.alert("Please select all attitude values:q1,q2,q3,qc"); 
+                        $window.alert("You have either not selected all attitude values:q1,q2,q3,qc or there may be no data available for the selected quaternion coordinates."); 
                     }
                 }else {
                     $window.alert("Please select all attitude values:q1,q2,q3,qc"); 
                 }       
                 
-            }else if(category === "position"){
+            }else if(category === "position"){ //this condition checks if the dropdown is position
                 var positionArray = [];
                 var posvehicleName = "";
                 var positionSettings = [];
                 var positionDisplayText = "";
-                for(var i=0;i<vehicleInfo.parameters.length;i++){
+
+                //for loop to form a temp position coordinate array from the data array
+                for(var i=0;i<dataLen;i++){
                     positionArray.push(vehicleInfo.parameters[i]);
                     posvehicleName = vehicleInfo.parameters[i].vehicle;
                 }
 
+                //if the temp position array has length more than 3 then reduce its size to recent 3
                 if(positionArray.length > 3){
                     positionSettings = getRecentSelectedValues(positionArray,3);
                 }else {
@@ -212,7 +216,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                 }
                 
                 if(positionSettings.length === 3){
-                    var positionSettingsfiltered1 = filterSelectedData(positionSettings);
+                    var positionSettingsfiltered1 = filterSelectedData(positionSettings); 
                     var positionSettingsfiltered2 = removeCategories(positionSettingsfiltered1);
                     var positionSettingsfiltered3 = removeDuplicates(positionSettingsfiltered2,"id");
                     
@@ -226,7 +230,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                             dashboardService.setLeftLock($scope.lock.lockLeft);
                         }
                     }else if(positionSettingsfiltered3.length < 3){
-                        $window.alert("Please select all position values:x,y,z");
+                        $window.alert("You have either not selected all position values:x,y,z or there may be no data available for the position coordinates."); 
                     }
 
                 }else {
@@ -485,7 +489,6 @@ app.controller('attitudeListCtrl',function($scope,$uibModalInstance,attitudeItem
         function () {
             //handle modal dismiss
         });
-
     }
 
 });
