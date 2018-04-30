@@ -61,7 +61,6 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 			$scope.settings.positionData = [];
 			$scope.positionDisplay = "Click for data";
 		}
-
 	}
 
 	$scope.saveSettings = function(widget){
@@ -150,6 +149,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
         }
     };
 
+
     $scope.getValue = function(category){
         var vehicleInfo = sidebarService.getVehicleInfo();
         var dataLen = vehicleInfo.parameters.length;
@@ -159,14 +159,12 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
             //this condition checks if the dropdown is attitude 
             if(category === "attitude"){
                 var attitudeArray = [];
-                var attvehicleName = "";
                 var attitudeSettings = [];
                 var attitudeDisplayText = "";
 
                 //for loop to form a temp attitude/quaternion coordinate array from the data array
                 for(var i=0;i<dataLen;i++){
                     attitudeArray.push(vehicleInfo.parameters[i]);
-                    attvehicleName = vehicleInfo.parameters[i].vehicle;
                 }
 
                 //if the temp attitude array has length more than 4 then reduce its size to recent 4
@@ -177,35 +175,42 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                 }
                 
                 if(attitudeSettings.length === 4){
-                    var attitudeSettingsfiltered1 = filterSelectedData(attitudeSettings);
-                    var attitudeSettingsfiltered2 = removeCategories(attitudeSettingsfiltered1);
-                    var attitudeSettingsfiltered3 = removeDuplicates(attitudeSettingsfiltered2,"id");
-                    if(attitudeSettingsfiltered3.length === 4){  
-                        attitudeDisplayText = displayStringForInput(attitudeSettingsfiltered3);
-                        $scope.settings.attitudeData = attitudeSettingsfiltered3;
-                        $scope.attitudeDisplay = attitudeDisplayText;
-                        $scope.vehicle = attvehicleName;
-                        if ($window.innerWidth >= 1400){
-                            $scope.lock.lockLeft = !$scope.lock.lockLeft;
-                            dashboardService.setLeftLock($scope.lock.lockLeft);
+                    var attitudeSettingsfiltered1 = removeCategories(attitudeSettings); //to remove selected group or categories while opening the list
+                    var attitudeSettingsfiltered2 = removeDuplicates(attitudeSettingsfiltered1,"id");// to remove duplicate selection of a single value
+                    var isDiffAttitudeVeh = isAnyDiffVehicles(attitudeSettingsfiltered2);// to check if all the values are of the same vehicle
+                    var attitudefilteredData = filterSelectedData(attitudeSettingsfiltered2); // check if there are any different values of a category
+
+                    if(isDiffAttitudeVeh === false && attitudefilteredData.length === attitudeSettingsfiltered2.length){ // condition to check if the values are of same vehicle and same category
+                        if(attitudeSettingsfiltered2.length === 4){  
+                            attitudeDisplayText = displayStringForInput(attitudeSettingsfiltered2);
+                            $scope.settings.attitudeData = attitudeSettingsfiltered2;
+                            $scope.attitudeDisplay = attitudeDisplayText;
+                            $scope.vehicle = attitudeSettingsfiltered2[0].vehicle;
+                            if ($window.innerWidth >= 1400){
+                                $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                                dashboardService.setLeftLock($scope.lock.lockLeft);
+                            }
+                        }else if(attitudeSettingsfiltered2.length < 4){
+                            $window.alert("You have either not selected all attitude values:q1,q2,q3,qc or there may be no data available for the selected quaternion coordinates."); 
                         }
-                    }else if(attitudeSettingsfiltered3.length < 4){
-                        $window.alert("You have either not selected all attitude values:q1,q2,q3,qc or there may be no data available for the selected quaternion coordinates."); 
+                    }else if(isDiffAttitudeVeh === false && attitudefilteredData.length !== attitudeSettingsfiltered2.length){
+                        $window.alert("Please select all the attitude values:q1,q2,q3,qc from the same category of single vehicle.");
+                    }else if(isDiffAttitudeVeh === true){
+                        $window.alert("Please select all the attitude values:q1,q2,q3,qc from the same vehicle.");
                     }
+
                 }else {
                     $window.alert("Please select all attitude values:q1,q2,q3,qc"); 
-                }       
+                }  
                 
             }else if(category === "position"){ //this condition checks if the dropdown is position
                 var positionArray = [];
-                var posvehicleName = "";
                 var positionSettings = [];
                 var positionDisplayText = "";
 
                 //for loop to form a temp position coordinate array from the data array
                 for(var i=0;i<dataLen;i++){
                     positionArray.push(vehicleInfo.parameters[i]);
-                    posvehicleName = vehicleInfo.parameters[i].vehicle;
                 }
 
                 //if the temp position array has length more than 3 then reduce its size to recent 3
@@ -216,23 +221,29 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                 }
                 
                 if(positionSettings.length === 3){
-                    var positionSettingsfiltered1 = filterSelectedData(positionSettings); 
-                    var positionSettingsfiltered2 = removeCategories(positionSettingsfiltered1);
-                    var positionSettingsfiltered3 = removeDuplicates(positionSettingsfiltered2,"id");
-                    
-                    if(positionSettingsfiltered3.length === 3){  
-                        positionDisplayText = displayStringForInput(positionSettingsfiltered3);
-                        $scope.settings.positionData = positionSettingsfiltered3;
-                        $scope.positionDisplay = positionDisplayText;
-                        $scope.vehicle = posvehicleName;
-                        if ($window.innerWidth >= 1400){
-                            $scope.lock.lockLeft = !$scope.lock.lockLeft;
-                            dashboardService.setLeftLock($scope.lock.lockLeft);
+                    var positionSettingsfiltered1 = removeCategories(positionSettings);//to remove selected group or categories while opening the list
+                    var positionSettingsfiltered2 = removeDuplicates(positionSettingsfiltered1,"id");// to remove duplicate selection of a single value
+                    var isDiffPositionVeh = isAnyDiffVehicles(positionSettingsfiltered2);// to check if all the values are of the same vehicle
+                    var positionfilteredData = filterSelectedData(positionSettingsfiltered2);// check if there are any different values of a category
+            
+                    if(isDiffPositionVeh === false && positionfilteredData.length === positionSettingsfiltered2.length){ // condition to check if the values are of same vehicle and same category
+                        if(positionSettingsfiltered2.length === 3){  
+                            positionDisplayText = displayStringForInput(positionSettingsfiltered2);
+                            $scope.settings.positionData = positionSettingsfiltered2;
+                            $scope.positionDisplay = positionDisplayText;
+                            $scope.vehicle = positionSettingsfiltered2[0].vehicle;
+                            if ($window.innerWidth >= 1400){
+                                $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                                dashboardService.setLeftLock($scope.lock.lockLeft);
+                            }
+                        }else if(positionSettingsfiltered2.length < 3){
+                            $window.alert("You have either not selected all position values:x,y,z or there may be no data available for the position coordinates."); 
                         }
-                    }else if(positionSettingsfiltered3.length < 3){
-                        $window.alert("You have either not selected all position values:x,y,z or there may be no data available for the position coordinates."); 
+                    }else if(isDiffPositionVeh === false && positionfilteredData.length !== positionSettingsfiltered2.length){
+                        $window.alert("Please select all the position values:x,y,z from the same vehicle's category.");
+                    }else if(isDiffPositionVeh === true){
+                        $window.alert("Please select all the position values:x,y,z from the same vehicle.");
                     }
-
                 }else {
                     $window.alert("Please select all position values:x,y,z");
                 }       
@@ -270,12 +281,18 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 		}
 
     	var filteredArray = [];
-    	for(var k=0;k<arrayLen;k++){
-    		if(selectedArray[k].category === item.category && selectedArray[k].vehicle === item.vehicle){
-    			filteredArray.push(selectedArray[k]);
-    		}
-    	}
-    	return filteredArray;
+
+        if(item){
+            for(var k=0;k<arrayLen;k++){
+                if(selectedArray[k].category === item.category && selectedArray[k].vehicle === item.vehicle){
+                    filteredArray.push(selectedArray[k]);
+                }
+            }
+            return filteredArray;
+        }else {
+            return [];
+        }
+
     }
 
     function getRecentSelectedValues(selectedArray,count){
@@ -373,6 +390,22 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
             }
         }
         return data;
+    }
+
+    function isAnyDiffVehicles(filteredArray){
+        var arrayLen = filteredArray.length;
+        var count = 0;
+        for(var i = 1; i < arrayLen; i++){
+            if(filteredArray[i].vehicle !== filteredArray[0].vehicle){
+                count++;
+            }
+        }
+
+        if(count > 0){
+            return true;
+        }else {
+            return false;
+        }
     }
 
 	$scope.openAttitudeList = function() {
@@ -490,7 +523,6 @@ app.controller('attitudeListCtrl',function($scope,$uibModalInstance,attitudeItem
             //handle modal dismiss
         });
     }
-
 });
 
 app.controller('confirmCtrl',function($scope,$uibModalInstance,dataLabel,dataItems) {
