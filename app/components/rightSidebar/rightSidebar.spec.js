@@ -49,7 +49,6 @@ describe('Testing right sidebar component', function () {
                 return deferredLoad.promise;
             })
             
-
             $controller = $componentController('rightSidebar', {
                 $scope : scope,
                 dashboardService : dashboardService,
@@ -83,11 +82,11 @@ describe('Testing right sidebar component', function () {
 
     it('should define user role as observer on smaller screens', function() {
         var role = {
-                    cRole : {
-                        "name": "Observer",
-                        "callsign": "VIP"
-                    }
-                };
+            cRole : {
+                "name": "Observer",
+                "callsign": "VIP"
+            }
+        };
 
         expect($controller.userRole).toBeDefined();
         expect($controller.userRole).toEqual(role);

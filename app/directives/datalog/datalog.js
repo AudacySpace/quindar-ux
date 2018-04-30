@@ -71,7 +71,6 @@ app.controller('DataLogCtrl',function ($scope,$interval,dashboardService,datasta
             if(prevLogData[prevLogData.length-1] === currentData.value){
                 if(dServiceObjVal.sIcon === "green" && dServiceObjVal.gIcon === "green" && 
                     dServiceObjVal.pIcon === "green" && dServiceObjVal.dIcon === "green"){
-                    
                     dataColor = colorHealthy; 
 
                 } else {
@@ -93,10 +92,10 @@ app.controller('DataLogCtrl',function ($scope,$interval,dashboardService,datasta
             }
                     
             $scope.logData.push({
-                    name : currentData.name,
-                    value : currentData.value,
-                    timestamp : $scope.telemetry['time'],
-                    style : dataColor
+                name : currentData.name,
+                value : currentData.value,
+                timestamp : $scope.telemetry['time'],
+                style : dataColor
             });
         } 
     }

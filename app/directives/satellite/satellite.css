@@ -55,6 +55,20 @@
         display:none;
 }
 
+div#scrollable-containerAttitude{
+/*    height:100% !important;*/
+    overflow:auto !important;
+/*    border: solid 1px #fff;*/
+    background: #fff;
+}
+
+div#scrollable-containerPosition{
+/*    height:100% !important;*/
+    overflow:auto !important;
+/*    border: solid 1px #fff;*/
+    background: #fff;
+}
+
 @media only screen and (max-width: 599px) {
     #container {
         max-height: 200px;

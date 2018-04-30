@@ -20,7 +20,7 @@ describe('Testing datalog settings controller', function () {
 
         inject(function($controller, $rootScope, _$q_){
             sidebarService = jasmine.createSpyObj('sidebarService', ['getVehicleInfo']);;
-            dashboardService = jasmine.createSpyObj('dashboardService', ['getLock', 'setLeftLock']);
+            dashboardService = jasmine.createSpyObj('dashboardService', ['getLock', 'setLeftLock','getData']);
             scope = $rootScope.$new();
             scope.widget = {
                 name: "Data Log",
@@ -141,12 +141,11 @@ describe('Testing datalog settings controller', function () {
 
     it('should alert the user if the vehicle and id from the left menu are not available', function() {
         spyOn(windowMock, "alert");
+        var data = {
+            parameters: []
+        };
         sidebarService.getVehicleInfo.and.callFake(function(){
-            return { 
-                id: '',
-                vehicle: '',
-                key: '' 
-            }
+            return data;
         });
 
         scope.getValue();
@@ -159,11 +158,32 @@ describe('Testing datalog settings controller', function () {
         var vehicleInfo = { 
             id: 'vx',
             vehicle: 'A0',
-            key: 'A0.GNC.velocity.vx' 
+            key: 'A0.GNC.velocity.vx',
+            category: 'velocity' 
         };
 
+        var data = {
+            parameters:[]
+        };
+
+        data.parameters[0] = vehicleInfo;
+
         sidebarService.getVehicleInfo.and.callFake(function(){
-            return vehicleInfo;
+            return data;
+        });
+
+        dashboardService.getData.and.callFake(function() {
+            return {
+                "value": -0.3201368817947103,
+                "warn_high": "10",
+                "warn_low": "-10",
+                "alarm_high": "14",
+                "alarm_low": "-14",
+                "units": "km/s",
+                "name": "x velocity component in ECF",
+                "category": "velocity",
+                "notes": ""
+            };
         });
 
         scope.getValue();
@@ -177,11 +197,32 @@ describe('Testing datalog settings controller', function () {
         var vehicleInfo = { 
             id: 'vx',
             vehicle: 'A0',
-            key: 'A0.GNC.velocity.vx' 
+            key: 'A0.GNC.velocity.vx',
+            category: 'velocity' 
         };
 
+        var data = {
+            parameters:[]
+        };
+
+        data.parameters[0] = vehicleInfo;
+
         sidebarService.getVehicleInfo.and.callFake(function(){
-            return vehicleInfo;
+            return data;
+        });
+
+        dashboardService.getData.and.callFake(function() {
+            return {
+                "value": -0.3201368817947103,
+                "warn_high": "10",
+                "warn_low": "-10",
+                "alarm_high": "14",
+                "alarm_low": "-14",
+                "units": "km/s",
+                "name": "x velocity component in ECF",
+                "category": "velocity",
+                "notes": ""
+            };
         });
 
         scope.getValue();
