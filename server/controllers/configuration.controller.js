@@ -10,14 +10,13 @@ module.exports = {
                 console.log(err);
             }
 
-            //commented splitting as we receive the QID starting at platform level
             //splice keys to include tree from platform level
-            // for (var point in config.contents) {
-            //     var nodes = point.split("_").slice(2);
-            //     var newPoint = nodes.join("_");
-            //     config.contents[newPoint] = config.contents[point];
-            //     delete config.contents[point];
-            // }
+            for (var point in config.contents) {
+                var nodes = point.split("_").slice(2);
+                var newPoint = nodes.join("_");
+                config.contents[newPoint] = config.contents[point];
+                delete config.contents[point];
+            }
 
             //create a hierarchial structure to support data menu on UI
             var configuration = convert(config.contents)

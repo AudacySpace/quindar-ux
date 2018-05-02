@@ -20,7 +20,7 @@ describe('Test Suite for Configuration Controller', function() {
                     findOne: function(query,condition,callback) {
                         var config = {
                             "contents": {
-                                "Audacy3_GNC_command_time": {
+                                "GMAT_ATest_Audacy3_GNC_command_time": {
                                     "datatype": "date",
                                     "units": "",
                                     "expression": "",
@@ -28,12 +28,12 @@ describe('Test Suite for Configuration Controller', function() {
                                     "warn_high": "2469807.50",
                                     "warn_low": "2444239.5",
                                     "alarm_low": "2415020.5",
-                                    "qid": "Audacy3_GNC_command_time",
+                                    "qid": "GMAT_ATest_Audacy3_GNC_command_time",
                                     "name": "command timestamp",
                                     "category": "command",
                                     "notes": ""
                                 },
-                                "Audacy3_GNC_command_arg": {
+                                "GMAT_ATest_Audacy3_GNC_command_arg": {
                                     "datatype": "string",
                                     "units": "",
                                     "expression": "",
@@ -41,12 +41,12 @@ describe('Test Suite for Configuration Controller', function() {
                                     "warn_high": "",
                                     "warn_low": "",
                                     "alarm_low": "",
-                                    "qid": "Audacy3_GNC_command_arg",
+                                    "qid": "GMAT_ATest_Audacy3_GNC_command_arg",
                                     "name": "command argument",
                                     "category": "command",
                                     "notes": ""
                                 },
-                                "Audacy3_GNC_command_name": {
+                                "GMAT_ATest_Audacy3_GNC_command_name": {
                                     "datatype": "string",
                                     "units": "",
                                     "expression": "",
@@ -54,7 +54,7 @@ describe('Test Suite for Configuration Controller', function() {
                                     "warn_high": "",
                                     "warn_low": "",
                                     "alarm_low": "",
-                                    "qid": "Audacy3_GNC_command_name",
+                                    "qid": "GMAT_ATest_Audacy3_GNC_command_name",
                                     "name": "command name",
                                     "category": "command",
                                     "notes": ""
