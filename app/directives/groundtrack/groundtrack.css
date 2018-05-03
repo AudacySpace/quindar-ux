@@ -149,6 +149,21 @@ button.btn.gtbtns:focus{
     display:none;
 }
 
+.gtdropdownicons{
+    float:right !important;
+    display:inline-block;
+}
+
+.gtoptions .ui-select-choices-row.active>span {
+    color:#333 !important;
+    background: none !important;
+}
+
+.gtoptions .ui-select-choices-row.active.disabled>span, .ui-select-bootstrap .ui-select-choices-row.disabled>span{
+    color: #777 !important;
+}
+
+
 @media only screen and (max-width: 599px) {
     .mbl-gtmain{
         display:block;
