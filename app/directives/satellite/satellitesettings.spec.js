@@ -565,6 +565,4 @@ describe('Testing satellite settings controller', function () {
         expect(scope.positionDisplay).toEqual('x,y,z');
 
     });
-
-
 })
