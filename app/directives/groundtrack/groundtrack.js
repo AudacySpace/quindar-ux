@@ -199,14 +199,8 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                     if(dServiceObjVal.sIcon === "green" && dServiceObjVal.gIcon === "green" &&
 						dServiceObjVal.pIcon === "green" && dServiceObjVal.dIcon === "green"){
 	                    // update latestdata
-	     //                var x = latestdata.GNC.position.x.value;
-	     //                var y = latestdata.GNC.position.y.value;
-	     //                var z = latestdata.GNC.position.z.value;
-	     //                var vx = latestdata.GNC.velocity.vx.value;
-						// var vy = latestdata.GNC.velocity.vy.value;
-						// var vz = latestdata.GNC.velocity.vz.value;
                         var x,y,z,vx,vy,vz;
-                        console.log(vehicles[i].pdata);
+
                         if(vehicles[i].pdata.length > 0){
                             x = dashboardService.getData(vehicles[i].pdata[0].key).value;
                             y = dashboardService.getData(vehicles[i].pdata[1].key).value;
@@ -236,34 +230,18 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 							var vz = scS[i][scS[i].length-1][5];
 						}
 						else{
-							// var x = latestdata.GNC.position.x.value;
-							// var y = latestdata.GNC.position.y.value;
-							// var z = latestdata.GNC.position.z.value;
-							// var vx = latestdata.GNC.velocity.vx.value;
-							// var vy = latestdata.GNC.velocity.vy.value;
-							// var vz = latestdata.GNC.velocity.vz.value;
+                            var x,y,z,vx,vy,vz;
+                            if(vehicles[i].pdata.length > 0){
+                                x = dashboardService.getData(vehicles[i].pdata[0].key).value;
+                                y = dashboardService.getData(vehicles[i].pdata[1].key).value;
+                                z = dashboardService.getData(vehicles[i].pdata[2].key).value;
+                            }
 
-                            
-                        // var x = dashboardService.getData($scope.widget.settings.pdata[i][0].key).value;
-                        // var y = dashboardService.getData($scope.widget.settings.pdata[i][1].key).value;
-                        // var z = dashboardService.getData($scope.widget.settings.pdata[i][2].key).value;
-
-                        // var vx = dashboardService.getData($scope.widget.settings.vdata[i][0].key).value;
-                        // var vy = dashboardService.getData($scope.widget.settings.vdata[i][1].key).value;
-                        // var vz = dashboardService.getData($scope.widget.settings.vdata[i][2].key).value;
-
-                        var x,y,z,vx,vy,vz;
-                        if(vehicles[i].pdata !== []){
-                            x = dashboardService.getData(vehicles[i].pdata[0].key).value;
-                            y = dashboardService.getData(vehicles[i].pdata[1].key).value;
-                            z = dashboardService.getData(vehicles[i].pdata[2].key).value;
-                        }
-
-                        if(vehicles[i].vdata !== []){
-                            vx = dashboardService.getData(vehicles[i].vdata[0].key).value;
-                            vy = dashboardService.getData(vehicles[i].vdata[1].key).value;
-                            vz = dashboardService.getData(vehicles[i].vdata[2].key).value;
-                        }
+                            if(vehicles[i].vdata.length > 0){
+                                vx = dashboardService.getData(vehicles[i].vdata[0].key).value;
+                                vy = dashboardService.getData(vehicles[i].vdata[1].key).value;
+                                vz = dashboardService.getData(vehicles[i].vdata[2].key).value;
+                            }
 						}
 
 						// The equations of motion: two-body problem, earth-centered:

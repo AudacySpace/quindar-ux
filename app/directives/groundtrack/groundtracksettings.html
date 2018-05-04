@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="dropdown">
                         <button type="button" class="btn dropdown-toggle load-widget-styles" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="pull-left">Vehicle</span> <span class="caret caretstyles"></span>
+                            <span class="pull-left">Vehicles</span> <span class="caret caretstyles"></span>
                         </button>
                         <ul class="dropdown-menu categorydrpdown">
                             <li class="checkbox cbox" ng-repeat="vehicle in selectByGroupData">
@@ -18,7 +18,7 @@
                             </li>
                         </ul>
                     </div>
-                    <span ng-hide="selected.vehicle"> Required </span> 
+                    <span ng-hide="vehicleSelected"> Required </span> 
                 </div>
             </div>
             <div class="col-sm-10" ng-show="secondScreen" style="display: table-cell; float:none">
@@ -42,16 +42,10 @@
                             <li role="menuitem"><a href="#" ng-click="openPositionList(currentVehicleId)">Show Parameters</a></li>
                         </ul>
                     </div>
-                    <span ng-hide="positionDisplay"> Required </span>
-                    <div id="scrollable-containerPositionValues">
-                        <div class="sortable-row" as-sortable="sortableOptions" data-ng-model="$ctrl.data.positionData">
-                            <div ng-repeat="item in $ctrl.data.positionData" as-sortable-item>
-                                <div as-sortable-item-handle style="color:#000000">{{item.key}}</div>
-                            </div>
-                        </div>
-                    </div> 
+                    <span ng-hide="positionData[currentVehicleId]"> Required </span>
+                     <div class="row settingsspace" style="display: table"></div>
                     <div class="row">
-                        <label for="Position">Orbit</label>
+                        <label for="SatelliteOrbit">Orbit</label>
                     </div>
                     <div class="input-group" style="margin-top:0px;margin-bottom:0px" ng-cloak>
                         <md-switch class="md-primary"  md-theme="blueTheme" aria-label="Switch No Ink" ng-model="orbitstatus[currentVehicleId]" style="margin-top:0px;margin-bottom:0px">
@@ -77,16 +71,10 @@
                             <li role="menuitem"><a href="#" ng-click="openVelocityList(currentVehicleId)">Show Parameters</a></li>
                         </ul>
                     </div>
-                    <span ng-hide="positionDisplay"> Required </span>
-                    <div id="scrollable-containerVelocityValues">
-                        <div class="sortable-row" as-sortable="sortableOptions" data-ng-model="$ctrl.data.velocityData">
-                            <div ng-repeat="item in $ctrl.data.velocityData" as-sortable-item>
-                                <div as-sortable-item-handle style="color:#000000">{{item.key}}</div>
-                            </div>
-                        </div>
-                    </div> 
+                    <span ng-hide="velocityData[currentVehicleId]"> Required </span>
+                    <div class="row settingsspace" style="display: table"></div>
                     <div class="row">
-                        <label for="Position">Icon</label>
+                        <label for="SatelliteIcon">Icon</label>
                     </div>
                     <div class="input-group" style="margin-top:0px;margin-bottom:0px" ng-cloak>
                         <md-switch class="md-primary"  md-theme="blueTheme" aria-label="Switch No Ink" ng-model="iconstatus[currentVehicleId]" style="margin-top:0px;margin-bottom:0px">
@@ -123,64 +111,88 @@
 
 <!-- For Mobile Screens -->
 <div class="container mbl-gt">
-    <form>
+    <form ng-show="firstScreen">
         <label for="SelectSpaceCraft" class="mbl-label">Select Spacecraft:</label>
-        <div class="input-group mbl-input-grp">
-            <table class="table table-bordered table-responsive col-md-10 table-condensed cf mbl-label">
-                <thead id="telehead" class="gttableheader">
-                    <tr>
-                        <th id="id" style="text-align:left;width:6%;" class="mbl-label">#</th>
-                        <th id="id" style="text-align:left;width:32%;" class="mbl-label">Name</th>
-                        <th id="name" style="text-align:left;width:10%;" class="mbl-label">Enabled</th>
-                        <th id="color" style="text-align:left;width:10%;" class="mbl-label">View Orbit</th>
-                        <th id="color" style="text-align:left;width:10%;" class="mbl-label">View Icon</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="row in settings">
-                        <td ng-repeat="cell in row" class="rowcell" ng-show="true" style="{{cell.cstyle}}">{{cell.value}}<input ng-show="{{cell.active}}" class="rowinput gtcbox" type="checkbox" ng-model="cell.status"/>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="dropdown mbl-label mbl-input-grp mbl-inputitems">
+            <button type="button" class="btn dropdown-toggle load-widget-styles mbl-inneritems mbl-inneritems mbl-input-grp mbl-inputitems mbl-label" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="pull-left drpdwn-name">Vehicles</span> <span class="caret  pull-right drpdwn-caret"></span>
+            </button>
+            <ul class="dropdown-menu categorydrpdown">
+                <li class="checkbox cbox drpdown-list-item" ng-repeat="vehicle in selectByGroupData">
+                    <input style="margin-top: 0px" type="checkbox" value="" name="id" ng-model="checkedValues[vehicle.id].status" ng-click="alertUser($event,vehicle.label,vehicle.id,checkedValues[vehicle.id].status)" data-backdrop="static" data-keyboard="false">{{vehicle.label}}
+                    <button ng-show="checkedValues[vehicle.id].status" class="fa fa-cog gtdropdownicons" aria-hidden="true" ng-click="alertUser($event,vehicle.label,vehicle.id,checkedValues[vehicle.id].status)" data-backdrop="static" data-keyboard="false"></button>
+                </li>
+            </ul>
+            <span ng-hide="vehicleSelected"> Required </span> 
         </div>
-        <hr class="hr-groundtrack">
+        <hr class="hr-double-col1">
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveWidget(widget)">SAVE</button>
-        <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeWidget(widget)">CLOSE</button>      
+        <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeWidget(widget)">CLOSE</button>    
+    </form>
+    <form ng-show="secondScreen">
+       <label for="SelectSpaceCraft" class="mbl-label">Select Parameters for: {{currentScreenVehicle}}</label>
+        <div class="row">
+            <label for="SelectPosition" class="mbl-label">Select Position:</label>
+        </div>
+        <div class="btn-group mbl-input-grp" uib-dropdown>
+            <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata()" style="width:88%;border-radius:0;color:grey;min-width:88%;padding-top:3px;padding-bottom:3px;font-size:10px;text-align:left" >{{pdisplay[currentVehicleId]}}</button>
+            <button type="button" class="btn btn-default" style="width:12%;border-radius:0;min-width:12%;padding-top:3px;padding-bottom:3px;font-size:10px" uib-dropdown-toggle>
+                <span class="caret"></span>
+                <span class="sr-only">Split button!</span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0;font-size:9px" aria-labelledby="split-button">
+                <li role="menuitem"><a href="#" ng-click="getValue('position',currentVehicleId)">Apply</a></li>
+                <li role="menuitem"><a href="#" ng-click="openPositionList(currentVehicleId)">Show Parameters</a></li>
+            </ul>
+        </div>
+        <span ng-hide="positionData[currentVehicleId]" class="req-label"> Required </span>
+        <div class="row">
+            <label for="SelectVelocity" class="mbl-label">Select Velocity</label>
+        </div>
+        <div class="btn-group mbl-input-grp" uib-dropdown>
+            <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata()" style="width:88%;border-radius:0;color:grey;min-width:88%;padding-top:3px;padding-bottom:3px;font-size:10px;text-align:left" >{{vdisplay[currentVehicleId]}}</button>
+            <button type="button" class="btn btn-default" style="width:12%;border-radius:0;min-width:12%;padding-top:3px;padding-bottom:3px;font-size:10px" uib-dropdown-toggle>
+                <span class="caret"></span>
+                <span class="sr-only">Split button!</span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0;font-size:9px" aria-labelledby="split-button">
+                <li role="menuitem"><a href="#" ng-click="getValue('velocity',currentVehicleId)">Apply</a></li>
+                <li role="menuitem"><a href="#" ng-click="openVelocityList(currentVehicleId)">Show Parameters</a></li>
+            </ul>
+        </div>
+        <span ng-hide="velocityData[currentVehicleId]" class="req-label"> Required </span>
+        <hr class="hr-double-col1-2-gt">
+        <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveParameters(widget)">SAVE</button>
+        <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeParameters(widget)">CLOSE</button>     
     </form>
 </div>
 
 <!-- For Tablet Screens -->
 <div class="saveloaddatatable tablet-gt">
-    <div class="settingstablettop">
-        <div class="row settingstablet-col1-3el tablestyle" style="height:135px">
+    <div class="settingstablettop" ng-show="firstScreen">
+        <div class="row settingstablet-col1-3el tablestyle">
             <div class="col-sm-1 tablecellstyle1"></div>
             <div class="col-sm-10 tablecellstyle10">
                 <div class="row" style="height:19px;">
-                     <label for="SelectSpaceCraft" class="mbl-label">Select Spacecraft:</label>
+                    <label for="SelectSpaceCraft" class="mbl-label">Select Spacecraft:</label>
                 </div>
-                        <div class="input-group mbl-input-grp">
-            <table class="table table-bordered table-responsive col-md-10 table-condensed cf mbl-label">
-                <thead id="telehead" class="gttableheader">
-                    <tr>
-                        <th id="id" style="text-align:left;width:6%;" class="mbl-label">#</th>
-                        <th id="id" style="text-align:left;width:32%;" class="mbl-label">Name</th>
-                        <th id="name" style="text-align:left;width:10%;" class="mbl-label">Enabled</th>
-                        <th id="color" style="text-align:left;width:10%;" class="mbl-label">View Orbit</th>
-                        <th id="color" style="text-align:left;width:10%;" class="mbl-label">View Icon</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="row in settings">
-                        <td ng-repeat="cell in row" class="rowcell" ng-show="true" style="{{cell.cstyle}}">{{cell.value}}<input ng-show="{{cell.active}}" class="rowinput gtcbox" type="checkbox" ng-model="cell.status"/>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+                <div class="dropdown mbl-label mbl-input-grp mbl-inputitems">
+                    <button type="button" class="btn dropdown-toggle load-widget-styles mbl-inneritems mbl-inneritems mbl-input-grp mbl-inputitems mbl-label" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="pull-left drpdwn-name">Vehicles</span> <span class="caret  pull-right drpdwn-caret"></span>
+                    </button>
+                    <ul class="dropdown-menu categorydrpdown" style="padding-top:0px;padding-bottom:0px;">
+                        <li class="checkbox cbox drpdown-list-item" ng-repeat="vehicle in selectByGroupData">
+                            <input style="margin-top: 0px" type="checkbox" value="" name="id" ng-model="checkedValues[vehicle.id].status" ng-click="alertUser($event,vehicle.label,vehicle.id,checkedValues[vehicle.id].status)" data-backdrop="static" data-keyboard="false">{{vehicle.label}}
+                            <button ng-show="checkedValues[vehicle.id].status" class="fa fa-cog gtdropdownicons" aria-hidden="true" ng-click="alertUser($event,vehicle.label,vehicle.id,checkedValues[vehicle.id].status)" data-backdrop="static" data-keyboard="false"></button>
+                        </li>
+                    </ul>
+                </div>
+                <span ng-hide="vehicleSelected" class="req-label"> Required </span>
             </div>
             <div class="col-sm-1 tablecellstyle1"></div> 
         </div>
+        <div class="row settingstablet-col1-3el tablestyle"></div>
+        <div class="row settingstablet-col1-3el tablestyle"></div>
         <div class="row settingstabletbottom-col1-3el tablestyle">
             <div class="row">
                 <div class="col-sm-1 tablecellstyle1"></div>
@@ -193,11 +205,77 @@
                 <div class="col-sm-1 tablecellstyle1"></div>
                 <div class="col-sm-10 btndivider tablecellstyle10">
                     <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="saveWidget(widget)">SAVE</button>
-                    <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="closeWidget(widget)">CLOSE</button>     
+                    <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="closeWidget(widget)">CLOSE</button>    
                 </div>
                 <div class="col-sm-1 tablecellstyle1"></div>
             </div>  
         </div>
-    </div>      
+    </div>  
+    <div class="settingstablettop" ng-show="secondScreen">
+        <div class="row settingstablet-col1-3el tablestyle">
+            <div class="col-sm-1 tablecellstyle1"></div>
+            <div class="col-sm-10 tablecellstyle10">
+                <div class="row" style="height:19px">
+                    <label for="SelectSpaceCraft" class="mbl-label">Select Parameters for: {{currentScreenVehicle}}</label>
+                </div>
+                <div class="row" style="height:19px;">
+                    <label for="SelectPosition" class="mbl-label">Select Position</label>
+                </div>
+                <div class="btn-group mbl-input-grp" uib-dropdown>
+                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata()" style="width:75%;border-radius:0;color:grey;padding-top:0px;padding-bottom:0px;font-size:9px;text-align:left" >{{pdisplay[currentVehicleId]}}</button>
+                    <button type="button" class="btn btn-default" style="width:25%;border-radius:0;padding-top:0px;padding-left:0px;padding-right:0px;padding-bottom:0px;font-size:9px" uib-dropdown-toggle>
+                        <span class="caret"></span>
+                        <span class="sr-only">Split button!</span>
+                    </button>
+                <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0;font-size:9px" aria-labelledby="split-button">
+                    <li role="menuitem"><a href="#" ng-click="getValue('position',currentVehicleId)">Apply</a></li>
+                    <li role="menuitem"><a href="#" ng-click="openPositionList(currentVehicleId)">Show Parameters</a></li>
+                </ul>
+                </div>
+                <span ng-hide="positionData[currentVehicleId]" class="pull-right req-label"> Required </span>
+            </div>
+            <div class="col-sm-1 tablecellstyle1"></div> 
+        </div>
+        <div class="row settingstablet-col1-3el tablestyle">
+            <div class="col-sm-1 tablecellstyle1"></div>
+            <div class="col-sm-10 tablecellstyle10">
+                <div class="row" style="height:16px;margin-bottom:0px">
+                    <label for="SelectVelocity" class="mbl-label">Select Velocity</label>
+                </div>
+                <div class="btn-group mbl-input-grp" uib-dropdown>
+                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata()" style="width:75%;border-radius:0;color:grey;padding-top:0px;padding-bottom:0px;font-size:9px;text-align:left" >{{vdisplay[currentVehicleId]}}</button>
+                    <button type="button" class="btn btn-default" style="width:25%;border-radius:0;padding-top:0px;padding-bottom:0px;font-size:9px;padding-left:0px;padding-right:0px" uib-dropdown-toggle>
+                        <span class="caret"></span>
+                        <span class="sr-only">Split button!</span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0;font-size:9px" aria-labelledby="split-button">
+                        <li role="menuitem"><a href="#" ng-click="getValue('velocity',currentVehicleId)">Apply</a></li>
+                        <li role="menuitem"><a href="#" ng-click="openVelocityList(currentVehicleId)">Show Parameters</a></li>
+                    </ul>
+                </div>
+                 <span ng-hide="velocityData[currentVehicleId]" class="pull-right req-label"> Required </span>
+            </div>
+            <div class="col-sm-1 tablecellstyle1"></div>
+        </div>
+        <div class="row settingstablet-col1-3el tablestyle"></div>
+        <div class="row settingstabletbottom-col1-3el tablestyle">
+            <div class="row">
+                <div class="col-sm-1 tablecellstyle1"></div>
+                <div class="col-sm-10 tablecellstyle10">
+                    <hr class="col1-2-hr">
+                </div>
+                <div class="col-sm-1 tablecellstyle1"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1 tablecellstyle1"></div>
+                <div class="col-sm-10 btndivider tablecellstyle10">
+                    <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="saveParameters(widget)">SAVE</button>
+                    <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="closeParameters(widget)">CLOSE</button> 
+                </div>
+                <div class="col-sm-1 tablecellstyle1"></div>
+            </div>  
+        </div>
+    </div>            
 </div>
+
 

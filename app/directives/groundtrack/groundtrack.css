@@ -163,6 +163,20 @@ button.btn.gtbtns:focus{
     color: #777 !important;
 }
 
+div#scrollable-containerVelocityValues{
+/*    height:100% !important;*/
+    overflow:auto !important;
+/*    border: solid 1px #fff;*/
+    background: #fff;
+}
+
+div#scrollable-containerPositionValues{
+/*    height:100% !important;*/
+    overflow:auto !important;
+/*    border: solid 1px #fff;*/
+    background: #fff;
+}
+
 
 @media only screen and (max-width: 599px) {
     .mbl-gtmain{
@@ -200,6 +214,17 @@ button.btn.gtbtns:focus{
     .hr-groundtrack{
         margin-top:4px;
         margin-bottom:5px;
+    }
+
+    .hr-double-col1-2-gt {
+        margin-top: 44px;
+        margin-bottom: 5px;
+    }
+
+    .categorydrpdown {
+        font-size:8px;
+        padding-top:5px;
+        padding-bottom:5px;
     }
 }
 
