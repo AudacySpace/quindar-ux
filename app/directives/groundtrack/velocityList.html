@@ -1,15 +1,17 @@
 <div class="modal-header">
-    <h4 class="modal-title" id="myModalLabel">Select Position Coordinates Order</h4>
+    <h4 class="modal-title" id="myModalLabel">Select Velocity Order</h4>
+
 </div>
 <div class="modal-body" style="padding-left:20px; padding-right:20px;">
-    <h5><b>Required Order:</b>x,y,z</h5>
-    <div id="scrollable-containerPosition">
-        <div class="sortable-row" as-sortable="sortableOptions" data-ng-model="$ctrl.data.positionData">
-            <div ng-repeat="item in $ctrl.data.positionData" as-sortable-item>
+    <h5><b>Required Order:</b>vx,vy,vz</h5>
+    <div id="scrollable-containerVelocityValues">
+        <div class="sortable-row" as-sortable="sortableOptions" data-ng-model="$ctrl.data.vdata[$ctrl.currentVehicleId]">
+            <div ng-repeat="item in $ctrl.data.vdata[$ctrl.currentVehicleId]" as-sortable-item>
                 <div as-sortable-item-handle style="color:#000000">{{item.key}}</div>
             </div>
         </div>
     </div>
+</div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="$ctrl.close()">Close</button>
     <button type="button" class="btn btn-primary" ng-click="$ctrl.save()">Save</button>
