@@ -154,6 +154,10 @@ button.btn.gtbtns:focus{
     display:inline-block;
 }
 
+button.gtdropdownicons:focus{
+    outline:none;
+}
+
 .gtoptions .ui-select-choices-row.active>span {
     color:#333 !important;
     background: none !important;

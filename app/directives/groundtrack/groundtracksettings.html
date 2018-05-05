@@ -1,6 +1,6 @@
 <div class="settingsMenu maingt">
     <div class="settingstop">
-        <div class="row settingsrightcol" style="display: table">
+        <div class="row settingsrightcol" ng-show="firstScreen" style="display: table">
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
             <div class="col-sm-10" ng-show="firstScreen" style="display: table-cell; float:none">
                 <div class="row">
@@ -11,76 +11,74 @@
                         <button type="button" class="btn dropdown-toggle load-widget-styles" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="pull-left">Vehicles</span> <span class="caret caretstyles"></span>
                         </button>
-                        <ul class="dropdown-menu categorydrpdown">
-                            <li class="checkbox cbox" ng-repeat="vehicle in selectByGroupData">
+                        <ul class="dropdown-menu categorydrpdown" style="padding-top:0px;padding-bottom:0px;font-size:12px">
+                            <li class="checkbox cbox" ng-repeat="vehicle in selectByGroupData" style="margin-top:5px;margin-bottom:5px">
                                 <input style="margin-top: 0px" type="checkbox" value="" name="id" ng-model="checkedValues[vehicle.id].status" ng-click="alertUser($event,vehicle.label,vehicle.id,checkedValues[vehicle.id].status)" data-backdrop="static" data-keyboard="false">{{vehicle.label}}
-                                <button ng-show="checkedValues[vehicle.id].status" class="fa fa-cog gtdropdownicons" aria-hidden="true" ng-click="alertUser($event,vehicle.label,vehicle.id,checkedValues[vehicle.id].status)" data-backdrop="static" data-keyboard="false"></button>
+                                <button ng-show="checkedValues[vehicle.id].status" class="fa fa-cog gtdropdownicons" aria-hidden="true" ng-click="alertUser($event,vehicle.label,vehicle.id,checkedValues[vehicle.id].status)" data-backdrop="static" data-keyboard="false" style="background:transparent;border:none"></button>
                             </li>
                         </ul>
                     </div>
                     <span ng-hide="vehicleSelected"> Required </span> 
                 </div>
             </div>
-            <div class="col-sm-10" ng-show="secondScreen" style="display: table-cell; float:none">
-                <div class="row">
-                    <label for="SelectSpaceCraft">Select Parameters for: {{currentScreenVehicle}}</label>
-                </div>
-                <div class="col-sm-4" style="display: table-cell; float:none">
+            <div class="col-sm-1" style="display: table-cell; float:none"></div>
+        </div>
+        <!-- Second Screen-->
+        <div class="row settingsrightcol"  ng-show="secondScreen" style="display: table">
+            <div class="col-sm-1" style="display: table-cell; float:none"></div>
+            <div class="col-sm-4" style="display: table-cell; float:none">
                 <!-- Multi selection of data from data menu -->
-                    <div class="row">
-                        <label for="Position">Select Position</label>
-                    </div>
-                    <div class="row settingsspace" style="display: table"></div>
-                    <div class="btn-group" style="width:100%" uib-dropdown>
-                        <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata()" style="width:75%;border-radius:0;color:grey" >{{pdisplay[currentVehicleId]}}</button>
-                        <button type="button" class="btn btn-default" style="width:25%;border-radius:0;padding-left:0px;padding-right:0px" uib-dropdown-toggle>
-                            <span class="caret"></span>
-                            <span class="sr-only">Split button!</span>
-                        </button>
-                        <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0" aria-labelledby="split-button">
-                            <li role="menuitem"><a href="#" ng-click="getValue('position',currentVehicleId)">Apply</a></li>
-                            <li role="menuitem"><a href="#" ng-click="openPositionList(currentVehicleId)">Show Parameters</a></li>
-                        </ul>
-                    </div>
+                <div class="row">
+                    <label for="Position">Select Position for: <b>{{currentScreenVehicle}}</b></label>
+                </div>
+                <div class="row settingsspace" style="display: table"></div>
+                <div class="btn-group" style="width:100%" uib-dropdown>
+                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata()" style="width:75%;border-radius:0;color:grey" >{{pdisplay[currentVehicleId]}}</button>
+                    <button type="button" class="btn btn-default" style="width:25%;border-radius:0;padding-left:0px;padding-right:0px" uib-dropdown-toggle>
+                        <span class="caret"></span>
+                        <span class="sr-only">Split button!</span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0" aria-labelledby="split-button">
+                        <li role="menuitem"><a href="#" ng-click="getValue('position',currentVehicleId)">Apply</a></li>
+                        <li role="menuitem"><a href="#" ng-click="openPositionList(currentVehicleId)">Show Parameters</a></li>
+                    </ul>
+                </div>
                     <span ng-hide="positionData[currentVehicleId]"> Required </span>
-                     <div class="row settingsspace" style="display: table"></div>
-                    <div class="row">
-                        <label for="SatelliteOrbit">Orbit</label>
-                    </div>
-                    <div class="input-group" style="margin-top:0px;margin-bottom:0px" ng-cloak>
+                <!-- End of Multi Selection of Data from Data menu -->
+                <div class="row" style="margin-top:5%">
+                    <label for="SatelliteOrbit">Orbit</label>
+                   <div class="input-group" style="margin-top:0px;margin-bottom:0px" ng-cloak>
                         <md-switch class="md-primary"  md-theme="blueTheme" aria-label="Switch No Ink" ng-model="orbitstatus[currentVehicleId]" style="margin-top:0px;margin-bottom:0px">
                         </md-switch>
                     </div>
-                    <!-- End of Multi Selection of Data from Data menu -->
                 </div>
-                <div class="col-sm-2" style="display: table-cell; float:none"></div>
-                <div class="col-sm-4" style="display: table-cell; float:none">
-                    <!-- Multi selection of data from data menu -->
-                    <div class="row">
-                        <label for="Velocity">Select Velocity</label>
-                    </div>
-                    <div class="row settingsspace" style="display: table"></div>
-                    <div class="btn-group" style="width:100%" uib-dropdown>
-                        <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata()" style="width:75%;border-radius:0;color:grey" >{{vdisplay[currentVehicleId]}}</button>
-                        <button type="button" class="btn btn-default" style="width:25%;border-radius:0;padding-left:0px;padding-right:0px" uib-dropdown-toggle>
-                            <span class="caret"></span>
-                            <span class="sr-only">Split button!</span>
-                        </button>
-                        <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0" aria-labelledby="split-button">
-                            <li role="menuitem"><a href="#" ng-click="getValue('velocity',currentVehicleId)">Apply</a></li>
-                            <li role="menuitem"><a href="#" ng-click="openVelocityList(currentVehicleId)">Show Parameters</a></li>
-                        </ul>
-                    </div>
+            </div>
+            <div class="col-sm-2" style="display: table-cell; float:none"></div>
+            <div class="col-sm-4" style="display: table-cell; float:none">
+                <!-- Multi selection of data from data menu -->
+                <div class="row">
+                    <label for="Velocity">Select Velocity for: <b>{{currentScreenVehicle}}</b></label>
+                </div>
+                <div class="row settingsspace" style="display: table"></div>
+                <div class="btn-group" style="width:100%" uib-dropdown>
+                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata()" style="width:75%;border-radius:0;color:grey" >{{vdisplay[currentVehicleId]}}</button>
+                    <button type="button" class="btn btn-default" style="width:25%;border-radius:0;padding-left:0px;padding-right:0px" uib-dropdown-toggle>
+                        <span class="caret"></span>
+                        <span class="sr-only">Split button!</span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0" aria-labelledby="split-button">
+                        <li role="menuitem"><a href="#" ng-click="getValue('velocity',currentVehicleId)">Apply</a></li>
+                        <li role="menuitem"><a href="#" ng-click="openVelocityList(currentVehicleId)">Show Parameters</a></li>
+                    </ul>
+                </div>
                     <span ng-hide="velocityData[currentVehicleId]"> Required </span>
-                    <div class="row settingsspace" style="display: table"></div>
-                    <div class="row">
-                        <label for="SatelliteIcon">Icon</label>
-                    </div>
+                <!-- End of Multi Selection of Data from Data menu -->
+                <div class="row" style="margin-top:5%">
+                    <label for="SatelliteIcon">Icon</label>
                     <div class="input-group" style="margin-top:0px;margin-bottom:0px" ng-cloak>
                         <md-switch class="md-primary"  md-theme="blueTheme" aria-label="Switch No Ink" ng-model="iconstatus[currentVehicleId]" style="margin-top:0px;margin-bottom:0px">
                         </md-switch>
                     </div>
-                    <!-- End of Multi Selection of Data from Data menu -->
                 </div>
             </div>
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
