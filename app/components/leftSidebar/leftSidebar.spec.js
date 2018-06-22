@@ -1,5 +1,5 @@
 describe('Testing leftSidebar component', function () {
-    var $controller, dashboardService, sidebarService, $interval, deferredConfig;
+    var $controller, dashboardService, sidebarService, $interval;
     var windowMock = {
         alert: function(message) {
             
@@ -13,18 +13,12 @@ describe('Testing leftSidebar component', function () {
         });
 
         inject( function($componentController, _$interval_, _$q_){
-            dashboardService = jasmine.createSpyObj('dashboardService', ['getCurrentMission', 'getConfig']);
+            dashboardService = jasmine.createSpyObj('dashboardService', ['telemetry']);
             sidebarService = jasmine.createSpyObj('sidebarService', ['setVehicleInfo']);
             $interval = _$interval_;
 
-            deferredConfig = _$q_.defer();
-
-            dashboardService.getCurrentMission.and.callFake(function() {
-                return { missionName : 'ATest' };
-            });
-
-            dashboardService.getConfig.and.callFake(function() {
-                return deferredConfig.promise;
+            dashboardService.telemetry.and.callFake(function() {
+                return {"time": "2018-02-16T00:26:41.439Z", "data": result };
             });
 
             $controller = $componentController('leftSidebar', {
@@ -58,16 +52,28 @@ describe('Testing leftSidebar component', function () {
         expect($controller.filter).toBeDefined();
     });
 
-    it('should make the data tree from the config', function(){
+    it('should make the data tree from the telemetry', function(){
         var result = {
             'A0' : {
                 'GNC' : {
                     'Attitude': {
-                        'q1' : ""
+                        'q1' : {
+                            'value' : 0.71,
+                            'alarm_low' : '-1.1',
+                            'alarm_high' : '1.1',
+                            'warn_low' : '-1',
+                            'warn_high' : '1'
+                        }
                     }
                 }
             }
-        }
+        };
+
+        $controller.telemetry = {
+            "time": "2018-02-16T00:26:41.439Z",
+            "data": result
+        };
+
         var dataTree = [{
             "name":"A0",
             "nodes":[{
@@ -90,15 +96,13 @@ describe('Testing leftSidebar component', function () {
             "active":false
         }];
 
-        deferredConfig.resolve({ data : result });
-
         $interval.flush(1001);
         expect($controller.dataTree).toEqual(dataTree);
         expect($controller.previousTree).toEqual(dataTree);
     });
 
-    it('should make the data tree empty if config data is not returned', function(){
-        deferredConfig.resolve({ data : {} });
+    it('should make the data tree empty if there is no telemetry', function(){
+        $controller.telemetry = undefined;
 
         $interval.flush(1001);
         expect($controller.dataTree).toEqual([]);
