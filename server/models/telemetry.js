@@ -15,6 +15,9 @@ var telemetrySchema = mongoose.Schema({
     	type: Date,
     	required:true
     },
+    beaconID : {
+        type : Number
+    },
     telemetry : {
     	type: Object,
     	required: true
