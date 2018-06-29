@@ -39,7 +39,7 @@ app.controller('DatatableSettingsCtrl', function($scope, $window){
 
     function setCheckedValues(widget,val){
         widget.settings.checkedValues.checkedId = val.checkedId;
-        widget.settings.checkedValues.checkedName = val.checkedName;
+        // widget.settings.checkedValues.checkedName = val.checkedName;
         widget.settings.checkedValues.checkedAlow = val.checkedAlow;
         widget.settings.checkedValues.checkedWlow = val.checkedWlow;
         widget.settings.checkedValues.checkedValue = val.checkedValue;

@@ -54,7 +54,6 @@ describe('Testing data table controller', function () {
                     active: false,
                     checkedValues:{
                         checkedId: true,
-                        checkedName: true,
                         checkedAlow: true,
                         checkedWlow: true,
                         checkedValue: true,
@@ -98,7 +97,7 @@ describe('Testing data table controller', function () {
     it('should create 39 table rows in the data table', function() {
         expect(scope.table.rows.length).toEqual(40);
         //each row has nine columns
-        expect(scope.table.rows[0].contents.length).toEqual(9);
+        expect(scope.table.rows[0].contents.length).toEqual(8);
     });
 
     it('should define function getTelemetrydata', function() {
@@ -202,8 +201,6 @@ describe('Testing data table controller', function () {
                 "alarm_high": "14",
                 "alarm_low": "-14",
                 "units": "km/s",
-                "name": "x velocity component in ECF",
-                "category": "velocity",
                 "notes": ""
             };
         });
@@ -245,8 +242,6 @@ describe('Testing data table controller', function () {
                 "alarm_high": "14",
                 "alarm_low": "-14",
                 "units": "km/s",
-                "name": "x velocity component in ECF",
-                "category": "velocity",
                 "notes": ""
             };
         });
@@ -308,8 +303,6 @@ describe('Testing data table controller', function () {
                 "alarm_high": "14",
                 "alarm_low": "-14",
                 "units": "km/s",
-                "name": "x velocity component in ECF",
-                "category": "velocity",
                 "notes": ""
             };
         });
@@ -552,8 +545,6 @@ describe('Testing data table controller', function () {
         var expectedContents = [{ 
                 "datavalue":"vx"
             },{ 
-                "datavalue":"x velocity component in ECF"
-            },{ 
                 "datavalue":"-14"
             },{ 
                 "datavalue":"-10"
@@ -586,8 +577,6 @@ describe('Testing data table controller', function () {
                 "datavalue":""
             },{ 
                 "datavalue":""
-            },{ 
-                "datavalue":""
             }]
         }];
         scope.widget.settings.data = [{
@@ -603,8 +592,6 @@ describe('Testing data table controller', function () {
                 "alarm_high": "14",
                 "alarm_low": "-14",
                 "units": "km/s",
-                "name": "x velocity component in ECF",
-                "category": "velocity",
                 "notes": ""
             };
         });

@@ -121,7 +121,7 @@ app.controller('DataLogCtrl',function ($scope,$interval,dashboardService,datasta
             }
             
             $scope.logData.push({
-                name : currentData.name,
+                parameter : $scope.widget.settings.data.id,
                 value : currentData.value,
                 timestamp : $scope.telemetry['time'],
                 style : dataColor,
