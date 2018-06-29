@@ -77,7 +77,6 @@ app.controller("LineCtrl", function($scope, $element, $interval, $window, dashbo
                             if(currentData){
                                 if(typeof(currentData.value) == "number") {
                                     var yValue = parseFloat(currentData.value.toFixed(4));
-                                    var category = currentData.category;
                                     var yUnits = currentData.units;
                                     plotPoint.push(yValue);
                                 } else {
@@ -98,8 +97,14 @@ app.controller("LineCtrl", function($scope, $element, $interval, $window, dashbo
                         };
                     }
 
-                    if(category && paramY){
-                        var ylabel = category+" [ "+paramY+ " ] " + yUnits + " "
+                    if(paramY){
+                        if(yUnits) {
+                            var unitString = " [ "+ yUnits + " ] ";
+                        } else {
+                            var unitString = "";
+                        }
+
+                        var ylabel = paramY + unitString;
                     }
 
                     if(typeFlag){

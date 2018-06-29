@@ -66,11 +66,11 @@ describe('Testing data log controller', function () {
         };
 
         scope.logData = [{
-            name: "x velocity component in ECF", 
+            parameter: "vx",
             value: "-0.9412", 
             timestamp: "2018-02-16T00:26:41.439Z"
         },{
-            name: "x velocity component in ECF", 
+            parameter: "vx",
             value: "-0.9432", 
             timestamp: "2018-02-16T00:28:41.439Z"
         }];
@@ -92,13 +92,11 @@ describe('Testing data log controller', function () {
         dashboardService.getData.and.callFake(function() {
             return {
                 "value": -0.3201368817947103,
-                "name": "x velocity component in ECF",
-                "category": "velocity",
                 "notes": ""
             };
         });
         var result1 = [{ 
-            name: 'x velocity component in ECF', 
+            parameter: 'vx',
             value: -0.3201, 
             timestamp: '2018-02-16T00:26:41.439Z', 
             style: undefined 
@@ -116,18 +114,16 @@ describe('Testing data log controller', function () {
         dashboardService.getData.and.callFake(function() {
             return {
                 "value": -0.3409368817947103,
-                "name": "x velocity component in ECF",
-                "category": "velocity",
                 "notes": ""
             };
         });
         var result2 = [{ 
-            name: 'x velocity component in ECF', 
+            parameter: 'vx',
             value: -0.3201, 
             timestamp: '2018-02-16T00:26:41.439Z', 
             style: undefined 
         },{ 
-            name: 'x velocity component in ECF', 
+            parameter: 'vx',
             value: -0.3409, 
             timestamp: '2018-02-16T00:28:41.439Z', 
             style: undefined 

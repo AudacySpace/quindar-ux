@@ -2,7 +2,7 @@
  <div id="datalogtable">
  <div layout="row">
     <div flex="25" class="dlog-header dlog-center-header">
-        Name
+        Parameter
     </div>
     <div flex="25" class="dlog-header dlog-center-header">
         Value
@@ -31,7 +31,7 @@
 </div>
 <div layout="row"  ng-repeat="data in logData | filter:search">
     <div flex="25" class="dlog-row dlog-center-row">
-        {{data.name}}
+        {{data.parameter}}
     </div>
     <div flex="25" class="dlog-row dlog-center-row" ng-style="data.style">
         {{data.value}}
