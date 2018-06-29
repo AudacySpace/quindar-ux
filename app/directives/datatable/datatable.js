@@ -53,15 +53,6 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             {   
                 "datavalue":"",
                 "checked":"true",
-                "style":textLeft,
-                "colshow":"checkedValues.checkedName",
-                "active": "false",
-                "datacolor":"",
-                "headervalue":""
-            },
-            {   
-                "datavalue":"",
-                "checked":"true",
                 "style":textRight,
                 "colshow":"checkedValues.checkedAlow",
                 "active": "false",
@@ -219,7 +210,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     //Function to add row above the current row
     $scope.addRowAbove = function($index){
         if($scope.table.rows.length < 80){
-            $scope.table.rows.splice($index,0,{contents :[{"datavalue":"","headervalue":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false });
+            $scope.table.rows.splice($index,0,{contents :[{"datavalue":"","headervalue":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false });
             $scope.widget.settings.data.splice($index, 0, {}); 
         }else {
             $window.alert("You have reached the maximum limit for rows!");
@@ -230,7 +221,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     //Function to add below the current row
     $scope.addRowBelow = function($index){
         if($scope.table.rows.length < 80){
-           $scope.table.rows.splice($index+1,0,{contents :[{"datavalue":"","headervalue":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false });  
+           $scope.table.rows.splice($index+1,0,{contents :[{"datavalue":"","headervalue":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false });  
             $scope.widget.settings.data.splice($index+1, 0, {}); 
        }else {
             $window.alert("You have reached the maximum limit for rows!");
@@ -328,61 +319,60 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                             }
 
                             tempRow.contents[0].datavalue = id;
-                            tempRow.contents[1].datavalue = currentData.name;
 
                             if(currentData.alarm_low){
-                                tempRow.contents[2].datavalue = currentData.alarm_low;
+                                tempRow.contents[1].datavalue = currentData.alarm_low;
                             }else {
-                                tempRow.contents[2].datavalue = 'N/A';   
+                                tempRow.contents[1].datavalue = 'N/A';
                             }
 
                             if(currentData.warn_low){
-                                tempRow.contents[3].datavalue = currentData.warn_low;
+                                tempRow.contents[2].datavalue = currentData.warn_low;
                             }else {
-                                tempRow.contents[3].datavalue = 'N/A';   
+                                tempRow.contents[2].datavalue = 'N/A';
                             }
 
-                            tempRow.contents[4].datavalue = currentData.value;
+                            tempRow.contents[3].datavalue = currentData.value;
                             if(tempvalue[i] === currentData.value){
                                 //stale data
                                 if(dServiceObjVal.sIcon === "green" && dServiceObjVal.gIcon === "green" && 
                                     dServiceObjVal.pIcon === "green" && dServiceObjVal.dIcon === "green" ){
-                                        tempRow.contents[4].datacolor = colorHealthy;
+                                        tempRow.contents[3].datacolor = colorHealthy;
                                 } else {
-                                    tempRow.contents[4].datacolor = colorStale;
+                                    tempRow.contents[3].datacolor = colorStale;
                                 }
                             } else {
                                 //new data
                                 var colorVal = datastatesService.getDataColor(currentData.alarm_low, currentData.alarm_high,
                                                     currentData.value, currentData.warn_low, currentData.warn_high, valType)
                                 if(colorVal === "red"){
-                                    tempRow.contents[4].datacolor = colorAlarm;  
+                                    tempRow.contents[3].datacolor = colorAlarm;
                                 }else if(colorVal === "orange"){
-                                    tempRow.contents[4].datacolor = colorCaution;
+                                    tempRow.contents[3].datacolor = colorCaution;
                                 }else{
-                                    tempRow.contents[4].datacolor = colorHealthy;
+                                    tempRow.contents[3].datacolor = colorHealthy;
                                 }
                                 tempvalue[i] = currentData.value;
                             } 
 
                             if(currentData.warn_high){
-                                tempRow.contents[5].datavalue = currentData.warn_high;
+                                tempRow.contents[4].datavalue = currentData.warn_high;
                             }else {
-                                tempRow.contents[5].datavalue = 'N/A';   
+                                tempRow.contents[4].datavalue = 'N/A';
                             }
 
                             if(currentData.alarm_high){
-                                tempRow.contents[6].datavalue = currentData.alarm_high;
+                                tempRow.contents[5].datavalue = currentData.alarm_high;
                             }else {
-                                tempRow.contents[6].datavalue = 'N/A';   
+                                tempRow.contents[5].datavalue = 'N/A';
                             }
 
-                            tempRow.contents[7].datavalue = currentData.units;
+                            tempRow.contents[6].datavalue = currentData.units;
 
                             if(currentData.notes !== ''){
-                                tempRow.contents[8].datavalue = currentData.notes;
+                                tempRow.contents[7].datavalue = currentData.notes;
                             }else {
-                                tempRow.contents[8].datavalue = 'N/A';    
+                                tempRow.contents[7].datavalue = 'N/A';
                             }
                         }
                     } catch(err){
@@ -400,7 +390,6 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                     tempRow.contents[5].datacolor = colorDisconnected;
                     tempRow.contents[6].datacolor = colorDisconnected;
                     tempRow.contents[7].datacolor = colorDisconnected;
-                    tempRow.contents[8].datacolor = colorDisconnected; 
                 }
             }
         }

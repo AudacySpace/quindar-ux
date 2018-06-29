@@ -292,8 +292,6 @@ describe('Testing lineplot settings controller', function () {
                 "alarm_high": "14",
                 "alarm_low": "-14",
                 "units": "km/s",
-                "name": "x velocity component in ECF",
-                "category": "velocity",
                 "notes": ""
             }
         });
@@ -331,8 +329,6 @@ describe('Testing lineplot settings controller', function () {
                 "alarm_high": "14",
                 "alarm_low": "-14",
                 "units": "km/s",
-                "name": "x velocity component in ECF",
-                "category": "velocity",
                 "notes": ""
             }
         });
@@ -394,8 +390,6 @@ describe('Testing lineplot settings controller', function () {
                 "alarm_high": "14",
                 "alarm_low": "-14",
                 "units": "km/s",
-                "name": "x velocity component in ECF",
-                "category": "velocity",
                 "notes": ""
             }
         });

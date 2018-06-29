@@ -318,8 +318,6 @@ describe('Testing Groundtrack settings controller', function () {
                 "alarm_high": "14",
                 "alarm_low": "-14",
                 "units": "km/s",
-                "name": "x velocity component in ECF",
-                "category": "velocity",
                 "notes": ""
             }
         });
@@ -359,8 +357,6 @@ describe('Testing Groundtrack settings controller', function () {
                 "alarm_high": "14",
                 "alarm_low": "-14",
                 "units": "km/s",
-                "name": "x velocity component in ECF",
-                "category": "velocity",
                 "notes": ""
             }
         });
@@ -424,8 +420,6 @@ describe('Testing Groundtrack settings controller', function () {
                 "alarm_high": "14",
                 "alarm_low": "-14",
                 "units": "km/s",
-                "name": "x velocity component in ECF",
-                "category": "velocity",
                 "notes": ""
             }
         });
@@ -458,8 +452,6 @@ describe('Testing Groundtrack settings controller', function () {
                 "alarm_high": "14",
                 "alarm_low": "-14",
                 "units": "km/s",
-                "name": "x velocity component in ECF",
-                "category": "velocity",
                 "notes": ""
             }
         });
@@ -513,8 +505,6 @@ describe('Testing Groundtrack settings controller', function () {
                 "alarm_high": "1.1",
                 "alarm_low": "-1.1",
                 "units": "",
-                "name": "position x",
-                "category": "position",
                 "notes": ""
             }
         });
@@ -554,8 +544,6 @@ describe('Testing Groundtrack settings controller', function () {
                 "alarm_high": "1.1",
                 "alarm_low": "-1.1",
                 "units": "",
-                "name": "position x",
-                "category": "position",
                 "notes": ""            
             }
         });
@@ -619,8 +607,6 @@ describe('Testing Groundtrack settings controller', function () {
                 "alarm_high": "1.1",
                 "alarm_low": "-1.1",
                 "units": "",
-                "name": "position x",
-                "category": "position",
                 "notes": ""  
             }
         });
@@ -653,8 +639,6 @@ describe('Testing Groundtrack settings controller', function () {
                 "alarm_high": "1.1",
                 "alarm_low": "-1.1",
                 "units": "",
-                "name": "position x",
-                "category": "position",
                 "notes": "" 
             }
         });

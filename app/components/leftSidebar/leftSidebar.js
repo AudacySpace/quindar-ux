@@ -64,6 +64,7 @@ app
             //interval to check for updated telemetry each second
             vm.interval = $interval(function(){
                 if(vm.telemetry){
+                    console.log(vm.telemetry)
                     //merge the current telemetry object with the previous telemetry object
                     vm.telemetryMerged = angular.merge({}, vm.telemetry, vm.previousTelemetry);
 
