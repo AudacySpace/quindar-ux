@@ -18,12 +18,11 @@ describe('Test Suite for Telemetry Route Controller', function() {
         mongooseStub = {
             model: function() {
                 return {
-                    aggregate: function(query, callback) {
-                        var telemetry = [{ 
-                            telemetry: { cdh: {} },
-                            beaconID: 0,
+                    findOne: function(query, condition, sortorder, callback) {
+                        var telemetry = { 
+                            telemetry: { A0 : {} },
                             timestamp: '2018-05-22T23:35:00.000Z'
-                        }];
+                        };
                         var err;
                         callback(err,telemetry); 
                     } 
@@ -35,7 +34,7 @@ describe('Test Suite for Telemetry Route Controller', function() {
         mongooseErrStub = {
             model: function() {
                 return {
-                    aggregate: function(query, callback) {
+                    findOne: function(query, condition, sortorder, callback) {
                         var telemetry = null;
                         var err = {name:'MongoError'};
                         callback(err,telemetry); 
@@ -56,11 +55,10 @@ describe('Test Suite for Telemetry Route Controller', function() {
             send: sinon.spy()
         }
 
-        var result = [{ 
-            telemetry: { cdh: {} },
-            beaconID: 0,
+        var result = {
+            telemetry: { A0 : {} },
             timestamp: '2018-05-22T23:35:00.000Z'
-        }];
+        };
     
         var spy = chai.spy.on(telemetrymodule, 'getTelemetry');
         telemetrymodule.getTelemetry(req, res);

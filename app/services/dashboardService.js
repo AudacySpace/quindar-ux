@@ -61,36 +61,18 @@ app
                 params: {'mission' : missionName}
             }).then(function success(response) {
                 if(response.data){
-                    console.log(response.data);
-                    var result = response.data;
-
-                    if(result) {
-                        var tempTel = result[0].telemetry;
-                        var tempTime = result[0].timestamp;
-                        var tempID = result[0]._id;
-
-                        for(var i=1; i<result.length; i++) {
-                            tempTel = angular.merge({}, tempTel, result[i].telemetry);
-                            //find the max timestamp
-                            if(result[i].timestamp > tempTime){
-                                tempTime = result[i].timestamp;
-                                tempID = result[i]._id;
-                            }
-                        }
-
-                        for(var item in tempTel){
-                            telemetry[item] = tempTel[item];
-                        }
-                        telemetry['data'] = tempTel;
-                        telemetry['time'] = tempTime;
-                        time = tempTime;
+                    for(var item in response.data.telemetry){
+                        telemetry[item] = response.data.telemetry[item];
                     }
+                    telemetry['data'] = response.data.telemetry;
+                    telemetry['time'] = response.data.timestamp;
+                    time = response.data.timestamp;
                 }else{
                     telemetry = {};
                 }
 
                 if(isEmpty(response.data) === false){//if data is not empty
-                    if(prevId === tempID){ //  if proxy application is not receiving any data from ground station
+                    if(prevId === response.data._id){ //  if proxy application is not receiving any data from ground station
                         icons.sIcon = "grey";
                         icons.gIcon = "red";
                         icons.pIcon = "green";
@@ -100,7 +82,7 @@ app
                         icons.gIcon = "green";
                         icons.pIcon = "green";
                         icons.dIcon = "green";
-                        prevId = tempID;
+                        prevId = response.data._id;
                     }
                 } else { // if data received is empty
                     icons.sIcon = "red";
