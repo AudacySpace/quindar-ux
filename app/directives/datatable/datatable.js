@@ -475,18 +475,6 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                     
                     }
                 }
-                /*else if(data.type == "")
-                {
-                    tempRow.contents[0].datavalue = "";
-                    tempRow.contents[1].datavalue = "";
-                    tempRow.contents[2].datavalue = "";
-                    tempRow.contents[3].datavalue = "";
-                    tempRow.contents[4].datavalue = "";
-                    tempRow.contents[5].datavalue = "";
-                    tempRow.contents[6].datavalue = "";
-                    tempRow.contents[7].datavalue = "";
-                    tempRow.contents[8].datavalue = "";
-                }*/
             } else {
                 if(dServiceObjVal.dIcon === "red"){
                     //GUI Disconnected with Database 
@@ -513,5 +501,3 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     );
 
 });
-
-
