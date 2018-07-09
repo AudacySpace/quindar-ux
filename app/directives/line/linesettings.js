@@ -22,7 +22,7 @@ app.controller('LineSettingsCtrl',
             }
         }
 
-        createSettingsData();
+        //createSettingsData();
 
         $scope.getTelemetrydata = function(){
             //open the data menu
@@ -40,6 +40,8 @@ app.controller('LineSettingsCtrl',
             var data = vehicleInfo.parameters[vehicleInfo.parameters.length - 1]; // get the last selected id from the data menu
             if(data){
                 for(var i=0; i<$scope.settings.vehicles.length; i++){
+                    console.log($scope.settings.vehicles[i].value);
+                    console.log(data.vehicle);
                     if($scope.settings.vehicles[i].value === data.vehicle){
                         $scope.settings.vehicles[i].checked = true;
                     }
@@ -116,14 +118,17 @@ app.controller('LineSettingsCtrl',
             $scope.settings = angular.copy(previousSettings);
         }
 
-        function createSettingsData(){
-            var interval = $interval(function(){
-                var currentMission = dashboardService.getCurrentMission();
-                if(currentMission.missionName != ""){
-                    dashboardService.getConfig(currentMission.missionName)
-                    .then(function(response) {
-                        if(response.data) {
-                            var data = dashboardService.sortObject(response.data);
+        $scope.createSettingsData = function(){
+            //var interval = $interval(function(){
+                $scope.settings.vehicles = [];
+                // var currentMission = dashboardService.getCurrentMission();
+                // if(currentMission.missionName != ""){
+                //     dashboardService.getConfig(currentMission.missionName)
+                //     .then(function(response) {
+                //         if(response.data) {
+                //             console.log(response.data);
+                var telemetry = dashboardService.telemetry;
+                            var data = dashboardService.sortObject(telemetry.data);
                             var count = 0;
                             for(var key in data) {
                                 if(data.hasOwnProperty(key)) {
@@ -151,11 +156,11 @@ app.controller('LineSettingsCtrl',
                                 }
                             }
                             previousSettings = angular.copy($scope.settings);
-                        } 
-                    });
-                    $interval.cancel(interval);
-                }
-            }, 1000 );
+                    //     } 
+                    // });
+                    //$interval.cancel(interval);
+                // }
+            // }, 1000 );
         }
 
         function createKey(vehicle, key){
