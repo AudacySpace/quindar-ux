@@ -36,10 +36,9 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     },true);
 
     var num_of_rows = 39;
+    var rowValues = [];
 
-    //Default table structure -contains 120 rows to best appear for small and large screens
-    for (var i = 0; i <= num_of_rows; i++) {
-        tableCols.push({
+    var dataObject = {
             contents: [
             {   
                 "datavalue":"",
@@ -123,7 +122,11 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                 "headervalue":""
             }],
             disabled: false
-        });      
+        }
+
+    //Default table structure -contains 120 rows to best appear for small and large screens
+    for (var i = 0; i <= num_of_rows; i++) {
+        tableCols.push(angular.copy(dataObject));      
     }
 
     //Function to select telemetry Id
@@ -151,9 +154,15 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             var datavalue = dashboardService.getData(data.key);
             if(datavalue){
                 if(datavalue.hasOwnProperty("value")){
-                    $scope.widget.settings.data[$index] = new Object();
+                    
+                    if(savePrevious($index)) //save info (if object not already created for this row, create it)
+                    {  
+                        $scope.widget.settings.data[$index] = new Object();
+                    }
+
                     $scope.widget.settings.data[$index].type = "data";
                     $scope.widget.settings.data[$index].value = data.key;
+                    $scope.widget.settings.data[$index].undone = false;
 
                     arrow.style.color = "#b3b3b3";
                     if ($window.innerWidth >= 1400){
@@ -189,9 +198,15 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                     var idList = Object.keys(datavalue);
 
                     for(var i=0; i<idList.length; i++){
-                        $scope.widget.settings.data[$index + i] = new Object();
+
+                        if(savePrevious($index + i)) //save info (if object not already created for this row, create it)
+                        {
+                            $scope.widget.settings.data[$index + i] = new Object();
+                        }
+
                         $scope.widget.settings.data[$index + i].type = "data";
                         $scope.widget.settings.data[$index + i].value = data.key + '.' + idList[i];
+                        $scope.widget.settings.data[$index + i].undone = false;
                     }
 
                     arrow.style.color = "#b3b3b3";
@@ -220,7 +235,8 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     $scope.addRowAbove = function($index){
         if($scope.table.rows.length < 80){
             $scope.table.rows.splice($index,0,{contents :[{"datavalue":"","headervalue":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false });
-            $scope.widget.settings.data.splice($index, 0, {}); 
+            $scope.widget.settings.data.splice($index, 0, {});
+            $scope.widget.settings.previous.splice($index, 0, {});
         }else {
             $window.alert("You have reached the maximum limit for rows!");
         }
@@ -230,8 +246,9 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     //Function to add below the current row
     $scope.addRowBelow = function($index){
         if($scope.table.rows.length < 80){
-           $scope.table.rows.splice($index+1,0,{contents :[{"datavalue":"","headervalue":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false });  
+            $scope.table.rows.splice($index+1,0,{contents :[{"datavalue":"","headervalue":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedName","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false });  
             $scope.widget.settings.data.splice($index+1, 0, {}); 
+            $scope.widget.settings.previous.splice($index+1, 0, {}); 
        }else {
             $window.alert("You have reached the maximum limit for rows!");
        }
@@ -245,6 +262,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
         }else {
             $scope.table.rows.splice($index, 1);
             $scope.widget.settings.data.splice($index,1);
+            $scope.widget.settings.previous.splice($index,1);
         }
     }
 
@@ -254,6 +272,9 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             $scope.table.rows[$index-1] = $scope.table.rows.splice($index, 1, $scope.table.rows[$index-1])[0];
             $scope.widget.settings.data[$index-1] = $scope.widget.settings.data.splice($index, 1, $scope.widget.settings.data[$index-1])[0];
             $scope.table.rows[$index-1].colorin = roweffect;
+
+            $scope.widget.settings.previous[$index-1] = $scope.widget.settings.previous.splice($index, 1, $scope.widget.settings.previous[$index-1])[0];
+
             $timeout(function() {
                 $scope.table.rows[$index-1].colorin = '';
             }, 500);
@@ -268,31 +289,105 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
         if(($index) < (($scope.table.rows.length)-1)){
             $scope.table.rows[$index+1] = $scope.table.rows.splice($index, 1, $scope.table.rows[$index+1])[0];
             $scope.widget.settings.data[$index+1] = $scope.widget.settings.data.splice($index, 1, $scope.widget.settings.data[$index+1])[0];
-            $scope.table.rows[$index+1].colorin = roweffect;  
+            $scope.table.rows[$index+1].colorin = roweffect; 
+
+            $scope.widget.settings.previous[$index+1] = $scope.widget.settings.previous.splice($index, 1, $scope.widget.settings.previous[$index+1])[0];
+
             $timeout(function() {
                 $scope.table.rows[$index+1].colorin = '';
             }, 500);  
         }
         else{
-            $window.alert("This row cannot be moved further down!You have reached the end of the table.");
+            $window.alert("This row cannot be moved further down! You have reached the end of the table.");
         }
     }
 
     //Function to convert a row to a header
     $scope.convertHeader = function($index, header){
-        if(header){
-            data = header.data
-        } else {
-            data = "";
+        if(savePrevious($index)) //save info (if object not already created for this row, create it)
+        {
+            $scope.widget.settings.data[$index] = new Object();
         }
-        $scope.table.rows[$index] = {contents:[{"datavalue":"","headervalue":{"data": data },"checked":"false","style":"text-align:right;background-color:#1072A4;","colshow":"true","colspan":"9","class":"header","placeholder":"Click here to edit", "active":"true"}], disabled: true};
-        $scope.widget.settings.data[$index] = new Object();
+        createHeader($index, header); //actually create the header
+        $scope.widget.settings.data[$index].undone = false;
+    } 
+
+    //create the header without saving current row in "data" into "previous"
+    function createHeader($index, header)
+    {
+        var data = "";
+        if(header)
+        {
+            data = header.data;
+        }
+        $scope.table.rows[$index] = {
+            contents:[{
+                "datavalue":"",
+                "headervalue": {"data": data },
+                "checked":"false",
+                "style":"text-align:right;background-color:#1072A4;",
+                "colshow":"true",
+                "colspan":"9",
+                "class":"header",
+                "placeholder":"Click here to edit",
+                "active":"true"
+            }],
+            disabled: true
+        };
         $scope.widget.settings.data[$index].type = "header";
         $scope.widget.settings.data[$index].value = $scope.table.rows[$index].contents[0].headervalue;
-    } 
+    }
 
     //Table row and column structure
     checkForRowData();
+
+    //Undo apply telemetry Id or convert to header
+    $scope.undo = function($index) {
+        //store current row in "previous" as temp
+        var tempType = $scope.widget.settings.previous[$index].type;
+        var tempValue = $scope.widget.settings.previous[$index].value;
+            
+        //save current row in "previous" as the current row in "data"
+        $scope.widget.settings.previous[$index] = new Object();
+        $scope.widget.settings.previous[$index].type = $scope.widget.settings.data[$index].type;
+        $scope.widget.settings.previous[$index].value = $scope.widget.settings.data[$index].value;
+
+        //save current row in "data" as temp
+        $scope.widget.settings.data[$index] = new Object();
+        $scope.widget.settings.data[$index].type = tempType;
+        $scope.widget.settings.data[$index].value = tempValue;
+
+        //create header if new current row in "data" says so
+        if(tempType == "header")
+        {
+            createHeader($index, tempValue);
+        }
+        else //otherwise create a data object in the current row
+        {
+            $scope.table.rows[$index] = angular.copy(dataObject);
+        }
+
+        //now this has been undone, don't allow option to undo again
+        $scope.widget.settings.data[$index].undone = true;
+    }
+
+    //save current data type and value into previous type and value
+    function savePrevious(index)
+    {
+        if($scope.widget.settings.data[index]) //no need to create new object in previous if object already has been made
+        {
+            $scope.widget.settings.previous[index].type = $scope.widget.settings.data[index].type;
+            $scope.widget.settings.previous[index].value = $scope.widget.settings.data[index].value;
+            return false;
+        }
+        else
+        {
+            $scope.widget.settings.previous[index] = new Object();
+            $scope.widget.settings.previous[index].type = "";
+            $scope.widget.settings.previous[index].value = "";
+            return true;
+        }
+    }
 
     function checkForRowData(){
         $scope.table = { 
@@ -301,11 +396,12 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
 
         if($scope.widget.settings.data.length != 0){
             for (var i=0; i<$scope.widget.settings.data.length; i++){
-                if($scope.widget.settings.data[i].type == "header") {
-                    $scope.convertHeader(i, $scope.widget.settings.data[i].value);
+                if($scope.widget.settings.data[i] && $scope.widget.settings.data[i].type == "header") {
+                    createHeader(i, $scope.widget.settings.data[i].value);
                 }
             }
         }
+
     } 
 
     $scope.updateRow = function() {
@@ -386,7 +482,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                             }
                         }
                     } catch(err){
-
+                    
                     }
                 }
             } else {
@@ -415,5 +511,3 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     );
 
 });
-
-

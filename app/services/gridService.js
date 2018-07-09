@@ -63,7 +63,8 @@ function gridService ($http, $sessionStorage, $window, userService) {
                 checkedUnits: true,
                 checkedNotes: true
             },
-            data : []
+            data : [],
+            previous : []
         },
 		saveLoad: false,
 		delete: false

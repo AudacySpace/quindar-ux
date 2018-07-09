@@ -32,6 +32,7 @@
                         <li><a href="#" class="move-down" ng-click="moveRowDown($index)">Move Row Down</a></li>
                         <li><a href="#" class="delete-row" ng-click="deleteRow($index)">Delete Row</a></li>
                         <li><a href="#" class="make-header" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || convertHeader($index)">Convert to Header</a></li>
+                        <li><a href="#" class="undo" ng-class="{disabled: !widget.settings.data[$index] || widget.settings.data[$index].undone}" ng-disabled="!widget.settings.data[$index] || widget.settings.data[$index].undone" ng-click="!widget.settings.data[$index] || widget.settings.data[$index].undone || undo($index)">Undo</a></li>
                     </ul>
                 </div>
             </td>

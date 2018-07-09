@@ -63,7 +63,8 @@ describe('Testing data table controller', function () {
                         checkedUnits: true,
                         checkedNotes: true
                     },
-                    data : []
+                    data : [],
+                    previous: []
                 }
             };
 
@@ -211,6 +212,8 @@ describe('Testing data table controller', function () {
 
         expect(scope.widget.settings.data[index].type).toEqual('data');
         expect(scope.widget.settings.data[index].value).toEqual('A0.GNC.velocity.vx');
+        expect(scope.widget.settings.previous[index].type).toEqual('');
+        expect(scope.widget.settings.previous[index].value).toEqual('');
         expect(arrow.style.color).toEqual('#b3b3b3');
     });
 
@@ -252,6 +255,8 @@ describe('Testing data table controller', function () {
 
         expect(scope.widget.settings.data[index].type).toEqual('data');
         expect(scope.widget.settings.data[index].value).toEqual('A0.GNC.velocity.vx');
+        expect(scope.widget.settings.previous[index].type).toEqual('');
+        expect(scope.widget.settings.previous[index].value).toEqual('');
         expect(scope.lock.lockLeft).toEqual(false);
         expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false);
         expect(arrow.style.color).toEqual('#b3b3b3');
@@ -353,6 +358,16 @@ describe('Testing data table controller', function () {
         expect(scope.widget.settings.data[index+2].value).toEqual('A0.GNC.velocity.vy');
         expect(scope.widget.settings.data[index+3].type).toEqual('data');
         expect(scope.widget.settings.data[index+3].value).toEqual('A0.GNC.velocity.vz');
+
+        expect(scope.widget.settings.previous[index].type).toEqual('');
+        expect(scope.widget.settings.previous[index].value).toEqual('');
+        expect(scope.widget.settings.previous[index+1].type).toEqual('');
+        expect(scope.widget.settings.previous[index+1].value).toEqual('');
+        expect(scope.widget.settings.previous[index+2].type).toEqual('');
+        expect(scope.widget.settings.previous[index+2].value).toEqual('');
+        expect(scope.widget.settings.previous[index+3].type).toEqual('');
+        expect(scope.widget.settings.previous[index+3].value).toEqual('');
+
         expect(arrow.style.color).toEqual('#b3b3b3');
     });
 
@@ -394,6 +409,16 @@ describe('Testing data table controller', function () {
         expect(scope.widget.settings.data[index+2].value).toEqual('A0.GNC.velocity.vy');
         expect(scope.widget.settings.data[index+3].type).toEqual('data');
         expect(scope.widget.settings.data[index+3].value).toEqual('A0.GNC.velocity.vz');
+
+        expect(scope.widget.settings.previous[index].type).toEqual('');
+        expect(scope.widget.settings.previous[index].value).toEqual('');
+        expect(scope.widget.settings.previous[index+1].type).toEqual('');
+        expect(scope.widget.settings.previous[index+1].value).toEqual('');
+        expect(scope.widget.settings.previous[index+2].type).toEqual('');
+        expect(scope.widget.settings.previous[index+2].value).toEqual('');
+        expect(scope.widget.settings.previous[index+3].type).toEqual('');
+        expect(scope.widget.settings.previous[index+3].value).toEqual('');
+
         expect(scope.lock.lockLeft).toEqual(false);
         expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false);
         expect(arrow.style.color).toEqual('#b3b3b3');
@@ -489,7 +514,7 @@ describe('Testing data table controller', function () {
 
         scope.moveRowDown(index);
 
-        expect(windowMock.alert).toHaveBeenCalledWith("This row cannot be moved further down!You have reached the end of the table.");
+        expect(windowMock.alert).toHaveBeenCalledWith("This row cannot be moved further down! You have reached the end of the table.");
     });
 
     it('should define function convertHeader', function() {
@@ -503,6 +528,8 @@ describe('Testing data table controller', function () {
 
         expect(scope.widget.settings.data[index].type).toEqual('header');
         expect(scope.widget.settings.data[index].value).toEqual({ data : '' });
+        expect(scope.widget.settings.previous[index].type).toEqual('');
+        expect(scope.widget.settings.previous[index].value).toEqual('');
     });
 
     it('should convert the row into a header with data value when convertHeader is called', function() {
@@ -513,6 +540,8 @@ describe('Testing data table controller', function () {
 
         expect(scope.widget.settings.data[index].type).toEqual('header');
         expect(scope.widget.settings.data[index].value).toEqual(expectedData);
+        expect(scope.widget.settings.previous[index].type).toEqual('');
+        expect(scope.widget.settings.previous[index].value).toEqual('');
     });
 
     it('should define function updateRow', function() {
@@ -583,6 +612,136 @@ describe('Testing data table controller', function () {
         scope.updateRow();
         expect(scope.table.rows[0].contents).toEqual(expectedContents);
 
+    });
+
+    it('should define function undo', function() {
+        expect(scope.undo).toBeDefined();
+    });
+
+    it('should undo apply telemetry id and show a blank row', function() {
+        windowMock.innerWidth = 1000;
+        var index = 2;
+        var vehicleInfo = { 
+            id: 'vx',
+            vehicle: 'A0',
+            key: 'A0.GNC.velocity.vx',
+            category: 'category' 
+        };
+        var data = {
+            parameters:[]
+        };
+        data.parameters[0] = vehicleInfo;
+
+
+        sidebarService.getVehicleInfo.and.callFake(function(){
+            return data;
+        });
+
+        dashboardService.getData.and.callFake(function() {
+            return {
+                "value": -0.3201368817947103,
+                "warn_high": "10",
+                "warn_low": "-10",
+                "alarm_high": "14",
+                "alarm_low": "-14",
+                "units": "km/s",
+                "name": "x velocity component in ECF",
+                "category": "velocity",
+                "notes": ""
+            };
+        });
+
+        scope.getValue(ev, {}, index);
+
+        expect(scope.widget.settings.data[index].type).toEqual('data');
+        expect(scope.widget.settings.data[index].value).toEqual('A0.GNC.velocity.vx');
+        expect(scope.widget.settings.previous[index].type).toEqual('');
+        expect(scope.widget.settings.previous[index].value).toEqual('');
+        expect(scope.widget.settings.data[index].undone).toEqual(false);
+        expect(arrow.style.color).toEqual('#b3b3b3');
+
+        scope.undo(index);
+
+        expect(scope.widget.settings.data[index].type).toEqual('');
+        expect(scope.widget.settings.data[index].value).toEqual('');
+        expect(scope.widget.settings.previous[index].type).toEqual('data');
+        expect(scope.widget.settings.previous[index].value).toEqual('A0.GNC.velocity.vx');
+        expect(scope.widget.settings.data[index].undone).toEqual(true);
+        expect(arrow.style.color).toEqual('#b3b3b3');
+    });
+
+    it('should undo convert header with data and show a blank row', function() {
+        var index = 2;
+        var expectedData = { data : 'Velocity' };
+
+        scope.convertHeader(index, expectedData);
+
+        expect(scope.widget.settings.data[index].type).toEqual('header');
+        expect(scope.widget.settings.data[index].value).toEqual(expectedData);
+        expect(scope.widget.settings.previous[index].type).toEqual('');
+        expect(scope.widget.settings.previous[index].value).toEqual('');
+        expect(scope.widget.settings.data[index].undone).toEqual(false);
+
+        scope.undo(index);
+
+        expect(scope.widget.settings.data[index].type).toEqual('');
+        expect(scope.widget.settings.data[index].value).toEqual('');
+        expect(scope.widget.settings.previous[index].type).toEqual('header');
+        expect(scope.widget.settings.previous[index].value).toEqual(expectedData);
+        expect(scope.widget.settings.data[index].undone).toEqual(true);
+
+    });
+
+    it('should undo convert header and previously applied telemetry id', function() {
+        windowMock.innerWidth = 1000;
+        var index = 2;
+        var vehicleInfo = { 
+            id: 'vx',
+            vehicle: 'A0',
+            key: 'A0.GNC.velocity.vx',
+            category: 'category' 
+        };
+        var data = {
+            parameters:[]
+        };
+        data.parameters[0] = vehicleInfo;
+
+
+        sidebarService.getVehicleInfo.and.callFake(function(){
+            return data;
+        });
+
+        dashboardService.getData.and.callFake(function() {
+            return {
+                "value": -0.3201368817947103,
+                "warn_high": "10",
+                "warn_low": "-10",
+                "alarm_high": "14",
+                "alarm_low": "-14",
+                "units": "km/s",
+                "name": "x velocity component in ECF",
+                "category": "velocity",
+                "notes": ""
+            };
+        });
+
+        scope.getValue(ev, {}, index);
+        
+        scope.convertHeader(index);
+
+        expect(scope.widget.settings.data[index].type).toEqual('header');
+        expect(scope.widget.settings.data[index].value).toEqual({ data : '' });
+        expect(scope.widget.settings.previous[index].type).toEqual('data');
+        expect(scope.widget.settings.previous[index].value).toEqual('A0.GNC.velocity.vx');
+        expect(scope.widget.settings.data[index].undone).toEqual(false);
+
+        scope.undo(index);
+
+        expect(scope.widget.settings.data[index].type).toEqual('data');
+        expect(scope.widget.settings.data[index].value).toEqual('A0.GNC.velocity.vx');
+        expect(scope.widget.settings.previous[index].type).toEqual('header');
+        expect(scope.widget.settings.previous[index].value).toEqual({ data : '' });
+        expect(scope.widget.settings.data[index].undone).toEqual(true);
     });
 
     it('should call $interval one time', function(){
