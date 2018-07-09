@@ -155,13 +155,14 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             if(datavalue){
                 if(datavalue.hasOwnProperty("value")){
                     
-                    if(savePrevious($index))
+                    if(savePrevious($index)) //save info (if object not already created for this row, create it)
                     {  
                         $scope.widget.settings.data[$index] = new Object();
                     }
 
                     $scope.widget.settings.data[$index].type = "data";
                     $scope.widget.settings.data[$index].value = data.key;
+                    $scope.widget.settings.data[$index].undone = false;
 
                     arrow.style.color = "#b3b3b3";
                     if ($window.innerWidth >= 1400){
@@ -198,13 +199,14 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
 
                     for(var i=0; i<idList.length; i++){
 
-                        if(savePrevious($index + i)) //swap info and see if 
+                        if(savePrevious($index + i)) //save info (if object not already created for this row, create it)
                         {
                             $scope.widget.settings.data[$index + i] = new Object();
                         }
 
                         $scope.widget.settings.data[$index + i].type = "data";
                         $scope.widget.settings.data[$index + i].value = data.key + '.' + idList[i];
+                        $scope.widget.settings.data[$index + i].undone = false;
                     }
 
                     arrow.style.color = "#b3b3b3";
@@ -302,14 +304,15 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
 
     //Function to convert a row to a header
     $scope.convertHeader = function($index, header){
-        if(savePrevious($index))
+        if(savePrevious($index)) //save info (if object not already created for this row, create it)
         {
             $scope.widget.settings.data[$index] = new Object();
         }
-        createHeader($index, header);
+        createHeader($index, header); //actually create the header
+        $scope.widget.settings.data[$index].undone = false;
     } 
 
-    //create the header
+    //create the header without saving current row in "data" into "previous"
     function createHeader($index, header)
     {
         var data = "";
@@ -332,7 +335,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             disabled: true
         };
         $scope.widget.settings.data[$index].type = "header";
-        $scope.widget.settings.data[$index].value = $scope.table.rows[$index].contents[0].headervalue; //$scope.table.rows[$index].contents[0].headervalue;
+        $scope.widget.settings.data[$index].value = $scope.table.rows[$index].contents[0].headervalue;
     }
 
     //Table row and column structure
@@ -340,31 +343,38 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
 
     //Undo apply telemetry Id or convert to header
     $scope.undo = function($index) {
+        //store current row in "previous" as temp
         var tempType = $scope.widget.settings.previous[$index].type;
         var tempValue = $scope.widget.settings.previous[$index].value;
             
+        //save current row in "previous" as the current row in "data"
         $scope.widget.settings.previous[$index] = new Object();
         $scope.widget.settings.previous[$index].type = $scope.widget.settings.data[$index].type;
         $scope.widget.settings.previous[$index].value = $scope.widget.settings.data[$index].value;
 
+        //save current row in "data" as temp
         $scope.widget.settings.data[$index] = new Object();
         $scope.widget.settings.data[$index].type = tempType;
         $scope.widget.settings.data[$index].value = tempValue;
 
+        //create header if new current row in "data" says so
         if(tempType == "header")
         {
             createHeader($index, tempValue);
         }
-        else
+        else //otherwise create a data object in the current row
         {
             $scope.table.rows[$index] = angular.copy(dataObject);
         }
+
+        //now this has been undone, don't allow option to undo again
+        $scope.widget.settings.data[$index].undone = true;
     }
 
     //save current data type and value into previous type and value
     function savePrevious(index)
     {
-        if($scope.widget.settings.data[index])
+        if($scope.widget.settings.data[index]) //no need to create new object in previous if object already has been made
         {
             $scope.widget.settings.previous[index].type = $scope.widget.settings.data[index].type;
             $scope.widget.settings.previous[index].value = $scope.widget.settings.data[index].value;
