@@ -20,45 +20,48 @@ app.controller('AlarmPanelCtrl',
     $scope.contents = [];
     $scope.masteralarmstatus = statusboardService.getMasterAlarmColors();
     $scope.class = []; // for glowing effect
-    
-    $scope.currentMission = dashboardService.getCurrentMission();
+
     $scope.vehicleColors = []; //contains all the vehicles to be displayed for the mission
     
     getVehicles();
 
     //Function to display master alarm and its sub systems
     function getVehicles(){
-        var interval = $interval(function(){
-            if($scope.currentMission.missionName != ""){
-                if($scope.contents.length == 0){
-                    dashboardService.getConfig($scope.currentMission.missionName)
-                        .then(function(response){
-                            if(response.data) {
-                                var data = dashboardService.sortObject(response.data);
-                                for(var key in data) {
-                                    if(data.hasOwnProperty(key)) {
-                                        $scope.contents.push({
-                                            "vehicle":key,
-                                            "flexprop":"",
-                                            "categories":Object.keys(data[key]),
-                                            "vehicleColor":"",
-                                            "categoryColors": [],
-                                            "tableArray":[],
-                                            "subCategoryColors" :[],
-                                            "ackStatus":false
-                                        });
-                                        $scope.vehicleColors.push({"vehicle":key,"status":false});
-                                    }
-                                }
-                                if($scope.contents.length > 0){   
-                                    for(var i=0;i<$scope.contents.length;i++){
-                                        $scope.contents[i].flexprop = flexprop/$scope.contents.length;
-                                    }                    
-                                }
-                            } 
-                        }); 
+        $scope.configInterval = $interval(function(){
+            var telemetry = dashboardService.telemetry;
+
+            if(!dashboardService.isEmpty(telemetry)){
+                var data = dashboardService.sortObject(telemetry.data);
+                    for(var key in data) {
+                        if(data.hasOwnProperty(key)) {
+                            //check if the platform exists in the contents
+                            var index = $scope.contents.findIndex(content => content.vehicle === key);
+
+                            //add in contents if not exists
+                            if(index == -1){
+                            $scope.contents.push({
+                                "vehicle":key,
+                                "flexprop":"",
+                                "categories":Object.keys(data[key]),
+                                "vehicleColor":"",
+                                "categoryColors": [],
+                                "tableArray":[],
+                                "subCategoryColors" :[],
+                                "ackStatus":false
+                            });
+
+                            $scope.vehicleColors.push({"vehicle":key,"status":false});
+                        } else { //update categories if vehicle exists in contents
+                            $scope.contents[index].categories = Object.keys(data[key])
+                        }
+                    }
                 }
-                $interval.cancel(interval);
+
+                if($scope.contents.length > 0){
+                    for(var i=0;i<$scope.contents.length;i++){
+                        $scope.contents[i].flexprop = flexprop/$scope.contents.length;
+                    }
+                }
             } 
         }, 1000);  
     }
@@ -167,6 +170,7 @@ app.controller('AlarmPanelCtrl',
     $scope.$on("$destroy", 
         function(event) {
             $interval.cancel($scope.interval);
+            $interval.cancel($scope.configInterval);
         }
     );
 });
