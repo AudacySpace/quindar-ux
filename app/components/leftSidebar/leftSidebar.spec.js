@@ -18,7 +18,7 @@ describe('Testing leftSidebar component', function () {
             $interval = _$interval_;
 
             dashboardService.telemetry.and.callFake(function() {
-                return {"time": "2018-02-16T00:26:41.439Z", "data": result };
+                return {"time": "2018-02-16T00:26:41.439Z", "data": { "A0" : {} } };
             });
 
             $controller = $componentController('leftSidebar', {
