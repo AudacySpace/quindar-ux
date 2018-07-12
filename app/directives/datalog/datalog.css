@@ -1,3 +1,10 @@
+#invisibleSpan {
+    display: none;
+    height: 0px;
+    width: 0px;
+    padding: 0px;
+    margin: 0px;
+}
 
 .dlog-center-row,.dlog-center-header {
 	margin-right: 2px;

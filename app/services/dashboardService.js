@@ -313,6 +313,6 @@ app
         getData : getData,
         setCurrentMission : setCurrentMission,
         getCurrentMission : getCurrentMission,
-        getConfig : getConfig,
+        getConfig : getConfig
 	}
 }]);

@@ -1,5 +1,5 @@
 describe('Testing data log controller', function () {
-    var controller, dashboardService, scope, datastatesService, $intervalSpy;
+    var controller, dashboardService, scope, datastatesService, $intervalSpy, gridService;
 
     beforeEach(function () {
         // load the module
@@ -9,8 +9,8 @@ describe('Testing data log controller', function () {
             $intervalSpy = jasmine.createSpy('$interval', $interval);
             dashboardService = jasmine.createSpyObj('dashboardService', 
                 ['icons', 'telemetry', 'getData']);
+            gridService = jasmine.createSpyObj('gridService', ['getDashboard']);
             datastatesService = jasmine.createSpyObj('datastatesService', ['colorValues', 'getDataColor']);
-
             scope = $rootScope.$new();
             scope.widget = {
                 name: "Data Log",
@@ -18,12 +18,45 @@ describe('Testing data log controller', function () {
                     active: false
                 }
             };
+            
+
+            gridService.getDashboard.and.callFake(function() {
+                return {
+                    current:
+                    {
+                        name: "",
+                        mission: {missionImage: "", missionName: ""},
+                        widgets:
+                        [
+                            {
+                                sizeY: 3,
+                                sizeX: 4,
+                                name: "Data Log",
+                                directive: "datalog",
+                                directiveSettings: "datalogsettings",
+                                id: "datalog",
+                                icon: {
+                                    id: "d-log",
+                                    type: "fa-list-alt"
+                                },
+                                main: true,
+                                settings: {
+                                    active: false
+                                },
+                                saveLoad: false,
+                                delete: false
+                            }
+                        ]
+                    }
+                };
+            });
 
             controller = $controller('DataLogCtrl', {
                 $scope: scope, 
                 dashboardService: dashboardService,
                 datastatesService: datastatesService,
-                $interval: $intervalSpy
+                $interval: $intervalSpy,
+                gridService: gridService
             });
         });
 
@@ -68,11 +101,13 @@ describe('Testing data log controller', function () {
         scope.logData = [{
             name: "x velocity component in ECF", 
             value: "-0.9412", 
-            timestamp: "2018-02-16T00:26:41.439Z"
+            timestamp: "2018-02-16T00:26:41.439Z",
+            vehicle: 'A0'
         },{
             name: "x velocity component in ECF", 
             value: "-0.9432", 
-            timestamp: "2018-02-16T00:28:41.439Z"
+            timestamp: "2018-02-16T00:28:41.439Z",
+            vehicle: 'A0'
         }];
 
         scope.updateLog();
@@ -101,7 +136,8 @@ describe('Testing data log controller', function () {
             name: 'x velocity component in ECF', 
             value: -0.3201, 
             timestamp: '2018-02-16T00:26:41.439Z', 
-            style: undefined 
+            style: undefined,
+            vehicle: 'A0'
         }];
 
         scope.updateLog();
@@ -125,17 +161,23 @@ describe('Testing data log controller', function () {
             name: 'x velocity component in ECF', 
             value: -0.3201, 
             timestamp: '2018-02-16T00:26:41.439Z', 
-            style: undefined 
+            style: undefined,
+            vehicle: 'A0'
         },{ 
             name: 'x velocity component in ECF', 
             value: -0.3409, 
             timestamp: '2018-02-16T00:28:41.439Z', 
-            style: undefined 
+            style: undefined,
+            vehicle: 'A0'
         }]
 
         scope.updateLog();
         expect(scope.logData).toEqual(result2);
         expect(scope.logData.length).toEqual(2);
+    });
+    
+    it('should define autoScroll', function() {
+        expect(scope.autoScroll).toBeDefined();
     });
 
     it('should call $interval one time', function(){
