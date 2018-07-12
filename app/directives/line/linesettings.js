@@ -152,6 +152,8 @@ app.controller('LineSettingsCtrl',
                         }
 
                         $interval.cancel($scope.interval);
+                        $scope.interval = null;
+
                         if(callback){
                             callback(true);
                         }
@@ -193,6 +195,12 @@ app.controller('LineSettingsCtrl',
                 var newKey = vehicle + "." + partKey.join(".");
                 return newKey;
             }
-        }      
+        }
+
+        $scope.$on("$destroy",
+            function(event) {
+                $interval.cancel($scope.interval);
+            }
+        );
     }
 );

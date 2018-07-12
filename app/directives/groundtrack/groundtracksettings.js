@@ -1,15 +1,20 @@
 app.directive('groundtracksettings', function() { 
-  	return { 
-    	restrict: 'EA', 
-		templateUrl:'./directives/groundtrack/groundtracksettings.html',
-		controller: 'GroundSettingsCtrl'
+    return {
+        restrict: 'EA',
+        templateUrl:'./directives/groundtrack/groundtracksettings.html',
+        controller: 'GroundSettingsCtrl'
     }
 });
 
 app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interval,$mdSidenav,$window,sidebarService,$uibModal) {
     var colors = [ "#07D1EA", "#0D8DB8", "#172168", "#228B22", "#12C700", "#C6FF00" ];
-    $scope.settings = new Array();
-    $scope.selectByGroupData = [];
+    var previousCheckedValues;
+    $scope.settings = new Object();
+    $scope.settings.vehicles = [];
+    $scope.settings.pdata = [];
+    $scope.settings.vdata = [];
+    $scope.settings.orbitstatus = [];
+    $scope.settings.iconstatus = [];
     $scope.firstScreen = true;
     $scope.secondScreen = false;
     $scope.positionData = [];
@@ -43,28 +48,23 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
         }
     };
 
-    createVehicles();
-
     $scope.closeWidget = function(widget){
         widget.main = true;
         widget.settings.active = false;
         widget.saveLoad = false;
         widget.delete = false;
-        var previousSettings = angular.copy(widget.settings);
+
+        $scope.checkedValues = angular.copy(previousCheckedValues);
+        var previousSettings = angular.copy($scope.settings);
+
         if(previousSettings.vehicles.length > 0){
             for(var i=0;i<previousSettings.vehicles.length;i++){
-                $scope.iconstatus[i] = previousSettings.vehicles[i].iconStatus;
-                $scope.orbitstatus[i] = previousSettings.vehicles[i].orbitStatus;
-                $scope.checkedValues[i].status = previousSettings.vehicles[i].dataStatus;
-                $scope.positionData[i] = angular.copy(previousSettings.vehicles[i].pdata);
-                $scope.velocityData[i] = angular.copy(previousSettings.vehicles[i].vdata);
+                $scope.iconstatus[i] = previousSettings.iconstatus[i];
+                $scope.orbitstatus[i] = previousSettings.orbitstatus[i];
+                $scope.positionData[i] = angular.copy(previousSettings.pdata[i]);
+                $scope.velocityData[i] = angular.copy(previousSettings.vdata[i]);
             }
-        }else {
-            for(var k=0;k<$scope.selectByGroupData.length;k++){
-                $scope.checkedValues[k].status = false;
-            } 
         }
-
     }
 
     $scope.saveWidget = function(widget){
@@ -73,10 +73,11 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
 
         //reset the vehicle settings
         $scope.widget.settings.vehicles = [];
-        var count = 0;
-        var vehSelectedCount = 0;
-        for(var i=0;i<$scope.selectByGroupData.length;i++){
+        var count = 0; //total count of parameters for all vehicles, should be 6 per selected vehicle
+        var vehSelectedCount = 0; //count of selected vehicles
+        for(var i=0;i<$scope.settings.vehicles.length;i++){
             if($scope.checkedValues[i].status === true){
+                vehSelectedCount++;
                 if($scope.settings.pdata){
                     if($scope.settings.pdata[i]){
                         count = count + $scope.settings.pdata[i].length;
@@ -87,126 +88,145 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                         count = count + $scope.settings.vdata[i].length; 
                     }
                 } 
-                vehSelectedCount++;
-            }else {
 
+                // check if count is 6 per selected vehicles till now
+                //If true, add it to settings
+                if(count === (vehSelectedCount * 6)){
+                    var vehicle = {
+                        "name" : $scope.settings.vehicles[i].label,
+                        "dataStatus" : $scope.checkedValues[i].status,
+                        "orbitStatus" : $scope.settings.orbitstatus[i],
+                        "iconStatus" : $scope.settings.iconstatus[i],
+                        "color": colors[i],
+                        "pdata":$scope.settings.pdata[i],
+                        "vdata":$scope.settings.vdata[i]
+                    }
+                    $scope.widget.settings.vehicles.push(vehicle);
+                }else {
+                    $window.alert("Please select all parameters for selected vehicle "
+                        + $scope.settings.vehicles[i].label + " or uncheck it!");
+                    break;
+                }
             }
         }
 
-        if(vehSelectedCount > 0){
+        if(vehSelectedCount > 0) {
             if(count === (vehSelectedCount * 6)){
                 widget.main = true;
                 widget.settings.active = false;
-                for(var i=0; i<$scope.selectByGroupData.length; i++){
-                    try{
-                        var vehicle = {
-                            "name" : $scope.selectByGroupData[i].label,
-                            "dataStatus" : $scope.checkedValues[i].status,
-                            "orbitStatus" : $scope.settings.orbitstatus[i],
-                            "iconStatus" : $scope.settings.iconstatus[i],
-                            "color": colors[i],
-                            "pdata":$scope.settings.pdata[i],
-                            "vdata":$scope.settings.vdata[i]
-                        }
-                        $scope.widget.settings.vehicles.push(vehicle);
-                    }
-                    catch(e){
-                        console.log(e instanceof TypeError);
-                    }
-                }
-
-                previousSettings = angular.copy($scope.widget.settings);
-            }else {
-                $window.alert("Please select all parameters for all the vehicles selected!");
+                previousCheckedValues = angular.copy($scope.checkedValues);
+            } else {
+                widget.main = false;
+                widget.settings.active = true;
             }
-        }else {
-            widget.main = true;
-            widget.settings.active = false;
-             // $window.alert("Please select atleast one vehicle before you save!");
+        } else {
+            widget.main = false;
+            widget.settings.active = true;
+            $window.alert("Please select atleast one vehicle before you save!");
         }
     }
 
-    function createVehicles(){
-        $scope.settings.vehicles = [];
-        $scope.settings.pdata = [];
-        $scope.settings.vdata = [];
-        $scope.settings.iconstatus = [];
-        $scope.settings.orbitstatus = [];
-        var interval = $interval(function(){
-            var currentMission = dashboardService.getCurrentMission();
-            if(currentMission.missionName != ""){
-                dashboardService.getConfig(currentMission.missionName)
-                .then(function(response){
-                    if(response.data) {
-                        var data = dashboardService.sortObject(response.data);
-                        var count = 0;
-                        for(var key in data) {
-                            if(data.hasOwnProperty(key)) {
-                                count = count+1;
-                                var dataStatus = true;
-                                var orbitStatus = true;
-                                var iconStatus = true;
+    $scope.createVehicles = function(callback){
+        if(!$scope.interval){
+            $scope.interval = $interval(function(){
+                var telemetry = dashboardService.telemetry;
+                if(!dashboardService.isEmpty(telemetry)){
+                    var data = dashboardService.sortObject(telemetry.data);
+                    var flag =false;
+                    for(var key in data) {
+                        if(data.hasOwnProperty(key)) {
+                            for(var i=0; i<$scope.settings.vehicles.length; i++){
+                                if(key == $scope.settings.vehicles[i].label){
+                                    flag = true;
+                                    break;
+                                }
+                            }
 
-                                // if widget settings exist, set settings using those values
-                                if($scope.widget.settings.vehicles.length > 0){
-                                    for(var i=0; i<$scope.widget.settings.vehicles.length; i++){    
-                                        if(key == $scope.widget.settings.vehicles[i].name){
-                                            $scope.checkedValues[i] = {
-                                                status:$scope.widget.settings.vehicles[i].dataStatus
-                                            }; 
-                                            $scope.orbitstatus[i] = $scope.widget.settings.vehicles[i].orbitStatus;
-                                            $scope.settings.orbitstatus[i] = $scope.widget.settings.vehicles[i].orbitStatus;
-                                            $scope.iconstatus[i] = $scope.widget.settings.vehicles[i].iconStatus;
-                                            $scope.settings.iconstatus[i] = $scope.widget.settings.vehicles[i].iconStatus;
-                                            $scope.positionData[i] = angular.copy($scope.widget.settings.vehicles[i].pdata);
-                                            $scope.settings.pdata[i] = angular.copy($scope.widget.settings.vehicles[i].pdata);
-                                            if($scope.positionData[i].length === 3){
-                                                $scope.pdisplay[i] = displayStringForInput($scope.positionData[i]);
-                                            }else if($scope.positionData[i].length === 0){
-                                                $scope.pdisplay[i] = "Click for data";
-                                            }
-                                            $scope.velocityData[i] = angular.copy($scope.widget.settings.vehicles[i].vdata);
-                                            $scope.settings.vdata[i] = angular.copy($scope.widget.settings.vehicles[i].vdata);
-                                            if( $scope.velocityData[i].length === 3){
-                                                $scope.vdisplay[i] = displayStringForInput($scope.velocityData[i]);
+                            if(!flag || ($scope.settings.vehicles.length == 0)){
+                                var index = $scope.settings.vehicles.length;
 
-                                            }else if($scope.velocityData[i].length === 0){
-                                                 $scope.vdisplay[i] = "Click for data";
-                                            }
-                                        }
-                                    }
-                                    $scope.settings.vehicles.push({
-                                        "name":key
-                                    });
+                                $scope.settings.vehicles[index] = {
+                                    "id" : index,
+                                    "label" :key
+                                }
 
-                                    $scope.selectByGroupData = makeModelData($scope.settings.vehicles);
-                                    var prevSelectionCount = 0;
-                                    for(var i=0;i<$scope.selectByGroupData.length;i++){
-                                        if($scope.checkedValues[i].status === true){
-                                            prevSelectionCount++;
-                                        }
-                                    }
+                                $scope.iconstatus[index] = true;
+                                $scope.orbitstatus[index] = true;
+                                $scope.positionData[index] = [];
+                                $scope.velocityData[index] = [];
+                                $scope.settings.pdata[index] = [];
+                                $scope.settings.vdata[index] = [];
+                                $scope.settings.orbitstatus[index] = true;
+                                $scope.settings.iconstatus[index] = true;
+                                $scope.pdisplay[index] = "Click for data";
+                                $scope.vdisplay[index] = "Click for data";
+                                $scope.checkedValues[index] = {status:false};
+                            }
 
-                                    if(prevSelectionCount > 0){
-                                        $scope.vehicleSelected = true; 
-                                    }else {
-                                        $scope.vehicleSelected = false;
-                                    }
-                                }else {
-                                    $scope.settings.vehicles.push({
-                                        "name":key
-                                    });
-                                    $scope.selectByGroupData = makeModelData($scope.settings.vehicles);
+                            flag = false;
+                        }
+                    }
+
+                    $interval.cancel($scope.interval);
+                    $scope.interval = null;
+
+                    if(callback){
+                        callback(true);
+                    }
+                }
+            }, 1000);
+        }
+    }
+
+    function createSettingsData(){
+        $scope.createVehicles(function(result){
+            if(result){ //result is true when the vehicle settings are created by scope.createVehicles()
+                if($scope.widget.settings.vehicles.length > 0){
+                    for(var j=0; j<$scope.settings.vehicles.length; j++){
+                        for(var i=0; i<$scope.widget.settings.vehicles.length; i++){
+                            if($scope.settings.vehicles[j].label == $scope.widget.settings.vehicles[i].name){
+                                $scope.checkedValues[j] = {
+                                    status:$scope.widget.settings.vehicles[i].dataStatus
+                                };
+                                $scope.orbitstatus[j] = $scope.widget.settings.vehicles[i].orbitStatus;
+                                $scope.settings.orbitstatus[j] = $scope.widget.settings.vehicles[i].orbitStatus;
+                                $scope.iconstatus[j] = $scope.widget.settings.vehicles[i].iconStatus;
+                                $scope.settings.iconstatus[j] = $scope.widget.settings.vehicles[i].iconStatus;
+                                $scope.positionData[j] = angular.copy($scope.widget.settings.vehicles[i].pdata);
+                                $scope.settings.pdata[j] = angular.copy($scope.widget.settings.vehicles[i].pdata);
+                                if($scope.positionData[j].length === 3){
+                                    $scope.pdisplay[j] = displayStringForInput($scope.positionData[j]);
+                                }else if($scope.positionData[i].length === 0){
+                                    $scope.pdisplay[j] = "Click for data";
+                                }
+                                $scope.velocityData[j] = angular.copy($scope.widget.settings.vehicles[i].vdata);
+                                $scope.settings.vdata[j] = angular.copy($scope.widget.settings.vehicles[i].vdata);
+                                if( $scope.velocityData[j].length === 3){
+                                    $scope.vdisplay[j] = displayStringForInput($scope.velocityData[j]);
+                                }else if($scope.velocityData[j].length === 0){
+                                    $scope.vdisplay[j] = "Click for data";
                                 }
                             }
                         }
-                        // previousSettings = angular.copy($scope.settings);
                     }
-                });  
-                $interval.cancel(interval);
+                }
+                var index = $scope.checkedValues.findIndex(
+                    checkedValue => checkedValue.status === true
+                );
+
+                //test if any vehicle was checked
+                if(index != -1){
+                    $scope.vehicleSelected = true;
+                }else {
+                    $scope.vehicleSelected = false;
+                }
+
+                previousCheckedValues = angular.copy($scope.checkedValues);
             }
-        }, 1000);
+        })
     }
+
+    createSettingsData();
 
     $scope.alertUser = function($event,name,id,status){
         if(status === true){
@@ -223,7 +243,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             $scope.checkedValues[id].status = false;
 
             //To remove required tag
-            for(var i=0;i<$scope.selectByGroupData.length;i++){
+            for(var i=0;i<$scope.settings.vehicles.length;i++){
                 if($scope.checkedValues[i].status === true){
                     selectionCount++;
                 }
@@ -498,6 +518,13 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
         });
     };
 
+    $scope.$on("$destroy",
+        function(event) {
+            $interval.cancel($scope.interval);
+        }
+    );
+
+    //not being used now
     function makeModelData(data){
         var tempVehicles = [];
         if($scope.widget.settings.vehicles.length > 0){

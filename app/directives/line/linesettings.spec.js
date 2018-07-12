@@ -77,7 +77,7 @@ describe('Testing lineplot settings controller', function () {
         expect(scope.interval).toBeDefined();
     });
 
-    it('should get the configuration of the current mission and set the vehicles', function(){
+    it('should set the vehicles from telemetry data settings', function(){
         var vehicles = [{
             'key': 1,
             'value': 'A0',

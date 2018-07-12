@@ -8,11 +8,11 @@
                 </div>
                 <div class="row">
                     <div class="dropdown">
-                        <button type="button" class="btn dropdown-toggle load-widget-styles" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button type="button" class="btn dropdown-toggle load-widget-styles" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-click="createVehicles()">
                             <span class="pull-left">Vehicles</span> <span class="caret caretstyles"></span>
                         </button>
                         <ul class="dropdown-menu categorydrpdown" style="padding-top:0px;padding-bottom:0px;font-size:12px">
-                            <li class="checkbox cbox" ng-repeat="vehicle in selectByGroupData" style="margin-top:5px;margin-bottom:5px">
+                            <li class="checkbox cbox" ng-repeat="vehicle in settings.vehicles" style="margin-top:5px;margin-bottom:5px">
                                 <input style="margin-top: 0px" type="checkbox" value="" name="id" ng-model="checkedValues[vehicle.id].status" ng-click="alertUser($event,vehicle.label,vehicle.id,checkedValues[vehicle.id].status)" data-backdrop="static" data-keyboard="false">{{vehicle.label}}
                                 <button ng-show="checkedValues[vehicle.id].status" class="fa fa-cog gtdropdownicons" aria-hidden="true" ng-click="alertUser($event,vehicle.label,vehicle.id,checkedValues[vehicle.id].status)" data-backdrop="static" data-keyboard="false" style="background:transparent;border:none"></button>
                             </li>
@@ -112,11 +112,11 @@
     <form ng-show="firstScreen">
         <label for="SelectSpaceCraft" class="mbl-label">Select Spacecraft:</label>
         <div class="dropdown mbl-label mbl-input-grp mbl-inputitems">
-            <button type="button" class="btn dropdown-toggle load-widget-styles mbl-inneritems mbl-inneritems mbl-input-grp mbl-inputitems mbl-label" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <button type="button" class="btn dropdown-toggle load-widget-styles mbl-inneritems mbl-inneritems mbl-input-grp mbl-inputitems mbl-label" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-click="createVehicles()">
                 <span class="pull-left drpdwn-name">Vehicles</span> <span class="caret  pull-right drpdwn-caret"></span>
             </button>
             <ul class="dropdown-menu categorydrpdown">
-                <li class="checkbox cbox drpdown-list-item" ng-repeat="vehicle in selectByGroupData">
+                <li class="checkbox cbox drpdown-list-item" ng-repeat="vehicle in settings.vehicles">
                     <input style="margin-top: 0px" type="checkbox" value="" name="id" ng-model="checkedValues[vehicle.id].status" ng-click="alertUser($event,vehicle.label,vehicle.id,checkedValues[vehicle.id].status)" data-backdrop="static" data-keyboard="false">{{vehicle.label}}
                     <button ng-show="checkedValues[vehicle.id].status" class="fa fa-cog gtdropdownicons" aria-hidden="true" ng-click="alertUser($event,vehicle.label,vehicle.id,checkedValues[vehicle.id].status)" data-backdrop="static" data-keyboard="false"></button>
                 </li>
@@ -175,11 +175,11 @@
                     <label for="SelectSpaceCraft" class="mbl-label">Select Spacecraft:</label>
                 </div>
                 <div class="dropdown mbl-label mbl-input-grp mbl-inputitems">
-                    <button type="button" class="btn dropdown-toggle load-widget-styles mbl-inneritems mbl-inneritems mbl-input-grp mbl-inputitems mbl-label" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" class="btn dropdown-toggle load-widget-styles mbl-inneritems mbl-inneritems mbl-input-grp mbl-inputitems mbl-label" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-click="createVehicles()">
                         <span class="pull-left drpdwn-name">Vehicles</span> <span class="caret  pull-right drpdwn-caret"></span>
                     </button>
                     <ul class="dropdown-menu categorydrpdown" style="padding-top:0px;padding-bottom:0px;">
-                        <li class="checkbox cbox drpdown-list-item" ng-repeat="vehicle in selectByGroupData">
+                        <li class="checkbox cbox drpdown-list-item" ng-repeat="vehicle in settings.vehicles">
                             <input style="margin-top: 0px" type="checkbox" value="" name="id" ng-model="checkedValues[vehicle.id].status" ng-click="alertUser($event,vehicle.label,vehicle.id,checkedValues[vehicle.id].status)" data-backdrop="static" data-keyboard="false">{{vehicle.label}}
                             <button ng-show="checkedValues[vehicle.id].status" class="fa fa-cog gtdropdownicons" aria-hidden="true" ng-click="alertUser($event,vehicle.label,vehicle.id,checkedValues[vehicle.id].status)" data-backdrop="static" data-keyboard="false"></button>
                         </li>
