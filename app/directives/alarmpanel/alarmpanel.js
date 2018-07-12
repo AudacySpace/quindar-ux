@@ -32,13 +32,13 @@ app.controller('AlarmPanelCtrl',
 
             if(!dashboardService.isEmpty(telemetry)){
                 var data = dashboardService.sortObject(telemetry.data);
-                    for(var key in data) {
-                        if(data.hasOwnProperty(key)) {
-                            //check if the platform exists in the contents
-                            var index = $scope.contents.findIndex(content => content.vehicle === key);
+                for(var key in data) {
+                    if(data.hasOwnProperty(key)) {
+                        //check if the platform exists in the contents
+                        var index = $scope.contents.findIndex(content => content.vehicle === key);
 
-                            //add in contents if not exists
-                            if(index == -1){
+                        //add in contents if not exists
+                        if(index == -1){
                             $scope.contents.push({
                                 "vehicle":key,
                                 "flexprop":"",
