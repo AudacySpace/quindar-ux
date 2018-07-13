@@ -1,7 +1,7 @@
 app
 .component('leftSidebar', {
   	templateUrl: "./components/leftSidebar/left_sidebar.html",
-  	controller: function(sidebarService, dashboardService, $interval, $window) {
+  	controller: function(sidebarService, dashboardService, $interval, $window, gridService) {
   		var vm = this;
         vm.telemetry = dashboardService.telemetry;
         vm.previousTelemetry = {};
@@ -13,7 +13,7 @@ app
 
         vm.selectData = function(data){
             if(data.nodes.length == 0){
-                sidebarService.setVehicleInfo(data.value);
+                sidebarService.setVehicleInfo(data.value, gridService.getDashboard());
             } else {
                 var nodes = data.nodes;
                 var count = 0;
@@ -25,7 +25,7 @@ app
 
                 //if parent of leaf node, count will be 0
                 if(count==0){
-                    sidebarService.setVehicleInfo(data.value);
+                    sidebarService.setVehicleInfo(data.value, gridService.getDashboard());
                 } else {
                     sidebarService.setVehicleInfo("");
                 }
