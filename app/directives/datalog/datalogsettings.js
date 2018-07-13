@@ -6,10 +6,15 @@ app.directive('datalogsettings', function() {
     };
 });
 
-app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebarService,dashboardService){
+app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebarService,dashboardService, gridService){
     checkForLogData();
 
+    /*var boxDiv = $("grid").find('li.ng-scope.gridster-item')[widgetIndex];
+    $scope.boxReference = angular.element(boxDiv);
+    $scope.box = $scope.boxReference[0];*/
+
     $scope.saveDataLogSettings = function(widget){
+        $scope.getValue();
         if($scope.data.id !== '' && $scope.data.vehicle !== ''){
             widget.main = true;
             widget.settings.active = false;
@@ -17,6 +22,7 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
             widget.delete = false;
             $scope.widget.settings.data = angular.copy($scope.data);
         }
+        $scope.widget.settings.dataArray = [];
     };
 
     $scope.closeDataLogSettings = function(widget){
@@ -28,6 +34,9 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
     }
 
     $scope.getTelemetrydata = function(){
+        //findIndex
+        //pass index to the method in sidebar service that will store temporary index
+        sidebarService.setTempWidget($scope.widget);
         if ($window.innerWidth < 1400){
             $mdSidenav('left').open();
         } else {
@@ -36,6 +45,19 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
             dashboardService.setLeftLock($scope.lock.lockLeft);
         }
         sidebarService.setMenuStatus(true); //set to true when data menu is opened and tree needs to be created
+    }
+
+    $scope.readValue = function()
+    {
+        var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
+        if(data && data.vehicle !== "" && data.id !== "")
+        {
+            return data.id;
+        }
+        else
+        {
+            return "";
+        }
     }
 
     // $scope.getValue = function(){
@@ -52,8 +74,7 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
     // }
 
     $scope.getValue = function(){
-        var vehicleInfo = sidebarService.getVehicleInfo();
-        var data = vehicleInfo.parameters[vehicleInfo.parameters.length - 1];
+        var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
         if(data && data.vehicle !== "" && data.id !== ""){
             var datavalue = dashboardService.getData(data.key);
             if(datavalue){

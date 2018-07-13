@@ -1,19 +1,23 @@
 app
 .factory('sidebarService', function() { 
 
-    var data = {
-        parameters:[]
-    };
+    var widget;
 
     //variable used to create data menu
     var menuStatus = false;
 
-    function setVehicleInfo(dataString) {
+    function setTempWidget(tempWidget)
+    {
+        widget = tempWidget;
+    }
+
+    function setVehicleInfo(dataString, dashboard) {
         var vehicleInfo = {
             vehicle : '',
             id : '',
             key : '',
-            category:''
+            category:''//,
+            //widgetIndex = -1
         }
         if(dataString){
             var nodes = dataString.split(".");
@@ -22,24 +26,27 @@ app
             vehicleInfo.category = nodes[nodes.length-2];
             vehicleInfo.key = dataString;
             var item = vehicleInfo;
-            data.parameters.push(item);
+            widget.settings.dataArray.push(item);
+            //access last index in index array in widgets.settings.something
+            //find corresponding select data text field for widget at that index and display data selected over there
         } else {
             vehicleInfo = {
                 vehicle : '',
                 id : '',
                 key : '',
-                category:''
+                category:''//,
+                //widgetIndex = -1
             };
         }
     }
 
-    function getVehicleInfo(){
+    /*function getVehicleInfo(){
         var newData = angular.copy(data);
         data = {
             parameters:[]
         }
         return newData;
-    }
+    }*/
 
     function setMenuStatus(status){
         menuStatus = status;
@@ -51,9 +58,10 @@ app
 
 	return {
         setVehicleInfo : setVehicleInfo,
-        getVehicleInfo : getVehicleInfo,
-        data : data,
         setMenuStatus : setMenuStatus,
-        getMenuStatus : getMenuStatus
+        getMenuStatus : getMenuStatus,
+        //getVehicleInfo : getVehicleInfo,
+        //data : data,
+        setTempWidget : setTempWidget
 	}
 });
