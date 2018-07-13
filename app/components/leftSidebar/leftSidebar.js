@@ -1,7 +1,11 @@
 app
 .component('leftSidebar', {
   	templateUrl: "./components/leftSidebar/left_sidebar.html",
+<<<<<<< HEAD
   	controller: function(sidebarService, dashboardService, $interval, $window, $mdSidenav, gridService) {
+=======
+  	controller: function(sidebarService, dashboardService, $interval, $window, gridService) {
+>>>>>>> Fixed data selection for data log
   		var vm = this;
 
         vm.searchID = "";

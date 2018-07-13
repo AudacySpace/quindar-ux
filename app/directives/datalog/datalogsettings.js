@@ -60,6 +60,19 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
         }
     }
 
+    $scope.readValue = function()
+    {
+        var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
+        if(data && data.vehicle !== "" && data.id !== "")
+        {
+            return data.id;
+        }
+        else
+        {
+            return "";
+        }
+    }
+
     // $scope.getValue = function(){
     //     var vehicleInfo = sidebarService.getVehicleInfo();
     //     if(vehicleInfo.vehicle !== "" && vehicleInfo.id !== "") {
