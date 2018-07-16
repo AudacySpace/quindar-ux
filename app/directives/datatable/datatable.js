@@ -30,6 +30,9 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                         '-webkit-animation': 'background-fade 0.5s forwards',
                         '-moz-animation': 'background-fade 0.5s forwards'
                     };
+    var arrow;
+    var tempNum = 0;
+    var valueReceived = false;
     //watch to check the database icon color to know about database status
     $scope.$watch('dataStatus',function(newVal,oldVal){
         dServiceObjVal = newVal; 
@@ -119,10 +122,11 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     for (var i = 0; i <= num_of_rows; i++) {
         tableCols.push(angular.copy(dataObject));      
     }
-
     //Function to select telemetry Id
     $scope.getTelemetrydata = function($event){
-        var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
+        console.log("hi");
+        sidebarService.setTempWidget($scope.widget);
+        arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
         arrow.style.color = "#07D1EA";
 
         if ($window.innerWidth < 1400){
@@ -130,7 +134,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
         } else {
             $scope.lock = dashboardService.getLock();
             if($scope.lock.lockLeft !== true) {
-                $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                $scope.lock.lockLeft = true;
                 dashboardService.setLeftLock($scope.lock.lockLeft);
             }
         }
@@ -138,41 +142,51 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
 
     //Function to display selected telemetry Id value and its corresponding data values.
     $scope.getValue = function($event, row, $index){
-        var vehicleInfo = sidebarService.getVehicleInfo();
-        var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
-        var data = vehicleInfo.parameters[vehicleInfo.parameters.length-1];
-        if(data && data.key) {
-            var datavalue = dashboardService.getData(data.key);
-            if(datavalue){
-                if(datavalue.hasOwnProperty("value")){
-                    
-                    if(savePrevious($index)) //save info (if object not already created for this row, create it)
-                    {  
-                        $scope.widget.settings.data[$index] = new Object();
-                    }
-
-                    $scope.widget.settings.data[$index].type = "data";
-                    $scope.widget.settings.data[$index].value = data.key;
-                    $scope.widget.settings.data[$index].undone = false;
-
-                    arrow.style.color = "#b3b3b3";
-                    if ($window.innerWidth >= 1400){
-                        if($scope.lock.lockLeft !== false){
-                            $scope.lock.lockLeft = !$scope.lock.lockLeft;
-                            dashboardService.setLeftLock($scope.lock.lockLeft);
+        if($scope.widget.settings.dataArray[] > tempNum && !valueReceived) //CHECK TO SEE IF DATA SELECTED OR NOT
+        {
+            //var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
+            var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
+            if(data && data.key) {
+                var datavalue = dashboardService.getData(data.key);
+                if(datavalue){
+                    if(datavalue.hasOwnProperty("value")){
+                        
+                        if(savePrevious($index)) //save info (if object not already created for this row, create it)
+                        {  
+                            $scope.widget.settings.data[$index] = new Object();
                         }
+
+                        $scope.widget.settings.data[$index].type = "data";
+                        $scope.widget.settings.data[$index].value = data.key;
+                        $scope.widget.settings.data[$index].undone = false;
+                        tempNum = $scope.widget.settings.dataArray.length;
+                        arrow.style.color = "#b3b3b3";
+                        if ($window.innerWidth >= 1400){
+                            if($scope.lock.lockLeft !== false){
+                                $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                                dashboardService.setLeftLock($scope.lock.lockLeft);
+                            }
+                        }
+                    } else {
+                        arrow.style.color = "#07D1EA";
+                        $window.alert("Please select telemetry ID(leaf node) from Data Menu");
                     }
-                } else {
+                }else {
                     arrow.style.color = "#07D1EA";
-                    $window.alert("Please select telemetry ID(leaf node) from Data Menu");
+                    $window.alert("Currently there is no data available for this telemetry id.");
                 }
-            }else {
+            } else {
                 arrow.style.color = "#07D1EA";
-                $window.alert("Currently there is no data available for this telemetry id.");
+                $window.alert("Vehicle data not set. Please select from Data Menu");
             }
-        } else {
-            arrow.style.color = "#07D1EA";
-            $window.alert("Vehicle data not set. Please select from Data Menu");
+        }
+        else if(!valueReceived)
+        {
+            valueReceived = true;
+        }
+        else
+        {
+            valueReceived = false;
         }
     }
 

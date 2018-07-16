@@ -6,12 +6,8 @@ app.directive('datalogsettings', function() {
     };
 });
 
-app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebarService,dashboardService, gridService){
+app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebarService,dashboardService){
     checkForLogData();
-
-    /*var boxDiv = $("grid").find('li.ng-scope.gridster-item')[widgetIndex];
-    $scope.boxReference = angular.element(boxDiv);
-    $scope.box = $scope.boxReference[0];*/
 
     $scope.saveDataLogSettings = function(widget){
         $scope.getValue();
@@ -26,6 +22,10 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
     };
 
     $scope.closeDataLogSettings = function(widget){
+        $scope.lock = dashboardService.getLock();
+        $scope.lock.lockLeft = false;
+        dashboardService.setLeftLock($scope.lock.lockLeft);
+
         widget.main = true;
         widget.settings.active = false;
         widget.saveLoad = false;
@@ -36,12 +36,14 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
     $scope.getTelemetrydata = function(){
         //findIndex
         //pass index to the method in sidebar service that will store temporary index
-        sidebarService.setTempWidget($scope.widget);
+        //console.log("hi");
+        //sidebarService.setTempWidget($scope.widget);
+        sidebarService.setTempWidget($scope.widget, this);
         if ($window.innerWidth < 1400){
             $mdSidenav('left').open();
         } else {
             $scope.lock = dashboardService.getLock();
-            $scope.lock.lockLeft = !$scope.lock.lockLeft;
+            $scope.lock.lockLeft = true;
             dashboardService.setLeftLock($scope.lock.lockLeft);
         }
     }
@@ -49,7 +51,7 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
     $scope.readValue = function()
     {
         var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
-        if(data && data.vehicle !== "" && data.id !== "")
+        if(data && data.id !== "")
         {
             return data.id;
         }
@@ -80,7 +82,7 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
                 if(datavalue.hasOwnProperty("value")){
                     $scope.data = angular.copy(data);
                     if ($window.innerWidth >= 1400){
-                        $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                        $scope.lock.lockLeft = false;
                         dashboardService.setLeftLock($scope.lock.lockLeft);
                     }
 
@@ -89,6 +91,7 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
                 }
 
             }else{
+                console.log($scope.data);
                 $scope.data = angular.copy(data);
                 $window.alert("Currently there is no data available for this telemetry id.");
             }

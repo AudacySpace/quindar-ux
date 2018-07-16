@@ -25,18 +25,31 @@ app.controller('LineSettingsCtrl',
 
         $scope.getTelemetrydata = function(){
             //open the data menu
+            sidebarService.setTempWidget($scope.widget);
             if ($window.innerWidth < 1400){
                 $mdSidenav('left').open();
             } else {
                 $scope.lock = dashboardService.getLock();
-                $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                $scope.lock.lockLeft = true;
                 dashboardService.setLeftLock($scope.lock.lockLeft);
             }
         }
 
+        $scope.readValue = function()
+        {
+            var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
+            if(data && data.id !== "")
+            {
+                return data.id;
+            }
+            else
+            {
+                return "";
+            }
+        }
+    
         $scope.getValue = function(){
-            var vehicleInfo = sidebarService.getVehicleInfo();
-            var data = vehicleInfo.parameters[vehicleInfo.parameters.length - 1]; // get the last selected id from the data menu
+            var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1]; // get the last selected id from the data menu
             if(data){
                 for(var i=0; i<$scope.settings.vehicles.length; i++){
                     if($scope.settings.vehicles[i].value === data.vehicle){
@@ -53,7 +66,7 @@ app.controller('LineSettingsCtrl',
                         if(datavalue.hasOwnProperty("value")){
                             $scope.settings.data = angular.copy(data);
                             if ($window.innerWidth >= 1400){
-                                $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                                $scope.lock.lockLeft = false;
                                 dashboardService.setLeftLock($scope.lock.lockLeft);
                             }
                         }else {
@@ -74,6 +87,7 @@ app.controller('LineSettingsCtrl',
 
         // Save
         $scope.saveWidget = function(widget){
+            //$scope.getValue();
             var count = 0;
             if($scope.settings.data.key) {
                 if(widget.settings.data.vehicles.length != 0) {

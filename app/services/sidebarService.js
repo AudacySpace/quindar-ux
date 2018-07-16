@@ -2,23 +2,23 @@ app
 .factory('sidebarService', function() { 
 
     var widget;
-    
+    var widgetObject;
 
     //temp store index method which takes in an index as a parameter and stores it as temp
         //when data is selected, add this index to it
 
-    function setTempWidget(tempWidget)
+    function setTempWidget(tempWidget, tempWidgetObject)
     {
         widget = tempWidget;
+        widgetObject = tempWidgetObject;
     }
 
-    function setVehicleInfo(dataString, dashboard) {
+    function setVehicleInfo(dataString) {
         var vehicleInfo = {
             vehicle : '',
             id : '',
             key : '',
             category:''//,
-            //widgetIndex = -1
         }
         if(dataString){
             var nodes = dataString.split(".");
@@ -28,6 +28,7 @@ app
             vehicleInfo.key = dataString;
             var item = vehicleInfo;
             widget.settings.dataArray.push(item);
+            widgetObject.getValue();
             //access last index in index array in widgets.settings.something
             //find corresponding select data text field for widget at that index and display data selected over there
         } else {
@@ -36,7 +37,6 @@ app
                 id : '',
                 key : '',
                 category:''//,
-                //widgetIndex = -1
             };
         }
     }
