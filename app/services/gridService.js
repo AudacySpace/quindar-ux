@@ -122,8 +122,7 @@ function gridService ($http, $sessionStorage, $window, userService) {
         },
         main: true,
         settings: {
-            active: false,
-            dataArray: []
+            active: false
         },
         saveLoad: false,
         delete: false
@@ -198,8 +197,7 @@ function gridService ($http, $sessionStorage, $window, userService) {
         main: true,
         settings: {
             active: false,
-            commandlog: true,
-            dataArray: []
+            commandlog: true
         },
         saveLoad: false,
         delete: false
@@ -255,7 +253,8 @@ function gridService ($http, $sessionStorage, $window, userService) {
                                 vehicles : [],
                                 value : "",
                                 key : ""
-                            }
+                            },
+                            dataArray: []
                         },
                         saveLoad: false,
                         delete: false
@@ -275,7 +274,8 @@ function gridService ($http, $sessionStorage, $window, userService) {
                         },
                         main: true,
                         settings: {
-                            active: false
+                            active: false,
+                            dataArray: []
                         },
                         saveLoad: false,
                         delete: false
