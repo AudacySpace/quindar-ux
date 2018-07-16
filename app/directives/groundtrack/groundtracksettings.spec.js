@@ -1,5 +1,5 @@
 describe('Testing Groundtrack settings controller', function () {
-    var controller, scope, dashboardService, deferredConfig, $interval,sidebarService,sideNavOpenMock,$q;
+    var controller, scope, dashboardService, $interval,sidebarService,sideNavOpenMock,$q;
 
     var windowMock = {
         alert : function(message) {},
@@ -21,13 +21,11 @@ describe('Testing Groundtrack settings controller', function () {
         });
 
         inject(function($controller, $rootScope, _$q_, _$interval_){
-            deferredConfig = _$q_.defer();
             $interval = _$interval_;
             dashboardService = jasmine.createSpyObj('dashboardService', 
-                ['getCurrentMission', 'getConfig', 'sortObject','getLock', 'setLeftLock','getData']);
+                ['sortObject','getLock', 'setLeftLock','getData', 'isEmpty', 'telemetry']);
 
-            sidebarService = jasmine.createSpyObj('sidebarService',['getVehicleInfo'
-                ]);
+            sidebarService = jasmine.createSpyObj('sidebarService',['getVehicleInfo']);
 
             scope = $rootScope.$new();
             scope.widget = {
@@ -41,11 +39,11 @@ describe('Testing Groundtrack settings controller', function () {
                 }
             };
 
-            dashboardService.getCurrentMission.and.callFake(function() {
-                return { missionName : 'ATest' };
+            dashboardService.telemetry.and.callFake(function() {
+                return {"time": "2018-02-16T00:26:41.439Z", "data": { "A1" : {}, "A0" : {} } };
             });
-            dashboardService.getConfig.and.callFake(function() {
-                return deferredConfig.promise;
+            dashboardService.isEmpty.and.callFake(function() {
+                return false;
             });
             $q = _$q_;
 
@@ -74,23 +72,14 @@ describe('Testing Groundtrack settings controller', function () {
         expect(scope.settings.vdata).toEqual([]);
     });
 
-    it('should get the configuration of the current mission and set the settings table', function(){
+    it('should set the settings menu using the telemetry data', function(){
         var vehicles = [{
-            'key': 1,
-            'value': 'A0'  
+            'id': 0,
+            'label': 'A0'
         }, {
-            'key': 2,
-            'value': 'A1'
+            'id': 1,
+            'label': 'A1'
         }];
-        var result = {
-            'A1' : {
-                'GNC' : {}
-            }, 
-            'A0' : {
-                'GNC' : {}
-            }
-        }
-        deferredConfig.resolve({ data : result });
 
         dashboardService.sortObject.and.callFake(function(){
             return {
@@ -106,6 +95,18 @@ describe('Testing Groundtrack settings controller', function () {
         $interval.flush(1001);
 
         //settings row for each vehicle
+        expect(scope.settings.vehicles).toEqual(vehicles);
+        expect(scope.iconstatus).toEqual([true, true]);
+        expect(scope.orbitstatus).toEqual([true, true]);
+        expect(scope.positionData).toEqual([[], []]);
+        expect(scope.velocityData).toEqual([[], []]);
+        expect(scope.settings.pdata).toEqual([[], []]);
+        expect(scope.settings.vdata).toEqual([[], []]);
+        expect(scope.settings.orbitstatus).toEqual([true, true]);
+        expect(scope.settings.iconstatus).toEqual([true, true]);
+        expect(scope.pdisplay).toEqual(["Click for data", "Click for data"]);
+        expect(scope.vdisplay).toEqual(["Click for data", "Click for data"]);
+        expect(scope.checkedValues).toEqual([{status:false}, {status:false}])
         expect(scope.settings.vehicles.length).toEqual(2);
     });
 
@@ -131,6 +132,14 @@ describe('Testing Groundtrack settings controller', function () {
     it('should save settings as widget property on save', function() {
         scope.widget.main = false;
         scope.widget.settings.active = true;
+        scope.settings.vehicles = [
+        {
+            "id" : 0,
+            "label" : "A0"
+        },{
+            "id" : 1,
+            "label" : "A1"
+        }];
         scope.settings.pdata[0] = [{vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
                 {vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'},
                 {vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'}];
@@ -140,8 +149,6 @@ describe('Testing Groundtrack settings controller', function () {
                 {vehicle:'A0',id:'vz',key:'A0.GNC.velocity.vz',category:'velocity'}];
         scope.settings.vdata[1] = [];
         scope.checkedValues = [{"status":true},{"status":false}];
-        scope.selectByGroupData = ['A0','A1'];
-
 
         scope.saveWidget(scope.widget);
         
@@ -153,8 +160,14 @@ describe('Testing Groundtrack settings controller', function () {
         spyOn(windowMock, "alert");
         scope.widget.main = false;
         scope.widget.settings.active = true;
-
-
+        scope.settings.vehicles = [
+        {
+            "id" : 0,
+            "label" : "A0"
+        },{
+            "id" : 1,
+            "label" : "A1"
+        }];
         scope.widget.main = false;
         scope.widget.settings.active = true;
         scope.settings.pdata[0] = [{vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
@@ -165,27 +178,32 @@ describe('Testing Groundtrack settings controller', function () {
                 {vehicle:'A0',id:'vz',key:'A0.GNC.velocity.vz',category:'velocity'}];
         scope.settings.vdata[1] = [];
         scope.checkedValues = [{"status":true},{"status":false}];
-        scope.selectByGroupData = ['A0','A1'];
 
         scope.saveWidget(scope.widget);
         
         expect(scope.widget.main).toEqual(false);
         expect(scope.widget.settings.active).toEqual(true);
         expect(scope.widget.settings.vehicles).toEqual([]);
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select all parameters for all the vehicles selected!");
+        expect(windowMock.alert).toHaveBeenCalledWith("Please select all parameters for selected vehicle A0 or uncheck it!");
     });
 
     it('should save settings as widget property on save(no vehicles checked or all vehicles unchecked)', function() {
         spyOn(windowMock, "alert");
         scope.widget.main = false;
         scope.widget.settings.active = true;
-        scope.selectByGroupData = [];
+        scope.settings.vehicles = [
+        {
+            "id" : 0,
+            "label" : "A0"
+        }];
+        scope.checkedValues = [{"status":false}];
+
         scope.saveWidget(scope.widget);
         
-        expect(scope.widget.main).toEqual(true);
-        expect(scope.widget.settings.active).toEqual(false);
+        expect(scope.widget.main).toEqual(false);
+        expect(scope.widget.settings.active).toEqual(true);
         expect(scope.widget.settings.vehicles).toEqual([]);
-        // expect(windowMock.alert).toHaveBeenCalledWith("Please select atleast one vehicle before you save!");
+        expect(windowMock.alert).toHaveBeenCalledWith("Please select atleast one vehicle before you save!");
     });
 
 
@@ -318,8 +336,6 @@ describe('Testing Groundtrack settings controller', function () {
                 "alarm_high": "14",
                 "alarm_low": "-14",
                 "units": "km/s",
-                "name": "x velocity component in ECF",
-                "category": "velocity",
                 "notes": ""
             }
         });
@@ -359,8 +375,6 @@ describe('Testing Groundtrack settings controller', function () {
                 "alarm_high": "14",
                 "alarm_low": "-14",
                 "units": "km/s",
-                "name": "x velocity component in ECF",
-                "category": "velocity",
                 "notes": ""
             }
         });
@@ -424,8 +438,6 @@ describe('Testing Groundtrack settings controller', function () {
                 "alarm_high": "14",
                 "alarm_low": "-14",
                 "units": "km/s",
-                "name": "x velocity component in ECF",
-                "category": "velocity",
                 "notes": ""
             }
         });
@@ -458,8 +470,6 @@ describe('Testing Groundtrack settings controller', function () {
                 "alarm_high": "14",
                 "alarm_low": "-14",
                 "units": "km/s",
-                "name": "x velocity component in ECF",
-                "category": "velocity",
                 "notes": ""
             }
         });
@@ -513,8 +523,6 @@ describe('Testing Groundtrack settings controller', function () {
                 "alarm_high": "1.1",
                 "alarm_low": "-1.1",
                 "units": "",
-                "name": "position x",
-                "category": "position",
                 "notes": ""
             }
         });
@@ -554,8 +562,6 @@ describe('Testing Groundtrack settings controller', function () {
                 "alarm_high": "1.1",
                 "alarm_low": "-1.1",
                 "units": "",
-                "name": "position x",
-                "category": "position",
                 "notes": ""            
             }
         });
@@ -619,8 +625,6 @@ describe('Testing Groundtrack settings controller', function () {
                 "alarm_high": "1.1",
                 "alarm_low": "-1.1",
                 "units": "",
-                "name": "position x",
-                "category": "position",
                 "notes": ""  
             }
         });
@@ -653,8 +657,6 @@ describe('Testing Groundtrack settings controller', function () {
                 "alarm_high": "1.1",
                 "alarm_low": "-1.1",
                 "units": "",
-                "name": "position x",
-                "category": "position",
                 "notes": "" 
             }
         });
@@ -827,6 +829,57 @@ describe('Testing Groundtrack settings controller', function () {
         scope.saveParameters(scope.widget);
         expect(scope.secondScreen).toEqual(true);
         expect(scope.firstScreen).toEqual(false);
+    });
+
+    it('should add new vehicle in scope settings if it is there in the telemetry data', function() {
+        scope.settings.vehicles = [
+        {
+            "id" : 0,
+            "label" : "A0"
+        },{
+            "id" : 1,
+            "label" : "A1"
+        }];
+        scope.checkedValues = [{"status":true},{"status":false}];
+
+        var vehicles = [{
+            "id" : 0,
+            "label" : "A0"
+        },{
+            "id" : 1,
+            "label" : "A1"
+        },{
+            "id" : 2,
+            "label" : "A2"
+        }];
+
+        var checkedValues = [{"status":true},{"status":false},{"status":false}];
+
+        dashboardService.sortObject.and.callFake(function(){
+            return {
+                'A0' : {
+                    'GNC' : {
+                        'Attitude': {
+                            'q1' : ""
+                        },
+                        'Velocity' : {
+                            'vx' : ""
+                        }
+                    }
+                },
+                'A1' : {
+                    'GNC' : {}
+                },
+                'A2' : {
+                    'GNC' : {}
+                }
+            }
+        });
+
+        $interval.flush(1001);
+
+        expect(scope.settings.vehicles).toEqual(vehicles);
+        expect(scope.checkedValues).toEqual(checkedValues);
     });
 
 

@@ -54,7 +54,6 @@ function gridService ($http, $sessionStorage, $window, userService) {
             active: false,
             checkedValues:{
                 checkedId: true,
-                checkedName: true,
                 checkedAlow: true,
                 checkedWlow: true,
                 checkedValue: true,

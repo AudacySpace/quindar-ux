@@ -12,6 +12,7 @@ app.controller('LineSettingsCtrl',
 
         var colors = [ "#0AACCF", "#FF9100", "#64DD17", "#07D1EA", "#0D8DB8", "#172168", "#228B22", "#12C700", "#C6FF00" ];
         var previousSettings;
+        $scope.interval;
 
         $scope.settings = {
             vehicles : [],
@@ -21,8 +22,6 @@ app.controller('LineSettingsCtrl',
                 key: ''
             }
         }
-
-        createSettingsData();
 
         $scope.getTelemetrydata = function(){
             //open the data menu
@@ -47,6 +46,7 @@ app.controller('LineSettingsCtrl',
                         $scope.settings.vehicles[i].checked = false;
                     }
                 }
+
                 if(data.key !== ""){
                     var datavalue = dashboardService.getData(data.key);
                     if(datavalue){
@@ -116,17 +116,28 @@ app.controller('LineSettingsCtrl',
             $scope.settings = angular.copy(previousSettings);
         }
 
-        function createSettingsData(){
-            var interval = $interval(function(){
-                var currentMission = dashboardService.getCurrentMission();
-                if(currentMission.missionName != ""){
-                    dashboardService.getConfig(currentMission.missionName)
-                    .then(function(response) {
-                        if(response.data) {
-                            var data = dashboardService.sortObject(response.data);
-                            var count = 0;
-                            for(var key in data) {
-                                if(data.hasOwnProperty(key)) {
+        $scope.createVehicleData = function(callback){
+            if(!$scope.interval){
+                //start an interval only if its not running
+                $scope.interval = $interval(function(){
+                    var telemetry = dashboardService.telemetry;
+
+                    if(!dashboardService.isEmpty(telemetry)){
+                        var data = dashboardService.sortObject(telemetry.data);
+                        var count = $scope.settings.vehicles.length;
+                        var flag = false; //true if the vehicle name is present in scope settings
+
+                        //Keys in the data variable are the platforms/vehicles available for the mission
+                        for(var key in data) {
+                            if(data.hasOwnProperty(key)) {
+                                for(var i=0; i<$scope.settings.vehicles.length; i++){
+                                    if(key == $scope.settings.vehicles[i].value){
+                                        flag = true;
+                                        break;
+                                    }
+                                }
+
+                                if(!flag || ($scope.settings.vehicles.length == 0)){
                                     count = count+1;
                                     $scope.settings.vehicles.push({
                                         'key': count,
@@ -135,28 +146,45 @@ app.controller('LineSettingsCtrl',
                                         'color' : colors[count-1]    
                                     }); 
                                 }
+                                //reset flag to false for the next vehicle
+                                flag = false;
                             }
+                        }
 
-                            if($scope.widget.settings.data.vehicles.length > 0){
-                                $scope.settings.data.id = $scope.widget.settings.data.value;
-                                $scope.settings.data.key = $scope.widget.settings.data.key;
-                                for(var i=0; i<$scope.settings.vehicles.length; i++){
-                                    for(var j=0; j<$scope.widget.settings.data.vehicles.length; j++){
-                                        if($scope.settings.vehicles[i].value == $scope.widget.settings.data.vehicles[j].name){
-                                            $scope.settings.vehicles[i].checked = true;
-                                            $scope.settings.vehicles[i].color = $scope.widget.settings.data.vehicles[j].color;
+                        $interval.cancel($scope.interval);
+                        $scope.interval = null;
 
-                                        }
-                                    }
+                        if(callback){
+                            callback(true);
+                        }
+                    }
+                }, 1000 );
+            }
+        }
+
+        function createSettingsData(){
+            $scope.createVehicleData(function(result){
+                if(result){
+                    //Get back the settings saved when page is refreshed
+                    if($scope.widget.settings.data.vehicles.length > 0){
+                        $scope.settings.data.id = $scope.widget.settings.data.value;
+                        $scope.settings.data.key = $scope.widget.settings.data.key;
+                        for(var i=0; i<$scope.settings.vehicles.length; i++){
+                            for(var j=0; j<$scope.widget.settings.data.vehicles.length; j++){
+                                if($scope.settings.vehicles[i].value == $scope.widget.settings.data.vehicles[j].name){
+                                    $scope.settings.vehicles[i].checked = true;
+                                    $scope.settings.vehicles[i].color = $scope.widget.settings.data.vehicles[j].color;
                                 }
                             }
-                            previousSettings = angular.copy($scope.settings);
-                        } 
-                    });
-                    $interval.cancel(interval);
+                        }
+                    }
+                    previousSettings = angular.copy($scope.settings);
                 }
-            }, 1000 );
+            });
         }
+
+        //create settings data for vehicles in the mission
+        createSettingsData();
 
         function createKey(vehicle, key){
             var nodes = key.split('.');
@@ -167,6 +195,12 @@ app.controller('LineSettingsCtrl',
                 var newKey = vehicle + "." + partKey.join(".");
                 return newKey;
             }
-        }      
+        }
+
+        $scope.$on("$destroy",
+            function(event) {
+                $interval.cancel($scope.interval);
+            }
+        );
     }
 );

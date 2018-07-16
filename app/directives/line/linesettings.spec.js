@@ -1,5 +1,5 @@
 describe('Testing lineplot settings controller', function () {
-    var controller, scope, dashboardService, sidebarService, deferredConfig, 
+    var controller, scope, dashboardService, sidebarService,
         sideNavOpenMock, $interval;
 
     var windowMock = {
@@ -19,12 +19,11 @@ describe('Testing lineplot settings controller', function () {
             });
         });
 
-        inject(function($controller, $rootScope, _$q_, _$interval_){
-            deferredConfig = _$q_.defer();
+        inject(function($controller, $rootScope, _$interval_){
             $interval = _$interval_;
             sidebarService = jasmine.createSpyObj('sidebarService', ['getVehicleInfo']);;
             dashboardService = jasmine.createSpyObj('dashboardService', 
-                ['getLock', 'setLeftLock', 'getCurrentMission', 'getConfig', 'sortObject','getData']);
+                ['getLock', 'setLeftLock', 'sortObject','getData', 'isEmpty', 'telemetry']);
             scope = $rootScope.$new();
             scope.widget = {
                 name: "Line Plot",
@@ -41,11 +40,11 @@ describe('Testing lineplot settings controller', function () {
                 }
             };
 
-            dashboardService.getCurrentMission.and.callFake(function() {
-                return { missionName : 'ATest' };
+            dashboardService.telemetry.and.callFake(function() {
+                return {"time": "2018-02-16T00:26:41.439Z", "data": { "A1" : {}, "A0" : {} } };
             });
-            dashboardService.getConfig.and.callFake(function() {
-                return deferredConfig.promise;
+            dashboardService.isEmpty.and.callFake(function() {
+                return false;
             });
 
             controller = $controller('LineSettingsCtrl', {
@@ -74,34 +73,22 @@ describe('Testing lineplot settings controller', function () {
         expect(scope.settings).toEqual(expected);
     });
 
-    it('should get the configuration of the current mission and set the vehicles', function(){
+    it('should define interval variable', function() {
+        expect(scope.interval).toBeDefined();
+    });
+
+    it('should set the vehicles from telemetry data settings', function(){
         var vehicles = [{
             'key': 1,
             'value': 'A0',
             'checked': false,
-            'color' : '#0AACCF'    
+            'color' : '#0AACCF'
         }, {
             'key': 2,
             'value': 'A1',
             'checked': false,
             'color' : '#FF9100' 
         }];
-        var result = {
-            'A0' : {
-                'GNC' : {
-                    'Velocity' : {
-                        'vx' : ""
-                    },
-                    'Attitude': {
-                        'q1' : ""
-                    }
-                }
-            }, 
-            'A1' : {
-                'GNC' : {}
-            }
-        }
-        deferredConfig.resolve({ data : result });
 
         dashboardService.sortObject.and.callFake(function(){
             return {
@@ -124,6 +111,7 @@ describe('Testing lineplot settings controller', function () {
         $interval.flush(1001);
 
         expect(scope.settings.vehicles).toEqual(vehicles);
+        $interval.cancel(scope.interval);
     });
 
     it('should define function closeWidget', function() {
@@ -292,8 +280,6 @@ describe('Testing lineplot settings controller', function () {
                 "alarm_high": "14",
                 "alarm_low": "-14",
                 "units": "km/s",
-                "name": "x velocity component in ECF",
-                "category": "velocity",
                 "notes": ""
             }
         });
@@ -331,8 +317,6 @@ describe('Testing lineplot settings controller', function () {
                 "alarm_high": "14",
                 "alarm_low": "-14",
                 "units": "km/s",
-                "name": "x velocity component in ECF",
-                "category": "velocity",
                 "notes": ""
             }
         });
@@ -394,8 +378,6 @@ describe('Testing lineplot settings controller', function () {
                 "alarm_high": "14",
                 "alarm_low": "-14",
                 "units": "km/s",
-                "name": "x velocity component in ECF",
-                "category": "velocity",
                 "notes": ""
             }
         });
@@ -404,5 +386,65 @@ describe('Testing lineplot settings controller', function () {
 
         expect(scope.settings.vehicles).toEqual(result);
 
+    });
+
+    it('should define function createVehicleData', function() {
+        expect(scope.createVehicleData).toBeDefined();
+    });
+
+    it('should add new vehicle in scope settings if it is there in the telemetry data', function() {
+        scope.settings.vehicles = [{
+            'key': 1,
+            'value': 'A0',
+            'checked': true,
+            'color' : '#0AACCF'
+        }, {
+            'key': 2,
+            'value': 'A1',
+            'checked': false,
+            'color' : '#FF9100'
+        }];
+
+        var vehicles = [{
+            'key': 1,
+            'value': 'A0',
+            'checked': true,
+            'color' : '#0AACCF'
+        }, {
+            'key': 2,
+            'value': 'A1',
+            'checked': false,
+            'color' : '#FF9100'
+        }, {
+            'key': 3,
+            'value': 'A2',
+            'checked': false,
+            'color' : '#64DD17'
+        }];
+
+        dashboardService.sortObject.and.callFake(function(){
+            return {
+                'A0' : {
+                    'GNC' : {
+                        'Attitude': {
+                            'q1' : ""
+                        },
+                        'Velocity' : {
+                            'vx' : ""
+                        }
+                    }
+                },
+                'A1' : {
+                    'GNC' : {}
+                },
+                'A2' : {
+                    'GNC' : {}
+                }
+            }
+        });
+
+        $interval.flush(1001);
+
+        expect(scope.settings.vehicles).toEqual(vehicles);
     });
 })

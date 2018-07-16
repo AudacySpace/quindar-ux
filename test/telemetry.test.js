@@ -18,8 +18,11 @@ describe('Test Suite for Telemetry Route Controller', function() {
         mongooseStub = {
             model: function() {
                 return {
-                    findOne: function(query,condition,sortorder,callback) {
-                        var telemetry = { "AZero":{}};
+                    findOne: function(query, condition, sortorder, callback) {
+                        var telemetry = { 
+                            telemetry: { A0 : {} },
+                            timestamp: '2018-05-22T23:35:00.000Z'
+                        };
                         var err;
                         callback(err,telemetry); 
                     } 
@@ -31,7 +34,7 @@ describe('Test Suite for Telemetry Route Controller', function() {
         mongooseErrStub = {
             model: function() {
                 return {
-                    findOne: function(query,condition,sortorder,callback) {
+                    findOne: function(query, condition, sortorder, callback) {
                         var telemetry = null;
                         var err = {name:'MongoError'};
                         callback(err,telemetry); 
@@ -51,12 +54,17 @@ describe('Test Suite for Telemetry Route Controller', function() {
         var res = {
             send: sinon.spy()
         }
+
+        var result = {
+            telemetry: { A0 : {} },
+            timestamp: '2018-05-22T23:35:00.000Z'
+        };
     
         var spy = chai.spy.on(telemetrymodule, 'getTelemetry');
         telemetrymodule.getTelemetry(req, res);
         expect(spy).to.have.been.called();
         expect(res.send.calledOnce).to.be.true;
-        sinon.assert.calledWith(res.send,{ "AZero":{}});
+        sinon.assert.calledWith(res.send, result);
     });
 
     it("should not get telemetry data when error", function() {

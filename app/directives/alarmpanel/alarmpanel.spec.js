@@ -1,5 +1,5 @@
 describe('Testing alarm panel controller', function () {
-    var controller, dashboardService, scope, deferredConfig, 
+    var controller, dashboardService, scope, 
         datastatesService, userService, statusboardService, $interval;
     var alarmpanel = {};
 
@@ -7,11 +7,10 @@ describe('Testing alarm panel controller', function () {
         // load the module
         module('app');
 
-        inject(function($controller, $rootScope, _$interval_, _$q_){
+        inject(function($controller, $rootScope, _$interval_){
             $interval = _$interval_;
-            deferredConfig = _$q_.defer();
             dashboardService = jasmine.createSpyObj('dashboardService', 
-                ['sortObject', 'telemetry', 'getCurrentMission', 'getConfig', 'getTime', 'isEmpty']);
+                ['sortObject', 'telemetry', 'getTime', 'isEmpty']);
             datastatesService = jasmine.createSpyObj('datastatesService', ['getDataColorBound']);
             userService = jasmine.createSpyObj('userService', ['getUserName', 'userRole']);
             statusboardService = jasmine.createSpyObj('statusboardService', 
@@ -40,12 +39,6 @@ describe('Testing alarm panel controller', function () {
             statusboardService.getMasterAlarmColors.and.callFake(function(){
                 return { colorclasses: [ 'buttonNone' ], checkedstatus: [ true ] };
             });
-            dashboardService.getCurrentMission.and.callFake(function() {
-                return { missionName : 'ATest' };
-            });
-            dashboardService.getConfig.and.callFake(function() {
-                return deferredConfig.promise;
-            });
 
             scope = $rootScope.$new();
             scope.widget = {
@@ -73,7 +66,7 @@ describe('Testing alarm panel controller', function () {
 
     it('should define telemetry', function(){
         dashboardService.telemetry.and.callFake(function() {
-            return {"time": "2018-02-16T00:26:41.439Z", "data": {} };
+            return {"time": "2018-02-16T00:26:41.439Z", "data": {"A0" : {}} };
         });
         expect(scope.telemetry).toBeDefined();
         expect(scope.telemetry).toEqual(dashboardService.telemetry);
@@ -108,11 +101,6 @@ describe('Testing alarm panel controller', function () {
         });
     });
 
-    it('should define currentMission', function(){
-        expect(scope.currentMission).toBeDefined();
-        expect(scope.currentMission).toEqual({ missionName : 'ATest' });
-    });
-
     it('should get the configuration of the current mission', function(){
         var expectedcolors = [{ vehicle: 'A0', status: false }];
         var expectedContents = [{ 
@@ -125,20 +113,6 @@ describe('Testing alarm panel controller', function () {
             subCategoryColors: [  ], 
             ackStatus: false 
         }];
-        scope.currentMission = { missionName : 'ATest' }
-        var result = {
-            'A0' : {
-                'GNC' : {
-                    'Velocity' : {
-                        'vx' : ""
-                    },
-                    'Attitude': {
-                        'q1' : ""
-                    }
-                }
-            }
-        }
-        deferredConfig.resolve({ data : result });
 
         dashboardService.sortObject.and.callFake(function(){
             return {
@@ -159,6 +133,65 @@ describe('Testing alarm panel controller', function () {
 
         expect(scope.vehicleColors).toEqual(expectedcolors);
         expect(scope.contents).toEqual(expectedContents);
+
+        dashboardService.sortObject.and.callFake(function(){
+            return {
+                'A0' : {
+                    'GNC' : {
+                        'Attitude': {
+                            'q1' : ""
+                        },
+                        'Velocity' : {
+                            'vx' : ""
+                        }
+                    },
+                    'CMD' : {
+                        'Position': {
+                            'x' : ""
+                        },
+                        'Velocity' : {
+                            'vx' : ""
+                        }
+                    }
+                },
+                'A1' : {
+                    'VPR' : {
+                        'Position': {
+                            'x' : ""
+                        },
+                        'Velocity' : {
+                            'vx' : ""
+                        }
+                    }
+                }
+            }
+        });
+
+        var expectedcolors_2 = [{ vehicle: 'A0', status: false }, { vehicle: 'A1', status: false }];
+        var expectedContents_2 = [{
+            vehicle: 'A0',
+            flexprop: 50,
+            categories: [ 'GNC', 'CMD' ],
+            vehicleColor: '',
+            categoryColors: [  ],
+            tableArray: [  ],
+            subCategoryColors: [  ],
+            ackStatus: false
+        },{
+            vehicle: 'A1',
+            flexprop: 50,
+            categories: [ 'VPR' ],
+            vehicleColor: '',
+            categoryColors: [  ],
+            tableArray: [  ],
+            subCategoryColors: [  ],
+            ackStatus: false
+        }];
+
+        $interval.flush(1001);
+
+        expect(scope.vehicleColors).toEqual(expectedcolors_2);
+        expect(scope.contents).toEqual(expectedContents_2);
     });
 
     it('should define function updateColors', function(){
@@ -344,7 +377,7 @@ describe('Testing alarm panel controller', function () {
     it('should cancel interval when scope is destroyed', function(){
         spyOn($interval, 'cancel');
         scope.$destroy();
-        expect($interval.cancel.calls.count()).toBe(1);
+        expect($interval.cancel.calls.count()).toBe(2);
     });
 
 });

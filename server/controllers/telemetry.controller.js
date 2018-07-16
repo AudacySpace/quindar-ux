@@ -9,7 +9,7 @@ module.exports = {
             Telemetry.findOne( 
                 {'mission' : mission }, 
                 {}, 
-                { sort: { 'timestamp' : -1 }},
+                { sort: { 'timestamp' : -1 } },
                 function(err, telemetry) {
                     if(err){
                         console.log(err);
