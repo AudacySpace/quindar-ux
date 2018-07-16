@@ -13,13 +13,9 @@ describe('Testing leftSidebar component', function () {
         });
 
         inject( function($componentController, _$interval_, _$q_){
-            dashboardService = jasmine.createSpyObj('dashboardService', ['telemetry']);
-            sidebarService = jasmine.createSpyObj('sidebarService', ['setVehicleInfo']);
+            dashboardService = jasmine.createSpyObj('dashboardService', ['getTelemetryValues', 'getLock']);
+            sidebarService = jasmine.createSpyObj('sidebarService', ['setVehicleInfo', 'getMenuStatus', 'setMenuStatus']);
             $interval = _$interval_;
-
-            dashboardService.telemetry.and.callFake(function() {
-                return {"time": "2018-02-16T00:26:41.439Z", "data": { "A0" : {} } };
-            });
 
             $controller = $componentController('leftSidebar', {
                 sidebarService: sidebarService,
@@ -69,10 +65,10 @@ describe('Testing leftSidebar component', function () {
             }
         };
 
-        $controller.telemetry = {
-            "time": "2018-02-16T00:26:41.439Z",
-            "data": result
-        };
+        // $controller.telemetry = {
+        //     "time": "2018-02-16T00:26:41.439Z",
+        //     "data": result
+        // };
 
         var dataTree = [{
             "name":"A0",
@@ -96,13 +92,35 @@ describe('Testing leftSidebar component', function () {
             "active":false
         }];
 
+        dashboardService.getTelemetryValues.and.callFake(function() {
+            return {"time": "2018-02-16T00:26:41.439Z", "data": result };
+        });
+
+        dashboardService.getLock.and.callFake(function(){
+            return { lockLeft : true, lockRight : false }
+        });
+
+        sidebarService.getMenuStatus.and.callFake(function(){
+            return true;
+        });
+
         $interval.flush(1001);
         expect($controller.dataTree).toEqual(dataTree);
         expect($controller.previousTree).toEqual(dataTree);
     });
 
     it('should make the data tree empty if there is no telemetry', function(){
-        $controller.telemetry = undefined;
+        dashboardService.getTelemetryValues.and.callFake(function() {
+            return {};
+        });
+
+        dashboardService.getLock.and.callFake(function(){
+            return { lockLeft : true, lockRight : false }
+        });
+
+        sidebarService.getMenuStatus.and.callFake(function(){
+            return true;
+        });
 
         $interval.flush(1001);
         expect($controller.dataTree).toEqual([]);

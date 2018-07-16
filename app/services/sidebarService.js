@@ -5,6 +5,9 @@ app
         parameters:[]
     };
 
+    //variable used to create data menu
+    var menuStatus = false;
+
     function setVehicleInfo(dataString) {
         var vehicleInfo = {
             vehicle : '',
@@ -38,9 +41,19 @@ app
         return newData;
     }
 
+    function setMenuStatus(status){
+        menuStatus = status;
+    }
+
+    function getMenuStatus(){
+        return menuStatus;
+    }
+
 	return {
         setVehicleInfo : setVehicleInfo,
         getVehicleInfo : getVehicleInfo,
-        data : data
+        data : data,
+        setMenuStatus : setMenuStatus,
+        getMenuStatus : getMenuStatus
 	}
 });
