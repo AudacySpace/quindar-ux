@@ -1,5 +1,5 @@
 app
-.factory('sidebarService', function() { 
+.factory('sidebarService', function(dashboardService) { 
 
     var widget;
     var widgetObject;
@@ -28,7 +28,15 @@ app
             vehicleInfo.key = dataString;
             var item = vehicleInfo;
             widget.settings.dataArray.push(item);
-            widgetObject.getValue();
+            var datavalue = dashboardService.getData(item.key);
+            if(datavalue && datavalue.hasOwnProperty("value"))
+            {
+                widgetObject.getValue(false);
+            }
+            else
+            {
+                widgetObject.getValue(true);
+            }
             //access last index in index array in widgets.settings.something
             //find corresponding select data text field for widget at that index and display data selected over there
         } else {

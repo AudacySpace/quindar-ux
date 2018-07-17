@@ -10,15 +10,29 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
     checkForLogData();
 
     $scope.saveDataLogSettings = function(widget){
-        $scope.getValue();
-        if($scope.data.id !== '' && $scope.data.vehicle !== ''){
-            widget.main = true;
-            widget.settings.active = false;
-            widget.saveLoad = false;
-            widget.delete = false;
-            $scope.widget.settings.data = angular.copy($scope.data);
+        var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
+        if(data && data.vehicle !== "" && data.id !== ""){
+            var datavalue = dashboardService.getData(data.key);
+            if(datavalue){
+                if(datavalue.hasOwnProperty("value")){
+                    widget.main = true;
+                    widget.settings.active = false;
+                    widget.saveLoad = false;
+                    widget.delete = false;
+                    $scope.widget.settings.data = angular.copy($scope.data);
+                    $scope.widget.settings.dataArray = [];
+                }else{
+                   $window.alert("Please select telemetry ID(leaf node) from Data Menu"); 
+                }
+
+            }else{
+                $scope.data = angular.copy(data);
+                $window.alert("Currently there is no data available for this telemetry id.");
+            }
+        }else {
+            $window.alert("Vehicle data not set. Please select from Data Menu");
         }
-        $scope.widget.settings.dataArray = [];
+
     };
 
     $scope.closeDataLogSettings = function(widget){
@@ -74,29 +88,19 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
     //     }
     // }
 
-    $scope.getValue = function(){
+    $scope.getValue = function(isGroup){
         var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
-        if(data && data.vehicle !== "" && data.id !== ""){
-            var datavalue = dashboardService.getData(data.key);
-            if(datavalue){
-                if(datavalue.hasOwnProperty("value")){
-                    $scope.data = angular.copy(data);
-                    if ($window.innerWidth >= 1400){
-                        $scope.lock.lockLeft = false;
-                        dashboardService.setLeftLock($scope.lock.lockLeft);
-                    }
-
-                }else{
-                   $window.alert("Please select telemetry ID(leaf node) from Data Menu"); 
-                }
-
-            }else{
-                console.log($scope.data);
+        if(data && data.vehicle !== "" && data.id !== "")
+        {
+            if(!isGroup)
+            {
                 $scope.data = angular.copy(data);
-                $window.alert("Currently there is no data available for this telemetry id.");
+                if ($window.innerWidth >= 1400)
+                {
+                    $scope.lock.lockLeft = false;
+                    dashboardService.setLeftLock($scope.lock.lockLeft);
+                }
             }
-        }else {
-            $window.alert("Vehicle data not set. Please select from Data Menu");
         }
     }
 

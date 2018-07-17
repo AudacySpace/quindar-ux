@@ -9,7 +9,7 @@
                 </div>
                 <div class="row settingsspace" style="display: table"></div>
                 <div class="btn-group" style="width:100%" uib-dropdown>
-                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata()" style="width:75%;border-radius:0;color:grey" >{{attitudeDisplay}}</button>
+                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('attitude')" style="width:75%;border-radius:0;color:grey" >{{readAttitudeValues()}}</button>
                     <button type="button" class="btn btn-default" style="width:25%;border-radius:0;padding-left:0px;padding-right:0px" uib-dropdown-toggle>
                         <span class="caret"></span>
                         <span class="sr-only">Split button!</span>
@@ -19,7 +19,7 @@
                         <li role="menuitem"><a href="#" ng-click="openAttitudeList()">Show Parameters</a></li>
                     </ul>
                 </div>
-                    <span ng-hide="attitudeDisplay"> Required </span>
+                    <span ng-hide="readAttitudeValues()"> Required </span>
                 <!-- End of Multi Selection of Data from Data menu -->
             </div>
             <div class="col-sm-2" style="display: table-cell; float:none"></div>
@@ -30,7 +30,7 @@
                 </div>
                 <div class="row settingsspace" style="display: table"></div>
                 <div class="btn-group" style="width:100%" uib-dropdown>
-                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata()" style="width:75%;border-radius:0;color:grey" >{{positionDisplay}}</button>
+                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('position')" style="width:75%;border-radius:0;color:grey" >{{readPositionValues()}}</button>
                     <button type="button" class="btn btn-default" style="width:25%;border-radius:0;padding-left:0px;padding-right:0px" uib-dropdown-toggle>
                         <span class="caret"></span>
                         <span class="sr-only">Split button!</span>
@@ -40,7 +40,7 @@
                         <li role="menuitem"><a href="#" ng-click="openPositionList()">Show Parameters</a></li>
                     </ul>
                 </div>
-                    <span ng-hide="positionDisplay"> Required </span>
+                    <span ng-hide="readPositionValues()"> Required </span>
                 <!-- End of Multi Selection of Data from Data menu -->
 
             </div>
@@ -69,7 +69,7 @@
 <form>
     <label for="SelectAttitude" class="mbl-label">Select Attitude</label>
     <div class="btn-group mbl-input-grp" uib-dropdown>
-        <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata()" style="width:88%;border-radius:0;color:grey;min-width:88%;padding-top:3px;padding-bottom:3px;font-size:10px;text-align:left" >{{attitudeDisplay}}</button>
+        <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('attitude')" style="width:88%;border-radius:0;color:grey;min-width:88%;padding-top:3px;padding-bottom:3px;font-size:10px;text-align:left" >{{readAttitudeValues()}}</button>
         <button type="button" class="btn btn-default" style="width:12%;border-radius:0;min-width:12%;padding-top:3px;padding-bottom:3px;font-size:10px" uib-dropdown-toggle>
             <span class="caret"></span>
             <span class="sr-only">Split button!</span>
@@ -79,10 +79,10 @@
             <li role="menuitem"><a href="#" ng-click="openAttitudeList()">Show Parameters</a></li>
         </ul>
     </div>
-    <span ng-hide="attitudeDisplay" class="req-label"> Required </span>
+    <span ng-hide="readAttitudeValues()" class="req-label"> Required </span>
     <label for="SelectPosition" class="mbl-label">Select Position</label>
     <div class="btn-group mbl-input-grp" uib-dropdown>
-        <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata()" style="width:88%;border-radius:0;color:grey;min-width:88%;padding-top:3px;padding-bottom:3px;font-size:10px;text-align:left" >{{positionDisplay}}</button>
+        <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('position')" style="width:88%;border-radius:0;color:grey;min-width:88%;padding-top:3px;padding-bottom:3px;font-size:10px;text-align:left" >{{readPositionValues()}}</button>
         <button type="button" class="btn btn-default" style="width:12%;border-radius:0;min-width:12%;padding-top:3px;padding-bottom:3px;font-size:10px" uib-dropdown-toggle>
             <span class="caret"></span>
             <span class="sr-only">Split button!</span>
@@ -92,7 +92,7 @@
             <li role="menuitem"><a href="#" ng-click="openPositionList()">Show Parameters</a></li>
         </ul>
     </div>
-     <span ng-hide="positionDisplay" class="req-label"> Required </span>
+     <span ng-hide="readPositionValues()" class="req-label"> Required </span>
     <hr class="hr-double-col1-1">
       <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveSettings(widget)">SAVE</button>
     <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeSettings(widget)">CLOSE</button>  
@@ -109,7 +109,7 @@
                     <label for="SelectAttitude" class="mbl-label">Select Attitude</label>
                 </div>
                 <div class="btn-group mbl-input-grp" uib-dropdown>
-                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata()" style="width:75%;border-radius:0;color:grey;padding-top:0px;padding-bottom:0px;font-size:9px;text-align:left" >{{attitudeDisplay}}</button>
+                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('attitude')" style="width:75%;border-radius:0;color:grey;padding-top:0px;padding-bottom:0px;font-size:9px;text-align:left" >{{readAttitudeValues()}}</button>
                     <button type="button" class="btn btn-default" style="width:25%;border-radius:0;padding-top:0px;padding-left:0px;padding-right:0px;padding-bottom:0px;font-size:9px" uib-dropdown-toggle>
                         <span class="caret"></span>
                         <span class="sr-only">Split button!</span>
@@ -119,7 +119,7 @@
                     <li role="menuitem"><a href="#" ng-click="openAttitudeList()">Show Parameters</a></li>
                 </ul>
                 </div>
-                <span ng-hide="attitudeDisplay" class="pull-right req-label"> Required </span>
+                <span ng-hide="readAttitudeValues()" class="pull-right req-label"> Required </span>
             </div>
             <div class="col-sm-1 tablecellstyle1"></div> 
         </div>
@@ -130,7 +130,7 @@
                     <label for="SelectPosition" class="mbl-label">Select Position</label>
                 </div>
                 <div class="btn-group mbl-input-grp" uib-dropdown>
-                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata()" style="width:75%;border-radius:0;color:grey;padding-top:0px;padding-bottom:0px;font-size:9px;text-align:left" >{{positionDisplay}}</button>
+                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('position')" style="width:75%;border-radius:0;color:grey;padding-top:0px;padding-bottom:0px;font-size:9px;text-align:left" >{{readPositionValues()}}</button>
                     <button type="button" class="btn btn-default" style="width:25%;border-radius:0;padding-top:0px;padding-bottom:0px;font-size:9px;padding-left:0px;padding-right:0px" uib-dropdown-toggle>
                         <span class="caret"></span>
                         <span class="sr-only">Split button!</span>
@@ -140,7 +140,7 @@
                         <li role="menuitem"><a href="#" ng-click="openPositionList()">Show Parameters</a></li>
                     </ul>
                 </div>
-                 <span ng-hide="positionDisplay" class="pull-right req-label"> Required </span>
+                 <span ng-hide="readPositionValues()" class="pull-right req-label"> Required </span>
             </div>
             <div class="col-sm-1 tablecellstyle1"></div>
         </div>
