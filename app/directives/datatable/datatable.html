@@ -21,11 +21,11 @@
                       <span class="sr-only">Toggle Dropdown</span>
                     </a>
                     <ul class="dropdown-menu drpmenu" role="menu" id="drpmenu">
-                        <li class="uldrpmenu"><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || getTelemetrydata($event)">Select Telemetry Id</a></li>
-                        <li><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || getValue($event,row,$index)">Apply Telemetry Id</a></li>
-                        <li class="uldrpmenu"><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || getTelemetrydata($event)">Select Group</a></li>
-                        <li><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || applyGroup($event,row,$index)">Apply Group</a></li>
-                        <li class="divider liner"></li>
+                        <li class="uldrpmenu"><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || getTelemetrydata($event, $index, false)">Select Telemetry Id</a></li>
+                        <!--<li><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || getValue($event,row,$index)">Apply Telemetry Id</a></li>-->
+                        <li class="uldrpmenu"><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || getTelemetrydata($event, $index, true)">Select Group</a></li>
+                        <!--<li><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || applyGroup($event,row,$index)">Apply Group</a></li>
+                        <li class="divider liner"></li>-->
                         <li><a href="#" class="row-above" ng-click="addRowAbove($index)">Add Row Above</a></li>
                         <li><a href="#" class="row-below" ng-click="addRowBelow($index)">Add Row Below</a></li>
                         <li><a href="#" class="move-up" ng-click="moveRowUp($index)">Move Row Up</a></li>
@@ -36,7 +36,7 @@
                     </ul>
                 </div>
             </td>
-            <td ng-bind="getValue()" ng-repeat="cell in row.contents" class="rowcell" ng-style="cell.style"
+            <td ng-repeat="cell in row.contents" class="rowcell" ng-style="cell.style"
            colspan="{{cell.colspan}}" ng-show="{{cell.colshow}}"><span ng-style="cell.datacolor">{{cell.datavalue}}</span><input ng-show="{{cell.active}}" class="rowinput {{cell.class}}" type="text" value="{{cell.headervalue.data}}" ng-model="cell.headervalue.data" placeholder="{{cell.placeholder}}" aria-label="Readonly field" />
             </td>
         </tr>

@@ -9,7 +9,14 @@ app
 
 app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarService, $window, $mdSidenav,$uibModal){
 
+    $scope.chosenCategory;
+    $scope.attitudeBooleans = [true, true, true, true];
+    $scope.positionBooleans = [true, true, true, true];
+    $scope.totalAttitudeArray = [];
+    $scope.totalPositionArray = [];
+
     checkforPreSavedData();
+
 	$scope.closeSettings = function(widget){
 		widget.main = true;
 		widget.settings.active = false;
@@ -65,7 +72,44 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 
 	$scope.saveSettings = function(widget){
 		var status = checkforSameVehicle($scope.settings.attitudeData,$scope.settings.positionData);
-		if($scope.settings.attitudeData.length === 4 && $scope.settings.positionData.length === 3 && status === true){
+		if($scope.settings.attitudeData.length == 0)
+        {
+            $window.alert("Please select the parameters before applying!");
+        }
+        else if(!$scope.attitudeBooleans[3])
+        {
+            $window.alert("Please select all attitude values:q1,q2,q3,qc");
+        }
+        else if(!$scope.attitudeBooleans[2])
+        {
+            $window.alert("Please select all the attitude values:q1,q2,q3,qc from the same vehicle.");
+        }
+        else if(!$scope.attitudeBooleans[1])
+        {
+            $window.alert("Please select all the attitude values:q1,q2,q3,qc from the same category of single vehicle.");
+        }
+        else if(!$scope.attitudeBooleans[0])
+        {
+            $window.alert("You have either not selected all attitude values:q1,q2,q3,qc or there may be no data available for the selected quaternion coordinates."); 
+        }
+        else if(!$scope.positionBooleans[3])
+        {
+            $window.alert("Please select all position values:x,y,z");
+        }
+        else if(!$scope.positionBooleans[2])
+        {
+            $window.alert("Please select all the position values:x,y,z from the same vehicle.");
+        }
+        else if(!$scope.positionBooleans[1])
+        {
+            $window.alert("Please select all the position values:x,y,z from the same vehicle's category.");
+
+        }
+        else if(!$scope.positionBooleans[0])
+        {
+            $window.alert("You have either not selected all position values:x,y,z or there may be no data available for the position coordinates."); 
+        }
+        else if($scope.settings.attitudeData.length === 4 && $scope.settings.positionData.length === 3 && status === true){
             $uibModal.open({
                 templateUrl: "./directives/satellite/confirmSettings.html",
                 controller: 'confirmCtrl',
@@ -96,11 +140,17 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                 widget.settings.positionData = getSelectedArray(dataItems.positionData);
                 $scope.positionDisplay = displayStringForInput(dataItems.positionData);
                 widget.settings.vehicle = $scope.vehicle;
+
+                $scope.totalAttitudeArray = [];
+                $scope.totalPositionArray = [];
+                $scope.widget.settings.dataArray = [];
             },
             function () {
             //handle modal dismiss
         });
-		}else if(status === false){
+		}
+        else if(status === false)
+        {
 			$window.alert("Both Attitude and Position Values should be of the same vehicle.");
 		}else if($scope.settings.attitudeData.length < 4 && $scope.settings.positionData.length < 3){
 			$window.alert("Please select all the quaternion coordinates:q1,q2,q3,qc and position coordinates:x,y,z");
@@ -120,16 +170,74 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
         }
 	}
 
-	$scope.getTelemetrydata = function(){
+	$scope.getTelemetrydata = function(category){
         //open the data menu
+        $scope.chosenCategory = category;
+        sidebarService.setTempWidget($scope.widget, this);
         if ($window.innerWidth < 1400){
             $mdSidenav('left').open();
         } else {
             $scope.lock = dashboardService.getLock();
-            $scope.lock.lockLeft = !$scope.lock.lockLeft;
+            $scope.lock.lockLeft = true;
             dashboardService.setLeftLock($scope.lock.lockLeft);
         }
         sidebarService.setMenuStatus(true); //set to true when data menu is opened and tree needs to be created
+    }
+
+    $scope.readAttitudeValues = function()
+    {
+        var trimmedData = getRecentSelectedValues($scope.totalAttitudeArray, 4);
+        var stringData = "";
+        for(var i = 0; i < trimmedData.length; i++)
+        {
+            if(trimmedData[i])
+            {
+                if(i == trimmedData.length - 1)
+                {
+                    stringData += trimmedData[i].id
+                }
+                else
+                {
+                    stringData += trimmedData[i].id + ", ";
+                }
+            }
+        }
+        if(stringData)
+        {
+            return stringData;
+        }
+        else
+        {
+            return "Click for data";
+        }
+    }
+    $scope.readPositionValues = function()
+    {
+        var trimmedData = getRecentSelectedValues($scope.totalPositionArray, 3);
+        var stringData = "";
+        for(var i = 0; i < trimmedData.length; i++)
+        {
+            if(trimmedData[i])
+            {
+                if(i == trimmedData.length - 1)
+                {
+                    stringData += trimmedData[i].id
+                }
+                else
+                {
+                    stringData += trimmedData[i].id + ", ";
+                }
+            }
+        }
+
+        if(stringData)
+        {
+            return stringData;
+        }
+        else
+        {
+            return "Click for data";
+        }
     }
 
     $scope.sortableOptionsAttitude = {
@@ -150,23 +258,30 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
         }
     };
 
+    $scope.getValue = function(isGroup){
+        $scope.attitudeBooleans = [true, true, true, true];
+        $scope.positionBooleans = [true, true, true, true];
+        var vehicleInfo = angular.copy($scope.widget.settings.dataArray);
+        var dataLen = vehicleInfo.length;
+        var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
+        if(!isGroup && data && data.id !== "")
+        {
+            if($scope.chosenCategory == 'attitude')
+            {
+                $scope.totalAttitudeArray.push($scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1]);
+            }
+            else if($scope.chosenCategory == 'position')
+            {
+                $scope.totalPositionArray.push($scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1]);
+            }
 
-    $scope.getValue = function(category){
-        var vehicleInfo = sidebarService.getVehicleInfo();
-        var dataLen = vehicleInfo.parameters.length;
-
-        //this condition checks if there is any selected data
-        if(dataLen > 0){
             //this condition checks if the dropdown is attitude 
-            if(category === "attitude"){
+            
                 var attitudeArray = [];
                 var attitudeSettings = [];
                 var attitudeDisplayText = "";
 
-                //for loop to form a temp attitude/quaternion coordinate array from the data array
-                for(var i=0;i<dataLen;i++){
-                    attitudeArray.push(vehicleInfo.parameters[i]);
-                }
+                attitudeArray = angular.copy($scope.totalAttitudeArray);
 
                 //if the temp attitude array has length more than 4 then reduce its size to recent 4
                 if(attitudeArray.length > 4){
@@ -185,34 +300,32 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                         if(attitudeSettingsfiltered2.length === 4){  
                             attitudeDisplayText = displayStringForInput(attitudeSettingsfiltered2);
                             $scope.settings.attitudeData = attitudeSettingsfiltered2;
+                            console.log($scope.settings.attitudeData);
                             $scope.attitudeDisplay = attitudeDisplayText;
                             $scope.vehicle = attitudeSettingsfiltered2[0].vehicle;
                             if ($window.innerWidth >= 1400){
-                                $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                                $scope.lock.lockLeft = false;
                                 dashboardService.setLeftLock($scope.lock.lockLeft);
                             }
                         }else if(attitudeSettingsfiltered2.length < 4){
-                            $window.alert("You have either not selected all attitude values:q1,q2,q3,qc or there may be no data available for the selected quaternion coordinates."); 
+                            $scope.attitudeBooleans[0] = false;
                         }
                     }else if(isDiffAttitudeVeh === false && attitudefilteredData.length !== attitudeSettingsfiltered2.length){
-                        $window.alert("Please select all the attitude values:q1,q2,q3,qc from the same category of single vehicle.");
+                        $scope.attitudeBooleans[1] = false;
                     }else if(isDiffAttitudeVeh === true){
-                        $window.alert("Please select all the attitude values:q1,q2,q3,qc from the same vehicle.");
+                        $scope.attitudeBooleans[2] = false;
                     }
 
                 }else {
-                    $window.alert("Please select all attitude values:q1,q2,q3,qc"); 
+                    $scope.attitudeBooleans[3] = false;
                 }  
                 
-            }else if(category === "position"){ //this condition checks if the dropdown is position
+            
                 var positionArray = [];
                 var positionSettings = [];
                 var positionDisplayText = "";
 
-                //for loop to form a temp position coordinate array from the data array
-                for(var i=0;i<dataLen;i++){
-                    positionArray.push(vehicleInfo.parameters[i]);
-                }
+                positionArray = angular.copy($scope.totalPositionArray);
 
                 //if the temp position array has length more than 3 then reduce its size to recent 3
                 if(positionArray.length > 3){
@@ -234,23 +347,21 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                             $scope.positionDisplay = positionDisplayText;
                             $scope.vehicle = positionSettingsfiltered2[0].vehicle;
                             if ($window.innerWidth >= 1400){
-                                $scope.lock.lockLeft = !$scope.lock.lockLeft;
+                                $scope.lock.lockLeft = false;
                                 dashboardService.setLeftLock($scope.lock.lockLeft);
                             }
                         }else if(positionSettingsfiltered2.length < 3){
-                            $window.alert("You have either not selected all position values:x,y,z or there may be no data available for the position coordinates."); 
+                            $scope.positionBooleans[0] = false;
                         }
                     }else if(isDiffPositionVeh === false && positionfilteredData.length !== positionSettingsfiltered2.length){
-                        $window.alert("Please select all the position values:x,y,z from the same vehicle's category.");
+                        $scope.positionBooleans[1] = false;
                     }else if(isDiffPositionVeh === true){
-                        $window.alert("Please select all the position values:x,y,z from the same vehicle.");
+                        $scope.positionBooleans[2] = false;
                     }
                 }else {
-                    $window.alert("Please select all position values:x,y,z");
+                    $scope.positionBooleans[3] = false;
                 }       
-            }
-        }else if(vehicleInfo.parameters.length ===  0){
-            $window.alert("Please select the parameters before apply!");
+            
         }
     }
 

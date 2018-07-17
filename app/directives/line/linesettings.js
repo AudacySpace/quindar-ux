@@ -25,7 +25,7 @@ app.controller('LineSettingsCtrl',
 
         $scope.getTelemetrydata = function(){
             //open the data menu
-            sidebarService.setTempWidget($scope.widget);
+            sidebarService.setTempWidget($scope.widget, this);
             if ($window.innerWidth < 1400){
                 $mdSidenav('left').open();
             } else {
@@ -49,9 +49,10 @@ app.controller('LineSettingsCtrl',
             }
         }
     
-        $scope.getValue = function(){
+        $scope.getValue = function(isGroup){
             var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1]; // get the last selected id from the data menu
-            if(data){
+            if(data && data.key !== "" && !isGroup)
+            {
                 for(var i=0; i<$scope.settings.vehicles.length; i++){
                     if($scope.settings.vehicles[i].value === data.vehicle){
                         $scope.settings.vehicles[i].checked = true;
@@ -60,72 +61,74 @@ app.controller('LineSettingsCtrl',
                         $scope.settings.vehicles[i].checked = false;
                     }
                 }
-
-                if(data.key !== ""){
-                    var datavalue = dashboardService.getData(data.key);
-                    if(datavalue){
-                        if(datavalue.hasOwnProperty("value")){
-                            $scope.settings.data = angular.copy(data);
-                            if ($window.innerWidth >= 1400){
-                                $scope.lock.lockLeft = false;
-                                dashboardService.setLeftLock($scope.lock.lockLeft);
-                            }
-                        }else {
-                            $window.alert("Please select telemetry ID(leaf node) from Data Menu");
-                        }
-                    }else {
-                        //when no telemetry value available for the telemetry id,set the value in the input but also alert the user.
-                        $scope.settings.data = angular.copy(data);
-                        $window.alert("Currently there is no data available for this telemetry Id.");
-                    }
-                }else { 
-                    $window.alert("Vehicle data not set. Please select from Data Menu");
+                $scope.settings.data = angular.copy(data);
+                if ($window.innerWidth >= 1400){
+                    $scope.lock.lockLeft = false;
+                    dashboardService.setLeftLock($scope.lock.lockLeft);
                 }
-            }else {
-                $window.alert("Vehicle data not set. Please select from Data Menu");
             }
         }
 
         // Save
         $scope.saveWidget = function(widget){
-            //$scope.getValue();
-            var count = 0;
-            if($scope.settings.data.key) {
-                if(widget.settings.data.vehicles.length != 0) {
-                    widget.settings.data.vehicles = [];
-                }
+            var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
+            if(data && data.key !== ""){
+                var datavalue = dashboardService.getData(data.key);
+                if(datavalue){
+                    if(datavalue.hasOwnProperty("value")){
+                        var count = 0;
+                        if($scope.settings.data.key) {
+                            if(widget.settings.data.vehicles.length != 0) {
+                                widget.settings.data.vehicles = [];
+                            }
 
-                widget.settings.data.value = $scope.settings.data.id;
-                widget.settings.data.key = $scope.settings.data.key;
-                var vehicles = $scope.settings.vehicles;
+                            widget.settings.data.value = $scope.settings.data.id;
+                            widget.settings.data.key = $scope.settings.data.key;
+                            var vehicles = $scope.settings.vehicles;
 
-                for(var i=0; i<vehicles.length; i++){
-                    if(vehicles[i].checked === true){
-                        //create key to access telemetry for each vehicle
-                        var key = createKey(vehicles[i].value, $scope.settings.data.key);
+                            for(var i=0; i<vehicles.length; i++){
+                                if(vehicles[i].checked === true){
+                                    //create key to access telemetry for each vehicle
+                                    var key = createKey(vehicles[i].value, $scope.settings.data.key);
 
-                        var vehicle = {
-                            'name' : vehicles[i].value,
-                            'color' : vehicles[i].color,
-                            'key' : key
+                                    var vehicle = {
+                                        'name' : vehicles[i].value,
+                                        'color' : vehicles[i].color,
+                                        'key' : key
+                                    }
+                                    widget.settings.data.vehicles.push(vehicle);
+                                    count++;
+                                }
+                            }
+
+                            if(count != 0){
+                                widget.main = true;
+                                widget.settings.active = false;
+                                previousSettings = angular.copy($scope.settings);
+                                $scope.widget.settings.dataArray = [];
+                            } else {
+                                $window.alert("Please select atleast one vehicle and save!");
+                            }
                         }
-                        widget.settings.data.vehicles.push(vehicle);
-                        count++;
+                    } else {
+                        $window.alert("Please select telemetry ID(leaf node) from Data Menu");
                     }
+                }else {
+                    //when no telemetry value available for the telemetry id,set the value in the input but also alert the user.
+                    $scope.settings.data = angular.copy(data);
+                    $window.alert("Currently there is no data available for this telemetry Id.");
                 }
-
-                if(count != 0){
-                    widget.main = true;
-                    widget.settings.active = false;
-                    previousSettings = angular.copy($scope.settings);
-                } else {
-                    $window.alert("Please select atleast one vehicle and save!");
-                }
+            }else { 
+                $window.alert("Vehicle data not set. Please select from Data Menu");
             }
         }
                 
         // Close
         $scope.closeWidget = function(widget){
+            $scope.lock = dashboardService.getLock();
+            $scope.lock.lockLeft = false;
+            dashboardService.setLeftLock($scope.lock.lockLeft);
+            
             widget.main = true;
             widget.settings.active = false;
             $scope.settings = angular.copy(previousSettings);
