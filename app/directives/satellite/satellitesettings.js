@@ -129,6 +129,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
             $scope.lock.lockLeft = !$scope.lock.lockLeft;
             dashboardService.setLeftLock($scope.lock.lockLeft);
         }
+        sidebarService.setMenuStatus(true); //set to true when data menu is opened and tree needs to be created
     }
 
     $scope.sortableOptionsAttitude = {

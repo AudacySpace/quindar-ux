@@ -35,6 +35,7 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
             $scope.lock.lockLeft = !$scope.lock.lockLeft;
             dashboardService.setLeftLock($scope.lock.lockLeft);
         }
+        sidebarService.setMenuStatus(true); //set to true when data menu is opened and tree needs to be created
     }
 
     // $scope.getValue = function(){

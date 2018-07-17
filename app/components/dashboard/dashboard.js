@@ -33,7 +33,6 @@ angular.module('app')
 	    		vm.locks.lockLeft = !vm.locks.lockLeft;
 	    		dashboardService.setLeftLock(vm.locks.lockLeft); 
 	    	}
-	    	console.log("here");
 			sidebarService.setMenuStatus(true); //set to true when data menu is opened and tree needs to be created
 	    }
 

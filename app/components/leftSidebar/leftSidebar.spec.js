@@ -65,11 +65,6 @@ describe('Testing leftSidebar component', function () {
             }
         };
 
-        // $controller.telemetry = {
-        //     "time": "2018-02-16T00:26:41.439Z",
-        //     "data": result
-        // };
-
         var dataTree = [{
             "name":"A0",
             "nodes":[{

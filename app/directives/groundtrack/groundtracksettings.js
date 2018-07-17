@@ -395,6 +395,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             $scope.lock.lockLeft = !$scope.lock.lockLeft;
             dashboardService.setLeftLock($scope.lock.lockLeft);
         }
+        sidebarService.setMenuStatus(true); //set to true when data menu is opened and tree needs to be created
     }
 
     $scope.saveParameters = function(widget){
