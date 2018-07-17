@@ -67,8 +67,11 @@ app
                     vm.telemetry = dashboardService.getTelemetryValues();
                     if(vm.telemetry.hasOwnProperty('data')){
                         //create data tree from incoming telemetry
-                        vm.dataTree = getDataTree(vm.telemetry.data);
-                        vm.previousTree = angular.copy(vm.dataTree);
+                        var tree = getDataTree(vm.telemetry.data);
+                        if(!angular.equals(tree, vm.previousTree)){
+                            vm.previousTree = angular.copy(tree);
+                            vm.dataTree = tree;
+                        }
                     } else {
                         vm.dataTree = [];
                         vm.previousTree = angular.copy(vm.dataTree);
