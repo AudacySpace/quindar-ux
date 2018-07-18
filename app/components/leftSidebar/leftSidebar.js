@@ -70,7 +70,7 @@ app
                         var tree = getDataTree(vm.telemetry.data);
                         if(!angular.equals(tree, vm.previousTree)){
                             vm.previousTree = angular.copy(tree);
-                            vm.dataTree = tree;
+                            vm.dataTree = angular.copy(tree);
                         }
                     } else {
                         vm.dataTree = [];
@@ -125,9 +125,21 @@ app
                         'active' : false
                     };
 
-                    tree.push(node)
+                    tree.push(node);
                 }
             }
+
+            //sort the tree based on the name property of the objects inside it
+            tree.sort(function(a, b){
+                var nameA = a.name;
+                var nameB = b.name;
+                if (nameA < nameB) //sort string ascending
+                    return -1;
+                if (nameA > nameB)
+                    return 1;
+                return 0;
+            })
+
             return tree;
         }
 
