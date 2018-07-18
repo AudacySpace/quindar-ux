@@ -298,6 +298,10 @@ app
             });
     }
 
+    function getTelemetryValues(){
+        return telemetry;
+    }
+
 	return {
         locks : locks,
         telemetry : telemetry,
@@ -313,6 +317,7 @@ app
         getData : getData,
         setCurrentMission : setCurrentMission,
         getCurrentMission : getCurrentMission,
-        getConfig : getConfig
+        getConfig : getConfig,
+        getTelemetryValues : getTelemetryValues
 	}
 }]);

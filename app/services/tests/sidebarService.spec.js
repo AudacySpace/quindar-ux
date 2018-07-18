@@ -73,5 +73,21 @@ describe('Testing sidebarService', function () {
 
         expect(sidebarService.getVehicleInfo().parameters).toEqual([vehicleInfo]);
     });
+
+    it('should define the function setMenuStatus', function () {
+        expect(sidebarService.setMenuStatus).toBeDefined();
+    });
+
+    it('should define the function getMenuStatus', function () {
+        expect(sidebarService.getMenuStatus).toBeDefined();
+    });
+
+    it('should set the menuStatus variable to true', function(){
+        sidebarService.setMenuStatus(true);
+
+        var result = sidebarService.getMenuStatus();
+
+        expect(result).toEqual(true);
+    });
  
 });

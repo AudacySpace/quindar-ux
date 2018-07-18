@@ -283,4 +283,8 @@ describe('Testing dashboardService', function () {
 
         httpBackend.flush();
     });
+
+    it('should define the getTelemetryValues function', function() {
+        expect(dashboardService.getTelemetryValues).toBeDefined();
+    });
 });

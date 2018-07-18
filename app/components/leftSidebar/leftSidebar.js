@@ -1,15 +1,13 @@
 app
 .component('leftSidebar', {
   	templateUrl: "./components/leftSidebar/left_sidebar.html",
-  	controller: function(sidebarService, dashboardService, $interval, $window) {
+  	controller: function(sidebarService, dashboardService, $interval, $window, $mdSidenav) {
   		var vm = this;
-        vm.telemetry = dashboardService.telemetry;
-        vm.previousTelemetry = {};
 
         vm.searchID = "";
         vm.previousTree = [];
 
-        getData();
+        init();
 
         vm.selectData = function(data){
             if(data.nodes.length == 0){
@@ -59,23 +57,27 @@ app
             }
         }
 
-        //get the contents from the incoming telemetry stream
-        function getData(){
-            //interval to check for updated telemetry each second
+        function init(){
+            //interval to check for left sidebar, if opened, then construct the tree
             vm.interval = $interval(function(){
-                if(vm.telemetry){
-                    //merge the current telemetry object with the previous telemetry object
-                    vm.telemetryMerged = angular.merge({}, vm.telemetry, vm.previousTelemetry);
-
-                    //create a data tree only if there is a mismatch between previous telemetry and new one
-                    if(!angular.equals(vm.telemetryMerged, vm.previousTelemetry)) {
-                        vm.dataTree = getDataTree(vm.telemetryMerged.data)
-
-                        vm.previousTelemetry = angular.copy(vm.telemetryMerged);
+                var locks = dashboardService.getLock();
+                var menuStatus = sidebarService.getMenuStatus();
+                //check if left menu is open and data menu has not been constructed yet
+                if((locks.lockLeft || $mdSidenav('left').isOpen()) && menuStatus){
+                    vm.telemetry = dashboardService.getTelemetryValues();
+                    if(vm.telemetry.hasOwnProperty('data')){
+                        //create data tree from incoming telemetry
+                        var tree = getDataTree(vm.telemetry.data);
+                        if(!angular.equals(tree, vm.previousTree)){
+                            vm.previousTree = angular.copy(tree);
+                            vm.dataTree = angular.copy(tree);
+                        }
+                    } else {
+                        vm.dataTree = [];
                         vm.previousTree = angular.copy(vm.dataTree);
+                        //$window.alert("No telemetry data for the current mission. Please close the sidebar!");
                     }
-                } else {
-                    vm.dataTree = angular.copy(vm.previousTree);
+                    sidebarService.setMenuStatus(false); //set to false when above has been executed
                 }
             }, 1000);
         }
@@ -123,9 +125,21 @@ app
                         'active' : false
                     };
 
-                    tree.push(node)
+                    tree.push(node);
                 }
             }
+
+            //sort the tree based on the name property of the objects inside it
+            tree.sort(function(a, b){
+                var nameA = a.name;
+                var nameB = b.name;
+                if (nameA < nameB) //sort string ascending
+                    return -1;
+                if (nameA > nameB)
+                    return 1;
+                return 0;
+            })
+
             return tree;
         }
 
