@@ -274,8 +274,6 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
             {
                 $scope.totalPositionArray.push($scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1]);
             }
-
-            //this condition checks if the dropdown is attitude 
             
                 var attitudeArray = [];
                 var attitudeSettings = [];
