@@ -11,7 +11,7 @@ app
 
         vm.selectData = function(data){
             if(data.nodes.length == 0){
-                sidebarService.setVehicleInfo(data.value);
+                sidebarService.setVehicleInfo(data.value, gridService.getDashboard());
             } else {
                 var nodes = data.nodes;
                 var count = 0;
@@ -23,9 +23,9 @@ app
 
                 //if parent of leaf node, count will be 0
                 if(count==0){
-                    sidebarService.setVehicleInfo(data.value);
+                    sidebarService.setVehicleInfo(data.value, gridService.getDashboard());
                 } else {
-                    sidebarService.setVehicleInfo("");
+                    sidebarService.setVehicleInfo("", gridService.getDashboard());
                 }
                 data.active = !data.active;
             }
@@ -57,6 +57,7 @@ app
             }
         }
 
+<<<<<<< HEAD
         function init(){
             //interval to check for left sidebar, if opened, then construct the tree
             vm.interval = $interval(function(){
@@ -88,30 +89,10 @@ app
             for(var key in data) {
                 if(data.hasOwnProperty(key)) {
                     var nodes = [];
-                    var flag = true;
                     var newKey = (cKey ? cKey + "." + key : key);
 
-                    var node = {
-                        value: "",
-                        key: ""
-                    }
-
                     if(typeof data[key] === 'object'){
-                        for(var key2 in data[key]) {
-                            if(data[key].hasOwnProperty(key2)) {
-                                //if not an object, then maybe the last nodes(metadata) 
-                                //like value, units etc. and need not be there in the 
-                                //data menu
-                                if(typeof data[key][key2] !== 'object'){
-                                    flag=false;
-                                    break;
-                                }
-                            }
-                        }
-
-                        if(flag){
-                            nodes = getDataTree(data[key], newKey);
-                        }
+                        nodes = getDataTree(data[key], newKey);
                     }
 
                     if(nodes.length != 0) {
@@ -154,9 +135,5 @@ app
             }
             return words.join(' ');
         }
-
-        vm.$onDestroy = function(event) {
-            $interval.cancel(vm.interval );
-        }
-	}
+    }
 });
