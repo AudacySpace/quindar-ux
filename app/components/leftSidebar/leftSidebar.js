@@ -1,10 +1,8 @@
 app
 .component('leftSidebar', {
-  	templateUrl: "./components/leftSidebar/left_sidebar.html",
-  	controller: function(sidebarService, dashboardService, $interval, $window) {
-  		var vm = this;
-        vm.telemetry = dashboardService.telemetry;
-        vm.previousTelemetry = {};
+    templateUrl: "./components/leftSidebar/left_sidebar.html",
+    controller: function(sidebarService, dashboardService, $interval, $window, gridService) {
+        var vm = this;
 
         vm.searchID = "";
         vm.previousTree = [];
@@ -13,7 +11,7 @@ app
 
         vm.selectData = function(data){
             if(data.nodes.length == 0){
-                sidebarService.setVehicleInfo(data.value);
+                sidebarService.setVehicleInfo(data.value, gridService.getDashboard());
             } else {
                 var nodes = data.nodes;
                 var count = 0;
@@ -25,9 +23,9 @@ app
 
                 //if parent of leaf node, count will be 0
                 if(count==0){
-                    sidebarService.setVehicleInfo(data.value);
+                    sidebarService.setVehicleInfo(data.value, gridService.getDashboard());
                 } else {
-                    sidebarService.setVehicleInfo("");
+                    sidebarService.setVehicleInfo("", gridService.getDashboard());
                 }
                 data.active = !data.active;
             }
@@ -59,23 +57,19 @@ app
             }
         }
 
-        //get the contents from the incoming telemetry stream
+        //get the configuration contents from database
         function getData(){
-            //interval to check for updated telemetry each second
-            vm.interval = $interval(function(){
-                if(vm.telemetry){
-                    //merge the current telemetry object with the previous telemetry object
-                    vm.telemetryMerged = angular.merge({}, vm.telemetry, vm.previousTelemetry);
-
-                    //create a data tree only if there is a mismatch between previous telemetry and new one
-                    if(!angular.equals(vm.telemetryMerged, vm.previousTelemetry)) {
-                        vm.dataTree = getDataTree(vm.telemetryMerged.data)
-
-                        vm.previousTelemetry = angular.copy(vm.telemetryMerged);
-                        vm.previousTree = angular.copy(vm.dataTree);
-                    }
-                } else {
-                    vm.dataTree = angular.copy(vm.previousTree);
+            var interval = $interval(function(){
+                var currentMission = dashboardService.getCurrentMission();
+                if(currentMission.missionName != ""){
+                    dashboardService.getConfig(currentMission.missionName)
+                    .then(function(response) {
+                        if(response.data) {
+                            vm.dataTree = getDataTree(response.data);
+                            vm.previousTree = angular.copy(vm.dataTree);
+                        }
+                    });
+                    $interval.cancel(interval);
                 }
             }, 1000);
         }
@@ -86,30 +80,10 @@ app
             for(var key in data) {
                 if(data.hasOwnProperty(key)) {
                     var nodes = [];
-                    var flag = true;
                     var newKey = (cKey ? cKey + "." + key : key);
 
-                    var node = {
-                        value: "",
-                        key: ""
-                    }
-
                     if(typeof data[key] === 'object'){
-                        for(var key2 in data[key]) {
-                            if(data[key].hasOwnProperty(key2)) {
-                                //if not an object, then maybe the last nodes(metadata) 
-                                //like value, units etc. and need not be there in the 
-                                //data menu
-                                if(typeof data[key][key2] !== 'object'){
-                                    flag=false;
-                                    break;
-                                }
-                            }
-                        }
-
-                        if(flag){
-                            nodes = getDataTree(data[key], newKey);
-                        }
+                        nodes = getDataTree(data[key], newKey);
                     }
 
                     if(nodes.length != 0) {
@@ -140,9 +114,5 @@ app
             }
             return words.join(' ');
         }
-
-        vm.$onDestroy = function(event) {
-            $interval.cancel(vm.interval );
-        }
-	}
+    }
 });
