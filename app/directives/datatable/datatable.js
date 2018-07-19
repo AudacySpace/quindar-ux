@@ -126,7 +126,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     }
     //Function to select telemetry Id
     $scope.getTelemetrydata = function($event, $index, askedForGroup){
-        sidebarService.setTempWidget($scope.widget, this);
+        sidebarService.setTempWidget($scope.widget, this); //pass widget and controller functions to sidebarService
         $scope.arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
         $scope.arrow.style.color = "#07D1EA";
         $scope.currentIndex = $index;
@@ -143,16 +143,20 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
 
     $scope.getValue = function(isGroup)
     {
-        if(isGroup && $scope.askedForGroup)
+        if(isGroup && $scope.askedForGroup) //if the user has asked to see group and chosen a group from left sidebar
         {
             $scope.applyGroup();
         }
-        else if(!isGroup && !$scope.askedForGroup)
+        else if(!isGroup && !$scope.askedForGroup) //if the user has asked to see telemetry id and chosen telemetry id from left sidebar
         {
             $scope.applyValue();
         }
+        else if(!isGroup && $scope.askedForGroup) //if the user has asked to see group and has instead chosen telemetry id from left sidebar
+        {
+            $window.alert("Be sure to select a group!");
+        }
         $scope.arrow.style.color = "#b3b3b3";
-        $scope.widget.settings.dataArray = [];
+        $scope.widget.settings.dataArray = []; //once data has been added to table, reset dataArray
     }
     //Function to display selected telemetry Id value and its corresponding data values.
     $scope.applyValue = function(){
@@ -161,8 +165,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             var datavalue = dashboardService.getData(data.key);
             if(datavalue){
                 if(datavalue.hasOwnProperty("value"))
-                {
-                        
+                { 
                     if(savePrevious($scope.currentIndex)) //save info (if object not already created for this row, create it)
                     {  
                         $scope.widget.settings.data[$scope.currentIndex] = new Object();

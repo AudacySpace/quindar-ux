@@ -25,7 +25,7 @@ app.controller('LineSettingsCtrl',
 
         $scope.getTelemetrydata = function(){
             //open the data menu
-            sidebarService.setTempWidget($scope.widget, this);
+            sidebarService.setTempWidget($scope.widget, this); //pass widget and controller functions to sidebarService
             if ($window.innerWidth < 1400){
                 $mdSidenav('left').open();
             } else {
@@ -36,6 +36,7 @@ app.controller('LineSettingsCtrl',
             sidebarService.setMenuStatus(true); //set to true when data menu is opened and tree needs to be created
         }
 
+        //display telemetry id chosen by the user in the input box
         $scope.readValue = function()
         {
             var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
@@ -51,7 +52,7 @@ app.controller('LineSettingsCtrl',
     
         $scope.getValue = function(isGroup){
             var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1]; // get the last selected id from the data menu
-            if(data && data.key !== "" && !isGroup)
+            if(data && data.key !== "" && !isGroup) //check to see if data is properly chosen and whether or not it is a group
             {
                 for(var i=0; i<$scope.settings.vehicles.length; i++){
                     if($scope.settings.vehicles[i].value === data.vehicle){
@@ -62,15 +63,12 @@ app.controller('LineSettingsCtrl',
                     }
                 }
                 $scope.settings.data = angular.copy(data);
-                if ($window.innerWidth >= 1400){
-                    $scope.lock.lockLeft = false;
-                    dashboardService.setLeftLock($scope.lock.lockLeft);
-                }
             }
         }
 
         // Save
         $scope.saveWidget = function(widget){
+            //check conditions originally in getValue over here
             var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
             if(data && data.key !== ""){
                 var datavalue = dashboardService.getData(data.key);
@@ -101,11 +99,16 @@ app.controller('LineSettingsCtrl',
                                 }
                             }
 
-                            if(count != 0){
+                            if(count != 0){ //as long as data and vehicles are selected, continue with data implementation in line plot
                                 widget.main = true;
                                 widget.settings.active = false;
                                 previousSettings = angular.copy($scope.settings);
                                 $scope.widget.settings.dataArray = [];
+                                if ($window.innerWidth >= 1400)
+                                {
+                                    $scope.lock.lockLeft = false;
+                                    dashboardService.setLeftLock($scope.lock.lockLeft);
+                                }
                             } else {
                                 $window.alert("Please select atleast one vehicle and save!");
                             }
@@ -132,6 +135,11 @@ app.controller('LineSettingsCtrl',
             widget.main = true;
             widget.settings.active = false;
             $scope.settings = angular.copy(previousSettings);
+            if ($window.innerWidth >= 1400)
+            {
+                $scope.lock.lockLeft = false;
+                dashboardService.setLeftLock($scope.lock.lockLeft);
+            }
         }
 
         $scope.createVehicleData = function(callback){

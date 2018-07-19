@@ -7,6 +7,7 @@ app
     //variable used to create data menu
     var menuStatus = false;
 
+    //receive what widget has been called and what functions it has
     function setTempWidget(tempWidget, tempWidgetObject)
     {
         widget = tempWidget;
@@ -29,11 +30,11 @@ app
             var item = vehicleInfo;
             widget.settings.dataArray.push(item);
             var datavalue = dashboardService.getData(item.key);
-            if(datavalue && datavalue.hasOwnProperty("value"))
+            if(datavalue && datavalue.hasOwnProperty("value")) //if data chosen is telemetry id, notify getValue function that last selected data is a group 
             {
                 widgetObject.getValue(false);
             }
-            else
+            else //if data chosen is a group, notify getValue function that last selected data is a group
             {
                 widgetObject.getValue(true);
             }
