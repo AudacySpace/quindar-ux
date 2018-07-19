@@ -68,11 +68,18 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 			$scope.settings.positionData = [];
 			$scope.positionDisplay = "Click for data";
 		}
+
+        if ($window.innerWidth >= 1400)
+        {
+            $scope.lock.lockLeft = false;
+            dashboardService.setLeftLock($scope.lock.lockLeft);
+        }
 	}
 
 	$scope.saveSettings = function(widget){
+        //display telemetry id chosen by the user in the velocity input box
 		var status = checkforSameVehicle($scope.settings.attitudeData,$scope.settings.positionData);
-		if($scope.settings.attitudeData.length == 0)
+		if($scope.totalAttitudeArray.length == 0 || $scope.totalPositionArray.length == 0)
         {
             $window.alert("Please select the parameters before applying!");
         }
@@ -141,9 +148,17 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                 $scope.positionDisplay = displayStringForInput(dataItems.positionData);
                 widget.settings.vehicle = $scope.vehicle;
 
+                //reset arrays that handle data selected by the user
                 $scope.totalAttitudeArray = [];
                 $scope.totalPositionArray = [];
-                $scope.widget.settings.dataArray = [];
+                widget.settings.dataArray = [];
+                $scope.settings.attitudeData = [];
+                $scope.settings.positionData = [];
+
+                if ($window.innerWidth >= 1400){
+                    $scope.lock.lockLeft = false;
+                    dashboardService.setLeftLock($scope.lock.lockLeft);
+                }
             },
             function () {
             //handle modal dismiss
@@ -172,8 +187,8 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 
 	$scope.getTelemetrydata = function(category){
         //open the data menu
-        $scope.chosenCategory = category;
-        sidebarService.setTempWidget($scope.widget, this);
+        $scope.chosenCategory = category; //which input box has been selected (position or velocity)
+        sidebarService.setTempWidget($scope.widget, this); //which input box has been selected (position or velocity)
         if ($window.innerWidth < 1400){
             $mdSidenav('left').open();
         } else {
@@ -183,6 +198,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
         }
     }
 
+    //display telemetry id chosen by the user in the attitude input box
     $scope.readAttitudeValues = function()
     {
         var trimmedData = getRecentSelectedValues($scope.totalAttitudeArray, 4);
@@ -210,6 +226,8 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
             return "Click for data";
         }
     }
+
+    //display telemetry id chosen by the user in the position input box
     $scope.readPositionValues = function()
     {
         var trimmedData = getRecentSelectedValues($scope.totalPositionArray, 3);
@@ -258,107 +276,98 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
     };
 
     $scope.getValue = function(isGroup){
-        $scope.attitudeBooleans = [true, true, true, true];
-        $scope.positionBooleans = [true, true, true, true];
         var vehicleInfo = angular.copy($scope.widget.settings.dataArray);
         var dataLen = vehicleInfo.length;
         var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
-        if(!isGroup && data && data.id !== "")
+        if(!isGroup && data && data.id !== "") //as long as data is id and not group
         {
-            if($scope.chosenCategory == 'attitude')
+            $scope.attitudeBooleans = [true, true, true, true]; //boolean array to keep track of which conditions the attitude data selected doesn't pass
+            $scope.positionBooleans = [true, true, true, true]; //boolean array to keep track of which conditions the position data selected doesn't pass
+            if($scope.chosenCategory == 'attitude') //if the attitude input box has been chosen
             {
+                //push the last chosen data value into the corresponding attitude array
                 $scope.totalAttitudeArray.push($scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1]);
             }
-            else if($scope.chosenCategory == 'position')
+            else if($scope.chosenCategory == 'position') //if the position input box has been chosen
             {
+                //push the last chosen data value into the corresponding position array
                 $scope.totalPositionArray.push($scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1]);
             }
             
-                var attitudeArray = [];
-                var attitudeSettings = [];
-                var attitudeDisplayText = "";
+            var attitudeArray = [];
+            var attitudeSettings = [];
+            var attitudeDisplayText = "";
 
-                attitudeArray = angular.copy($scope.totalAttitudeArray);
+            attitudeArray = angular.copy($scope.totalAttitudeArray);
 
-                //if the temp attitude array has length more than 4 then reduce its size to recent 4
-                if(attitudeArray.length > 4){
-                    attitudeSettings = getRecentSelectedValues(attitudeArray,4);
-                }else {
-                    attitudeSettings = attitudeArray;
-                }
-                
-                if(attitudeSettings.length === 4){
-                    var attitudeSettingsfiltered1 = removeCategories(attitudeSettings); //to remove selected group or categories while opening the list
-                    var attitudeSettingsfiltered2 = removeDuplicates(attitudeSettingsfiltered1,"id");// to remove duplicate selection of a single value
-                    var isDiffAttitudeVeh = isAnyDiffVehicles(attitudeSettingsfiltered2);// to check if all the values are of the same vehicle
-                    var attitudefilteredData = filterSelectedData(attitudeSettingsfiltered2); // check if there are any different values of a category
+            //if the temp attitude array has length more than 4 then reduce its size to recent 4
+            if(attitudeArray.length > 4){
+                attitudeSettings = getRecentSelectedValues(attitudeArray,4);
+            }else {
+                attitudeSettings = attitudeArray;
+            }
+            
+            if(attitudeSettings.length === 4){
+                var attitudeSettingsfiltered1 = removeCategories(attitudeSettings); //to remove selected group or categories while opening the list
+                var attitudeSettingsfiltered2 = removeDuplicates(attitudeSettingsfiltered1,"id");// to remove duplicate selection of a single value
+                var isDiffAttitudeVeh = isAnyDiffVehicles(attitudeSettingsfiltered2);// to check if all the values are of the same vehicle
+                var attitudefilteredData = filterSelectedData(attitudeSettingsfiltered2); // check if there are any different values of a category
 
-                    if(isDiffAttitudeVeh === false && attitudefilteredData.length === attitudeSettingsfiltered2.length){ // condition to check if the values are of same vehicle and same category
-                        if(attitudeSettingsfiltered2.length === 4){  
-                            attitudeDisplayText = displayStringForInput(attitudeSettingsfiltered2);
-                            $scope.settings.attitudeData = attitudeSettingsfiltered2;
-                            console.log($scope.settings.attitudeData);
-                            $scope.attitudeDisplay = attitudeDisplayText;
-                            $scope.vehicle = attitudeSettingsfiltered2[0].vehicle;
-                            if ($window.innerWidth >= 1400){
-                                $scope.lock.lockLeft = false;
-                                dashboardService.setLeftLock($scope.lock.lockLeft);
-                            }
-                        }else if(attitudeSettingsfiltered2.length < 4){
-                            $scope.attitudeBooleans[0] = false;
-                        }
-                    }else if(isDiffAttitudeVeh === false && attitudefilteredData.length !== attitudeSettingsfiltered2.length){
-                        $scope.attitudeBooleans[1] = false;
-                    }else if(isDiffAttitudeVeh === true){
-                        $scope.attitudeBooleans[2] = false;
+                if(isDiffAttitudeVeh === false && attitudefilteredData.length === attitudeSettingsfiltered2.length){ // condition to check if the values are of same vehicle and same category
+                    if(attitudeSettingsfiltered2.length === 4){  
+                        attitudeDisplayText = displayStringForInput(attitudeSettingsfiltered2);
+                        $scope.settings.attitudeData = attitudeSettingsfiltered2;
+                        $scope.attitudeDisplay = attitudeDisplayText;
+                        $scope.vehicle = attitudeSettingsfiltered2[0].vehicle;
+                    }else if(attitudeSettingsfiltered2.length < 4){
+                        $scope.attitudeBooleans[0] = false;
                     }
-
-                }else {
-                    $scope.attitudeBooleans[3] = false;
-                }  
-                
-            
-                var positionArray = [];
-                var positionSettings = [];
-                var positionDisplayText = "";
-
-                positionArray = angular.copy($scope.totalPositionArray);
-
-                //if the temp position array has length more than 3 then reduce its size to recent 3
-                if(positionArray.length > 3){
-                    positionSettings = getRecentSelectedValues(positionArray,3);
-                }else {
-                    positionSettings = positionArray;
+                }else if(isDiffAttitudeVeh === false && attitudefilteredData.length !== attitudeSettingsfiltered2.length){
+                    $scope.attitudeBooleans[1] = false;
+                }else if(isDiffAttitudeVeh === true){
+                    $scope.attitudeBooleans[2] = false;
                 }
-                
-                if(positionSettings.length === 3){
-                    var positionSettingsfiltered1 = removeCategories(positionSettings);//to remove selected group or categories while opening the list
-                    var positionSettingsfiltered2 = removeDuplicates(positionSettingsfiltered1,"id");// to remove duplicate selection of a single value
-                    var isDiffPositionVeh = isAnyDiffVehicles(positionSettingsfiltered2);// to check if all the values are of the same vehicle
-                    var positionfilteredData = filterSelectedData(positionSettingsfiltered2);// check if there are any different values of a category
+            }else {
+                $scope.attitudeBooleans[3] = false;
+            }  
             
-                    if(isDiffPositionVeh === false && positionfilteredData.length === positionSettingsfiltered2.length){ // condition to check if the values are of same vehicle and same category
-                        if(positionSettingsfiltered2.length === 3){  
-                            positionDisplayText = displayStringForInput(positionSettingsfiltered2);
-                            $scope.settings.positionData = positionSettingsfiltered2;
-                            $scope.positionDisplay = positionDisplayText;
-                            $scope.vehicle = positionSettingsfiltered2[0].vehicle;
-                            if ($window.innerWidth >= 1400){
-                                $scope.lock.lockLeft = false;
-                                dashboardService.setLeftLock($scope.lock.lockLeft);
-                            }
-                        }else if(positionSettingsfiltered2.length < 3){
-                            $scope.positionBooleans[0] = false;
-                        }
-                    }else if(isDiffPositionVeh === false && positionfilteredData.length !== positionSettingsfiltered2.length){
-                        $scope.positionBooleans[1] = false;
-                    }else if(isDiffPositionVeh === true){
-                        $scope.positionBooleans[2] = false;
+        
+            var positionArray = [];
+            var positionSettings = [];
+            var positionDisplayText = "";
+
+            positionArray = angular.copy($scope.totalPositionArray);
+
+            //if the temp position array has length more than 3 then reduce its size to recent 3
+            if(positionArray.length > 3){
+                positionSettings = getRecentSelectedValues(positionArray,3);
+            }else {
+                positionSettings = positionArray;
+            }
+            
+            if(positionSettings.length === 3){
+                var positionSettingsfiltered1 = removeCategories(positionSettings);//to remove selected group or categories while opening the list
+                var positionSettingsfiltered2 = removeDuplicates(positionSettingsfiltered1,"id");// to remove duplicate selection of a single value
+                var isDiffPositionVeh = isAnyDiffVehicles(positionSettingsfiltered2);// to check if all the values are of the same vehicle
+                var positionfilteredData = filterSelectedData(positionSettingsfiltered2);// check if there are any different values of a category
+        
+                if(isDiffPositionVeh === false && positionfilteredData.length === positionSettingsfiltered2.length){ // condition to check if the values are of same vehicle and same category
+                    if(positionSettingsfiltered2.length === 3){  
+                        positionDisplayText = displayStringForInput(positionSettingsfiltered2);
+                        $scope.settings.positionData = positionSettingsfiltered2;
+                        $scope.positionDisplay = positionDisplayText;
+                        $scope.vehicle = positionSettingsfiltered2[0].vehicle;
+                    }else if(positionSettingsfiltered2.length < 3){
+                        $scope.positionBooleans[0] = false;
                     }
-                }else {
-                    $scope.positionBooleans[3] = false;
-                }       
-            
+                }else if(isDiffPositionVeh === false && positionfilteredData.length !== positionSettingsfiltered2.length){
+                    $scope.positionBooleans[1] = false;
+                }else if(isDiffPositionVeh === true){
+                    $scope.positionBooleans[2] = false;
+                }
+            }else {
+                $scope.positionBooleans[3] = false;
+            }          
         }
     }
 

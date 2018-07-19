@@ -4,9 +4,7 @@ app
     var widget;
     var widgetObject;
 
-    //temp store index method which takes in an index as a parameter and stores it as temp
-        //when data is selected, add this index to it
-
+    //receive what widget has been called and what functions it has
     function setTempWidget(tempWidget, tempWidgetObject)
     {
         widget = tempWidget;
@@ -30,11 +28,11 @@ app
             widget.settings.dataArray.push(item);
 
             var datavalue = dashboardService.getData(item.key);
-            if(datavalue && datavalue.hasOwnProperty("value"))
+            if(datavalue && datavalue.hasOwnProperty("value")) //if data chosen is telemetry id, notify getValue function that last selected data is a group 
             {
                 widgetObject.getValue(false);
             }
-            else
+            else //if data chosen is a group, notify getValue function that last selected data is a group
             {
                 widgetObject.getValue(true);
             }
@@ -50,18 +48,8 @@ app
         }
     }
 
-    /*function getVehicleInfo(){
-        var newData = angular.copy(data);
-        data = {
-            parameters:[]
-        }
-        return newData;
-    }*/
-
 	return {
         setVehicleInfo : setVehicleInfo,
-        //getVehicleInfo : getVehicleInfo,
-        //data : data,
         setTempWidget : setTempWidget
 	}
 });

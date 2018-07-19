@@ -264,162 +264,147 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
     }
 
     $scope.getValue = function(isGroup){
-        $scope.velocityBooleans = [true, true, true, true];
-        $scope.positionBooleans = [true, true, true, true];
         var vehicleInfo = angular.copy($scope.widget.settings.dataArray);
         var dataLen = vehicleInfo.length;
         var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
         if(!isGroup && data && data.id !== "")
         {
-            if($scope.chosenCategory == 'velocity')
+            $scope.velocityBooleans = [true, true, true, true]; //boolean array to keep track of which conditions the velocity data selected doesn't pass
+            $scope.positionBooleans = [true, true, true, true]; //boolean array to keep track of which conditions the position data selected doesn't pass
+            if($scope.chosenCategory == 'velocity') //if the velocity input box has been chosen
             {
+                //push the last chosen data value into the corresponding velocity array
                 $scope.totalVelocityArray.push($scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1]);
             }
-            else if($scope.chosenCategory == 'position')
+            else if($scope.chosenCategory == 'position') //if the position input box has been chosen
             {
+                //push the last chosen data value into the corresponding position array
                 $scope.totalPositionArray.push($scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1]);
             }
-                var velocityArray = [];
-                var velocitySettings = [];
-                var velocityDisplayText = "";
 
-                velocityArray = angular.copy($scope.totalVelocityArray);
+            var positionArray = [];
+            var positionSettings = [];
+            var positionDisplayText = "";
 
-                //if the temp velocity array has length more than 4 then reduce its size to recent 4
-                if(velocityArray.length > 3){
-                    velocitySettings = getRecentSelectedValues(velocityArray,3);
-                }else {
-                    velocitySettings = velocityArray;
-                }
+            positionArray = angular.copy($scope.totalPositionArray);
 
-                if(velocitySettings.length === 3){
-                    var velocitySettingsfiltered1 = removeCategories(velocitySettings); //to remove selected group or categories while opening the list
-                    var velocitySettingsfiltered2 = removeDuplicates(velocitySettingsfiltered1,"id");// to remove duplicate selection of a single value
-                    var isDiffVelocityVeh = isAnyDiffVehicles(velocitySettingsfiltered2,$scope.currentScreenVehicle);// to check if all the values are of the same vehicle
-                    var velocityfilteredData = filterSelectedData(velocitySettingsfiltered2); // check if there are any different values of a category
-                    if(isDiffVelocityVeh === false && velocityfilteredData.length === velocitySettingsfiltered2.length){ // condition to check if the values are of same vehicle and same category
-                        if(velocitySettingsfiltered2.length === 3){  
-                            velocityDisplayText = displayStringForInput(velocitySettingsfiltered2);
-                            $scope.velocityData[$scope.vehicleId] = angular.copy(velocitySettingsfiltered2);
-                            $scope.parameters.vdata[$scope.vehicleId] = angular.copy(velocitySettingsfiltered2);
-                            // $scope.velocityDisplay[$scope.vehicleId] = velocityDisplayText;
-                            $scope.vdisplay[$scope.vehicleId] = velocityDisplayText;
-                            $scope.vehicle[$scope.vehicleId] = velocitySettingsfiltered2[0].vehicle;
-                            if ($window.innerWidth >= 1400){
-                                $scope.lock.lockLeft = !$scope.lock.lockLeft;
-                                dashboardService.setLeftLock($scope.lock.lockLeft);
-                            }
-                        }else if(velocitySettingsfiltered2.length < 3){
-                            $scope.vehicle[$scope.vehicleId] = "";
-                            $scope.velocityData[$scope.vehicleId] = [];
-                            $scope.vdisplay[$scope.vehicleId] = "Click for data";
-                            velocityBooleans[0] = false;
-                            $window.alert("You have either not selected all velocity values: or there may be no data available for the selected velocity coordinates."); 
-                        }
-                    }else if(isDiffVelocityVeh === false && velocityfilteredData.length !== velocitySettingsfiltered2.length){
-                        $scope.vehicle[$scope.vehicleId] = "";
-                        $scope.velocityData[$scope.vehicleId] = [];
-                        $scope.vdisplay[$scope.vehicleId] = "Click for data";
-                        velocityBooleans[1] = false;
-                        $window.alert("Please select all the velocity values:vx,vy,vz from the same category of vehicle: "+$scope.currentScreenVehicle);
-                    }else if(isDiffVelocityVeh === true){
-                        $scope.vehicle[$scope.vehicleId] = "";
-                        $scope.velocityData[$scope.vehicleId] = [];
-                        $scope.vdisplay[$scope.vehicleId] = "Click for data";
-                        velocityBooleans[2] = false;
-                        $window.alert("Please select all the velocity values:vx,vy,vz from the same vehicle: "+$scope.currentScreenVehicle);
-                    }
-
-                }else {
-                    $scope.vehicle[$scope.vehicleId] = "";
-                    $scope.velocityData[$scope.vehicleId] = [];
-                    $scope.vdisplay[$scope.vehicleId] = "Click for data";
-                    velocityBooleans[3] = false;
-                    $window.alert("Please select all velocity values:vx,vy,vz"); 
-                }  
-                
-                positionArray = angular.copy($scope.totalPositionArray);
-                var positionArray = [];
-                var positionSettings = [];
-                var positionDisplayText = "";
-
-                //for loop to form a temp position coordinate array from the data array
-                for(var i=0;i<dataLen;i++){
-                    positionArray.push(vehicleInfo.parameters[i]);
-                }
-
-                //if the temp position array has length more than 3 then reduce its size to recent 3
-                if(positionArray.length > 3){
-                    positionSettings = getRecentSelectedValues(positionArray,3);
-                }else {
-                    positionSettings = positionArray;
-                }
-                
-                if(positionSettings.length === 3){
-                    var positionSettingsfiltered1 = removeCategories(positionSettings);//to remove selected group or categories while opening the list
-                    var positionSettingsfiltered2 = removeDuplicates(positionSettingsfiltered1,"id");// to remove duplicate selection of a single value
-                    var isDiffPositionVeh = isAnyDiffVehicles(positionSettingsfiltered2,$scope.currentScreenVehicle);// to check if all the values are of the same vehicle
-                    var positionfilteredData = filterSelectedData(positionSettingsfiltered2);// check if there are any different values of a category
-                    if(isDiffPositionVeh === false && positionfilteredData.length === positionSettingsfiltered2.length){ // condition to check if the values are of same vehicle and same category
-                        if(positionSettingsfiltered2.length === 3){  
-                            positionDisplayText = displayStringForInput(positionSettingsfiltered2);
-                            $scope.positionData[$scope.vehicleId] = angular.copy(positionSettingsfiltered2);
-                            
-                            // $scope.positionDisplay[$scope.vehicleId] = positionDisplayText;
-                            $scope.parameters.pdata[$scope.vehicleId] = angular.copy(positionSettingsfiltered2);
-                            $scope.pdisplay[$scope.vehicleId] = positionDisplayText;
-                            $scope.vehicle[$scope.vehicleId] = positionSettingsfiltered2[0].vehicle;
-                            if ($window.innerWidth >= 1400){
-                                $scope.lock.lockLeft = !$scope.lock.lockLeft;
-                                dashboardService.setLeftLock($scope.lock.lockLeft);
-                            }
-                        }else if(positionSettingsfiltered2.length < 3){
-                            $scope.vehicle[$scope.vehicleId] = "";
-                            $scope.positionData[$scope.vehicleId] = [];
-                            $scope.pdisplay[$scope.vehicleId] = "Click for data";
-                            positionBooleans[0] = false;
-                            $window.alert("You have either not selected all position values:x,y,z or there may be no data available for the selected position coordinates."); 
-                        }
-                    }else if(isDiffPositionVeh === false && positionfilteredData.length !== positionSettingsfiltered2.length){
+            //if the temp position array has length more than 3 then reduce its size to recent 3
+            if(positionArray.length > 3){
+                positionSettings = getRecentSelectedValues(positionArray,3);
+            }else {
+                positionSettings = positionArray;
+            }
+            
+            if(positionSettings.length === 3){
+                var positionSettingsfiltered1 = removeCategories(positionSettings);//to remove selected group or categories while opening the list
+                var positionSettingsfiltered2 = removeDuplicates(positionSettingsfiltered1,"id");// to remove duplicate selection of a single value
+                var isDiffPositionVeh = isAnyDiffVehicles(positionSettingsfiltered2,$scope.currentScreenVehicle);// to check if all the values are of the same vehicle
+                var positionfilteredData = filterSelectedData(positionSettingsfiltered2);// check if there are any different values of a category
+                if(isDiffPositionVeh === false && positionfilteredData.length === positionSettingsfiltered2.length){ // condition to check if the values are of same vehicle and same category
+                    if(positionSettingsfiltered2.length === 3){  
+                        positionDisplayText = displayStringForInput(positionSettingsfiltered2);
+                        $scope.positionData[$scope.vehicleId] = angular.copy(positionSettingsfiltered2);
+                        
+                        // $scope.positionDisplay[$scope.vehicleId] = positionDisplayText;
+                        $scope.parameters.pdata[$scope.vehicleId] = angular.copy(positionSettingsfiltered2);
+                        $scope.pdisplay[$scope.vehicleId] = positionDisplayText;
+                        $scope.vehicle[$scope.vehicleId] = positionSettingsfiltered2[0].vehicle;
+                    }else if(positionSettingsfiltered2.length < 3){
                         $scope.vehicle[$scope.vehicleId] = "";
                         $scope.positionData[$scope.vehicleId] = [];
                         $scope.pdisplay[$scope.vehicleId] = "Click for data";
-                        positionBooleans[1] = false;
-                        $window.alert("Please select all the position values:x,y,z from the same category of vehicle: "+$scope.currentScreenVehicle);
-                    }else if(isDiffPositionVeh === true){
-                        $scope.vehicle[$scope.vehicleId] = "";
-                        $scope.positionData[$scope.vehicleId] = [];
-                        $scope.pdisplay[$scope.vehicleId] = "Click for data";
-                        positionBooleans[2] = false;
-                        $window.alert("Please select all the position values:x,y,z from the same vehicle: "+$scope.currentScreenVehicle);
+                        $scope.positionBooleans[0] = false;
                     }
-                }else {
+                }else if(isDiffPositionVeh === false && positionfilteredData.length !== positionSettingsfiltered2.length){
                     $scope.vehicle[$scope.vehicleId] = "";
                     $scope.positionData[$scope.vehicleId] = [];
                     $scope.pdisplay[$scope.vehicleId] = "Click for data";
-                    positionBooleans[3] = false;
-                    $window.alert("Please select all position values:x,y,z");
-                }       
+                    $scope.positionBooleans[1] = false;
+                }else if(isDiffPositionVeh === true){
+                    $scope.vehicle[$scope.vehicleId] = "";
+                    $scope.positionData[$scope.vehicleId] = [];
+                    $scope.pdisplay[$scope.vehicleId] = "Click for data";
+                    $scope.positionBooleans[2] = false;
+                }
+            }else {
+                $scope.vehicle[$scope.vehicleId] = "";
+                $scope.positionData[$scope.vehicleId] = [];
+                $scope.pdisplay[$scope.vehicleId] = "Click for data";
+                $scope.positionBooleans[3] = false;
+            }   
+
+            var velocityArray = [];
+            var velocitySettings = [];
+            var velocityDisplayText = "";
+
+            velocityArray = angular.copy($scope.totalVelocityArray);
+
+            //if the temp velocity array has length more than 4 then reduce its size to recent 4
+            if(velocityArray.length > 3){
+                velocitySettings = getRecentSelectedValues(velocityArray,3);
+            }else {
+                velocitySettings = velocityArray;
             }
-        }else if(vehicleInfo.parameters.length ===  0){
-            $window.alert("Please select the parameters before apply!");
+            if(velocitySettings.length === 3){
+                var velocitySettingsfiltered1 = removeCategories(velocitySettings); //to remove selected group or categories while opening the list
+                var velocitySettingsfiltered2 = removeDuplicates(velocitySettingsfiltered1,"id");// to remove duplicate selection of a single value
+                var isDiffVelocityVeh = isAnyDiffVehicles(velocitySettingsfiltered2,$scope.currentScreenVehicle);// to check if all the values are of the same vehicle
+                var velocityfilteredData = filterSelectedData(velocitySettingsfiltered2); // check if there are any different values of a category
+                if(isDiffVelocityVeh === false && velocityfilteredData.length === velocitySettingsfiltered2.length){ // condition to check if the values are of same vehicle and same category
+                    if(velocitySettingsfiltered2.length === 3){  
+                        velocityDisplayText = displayStringForInput(velocitySettingsfiltered2);
+                        $scope.velocityData[$scope.vehicleId] = angular.copy(velocitySettingsfiltered2);
+                        $scope.parameters.vdata[$scope.vehicleId] = angular.copy(velocitySettingsfiltered2);
+                        // $scope.velocityDisplay[$scope.vehicleId] = velocityDisplayText;
+                        $scope.vdisplay[$scope.vehicleId] = velocityDisplayText;
+                        $scope.vehicle[$scope.vehicleId] = velocitySettingsfiltered2[0].vehicle;
+                    }else if(velocitySettingsfiltered2.length < 3){
+                        $scope.vehicle[$scope.vehicleId] = "";
+                        $scope.velocityData[$scope.vehicleId] = [];
+                        $scope.vdisplay[$scope.vehicleId] = "Click for data";
+                        $scope.velocityBooleans[0] = false;
+                    }
+                }else if(isDiffVelocityVeh === false && velocityfilteredData.length !== velocitySettingsfiltered2.length){
+                    $scope.vehicle[$scope.vehicleId] = "";
+                    $scope.velocityData[$scope.vehicleId] = [];
+                    $scope.vdisplay[$scope.vehicleId] = "Click for data";
+                    $scope.velocityBooleans[1] = false;
+                }else if(isDiffVelocityVeh === true){
+                    $scope.vehicle[$scope.vehicleId] = "";
+                    $scope.velocityData[$scope.vehicleId] = [];
+                    $scope.vdisplay[$scope.vehicleId] = "Click for data";
+                    $scope.velocityBooleans[2] = false;
+                }
+
+            }else {
+                $scope.vehicle[$scope.vehicleId] = "";
+                $scope.velocityData[$scope.vehicleId] = [];
+                $scope.vdisplay[$scope.vehicleId] = "Click for data";
+                $scope.velocityBooleans[3] = false;
+            }      
+        }
+        else
+        {
+            $scope.velocityData[$scope.vehicleId] = null;
+            $scope.positionData[$scope.vehicleId] = null;
         }
     }
 
     $scope.getTelemetrydata = function(category, vid){
         //open the data menu
-        $scope.chosenCategory = category;
+        $scope.chosenCategory = category; //which input box has been selected (position or velocity)
         $scope.vehicleId = vid;
-        sidebarService.setTempWidget($scope.widget, this);
+        sidebarService.setTempWidget($scope.widget, this); //pass widget and controller functions to sidebarService
         if ($window.innerWidth < 1400){
             $mdSidenav('left').open();
         } else {
             $scope.lock = dashboardService.getLock();
-            $scope.lock.lockLeft = !$scope.lock.lockLeft;
+            $scope.lock.lockLeft = true;
             dashboardService.setLeftLock($scope.lock.lockLeft);
         }
     }
 
+    //display telemetry id chosen by the user in the velocity input box
     $scope.readVelocityValues = function()
     {
         var trimmedData = getRecentSelectedValues($scope.totalVelocityArray, 3);
@@ -447,6 +432,8 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             return "Click for data";
         }
     }
+
+    //display telemetry id chosen by the user in the position input box
     $scope.readPositionValues = function()
     {
         var trimmedData = getRecentSelectedValues($scope.totalPositionArray, 3);
@@ -477,7 +464,44 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
     }
 
     $scope.saveParameters = function(widget){
-        if($scope.orbitstatus[$scope.currentVehicleId] === false && $scope.iconstatus[$scope.currentVehicleId] === false){
+        //display alerts for conditions that were originally checked in getValue
+        if(!$scope.velocityData[$scope.vehicleId] || !$scope.positionData[$scope.vehicleId])
+        {
+            $window.alert("Please select the parameters before applying!");
+        }
+        else if(!$scope.positionBooleans[3])
+        {
+            $window.alert("Please select all position values:x,y,z");
+        }
+        else if(!$scope.positionBooleans[2])
+        {
+            $window.alert("Please select all the position values:x,y,z from the same vehicle: "+$scope.currentScreenVehicle);
+        }
+        else if(!$scope.positionBooleans[1])
+        {
+            $window.alert("Please select all the position values:x,y,z from the same category of vehicle: "+$scope.currentScreenVehicle);
+        }
+        else if(!$scope.positionBooleans[0])
+        {
+            $window.alert("You have either not selected all position values:x,y,z or there may be no data available for the selected position coordinates."); 
+        }
+        else if(!$scope.velocityBooleans[3])
+        {
+            $window.alert("Please select all velocity values:vx,vy,vz"); 
+        }
+        else if(!$scope.velocityBooleans[2])
+        {
+            $window.alert("Please select all the velocity values:vx,vy,vz from the same vehicle: "+$scope.currentScreenVehicle);
+        }
+        else if(!$scope.velocityBooleans[1])
+        {
+            $window.alert("Please select all the velocity values:vx,vy,vz from the same category of vehicle: "+$scope.currentScreenVehicle);
+        }
+        else if(!$scope.velocityBooleans[0])
+        {
+            $window.alert("You have either not selected all velocity values: or there may be no data available for the selected velocity coordinates.");
+        }
+        else if($scope.orbitstatus[$scope.currentVehicleId] === false && $scope.iconstatus[$scope.currentVehicleId] === false){
             if($window.confirm("You have not enabled orbit and icon for this vehicle.Do you want to enable either orbit or icon for the vehicle?")){
                    $scope.secondScreen = true;
                    $scope.firstScreen = false;
@@ -489,10 +513,24 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                     $scope.settings.vdata[$scope.currentVehicleId] = angular.copy($scope.velocityData[$scope.currentVehicleId]);
                     $scope.settings.iconstatus[$scope.currentVehicleId] = angular.copy($scope.iconstatus[$scope.currentVehicleId]);
                     $scope.settings.orbitstatus[$scope.currentVehicleId] = angular.copy($scope.orbitstatus[$scope.currentVehicleId]);
+
+                    $scope.totalVelocityArray = [];
+                    $scope.totalPositionArray = [];
+                    $scope.widget.settings.dataArray = [];
+
+                    $scope.velocityData = [];
+                    $scope.positionData = [];
+
+                    if ($window.innerWidth >= 1400){
+                        $scope.lock.lockLeft = false;
+                        dashboardService.setLeftLock($scope.lock.lockLeft);
+                    }
+
                 }else {
                     $scope.secondScreen = true;
                     $scope.firstScreen = false;
                 }
+
             }      
         }else {
             if($window.confirm("Please click ok if the selected \n position parameters are: x,y,z and velocity parameters are: vx,vy,vz.")){
@@ -502,6 +540,18 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                 $scope.settings.vdata[$scope.currentVehicleId] = angular.copy($scope.velocityData[$scope.currentVehicleId]);
                 $scope.settings.iconstatus[$scope.currentVehicleId] = angular.copy($scope.iconstatus[$scope.currentVehicleId]);
                 $scope.settings.orbitstatus[$scope.currentVehicleId] = angular.copy($scope.orbitstatus[$scope.currentVehicleId]);
+
+                $scope.totalVelocityArray = [];
+                $scope.totalPositionArray = [];
+                $scope.widget.settings.dataArray = [];
+
+                $scope.velocityData = [];
+                $scope.positionData = [];
+
+                if ($window.innerWidth >= 1400){
+                    $scope.lock.lockLeft = false;
+                    dashboardService.setLeftLock($scope.lock.lockLeft);
+                }
             }else {
                 $scope.firstScreen = false;
                 $scope.secondScreen = true;
@@ -539,9 +589,14 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             $scope.orbitstatus[$scope.currentVehicleId] = true;
             $scope.iconstatus[$scope.currentVehicleId] = true;
         }
+
+        if ($window.innerWidth >= 1400){
+            $scope.lock.lockLeft = false;
+            dashboardService.setLeftLock($scope.lock.lockLeft);
+        }
     }
 
-    $scope.openPositionList = function($scope.vehicleId) {
+    $scope.openPositionList = function(vehicleId) {
         // Just pro$scope.vehicleIde a template url, a controller and call 'open'.
         $uibModal.open({
             templateUrl: "./directives/groundtrack/positionList.html",
@@ -557,11 +612,11 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             }
         }).result.then(function(dataItems){
             //handle modal close with response
-            if(dataItems.pdata[$scope.vehicleId].length === 3){
-                $scope.pdisplay[$scope.vehicleId] = displayStringForInput(dataItems.pdata[$scope.vehicleId]);
-                $scope.positionData[$scope.vehicleId] = angular.copy(dataItems.pdata[$scope.vehicleId]);
+            if(dataItems.pdata[vehicleId].length === 3){
+                $scope.pdisplay[vehicleId] = displayStringForInput(dataItems.pdata[vehicleId]);
+                $scope.positionData[vehicleId] = angular.copy(dataItems.pdata[vehicleId]);
             }else if(dataItems.length === 0){
-                $scope.pdisplay[$scope.vehicleId]= "Click for data";
+                $scope.pdisplay[vehicleId]= "Click for data";
             }     
         },
         function () {
@@ -569,7 +624,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
         });
     };
 
-    $scope.openVelocityList = function($scope.vehicleId) {
+    $scope.openVelocityList = function(vehicleId) {
         // Just pro$scope.vehicleIde a template url, a controller and call 'open'.
         $uibModal.open({
             templateUrl: "./directives/groundtrack/velocityList.html",
@@ -585,11 +640,11 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             }
         }).result.then(function(dataItems){
             //handle modal close with response
-            if(dataItems.vdata[$scope.vehicleId].length === 3){
-                $scope.vdisplay[$scope.vehicleId] = displayStringForInput(dataItems.vdata[$scope.vehicleId]);
-                $scope.velocityData[$scope.vehicleId] = angular.copy(dataItems.vdata[$scope.vehicleId]);
-            }else if(dataItems.vdata[$scope.vehicleId].length === 0){
-                $scope.vdisplay[$scope.vehicleId] = "Click for data";
+            if(dataItems.vdata[vehicleId].length === 3){
+                $scope.vdisplay[vehicleId] = displayStringForInput(dataItems.vdata[vehicleId]);
+                $scope.velocityData[vehicleId] = angular.copy(dataItems.vdata[vehicleId]);
+            }else if(dataItems.vdata[vehicleId].length === 0){
+                $scope.vdisplay[vehicleId] = "Click for data";
             }     
         },
         function () {

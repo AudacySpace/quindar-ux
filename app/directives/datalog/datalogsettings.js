@@ -9,20 +9,22 @@ app.directive('datalogsettings', function() {
 app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebarService,dashboardService, gridService){
     checkForLogData();
 
-    /*var boxDiv = $("grid").find('li.ng-scope.gridster-item')[widgetIndex];
-    $scope.boxReference = angular.element(boxDiv);
-    $scope.box = $scope.boxReference[0];*/
-
     $scope.saveDataLogSettings = function(widget){
+        //check conditions originally in getValue over here
         var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
         if(data && data.vehicle !== "" && data.id !== ""){
             var datavalue = dashboardService.getData(data.key);
             if(datavalue){
-                if(datavalue.hasOwnProperty("value")){
+                if(datavalue.hasOwnProperty("value")){ //as long as data is id, continue with data implementation in data log
                     widget.main = true;
                     widget.settings.active = false;
                     widget.saveLoad = false;
                     widget.delete = false;
+                    if ($window.innerWidth >= 1400) //close left sidebar
+                    {
+                        $scope.lock.lockLeft = false;
+                        dashboardService.setLeftLock($scope.lock.lockLeft);
+                    }
                     $scope.widget.settings.data = angular.copy($scope.data);
                     $scope.widget.settings.dataArray = [];
                 }else{
@@ -48,10 +50,15 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
         widget.saveLoad = false;
         widget.delete = false;
         $scope.data = angular.copy($scope.widget.settings.data);
+        if ($window.innerWidth >= 1400) //close left sidebar
+        {
+            $scope.lock.lockLeft = false;
+            dashboardService.setLeftLock($scope.lock.lockLeft);
+        }
     }
 
     $scope.getTelemetrydata = function(){
-        sidebarService.setTempWidget($scope.widget, this);
+        sidebarService.setTempWidget($scope.widget, this); //pass widget and controller functions to sidebarService
 
         if ($window.innerWidth < 1400){
             $mdSidenav('left').open();
@@ -62,6 +69,7 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
         }
     }
 
+    //display telemetry id chosen by the user in the input box
     $scope.readValue = function()
     {
         var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
@@ -90,16 +98,11 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
 
     $scope.getValue = function(isGroup){
         var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
-        if(data && data.vehicle !== "" && data.id !== "")
+        if(data && data.vehicle !== "" && data.id !== "") //check to see if data is properly chosen
         {
-            if(!isGroup)
+            if(!isGroup) //confirm that group isn't chosen
             {
                 $scope.data = angular.copy(data);
-                if ($window.innerWidth >= 1400)
-                {
-                    $scope.lock.lockLeft = false;
-                    dashboardService.setLeftLock($scope.lock.lockLeft);
-                }
             }
         }
     }
