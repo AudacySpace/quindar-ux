@@ -6,8 +6,12 @@ app.directive('datalogsettings', function() {
     };
 });
 
-app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebarService,dashboardService){
+app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebarService,dashboardService, gridService){
     checkForLogData();
+
+    /*var boxDiv = $("grid").find('li.ng-scope.gridster-item')[widgetIndex];
+    $scope.boxReference = angular.element(boxDiv);
+    $scope.box = $scope.boxReference[0];*/
 
     $scope.saveDataLogSettings = function(widget){
         var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
@@ -32,7 +36,6 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
         }else {
             $window.alert("Vehicle data not set. Please select from Data Menu");
         }
-
     };
 
     $scope.closeDataLogSettings = function(widget){
@@ -48,11 +51,8 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
     }
 
     $scope.getTelemetrydata = function(){
-        //findIndex
-        //pass index to the method in sidebar service that will store temporary index
-        //console.log("hi");
-        //sidebarService.setTempWidget($scope.widget);
         sidebarService.setTempWidget($scope.widget, this);
+
         if ($window.innerWidth < 1400){
             $mdSidenav('left').open();
         } else {

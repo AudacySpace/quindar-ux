@@ -13,12 +13,20 @@ app
         widgetObject = tempWidgetObject;
     }
 
-    function setVehicleInfo(dataString) {
+    //temp store index method which takes in an index as a parameter and stores it as temp
+        //when data is selected, add this index to it
+
+    function setTempWidget(tempWidget)
+    {
+        widget = tempWidget;
+    }
+
+    function setVehicleInfo(dataString, dashboard) {
         var vehicleInfo = {
             vehicle : '',
             id : '',
             key : '',
-            category:''//,
+            category:''
         }
         if(dataString){
             var nodes = dataString.split(".");
@@ -28,6 +36,7 @@ app
             vehicleInfo.key = dataString;
             var item = vehicleInfo;
             widget.settings.dataArray.push(item);
+
             var datavalue = dashboardService.getData(item.key);
             if(datavalue && datavalue.hasOwnProperty("value"))
             {
@@ -44,7 +53,7 @@ app
                 vehicle : '',
                 id : '',
                 key : '',
-                category:''//,
+                category:''
             };
         }
     }
