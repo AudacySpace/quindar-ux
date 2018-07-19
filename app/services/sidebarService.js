@@ -13,7 +13,7 @@ app
         widgetObject = tempWidgetObject;
     }
 
-    function setVehicleInfo(dataString) {
+    function setVehicleInfo(dataString, dashboard) {
         var vehicleInfo = {
             vehicle : '',
             id : '',
