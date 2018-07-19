@@ -13,14 +13,6 @@ app
         widgetObject = tempWidgetObject;
     }
 
-    //temp store index method which takes in an index as a parameter and stores it as temp
-        //when data is selected, add this index to it
-
-    function setTempWidget(tempWidget)
-    {
-        widget = tempWidget;
-    }
-
     function setVehicleInfo(dataString, dashboard) {
         var vehicleInfo = {
             vehicle : '',
