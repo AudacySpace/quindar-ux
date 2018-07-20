@@ -39,11 +39,11 @@
                         <span class="sr-only">Split button!</span>
                     </button>
                     <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0" aria-labelledby="split-button">
-                        <li role="menuitem"><a href="#" ng-click="getValue('position',currentVehicleId)">Apply</a></li>
+                        <!--<li role="menuitem"><a href="#" ng-click="getValue('position',currentVehicleId)">Apply</a></li>-->
                         <li role="menuitem"><a href="#" ng-click="openPositionList(currentVehicleId)">Show Parameters</a></li>
                     </ul>
                 </div>
-                    <span ng-hide="positionData[currentVehicleId]"> Required </span>
+                    <span ng-hide="readPositionValues()"> Required </span>
                 <!-- End of Multi Selection of Data from Data menu -->
                 <div class="row" style="margin-top:5%">
                     <label for="SatelliteOrbit">Orbit</label>
@@ -67,11 +67,11 @@
                         <span class="sr-only">Split button!</span>
                     </button>
                     <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0" aria-labelledby="split-button">
-                        <li role="menuitem"><a href="#" ng-click="getValue('velocity',currentVehicleId)">Apply</a></li>
+                        <!--<li role="menuitem"><a href="#" ng-click="getValue('velocity',currentVehicleId)">Apply</a></li>-->
                         <li role="menuitem"><a href="#" ng-click="openVelocityList(currentVehicleId)">Show Parameters</a></li>
                     </ul>
                 </div>
-                    <span ng-hide="velocityData[currentVehicleId]"> Required </span>
+                    <span ng-hide="readVelocityValues()"> Required </span>
                 <!-- End of Multi Selection of Data from Data menu -->
                 <div class="row" style="margin-top:5%">
                     <label for="SatelliteIcon">Icon</label>
@@ -139,11 +139,11 @@
                 <span class="sr-only">Split button!</span>
             </button>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0;font-size:9px" aria-labelledby="split-button">
-                <li role="menuitem"><a href="#" ng-click="getValue('position',currentVehicleId)">Apply</a></li>
+                <!--<li role="menuitem"><a href="#" ng-click="getValue('position',currentVehicleId)">Apply</a></li>-->
                 <li role="menuitem"><a href="#" ng-click="openPositionList(currentVehicleId)">Show Parameters</a></li>
             </ul>
         </div>
-        <span ng-hide="positionData[currentVehicleId]" class="req-label"> Required </span>
+        <span ng-hide="readPositionValues()" class="req-label"> Required </span>
         <div class="row">
             <label for="SelectVelocity" class="mbl-label">Select Velocity</label>
         </div>
@@ -154,11 +154,11 @@
                 <span class="sr-only">Split button!</span>
             </button>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0;font-size:9px" aria-labelledby="split-button">
-                <li role="menuitem"><a href="#" ng-click="getValue('velocity',currentVehicleId)">Apply</a></li>
+                <!--<li role="menuitem"><a href="#" ng-click="getValue('velocity',currentVehicleId)">Apply</a></li>-->
                 <li role="menuitem"><a href="#" ng-click="openVelocityList(currentVehicleId)">Show Parameters</a></li>
             </ul>
         </div>
-        <span ng-hide="velocityData[currentVehicleId]" class="req-label"> Required </span>
+        <span ng-hide="readVelocityValues()" class="req-label"> Required </span>
         <hr class="hr-double-col1-2-gt">
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveParameters(widget)">SAVE</button>
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeParameters(widget)">CLOSE</button>     
@@ -226,11 +226,11 @@
                         <span class="sr-only">Split button!</span>
                     </button>
                 <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0;font-size:9px" aria-labelledby="split-button">
-                    <li role="menuitem"><a href="#" ng-click="getValue('position',currentVehicleId)">Apply</a></li>
+                    <!--<li role="menuitem"><a href="#" ng-click="getValue('position',currentVehicleId)">Apply</a></li>-->
                     <li role="menuitem"><a href="#" ng-click="openPositionList(currentVehicleId)">Show Parameters</a></li>
                 </ul>
                 </div>
-                <span ng-hide="positionData[currentVehicleId]" class="pull-right req-label"> Required </span>
+                <span ng-hide="readPositionValues()" class="pull-right req-label"> Required </span>
             </div>
             <div class="col-sm-1 tablecellstyle1"></div> 
         </div>
@@ -247,11 +247,11 @@
                         <span class="sr-only">Split button!</span>
                     </button>
                     <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0;font-size:9px" aria-labelledby="split-button">
-                        <li role="menuitem"><a href="#" ng-click="getValue('velocity',currentVehicleId)">Apply</a></li>
+                        <!--<li role="menuitem"><a href="#" ng-click="getValue('velocity',currentVehicleId)">Apply</a></li>-->
                         <li role="menuitem"><a href="#" ng-click="openVelocityList(currentVehicleId)">Show Parameters</a></li>
                     </ul>
                 </div>
-                 <span ng-hide="velocityData[currentVehicleId]" class="pull-right req-label"> Required </span>
+                 <span ng-hide="readVelocityValues()" class="pull-right req-label"> Required </span>
             </div>
             <div class="col-sm-1 tablecellstyle1"></div>
         </div>

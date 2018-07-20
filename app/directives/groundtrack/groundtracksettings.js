@@ -27,8 +27,9 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
     $scope.checkedValues = [];
     $scope.velocityBooleans = [true, true, true, true];
     $scope.positionBooleans = [true, true, true, true];
-    $scope.totalVelocityArray = [];
-    $scope.totalPositionArray = [];
+    $scope.widget.settings.storage = {};
+    $scope.widget.settings.totalVelocityArray = [];
+    $scope.widget.settings.totalPositionArray = [];
     $scope.chosenCategory;
     $scope.parameters = {
         pdata: $scope.positionData,
@@ -167,6 +168,8 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                                 $scope.pdisplay[index] = "Click for data";
                                 $scope.vdisplay[index] = "Click for data";
                                 $scope.checkedValues[index] = {status:false};
+                                $scope.widget.settings.totalPositionArray[index] = [];
+                                $scope.widget.settings.totalVelocityArray[index] = [];
                             }
 
                             flag = false;
@@ -200,6 +203,8 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                                 $scope.settings.iconstatus[j] = $scope.widget.settings.vehicles[i].iconStatus;
                                 $scope.positionData[j] = angular.copy($scope.widget.settings.vehicles[i].pdata);
                                 $scope.settings.pdata[j] = angular.copy($scope.widget.settings.vehicles[i].pdata);
+                                $scope.widget.settings.totalPositionArray[j] = angular.copy($scope.widget.settings.vehicles[j].pdata);
+                                
                                 if($scope.positionData[j].length === 3){
                                     $scope.pdisplay[j] = displayStringForInput($scope.positionData[j]);
                                 }else if($scope.positionData[i].length === 0){
@@ -207,6 +212,8 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                                 }
                                 $scope.velocityData[j] = angular.copy($scope.widget.settings.vehicles[i].vdata);
                                 $scope.settings.vdata[j] = angular.copy($scope.widget.settings.vehicles[i].vdata);
+                                $scope.widget.settings.totalVelocityArray[j] = angular.copy($scope.widget.settings.vehicles[j].vdata);
+                                
                                 if( $scope.velocityData[j].length === 3){
                                     $scope.vdisplay[j] = displayStringForInput($scope.velocityData[j]);
                                 }else if($scope.velocityData[j].length === 0){
@@ -274,19 +281,19 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             if($scope.chosenCategory == 'velocity') //if the velocity input box has been chosen
             {
                 //push the last chosen data value into the corresponding velocity array
-                $scope.totalVelocityArray.push($scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1]);
+                $scope.widget.settings.totalVelocityArray[$scope.vehicleId].push($scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1]);
             }
             else if($scope.chosenCategory == 'position') //if the position input box has been chosen
             {
                 //push the last chosen data value into the corresponding position array
-                $scope.totalPositionArray.push($scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1]);
+                $scope.widget.settings.totalPositionArray[$scope.vehicleId].push($scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1]);
             }
 
             var positionArray = [];
             var positionSettings = [];
             var positionDisplayText = "";
 
-            positionArray = angular.copy($scope.totalPositionArray);
+            positionArray = angular.copy($scope.widget.settings.totalPositionArray[$scope.vehicleId]);
 
             //if the temp position array has length more than 3 then reduce its size to recent 3
             if(positionArray.length > 3){
@@ -309,6 +316,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                         $scope.parameters.pdata[$scope.vehicleId] = angular.copy(positionSettingsfiltered2);
                         $scope.pdisplay[$scope.vehicleId] = positionDisplayText;
                         $scope.vehicle[$scope.vehicleId] = positionSettingsfiltered2[0].vehicle;
+                        $scope.widget.settings.totalPositionArray[$scope.vehicleId] = angular.copy(positionSettingsfiltered2);
                     }else if(positionSettingsfiltered2.length < 3){
                         $scope.vehicle[$scope.vehicleId] = "";
                         $scope.positionData[$scope.vehicleId] = [];
@@ -337,7 +345,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             var velocitySettings = [];
             var velocityDisplayText = "";
 
-            velocityArray = angular.copy($scope.totalVelocityArray);
+            velocityArray = angular.copy($scope.widget.settings.totalVelocityArray[$scope.vehicleId]);
 
             //if the temp velocity array has length more than 4 then reduce its size to recent 4
             if(velocityArray.length > 3){
@@ -358,6 +366,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                         // $scope.velocityDisplay[$scope.vehicleId] = velocityDisplayText;
                         $scope.vdisplay[$scope.vehicleId] = velocityDisplayText;
                         $scope.vehicle[$scope.vehicleId] = velocitySettingsfiltered2[0].vehicle;
+                        $scope.widget.settings.totalVelocityArray[$scope.vehicleId] = angular.copy(velocitySettingsfiltered2);
                     }else if(velocitySettingsfiltered2.length < 3){
                         $scope.vehicle[$scope.vehicleId] = "";
                         $scope.velocityData[$scope.vehicleId] = [];
@@ -407,8 +416,14 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
     //display telemetry id chosen by the user in the velocity input box
     $scope.readVelocityValues = function()
     {
-        var trimmedData = getRecentSelectedValues($scope.totalVelocityArray, 3);
+        var trimmedData = [];
         var stringData = "";
+
+        if($scope.widget.settings.totalVelocityArray[$scope.currentVehicleId])
+        {
+            trimmedData = getRecentSelectedValues($scope.widget.settings.totalVelocityArray[$scope.currentVehicleId], 3);
+        }
+        
         for(var i = 0; i < trimmedData.length; i++)
         {
             if(trimmedData[i])
@@ -436,8 +451,14 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
     //display telemetry id chosen by the user in the position input box
     $scope.readPositionValues = function()
     {
-        var trimmedData = getRecentSelectedValues($scope.totalPositionArray, 3);
+        var trimmedData = [];
         var stringData = "";
+
+        if($scope.widget.settings.totalPositionArray[$scope.currentVehicleId])
+        {
+            trimmedData = getRecentSelectedValues($scope.widget.settings.totalPositionArray[$scope.currentVehicleId], 3);
+        }
+        
         for(var i = 0; i < trimmedData.length; i++)
         {
             if(trimmedData[i])
@@ -465,7 +486,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
 
     $scope.saveParameters = function(widget){
         //display alerts for conditions that were originally checked in getValue
-        if(!$scope.velocityData[$scope.vehicleId] || !$scope.positionData[$scope.vehicleId])
+        if(!$scope.widget.settings.totalPositionArray[$scope.currentVehicleId] || !$scope.widget.settings.totalVelocityArray[$scope.currentVehicleId])
         {
             $window.alert("Please select the parameters before applying!");
         }
@@ -514,8 +535,8 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                     $scope.settings.iconstatus[$scope.currentVehicleId] = angular.copy($scope.iconstatus[$scope.currentVehicleId]);
                     $scope.settings.orbitstatus[$scope.currentVehicleId] = angular.copy($scope.orbitstatus[$scope.currentVehicleId]);
 
-                    $scope.totalVelocityArray = [];
-                    $scope.totalPositionArray = [];
+                    $scope.widget.settings.totalVelocityArray[$scope.vehicleId] = getRecentSelectedValues($scope.widget.settings.totalVelocityArray[$scope.vehicleId], 3);
+                    $scope.widget.settings.totalPositionArray[$scope.vehicleId] = getRecentSelectedValues($scope.widget.settings.totalPositionArray[$scope.vehicleId], 3);
                     $scope.widget.settings.dataArray = [];
 
                     $scope.velocityData = [];
@@ -541,13 +562,13 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                 $scope.settings.iconstatus[$scope.currentVehicleId] = angular.copy($scope.iconstatus[$scope.currentVehicleId]);
                 $scope.settings.orbitstatus[$scope.currentVehicleId] = angular.copy($scope.orbitstatus[$scope.currentVehicleId]);
 
-                $scope.totalVelocityArray = [];
-                $scope.totalPositionArray = [];
+                $scope.widget.settings.totalVelocityArray[$scope.vehicleId] = getRecentSelectedValues($scope.widget.settings.totalVelocityArray[$scope.vehicleId], 3);
+                $scope.widget.settings.totalPositionArray[$scope.vehicleId] = getRecentSelectedValues($scope.widget.settings.totalPositionArray[$scope.vehicleId], 3);
                 $scope.widget.settings.dataArray = [];
 
                 $scope.velocityData = [];
                 $scope.positionData = [];
-
+               
                 if ($window.innerWidth >= 1400){
                     $scope.lock.lockLeft = false;
                     dashboardService.setLeftLock($scope.lock.lockLeft);
@@ -566,6 +587,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
 
         $scope.positionData[$scope.currentVehicleId] = angular.copy($scope.settings.pdata[$scope.currentVehicleId]);
         $scope.parameters.pdata[$scope.currentVehicleId] = angular.copy($scope.settings.pdata[$scope.currentVehicleId]);
+        $scope.widget.settings.totalPositionArray[$scope.currentVehicleId] = $scope.positionData[$scope.currentVehicleId];
 
         $scope.iconstatus[$scope.currentVehicleId] = angular.copy($scope.settings.iconstatus[$scope.currentVehicleId]);
         $scope.orbitstatus[$scope.currentVehicleId] = angular.copy($scope.settings.orbitstatus[$scope.currentVehicleId]);
@@ -578,6 +600,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
         
         $scope.velocityData[$scope.currentVehicleId] = angular.copy($scope.settings.vdata[$scope.currentVehicleId]);
         $scope.parameters.vdata[$scope.currentVehicleId] = angular.copy($scope.settings.vdata[$scope.currentVehicleId]);
+        $scope.widget.settings.totalVelocityArray[$scope.currentVehicleId] = $scope.velocityData[$scope.currentVehicleId];
 
         if($scope.velocityData[$scope.currentVehicleId].length === 3){
             $scope.vdisplay[$scope.currentVehicleId] = displayStringForInput($scope.velocityData[$scope.currentVehicleId]);
@@ -598,13 +621,14 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
 
     $scope.openPositionList = function(vehicleId) {
         // Just pro$scope.vehicleIde a template url, a controller and call 'open'.
+        $scope.settings.tempPositions = angular.copy(getRecentSelectedValues($scope.widget.settings.totalPositionArray, 3));
         $uibModal.open({
             templateUrl: "./directives/groundtrack/positionList.html",
             controller: 'positionParametersCtrl',
             controllerAs: '$ctrl',
             resolve: {
                 positionItems: function () {
-                    return $scope.parameters;
+                    return $scope.settings;
                 },
                 vehicleId: function(){
                     return $scope.currentVehicleId;
@@ -612,10 +636,11 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             }
         }).result.then(function(dataItems){
             //handle modal close with response
-            if(dataItems.pdata[vehicleId].length === 3){
-                $scope.pdisplay[vehicleId] = displayStringForInput(dataItems.pdata[vehicleId]);
-                $scope.positionData[vehicleId] = angular.copy(dataItems.pdata[vehicleId]);
-            }else if(dataItems.length === 0){
+            if(dataItems.tempPositions[vehicleId].length === 3){
+                $scope.pdisplay[vehicleId] = displayStringForInput(dataItems.tempPositions[vehicleId]);
+                $scope.positionData[vehicleId] = angular.copy(dataItems.tempPositions[vehicleId]);
+                $scope.widget.settings.totalPositionArray[vehicleId] = angular.copy(dataItems.tempPositions[vehicleId]);
+            }else if(dataItems.tempPositions[vehicleId].length === 0){
                 $scope.pdisplay[vehicleId]= "Click for data";
             }     
         },
@@ -626,13 +651,14 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
 
     $scope.openVelocityList = function(vehicleId) {
         // Just pro$scope.vehicleIde a template url, a controller and call 'open'.
+        $scope.settings.tempVelocities = angular.copy(getRecentSelectedValues($scope.widget.settings.totalVelocityArray, 3)); 
         $uibModal.open({
             templateUrl: "./directives/groundtrack/velocityList.html",
             controller: 'velocityParametersCtrl',
             controllerAs: '$ctrl',
             resolve: {
                 velocityItems: function () {
-                    return $scope.parameters;
+                    return $scope.settings;
                 },
                 vehicleId: function(){
                     return $scope.currentVehicleId;
@@ -640,10 +666,11 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             }
         }).result.then(function(dataItems){
             //handle modal close with response
-            if(dataItems.vdata[vehicleId].length === 3){
-                $scope.vdisplay[vehicleId] = displayStringForInput(dataItems.vdata[vehicleId]);
-                $scope.velocityData[vehicleId] = angular.copy(dataItems.vdata[vehicleId]);
-            }else if(dataItems.vdata[vehicleId].length === 0){
+            if(dataItems.tempVelocities[vehicleId].length === 3){
+                $scope.vdisplay[vehicleId] = displayStringForInput(dataItems.tempVelocities[vehicleId]);
+                $scope.velocityData[vehicleId] = angular.copy(dataItems.tempVelocities[vehicleId]);
+                $scope.widget.settings.totalVelocityArray[vehicleId] = angular.copy(dataItems.tempVelocities[vehicleId]);
+            }else if(dataItems.tempVelocities[vehicleId].length === 0){
                 $scope.vdisplay[vehicleId] = "Click for data";
             }     
         },
@@ -837,7 +864,7 @@ app.controller('positionParametersCtrl',function($scope,$uibModalInstance,positi
     var values = angular.copy(positionItems);
 
     $ctrl.close = function() {
-        $ctrl.data.pdata = values.pdata;
+        $ctrl.data.tempPositions = values.tempPositions;
         $uibModalInstance.dismiss('cancel');
     };
 
@@ -871,7 +898,7 @@ app.controller('velocityParametersCtrl',function($scope,$uibModalInstance,veloci
     var values = angular.copy(velocityItems);
 
     $ctrl.close = function() {
-        $ctrl.data.vdata = values.vdata;
+        $ctrl.data.tempVelocities = values.tempVelocities;
         $uibModalInstance.dismiss('cancel');
     };
 

@@ -13,6 +13,7 @@ app.controller('LineSettingsCtrl',
         var colors = [ "#0AACCF", "#FF9100", "#64DD17", "#07D1EA", "#0D8DB8", "#172168", "#228B22", "#12C700", "#C6FF00" ];
         var previousSettings;
         $scope.interval;
+        var hasValue;
 
         $scope.settings = {
             vehicles : [],
@@ -61,7 +62,11 @@ app.controller('LineSettingsCtrl',
                         $scope.settings.vehicles[i].checked = false;
                     }
                 }
-                $scope.settings.data = angular.copy(data);
+                hasValue = true;
+            }
+            else
+            {
+                hasValue = false;
             }
         }
 
@@ -69,7 +74,8 @@ app.controller('LineSettingsCtrl',
         $scope.saveWidget = function(widget){
             //check conditions originally in getValue over here
             var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
-            if(data && data.key !== ""){
+            if(data && data.key !== "" && hasValue){
+                $scope.settings.data = angular.copy(data);
                 var datavalue = dashboardService.getData(data.key);
                 if(datavalue){
                     if(datavalue.hasOwnProperty("value")){
@@ -102,7 +108,9 @@ app.controller('LineSettingsCtrl',
                                 widget.main = true;
                                 widget.settings.active = false;
                                 previousSettings = angular.copy($scope.settings);
-                                $scope.widget.settings.dataArray = [];
+                                var lastCell = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
+                                $scope.widget.settings.dataArray = [lastCell];
+                                console.log(previousSettings);
                                 if ($window.innerWidth >= 1400)
                                 {
                                     $scope.lock.lockLeft = false;
@@ -134,6 +142,7 @@ app.controller('LineSettingsCtrl',
             widget.main = true;
             widget.settings.active = false;
             $scope.settings = angular.copy(previousSettings);
+            $scope.widget.settings.dataArray = [$scope.settings.data];
             if ($window.innerWidth >= 1400)
             {
                 $scope.lock.lockLeft = false;
@@ -204,6 +213,8 @@ app.controller('LineSettingsCtrl',
                         }
                     }
                     previousSettings = angular.copy($scope.settings);
+                    $scope.widget.settings.dataArray = [$scope.settings.data];
+                    hasValue = true;
                 }
             });
         }

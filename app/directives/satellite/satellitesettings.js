@@ -12,9 +12,6 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
     $scope.chosenCategory;
     $scope.attitudeBooleans = [true, true, true, true];
     $scope.positionBooleans = [true, true, true, true];
-    $scope.totalAttitudeArray = [];
-    $scope.totalPositionArray = [];
-
     checkforPreSavedData();
 
 	$scope.closeSettings = function(widget){
@@ -32,6 +29,8 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 			}else {
 				$scope.attitudeDisplay = "Click for data";
 			}
+
+            $scope.widget.settings.totalAttitudeArray = angular.copy($scope.widget.settings.attitudeData);
 		
 			$scope.settings.positionData = prevValues.positionData;
 			if($scope.settings.positionData.length > 0){
@@ -39,6 +38,8 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 			}else {
 				$scope.positionDisplay = "Click for data";
 			}
+
+            $scope.widget.settings.totalPositionArray = angular.copy($scope.widget.settings.positionData);
 		
 			$scope.vehicle = prevValues.vehicle;
 
@@ -49,6 +50,8 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 			}else {
 				$scope.positionDisplay = "Click for data";
 			}
+
+            $scope.widget.settings.totalPositionArray = angular.copy($scope.widget.settings.positionData);
 		
 			$scope.vehicle = prevValues.vehicle;
 
@@ -60,6 +63,9 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 			}else {
 				$scope.attitudeDisplay = "Click for data";
 			}
+
+            $scope.widget.settings.totalAttitudeArray = angular.copy($scope.widget.settings.attitudeData);
+
 			$scope.vehicle = prevValues.vehicle;
 
 		}else {
@@ -67,6 +73,8 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 			$scope.attitudeDisplay = "Click for data";
 			$scope.settings.positionData = [];
 			$scope.positionDisplay = "Click for data";
+            $scope.widget.settings.totalPositionArray = [];
+            $scope.widget.settings.totalAttitudeArray = [];
 		}
 
         if ($window.innerWidth >= 1400)
@@ -79,7 +87,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 	$scope.saveSettings = function(widget){
         //display telemetry id chosen by the user in the velocity input box
 		var status = checkforSameVehicle($scope.settings.attitudeData,$scope.settings.positionData);
-		if($scope.totalAttitudeArray.length == 0 || $scope.totalPositionArray.length == 0)
+		if($scope.widget.settings.totalAttitudeArray.length == 0 || $scope.widget.settings.totalPositionArray.length == 0)
         {
             $window.alert("Please select the parameters before applying!");
         }
@@ -149,8 +157,8 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                 widget.settings.vehicle = $scope.vehicle;
 
                 //reset arrays that handle data selected by the user
-                $scope.totalAttitudeArray = [];
-                $scope.totalPositionArray = [];
+                $scope.widget.settings.totalAttitudeArray = getRecentSelectedValues($scope.widget.settings.totalAttitudeArray, 4);
+                $scope.widget.settings.totalPositionArray = getRecentSelectedValues($scope.widget.settings.totalPositionArray, 3);
                 widget.settings.dataArray = [];
                 $scope.settings.attitudeData = [];
                 $scope.settings.positionData = [];
@@ -201,8 +209,14 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
     //display telemetry id chosen by the user in the attitude input box
     $scope.readAttitudeValues = function()
     {
-        var trimmedData = getRecentSelectedValues($scope.totalAttitudeArray, 4);
+        var trimmedData = [];
         var stringData = "";
+
+        if($scope.widget.settings.totalAttitudeArray)
+        {
+            trimmedData = getRecentSelectedValues($scope.widget.settings.totalAttitudeArray, 4);
+        }
+
         for(var i = 0; i < trimmedData.length; i++)
         {
             if(trimmedData[i])
@@ -230,8 +244,14 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
     //display telemetry id chosen by the user in the position input box
     $scope.readPositionValues = function()
     {
-        var trimmedData = getRecentSelectedValues($scope.totalPositionArray, 3);
+        var trimmedData = [];
         var stringData = "";
+
+        if($scope.widget.settings.totalPositionArray)
+        {
+            trimmedData = getRecentSelectedValues($scope.widget.settings.totalPositionArray, 3);
+        }
+
         for(var i = 0; i < trimmedData.length; i++)
         {
             if(trimmedData[i])
@@ -286,19 +306,19 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
             if($scope.chosenCategory == 'attitude') //if the attitude input box has been chosen
             {
                 //push the last chosen data value into the corresponding attitude array
-                $scope.totalAttitudeArray.push($scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1]);
+                $scope.widget.settings.totalAttitudeArray.push($scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1]);
             }
             else if($scope.chosenCategory == 'position') //if the position input box has been chosen
             {
                 //push the last chosen data value into the corresponding position array
-                $scope.totalPositionArray.push($scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1]);
+                $scope.widget.settings.totalPositionArray.push($scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1]);
             }
             
             var attitudeArray = [];
             var attitudeSettings = [];
             var attitudeDisplayText = "";
 
-            attitudeArray = angular.copy($scope.totalAttitudeArray);
+            attitudeArray = angular.copy($scope.widget.settings.totalAttitudeArray);
 
             //if the temp attitude array has length more than 4 then reduce its size to recent 4
             if(attitudeArray.length > 4){
@@ -336,7 +356,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
             var positionSettings = [];
             var positionDisplayText = "";
 
-            positionArray = angular.copy($scope.totalPositionArray);
+            positionArray = angular.copy($scope.widget.settings.totalPositionArray);
 
             //if the temp position array has length more than 3 then reduce its size to recent 3
             if(positionArray.length > 3){
@@ -447,11 +467,16 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
             $scope.vehicle = preSavedValues.vehicle
     		$scope.attitudeDisplay = displayStringForInput(preSavedValues.attitudeData);
             $scope.positionDisplay = displayStringForInput(preSavedValues.positionData);
+            $scope.widget.settings.totalPositionArray = angular.copy($scope.widget.settings.positionData);
+            $scope.widget.settings.totalAttitudeArray = angular.copy($scope.widget.settings.attitudeData);
     	}else if(!$scope.widget.settings.attitudeData && !$scope.widget.settings.positionData){
     		$scope.settings = {
         		attitudeData:[],
-        		positionData:[]
+        		positionData:[],
     		};
+
+            $scope.widget.settings.totalPositionArray = [];
+            $scope.widget.settings.totalAttitudeArray = [];
 
     		$scope.attitudeDisplay = "Click for data";
     		$scope.positionDisplay = "Click for data";
@@ -528,6 +553,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 
 	$scope.openAttitudeList = function() {
 		// Just provide a template url, a controller and call 'open'.
+        $scope.settings.tempAttitudes = angular.copy(getRecentSelectedValues($scope.widget.settings.totalAttitudeArray, 4)); 
         $uibModal.open({
             templateUrl: "./directives/satellite/quaternionList.html",
             controller: 'attitudeListCtrl',
@@ -540,9 +566,10 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
         }).result.then(
             function(dataItems){
                 //handle modal close with response
-                if(dataItems.attitudeData.length === 4){
-                	$scope.attitudeDisplay = displayStringForInput(dataItems.attitudeData);
-                }else if(dataItems.attitudeData.length === 0) {
+                if(dataItems.tempAttitudes.length === 4){
+                	$scope.attitudeDisplay = displayStringForInput(dataItems.tempAttitudes);
+                    $scope.widget.settings.totalAttitudeArray = angular.copy(dataItems.tempAttitudes);
+                }else if(dataItems.tempAttitudes.length === 0) {
                 	$scope.attitudeDisplay = "Click for data";
                 }   
             },
@@ -553,6 +580,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 
 	$scope.openPositionList = function() {
 		// Just provide a template url, a controller and call 'open'.
+        $scope.settings.tempPositions = angular.copy(getRecentSelectedValues($scope.widget.settings.totalPositionArray, 3)); 
         $uibModal.open({
             templateUrl: "./directives/satellite/positionList.html",
             controller: 'positionListCtrl',
@@ -562,11 +590,12 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                    	return $scope.settings;
                 }
             }
-        }).result.then(function(dataItems){
+        }).result.then(function(dataItems){ //dataItems = $scope.widget.settings
             //handle modal close with response
-            if(dataItems.positionData.length === 3){
-               	$scope.positionDisplay = displayStringForInput(dataItems.positionData);
-            }else if(dataItems.positionData.length === 0){
+            if(dataItems.tempPositions.length === 3){
+               	$scope.positionDisplay = displayStringForInput(dataItems.tempPositions);
+                $scope.widget.settings.totalPositionArray = angular.copy(dataItems.tempPositions);
+            }else if(dataItems.tempPositions.length === 0){
                 $scope.positionDisplay = "Click for data";
             }     
         },
@@ -583,7 +612,7 @@ app.controller('positionListCtrl',function($scope,$uibModalInstance,positionItem
     var values = angular.copy(positionItems);
 
     $ctrl.close = function() {
-        $ctrl.data.positionData = values.positionData;
+        $ctrl.data.tempPositions = values.tempPositions;
         $uibModalInstance.dismiss('cancel');
     };
 
@@ -616,7 +645,7 @@ app.controller('attitudeListCtrl',function($scope,$uibModalInstance,attitudeItem
     var values = angular.copy(attitudeItems);
 
     $ctrl.close = function() {
-        $ctrl.data.attitudeData = values.attitudeData;
+        $ctrl.data.tempAttitudes = values.tempAttitudes;
         $uibModalInstance.dismiss('cancel');
     };
 
