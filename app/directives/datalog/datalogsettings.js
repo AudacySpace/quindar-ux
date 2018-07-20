@@ -9,10 +9,13 @@ app.directive('datalogsettings', function() {
 app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebarService,dashboardService){
     checkForLogData();
 
+    var hasValue;
+
     $scope.saveDataLogSettings = function(widget){
         //check conditions originally in getValue over here
         var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
-        if(data && data.vehicle !== "" && data.id !== ""){
+        if(data && data.vehicle !== "" && data.id !== "" && hasValue){
+            $scope.data = angular.copy(data);
             var datavalue = dashboardService.getData(data.key);
             if(datavalue){
                 if(datavalue.hasOwnProperty("value")){ //as long as data is id, continue with data implementation in data log
@@ -26,7 +29,8 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
                         dashboardService.setLeftLock($scope.lock.lockLeft);
                     }
                     $scope.widget.settings.data = angular.copy($scope.data);
-                    $scope.widget.settings.dataArray = [];
+                    var lastCell = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
+                    $scope.widget.settings.dataArray = [lastCell];
                 }else{
                    $window.alert("Please select telemetry ID(leaf node) from Data Menu"); 
                 }
@@ -51,6 +55,7 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
         widget.saveLoad = false;
         widget.delete = false;
         $scope.data = angular.copy($scope.widget.settings.data);
+        $scope.widget.settings.dataArray = [$scope.data];
         if ($window.innerWidth >= 1400) //close left sidebar
         {
             $scope.lock.lockLeft = false;
@@ -117,8 +122,16 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
         {
             if(!isGroup) //confirm that group isn't chosen
             {
-                $scope.data = angular.copy(data);
+                hasValue = true;
             }
+            else
+            {
+                hasValue = false;
+            }
+        }
+        else
+        {
+            hasValue = false;
         }
     }
 
@@ -131,6 +144,8 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
             };
         }else {
             $scope.data = angular.copy($scope.widget.settings.data);
+            $scope.widget.settings.dataArray = [$scope.widget.settings.data];
+            hasValue = true;
         }  
     }
 });

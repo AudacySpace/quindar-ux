@@ -9,9 +9,9 @@
 				<div class="row settingsspace" style="display: table"></div>
 				<div class="input-group">
 					<input type="text" class="form-control lpdata-input" style="border-radius:0px;background-color: #fff" ng-click="getTelemetrydata()" value="{{readValue()}}" placeholder="Click for data" readonly="readonly">
-            		<span class="input-group-btn">
+            		<!--<span class="input-group-btn">
         				<button class="btn btn-secondary applybtn" type="button" ng-click="getValue()">Apply</button>
-      				</span>
+      				</span>-->
     			</div>
     			<span ng-hide="readValue()"> Required </span>
   			</div>
@@ -63,9 +63,9 @@
     <label for="SelectData" class="mbl-label">Select Data</label>
     <div class="input-group mbl-input-grp">
 		<input type="text" class="form-control mbl-label mbl-inputitems" style="background-color: #fff" ng-click="getTelemetrydata()" value="{{readValue()}}" placeholder="Click for data" readonly="readonly">
-        <span class="input-group-btn">
+        <!--<span class="input-group-btn">
             <button class="btn btn-secondary applybtn" type="button" ng-click="getValue()">Apply</button>
-      	</span>
+      	</span>-->
     </div>
     <span ng-hide="settings.data.id" class="req-label"> Required </span>
     <label for="SelectVehicle" class="mbl-label">Select Vehicle</label>
@@ -99,9 +99,9 @@
                 </div>
                 <div class="input-group">
                     <input type="text" class="form-control col1-2-data" ng-click="getTelemetrydata()" value="{{readValue()}}" placeholder="Click for data" readonly="readonly">
-                    <span class="input-group-btn">
+                    <!--<span class="input-group-btn">
                         <button class="btn btn-secondary applybtn" type="button" ng-click="getValue()" style="">Apply</button>
-                    </span>
+                    </span>-->
                 </div>
                 <span ng-hide="settings.data.id" class="pull-right req-label"> Required </span>
             </div>
