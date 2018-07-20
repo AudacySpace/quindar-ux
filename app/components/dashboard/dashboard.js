@@ -4,7 +4,7 @@ angular.module('app')
   	scope: true,
    	bindToController: true,
   	templateUrl: "./components/dashboard/dashboard.html",
-  	controller: function(dashboardService,gridService, sidebarService, $interval,prompt,$mdSidenav,$window, userService, $uibModal) {
+  	controller: function(dashboardService,gridService, sidebarService, $interval,prompt,$mdSidenav,$window, userService, $uibModal,$mdToast) {
   		var vm = this;
 
 		vm.clock = {
@@ -17,7 +17,6 @@ angular.module('app')
 		vm.role = userService.userRole;
 		var dashboard = gridService.getDashboard();
 		var totalMissions = [];
-
   		vm.currentMission =  dashboardService.getCurrentMission();
 
   		vm.updateClock = function(){
@@ -47,8 +46,20 @@ angular.module('app')
                 gridService.save(vm.email, name)
                 .then(function(response) {
                     if(response.status == 200){
-                        alert("Layout saved succcessfully -- " + name);
-                        $window.location.href = '/logout';
+                        // alert("Layout saved succcessfully -- " + name);
+                        var pinTo = 'bottom right';
+            			var toast = $mdToast.simple()
+                                    	.textContent("Layout: "+name +" saved succcessfully.")
+                                    	.action('OK')
+                                    	.hideDelay(5000)
+                                    	.highlightAction(true)
+                                    	.highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
+                                    	.position(pinTo);
+                		$mdToast.show(toast).then(function(response) {
+                    		if ( response == 'ok' ) {
+                    		}
+                    		$window.location.href = '/logout';
+                		});
                     }
                 });
             },function(){
@@ -87,7 +98,7 @@ angular.module('app')
 	}
 })
 
-app.controller('modalCtrl', function($uibModalInstance, userService, mission, $window) {
+app.controller('modalCtrl', function($uibModalInstance, userService, mission, $window, dashboardService) {
 	var $ctrl = this;
 
 	$ctrl.cRole = {};
@@ -115,9 +126,14 @@ app.controller('modalCtrl', function($uibModalInstance, userService, mission, $w
 	});
 
 	$ctrl.updateRole = function(){
+		var position,queryId,delay,usermessage,alertstatus;
 		if($ctrl.cRole.callsign == 'MD' && $ctrl.role.currentRole.callsign != 'MD') {
-			$window.alert("No mission without the Mission Director. Your role cannot be updated");
 			$uibModalInstance.close($ctrl.cRole);
+			position = "bottom right";
+            queryId = '#adminroletoaster';
+            delay = false;
+            usermessage = "No mission without the Mission Director. Your role cannot be updated";
+            alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay);
 		} else {
 			userService.getRoles()
     		.then(function(response) {
@@ -131,10 +147,19 @@ app.controller('modalCtrl', function($uibModalInstance, userService, mission, $w
        				userService.setCurrentRole($ctrl.role.currentRole, mission.missionName)
 	        		.then(function(response) {
 	        			if(response.status == 200){
-	                		$window.alert("User's current role updated.");
 	                		$uibModalInstance.close($ctrl.role.currentRole);
+	               			position = "bottom right";
+            				queryId = '#dashboardtoaster';
+            				delay = false;
+            				usermessage = "User's current role updated!";
+            				alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay);
 	            		}else {
-	            			$window.alert("An error occurred.User's role not updated!");
+	            			$uibModalInstance.close($ctrl.role.currentRole);
+	               			position = "bottom right";
+            				queryId = '#dashboardtoaster';
+            				delay = false;
+            				usermessage = "An error occurred.User's role not updated!";
+            				alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay);
 	            		}
 	        		});
         		}
@@ -153,12 +178,21 @@ app.controller('missionModalCtrl', function($uibModalInstance,dashboardService,$
 
 	//save mission and close modal
 	$ctrl.setMission = function(){
+		var position,queryId,delay,usermessage,alertstatus;
 		if(dashboardService.isEmpty($ctrl.currentMission) === false){
 			dashboardService.setCurrentMission($ctrl.currentMission);
 	    	$uibModalInstance.close($ctrl.currentMission);
-	    	$window.alert("Mission has been set");
+           	position = "bottom right";
+            queryId = '';
+           	delay = 5000;
+           	usermessage = "Mission: "+$ctrl.currentMission.missionName+" has been set!";
+            alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay);
 	    }else {
-	    	$window.alert("Please select a mission before you save.");
+	    	position = "bottom right";
+            queryId = '#missiontoaster';
+            delay = false;
+            usermessage = "Please select a mission before you save.";
+            alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay);
 	    }   
 	}
 });
