@@ -17,10 +17,14 @@ describe('Testing missionModal controller', function () {
 
         inject( function($controller, $rootScope){
             scope = $rootScope.$new();
-            dashboardService = jasmine.createSpyObj('dashboardService', ['setCurrentMission', 'isEmpty', 'missions']);
+            dashboardService = jasmine.createSpyObj('dashboardService', ['setCurrentMission', 'isEmpty', 'missions','displayAlert']);
 
             dashboardService.missions.and.callFake(function() {
                 return missions;
+            });
+
+            dashboardService.missions.and.callFake(function() {
+                return true;
             });
 
             controller = $controller('missionModalCtrl', {
@@ -64,11 +68,11 @@ describe('Testing missionModal controller', function () {
         dashboardService.isEmpty.and.callFake(function() {
             return false;
         });
-
+        var usermessage = "Mission: "+controller.currentMission.missionName+" has been set!";
         controller.setMission();
         expect(dashboardService.setCurrentMission).toHaveBeenCalledWith(controller.currentMission);
         expect(modalInstance.close).toHaveBeenCalled();
-        expect(windowMock.alert).toHaveBeenCalledWith('Mission has been set');
+        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,"bottom right",'',5000);
     });
 
     it('should alert the user if no mission is selected', function() {
@@ -76,8 +80,8 @@ describe('Testing missionModal controller', function () {
         dashboardService.isEmpty.and.callFake(function() {
             return true;
         });
-
+        var usermessage = "Please select a mission before you save.";
         controller.setMission();
-        expect(windowMock.alert).toHaveBeenCalledWith('Please select a mission before you save.');
+        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,"bottom right",'#missiontoaster',false);
     });
 });
