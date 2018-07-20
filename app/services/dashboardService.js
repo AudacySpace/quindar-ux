@@ -1,5 +1,5 @@
 app
-.factory('dashboardService', ['$interval', '$http','$uibModal','gridService', function($interval, $http,$uibModal,gridService) {
+.factory('dashboardService', ['$interval', '$http','$uibModal','gridService','$mdToast', function($interval, $http,$uibModal,gridService,$mdToast) {
     var locks = {
         lockLeft : false,
         lockRight : false
@@ -302,6 +302,42 @@ app
         return telemetry;
     }
 
+    function displayAlert(message,position,queryId,delay){
+
+        if(queryId === ""){
+            var toast = $mdToast.simple()
+                            .textContent(message)
+                            .action('OK')
+                            .hideDelay(delay)
+                            .highlightAction(true)
+                            .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
+                            .position(position);
+            $mdToast.show(toast).then(function(response) {
+                if ( response == 'ok' ) {}
+            });
+            return true;
+        }else {
+            var toast = $mdToast.simple()
+                            .textContent(message)
+                            .action('OK')
+                            .parent(document.querySelectorAll(queryId))
+                            .hideDelay(delay)
+                            .highlightAction(true)
+                            .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
+                            .position(position);
+
+            $mdToast.show(toast).then(function(response) {
+                if ( response == 'ok' ) {
+                }
+            },function(error){
+                // console.log(error);
+            });
+
+            return true;
+        }
+
+    }
+
 	return {
         locks : locks,
         telemetry : telemetry,
@@ -318,6 +354,7 @@ app
         setCurrentMission : setCurrentMission,
         getCurrentMission : getCurrentMission,
         getConfig : getConfig,
-        getTelemetryValues : getTelemetryValues
+        getTelemetryValues : getTelemetryValues,
+        displayAlert : displayAlert,
 	}
 }]);

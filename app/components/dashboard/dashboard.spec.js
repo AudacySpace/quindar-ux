@@ -22,7 +22,7 @@ describe('Testing dashboard component', function () {
 
         inject(function($componentController, $interval){
             $intervalSpy = jasmine.createSpy('$interval', $interval);
-            dashboardService = jasmine.createSpyObj('dashboardService', ['getLock', 'getCurrentMission', 'getTime', 'setLeftLock', 'setRightLock']);
+            dashboardService = jasmine.createSpyObj('dashboardService', ['getLock', 'getCurrentMission', 'getTime', 'setLeftLock', 'setRightLock','displayAlert']);
             gridService = jasmine.createSpyObj('gridService', ['save', 'getDashboard']);
             userService = jasmine.createSpyObj('userService', ['userRole', 'getUserName', 'getUserEmail']);
             sidebarService = jasmine.createSpyObj('sidebarService', ['setMenuStatus', 'setOpenLogo']);
@@ -42,6 +42,9 @@ describe('Testing dashboard component', function () {
             });
             dashboardService.getCurrentMission.and.callFake(function() {
                 return { missionName : 'ATest' };
+            });
+            dashboardService.displayAlert.and.callFake(function() {
+                return true;
             });
 
             $controller = $componentController('dashboard', {
