@@ -125,7 +125,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
         {
             $window.alert("You have either not selected all position values:x,y,z or there may be no data available for the position coordinates."); 
         }
-        else if($scope.settings.attitudeData.length === 4 && $scope.settings.positionData.length === 3 && status === true){
+        else if($scope.widget.settings.totalAttitudeArray.length === 4 && $scope.widget.settings.totalPositionArray.length === 3 && status === true){
             $uibModal.open({
                 templateUrl: "./directives/satellite/confirmSettings.html",
                 controller: 'confirmCtrl',
@@ -177,18 +177,18 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
         else if(status === false)
         {
 			$window.alert("Both Attitude and Position Values should be of the same vehicle.");
-		}else if($scope.settings.attitudeData.length < 4 && $scope.settings.positionData.length < 3){
+		}else if($scope.widget.settings.totalAttitudeArray.length < 4 && $scope.widget.settings.totalPositionArray.length < 3){
 			$window.alert("Please select all the quaternion coordinates:q1,q2,q3,qc and position coordinates:x,y,z");
             $scope.settings.attitudeData = [];
             $scope.attitudeDisplay = "Click for data";
             $scope.settings.positionData = [];
             $scope.positionDisplay = "Click for data";
 		}
-		else if($scope.settings.attitudeData.length < 4 && $scope.settings.positionData.length === 3){
+		else if($scope.widget.settings.totalAttitudeArray.length < 4 && $scope.widget.settings.totalPositionArray.length === 3){
             $scope.settings.attitudeData = [];
             $scope.attitudeDisplay = "Click for data";
 			$window.alert("Please select all the quaternion coordinates:q1,q2,q3,qc");
-		}else if($scope.settings.positionData.length < 3 && $scope.settings.attitudeData.length === 4){
+		}else if($scope.widget.settings.totalAttitudeArray.length < 3 && $scope.widget.settings.totalPositionArray.length === 4){
             $scope.settings.positionData = [];
             $scope.positionDisplay = "Click for data";
 			$window.alert("Please select all the position coordinates:x,y,z");		
