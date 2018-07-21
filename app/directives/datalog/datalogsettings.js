@@ -25,6 +25,7 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
                     widget.delete = false;
                     if ($window.innerWidth >= 1400) //close left sidebar
                     {
+                        $scope.lock = dashboardService.getLock();
                         $scope.lock.lockLeft = false;
                         dashboardService.setLeftLock($scope.lock.lockLeft);
                     }
@@ -57,6 +58,7 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
         $scope.widget.settings.dataArray = [$scope.data];
         if ($window.innerWidth >= 1400) //close left sidebar
         {
+            $scope.lock = dashboardService.getLock();
             $scope.lock.lockLeft = false;
             dashboardService.setLeftLock($scope.lock.lockLeft);
         }

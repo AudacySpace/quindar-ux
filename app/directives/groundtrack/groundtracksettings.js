@@ -543,6 +543,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                     $scope.positionData = [];
 
                     if ($window.innerWidth >= 1400){
+                        $scope.lock = dashboardService.getLock();
                         $scope.lock.lockLeft = false;
                         dashboardService.setLeftLock($scope.lock.lockLeft);
                     }
@@ -570,6 +571,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                 $scope.positionData = [];
                
                 if ($window.innerWidth >= 1400){
+                    $scope.lock = dashboardService.getLock();
                     $scope.lock.lockLeft = false;
                     dashboardService.setLeftLock($scope.lock.lockLeft);
                 }
@@ -614,6 +616,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
         }
 
         if ($window.innerWidth >= 1400){
+
             $scope.lock.lockLeft = false;
             dashboardService.setLeftLock($scope.lock.lockLeft);
         }
