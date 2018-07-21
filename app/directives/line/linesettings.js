@@ -114,6 +114,7 @@ app.controller('LineSettingsCtrl',
                                 console.log(previousSettings);
                                 if ($window.innerWidth >= 1400)
                                 {
+                                    $scope.lock = dashboardService.getLock();
                                     $scope.lock.lockLeft = false;
                                     dashboardService.setLeftLock($scope.lock.lockLeft);
                                 }
@@ -146,6 +147,7 @@ app.controller('LineSettingsCtrl',
             $scope.widget.settings.dataArray = [$scope.settings.data];
             if ($window.innerWidth >= 1400)
             {
+                $scope.lock = dashboardService.getLock();
                 $scope.lock.lockLeft = false;
                 dashboardService.setLeftLock($scope.lock.lockLeft);
             }

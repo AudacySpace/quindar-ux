@@ -79,6 +79,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 
         if ($window.innerWidth >= 1400)
         {
+            $scope.lock = dashboardService.getLock();
             $scope.lock.lockLeft = false;
             dashboardService.setLeftLock($scope.lock.lockLeft);
         }
@@ -164,6 +165,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                 $scope.settings.positionData = [];
 
                 if ($window.innerWidth >= 1400){
+                    $scope.lock = dashboardService.getLock();
                     $scope.lock.lockLeft = false;
                     dashboardService.setLeftLock($scope.lock.lockLeft);
                 }

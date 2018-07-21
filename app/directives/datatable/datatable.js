@@ -178,6 +178,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                     $scope.arrow.style.color = "#b3b3b3";
                     if ($window.innerWidth >= 1400)
                     {
+                        $scope.lock = dashboardService.getLock();
                         $scope.lock.lockLeft = false;
                         dashboardService.setLeftLock($scope.lock.lockLeft);
                     }
@@ -209,6 +210,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
 
                     $scope.arrow.style.color = "#b3b3b3";
                     if ($window.innerWidth >= 1400){
+                        $scope.lock = dashboardService.getLock();
                         $scope.lock.lockLeft = false;
                         dashboardService.setLeftLock($scope.lock.lockLeft);
                     }
