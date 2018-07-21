@@ -156,7 +156,6 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                                     "id" : index,
                                     "label" :key
                                 }
-
                                 $scope.iconstatus[index] = true;
                                 $scope.orbitstatus[index] = true;
                                 $scope.positionData[index] = [];
@@ -197,6 +196,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                                 $scope.checkedValues[j] = {
                                     status:$scope.widget.settings.vehicles[i].dataStatus
                                 };
+
                                 $scope.orbitstatus[j] = $scope.widget.settings.vehicles[i].orbitStatus;
                                 $scope.settings.orbitstatus[j] = $scope.widget.settings.vehicles[i].orbitStatus;
                                 $scope.iconstatus[j] = $scope.widget.settings.vehicles[i].iconStatus;
@@ -536,12 +536,9 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                     $scope.settings.iconstatus[$scope.currentVehicleId] = angular.copy($scope.iconstatus[$scope.currentVehicleId]);
                     $scope.settings.orbitstatus[$scope.currentVehicleId] = angular.copy($scope.orbitstatus[$scope.currentVehicleId]);
 
-                    $scope.widget.settings.totalVelocityArray[$scope.vehicleId] = getRecentSelectedValues($scope.widget.settings.totalVelocityArray[$scope.vehicleId], 3);
-                    $scope.widget.settings.totalPositionArray[$scope.vehicleId] = getRecentSelectedValues($scope.widget.settings.totalPositionArray[$scope.vehicleId], 3);
+                    $scope.widget.settings.totalVelocityArray[$scope.currentVehicleId] = getRecentSelectedValues($scope.widget.settings.totalVelocityArray[$scope.currentVehicleId], 3);
+                    $scope.widget.settings.totalPositionArray[$scope.currentVehicleId] = getRecentSelectedValues($scope.widget.settings.totalPositionArray[$scope.currentVehicleId], 3);
                     $scope.widget.settings.dataArray = [];
-
-                    $scope.velocityData = [];
-                    $scope.positionData = [];
 
                     if ($window.innerWidth >= 1400){
                         $scope.lock = dashboardService.getLock();
@@ -567,9 +564,6 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                 $scope.widget.settings.totalVelocityArray[$scope.vehicleId] = getRecentSelectedValues($scope.widget.settings.totalVelocityArray[$scope.vehicleId], 3);
                 $scope.widget.settings.totalPositionArray[$scope.vehicleId] = getRecentSelectedValues($scope.widget.settings.totalPositionArray[$scope.vehicleId], 3);
                 $scope.widget.settings.dataArray = [];
-
-                $scope.velocityData = [];
-                $scope.positionData = [];
                
                 if ($window.innerWidth >= 1400){
                     $scope.lock = dashboardService.getLock();
