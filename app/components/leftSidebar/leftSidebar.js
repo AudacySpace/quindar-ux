@@ -61,8 +61,12 @@ app
             });
 
             if(vm.dataTree.length == 0){
-                $window.alert("No match found!");
                 vm.dataTree = angular.copy(vm.previousTree);
+                var position = "bottom left";
+                var queryId = '';
+                var delay = false;
+                var usermessage = "No match found!";
+                var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
             }
         }
 

@@ -1,10 +1,6 @@
 describe('Testing leftSidebar component', function () {
     var $controller, dashboardService, sidebarService, $interval;
-    var windowMock = {
-        alert: function(message) {
-            
-        }
-    };
+
 
     beforeEach(function () {
         // load the module
@@ -13,8 +9,8 @@ describe('Testing leftSidebar component', function () {
         });
 
         inject( function($componentController, _$interval_, _$q_){
-            dashboardService = jasmine.createSpyObj('dashboardService', ['getTelemetryValues', 'getLock']);
             sidebarService = jasmine.createSpyObj('sidebarService', ['setVehicleInfo', 'getMenuStatus', 'setMenuStatus', 'getOpenLogo']);
+            dashboardService = jasmine.createSpyObj('dashboardService', ['getTelemetryValues', 'getLock','displayAlert']);
             $interval = _$interval_;
 
             $controller = $componentController('leftSidebar', {
@@ -254,7 +250,6 @@ describe('Testing leftSidebar component', function () {
     });
 
     it('should alert the user, on filter function call(searchID not found)', function(){
-        spyOn(windowMock, 'alert');
         $controller.previousTree = [{
             "name":"A0",
             "nodes":[{
@@ -287,7 +282,7 @@ describe('Testing leftSidebar component', function () {
         $controller.filter();
 
         expect($controller.dataTree).toEqual($controller.previousTree);
-        expect(windowMock.alert).toHaveBeenCalledWith('No match found!');
+        expect(dashboardService.displayAlert).toHaveBeenCalledWith('No match found!','bottom left','',false);
     });
 
     it('should filter the tree, on filter function call(empty searchID)', function(){
