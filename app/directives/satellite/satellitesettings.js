@@ -75,6 +75,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 			$scope.positionDisplay = "Click for data";
             $scope.widget.settings.totalAttitudeArray = [];
             $scope.widget.settings.totalPositionArray = [];
+
 		}
 
         if ($window.innerWidth >= 1400)
@@ -156,6 +157,8 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                 widget.settings.vehicle = $scope.vehicle;
 
                 //reset arrays that handle data selected by the user
+                $scope.widget.settings.totalAttitudeArray = getRecentSelectedValues($scope.widget.settings.totalAttitudeArray, 4);
+                $scope.widget.settings.totalPositionArray = getRecentSelectedValues($scope.widget.settings.totalPositionArray, 3);
                 widget.settings.dataArray = [];
 
                 if ($window.innerWidth >= 1400){
@@ -201,6 +204,77 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
             dashboardService.setLeftLock($scope.lock.lockLeft);
         }
         sidebarService.setMenuStatus(true); //set to true when data menu is opened and tree needs to be created
+    }
+
+    //display telemetry id chosen by the user in the attitude input box
+    $scope.readAttitudeValues = function()
+    {
+        var trimmedData = [];
+        var stringData = "";
+
+        if($scope.widget.settings.totalAttitudeArray)
+        {
+            trimmedData = getRecentSelectedValues($scope.widget.settings.totalAttitudeArray, 4);
+        }
+
+        for(var i = 0; i < trimmedData.length; i++)
+        {
+            if(trimmedData[i])
+            {
+                if(i == trimmedData.length - 1)
+                {
+                    stringData += trimmedData[i].id
+                }
+                else
+                {
+                    stringData += trimmedData[i].id + ", ";
+                }
+            }
+        }
+        if(stringData)
+        {
+            return stringData;
+        }
+        else
+        {
+            return "Click for data";
+        }
+    }
+
+    //display telemetry id chosen by the user in the position input box
+    $scope.readPositionValues = function()
+    {
+        var trimmedData = [];
+        var stringData = "";
+
+        if($scope.widget.settings.totalPositionArray)
+        {
+            trimmedData = getRecentSelectedValues($scope.widget.settings.totalPositionArray, 3);
+        }
+
+        for(var i = 0; i < trimmedData.length; i++)
+        {
+            if(trimmedData[i])
+            {
+                if(i == trimmedData.length - 1)
+                {
+                    stringData += trimmedData[i].id
+                }
+                else
+                {
+                    stringData += trimmedData[i].id + ", ";
+                }
+            }
+        }
+
+        if(stringData)
+        {
+            return stringData;
+        }
+        else
+        {
+            return "Click for data";
+        }
     }
 
     //display telemetry id chosen by the user in the attitude input box

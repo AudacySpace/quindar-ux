@@ -6,7 +6,7 @@ app.directive('datalogsettings', function() {
     };
 });
 
-app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebarService,dashboardService){
+app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebarService,dashboardService, gridService){
     checkForLogData();
 
     var hasValue;
@@ -82,6 +82,20 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
     {
         var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
         if(data && data.vehicle !== "" && data.id !== "")
+        {
+            return data.id;
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    //display telemetry id chosen by the user in the input box
+    $scope.readValue = function()
+    {
+        var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
+        if(data && data.id !== "")
         {
             return data.id;
         }

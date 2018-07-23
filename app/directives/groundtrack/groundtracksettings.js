@@ -485,6 +485,77 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
         }
     }
 
+    //display telemetry id chosen by the user in the velocity input box
+    $scope.readVelocityValues = function()
+    {
+        var trimmedData = [];
+        var stringData = "";
+
+        if($scope.widget.settings.totalVelocityArray[$scope.currentVehicleId])
+        {
+            trimmedData = getRecentSelectedValues($scope.widget.settings.totalVelocityArray[$scope.currentVehicleId], 3);
+        }
+        
+        for(var i = 0; i < trimmedData.length; i++)
+        {
+            if(trimmedData[i])
+            {
+                if(i == trimmedData.length - 1)
+                {
+                    stringData += trimmedData[i].id
+                }
+                else
+                {
+                    stringData += trimmedData[i].id + ", ";
+                }
+            }
+        }
+        if(stringData)
+        {
+            return stringData;
+        }
+        else
+        {
+            return "Click for data";
+        }
+    }
+
+    //display telemetry id chosen by the user in the position input box
+    $scope.readPositionValues = function()
+    {
+        var trimmedData = [];
+        var stringData = "";
+
+        if($scope.widget.settings.totalPositionArray[$scope.currentVehicleId])
+        {
+            trimmedData = getRecentSelectedValues($scope.widget.settings.totalPositionArray[$scope.currentVehicleId], 3);
+        }
+        
+        for(var i = 0; i < trimmedData.length; i++)
+        {
+            if(trimmedData[i])
+            {
+                if(i == trimmedData.length - 1)
+                {
+                    stringData += trimmedData[i].id
+                }
+                else
+                {
+                    stringData += trimmedData[i].id + ", ";
+                }
+            }
+        }
+
+        if(stringData)
+        {
+            return stringData;
+        }
+        else
+        {
+            return "Click for data";
+        }
+    }
+
     $scope.saveParameters = function(widget){
         //display alerts for conditions that were originally checked in getValue
         if(!$scope.widget.settings.totalPositionArray[$scope.currentVehicleId] || !$scope.widget.settings.totalVelocityArray[$scope.currentVehicleId])

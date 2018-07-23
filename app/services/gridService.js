@@ -202,7 +202,8 @@ function gridService ($http, $sessionStorage, $window, userService) {
         main: true,
         settings: {
             active: false,
-            commandlog: true
+            commandlog: true,
+            dataArray: []
         },
         saveLoad: false,
         delete: false
