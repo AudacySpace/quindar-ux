@@ -107,7 +107,6 @@ function gridService ($http, $sessionStorage, $window, userService) {
             active: false,
             vehicles : [],
             dataArray: [],
-            total: [],
             totalPositionArray: [],
             totalVelocityArray: []
         },

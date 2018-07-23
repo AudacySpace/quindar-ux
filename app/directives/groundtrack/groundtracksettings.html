@@ -33,7 +33,7 @@
                 </div>
                 <div class="row settingsspace" style="display: table"></div>
                 <div class="btn-group" style="width:100%" uib-dropdown>
-                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('position', currentVehicleId)" style="width:75%;border-radius:0;color:grey" >{{readPositionValues()}}</button>
+                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('position', currentVehicleId)" style="width:75%;border-radius:0;color:grey" >{{readValues('position')}}</button>
                     <button type="button" class="btn btn-default" style="width:25%;border-radius:0;padding-left:0px;padding-right:0px" uib-dropdown-toggle>
                         <span class="caret"></span>
                         <span class="sr-only">Split button!</span>
@@ -43,7 +43,7 @@
                         <li role="menuitem"><a href="#" ng-click="openPositionList(currentVehicleId)">Show Parameters</a></li>
                     </ul>
                 </div>
-                    <span ng-hide="readPositionValues()"> Required </span>
+                    <span ng-hide="readValues('position') != 'Click for data'"> Required </span>
                 <!-- End of Multi Selection of Data from Data menu -->
                 <div class="row" style="margin-top:5%">
                     <label for="SatelliteOrbit">Orbit</label>
@@ -61,7 +61,7 @@
                 </div>
                 <div class="row settingsspace" style="display: table"></div>
                 <div class="btn-group" style="width:100%" uib-dropdown>
-                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('velocity', currentVehicleId)" style="width:75%;border-radius:0;color:grey" >{{readVelocityValues()}}</button>
+                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('velocity', currentVehicleId)" style="width:75%;border-radius:0;color:grey" >{{readValues('velocity')}}</button>
                     <button type="button" class="btn btn-default" style="width:25%;border-radius:0;padding-left:0px;padding-right:0px" uib-dropdown-toggle>
                         <span class="caret"></span>
                         <span class="sr-only">Split button!</span>
@@ -71,7 +71,7 @@
                         <li role="menuitem"><a href="#" ng-click="openVelocityList(currentVehicleId)">Show Parameters</a></li>
                     </ul>
                 </div>
-                    <span ng-hide="readVelocityValues()"> Required </span>
+                    <span ng-hide="readValues('velocity') != 'Click for data'"> Required </span>
                 <!-- End of Multi Selection of Data from Data menu -->
                 <div class="row" style="margin-top:5%">
                     <label for="SatelliteIcon">Icon</label>
@@ -133,7 +133,7 @@
             <label for="SelectPosition" class="mbl-label">Select Position:</label>
         </div>
         <div class="btn-group mbl-input-grp" uib-dropdown>
-            <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('position', currentVehicleId)" style="width:88%;border-radius:0;color:grey;min-width:88%;padding-top:3px;padding-bottom:3px;font-size:10px;text-align:left" >{{readPositionValues()}}</button>
+            <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('position', currentVehicleId)" style="width:88%;border-radius:0;color:grey;min-width:88%;padding-top:3px;padding-bottom:3px;font-size:10px;text-align:left" >{{readValues('position')}}</button>
             <button type="button" class="btn btn-default" style="width:12%;border-radius:0;min-width:12%;padding-top:3px;padding-bottom:3px;font-size:10px" uib-dropdown-toggle>
                 <span class="caret"></span>
                 <span class="sr-only">Split button!</span>
@@ -143,12 +143,12 @@
                 <li role="menuitem"><a href="#" ng-click="openPositionList(currentVehicleId)">Show Parameters</a></li>
             </ul>
         </div>
-        <span ng-hide="readPositionValues()" class="req-label"> Required </span>
+        <span ng-hide="readValues('position') != 'Click for data'" class="req-label"> Required </span>
         <div class="row">
             <label for="SelectVelocity" class="mbl-label">Select Velocity</label>
         </div>
         <div class="btn-group mbl-input-grp" uib-dropdown>
-            <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('velocity', currentVehicleId)" style="width:88%;border-radius:0;color:grey;min-width:88%;padding-top:3px;padding-bottom:3px;font-size:10px;text-align:left" >{{readVelocityValues()}}</button>
+            <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('velocity', currentVehicleId)" style="width:88%;border-radius:0;color:grey;min-width:88%;padding-top:3px;padding-bottom:3px;font-size:10px;text-align:left" >{{readValues('velocity')}}</button>
             <button type="button" class="btn btn-default" style="width:12%;border-radius:0;min-width:12%;padding-top:3px;padding-bottom:3px;font-size:10px" uib-dropdown-toggle>
                 <span class="caret"></span>
                 <span class="sr-only">Split button!</span>
@@ -158,7 +158,7 @@
                 <li role="menuitem"><a href="#" ng-click="openVelocityList(currentVehicleId)">Show Parameters</a></li>
             </ul>
         </div>
-        <span ng-hide="readVelocityValues()" class="req-label"> Required </span>
+        <span ng-hide="readValues('velocity') != 'Click for data'" class="req-label"> Required </span>
         <hr class="hr-double-col1-2-gt">
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveParameters(widget)">SAVE</button>
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeParameters(widget)">CLOSE</button>     
@@ -220,7 +220,7 @@
                     <label for="SelectPosition" class="mbl-label">Select Position</label>
                 </div>
                 <div class="btn-group mbl-input-grp" uib-dropdown>
-                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('position', currentVehicleId)" style="width:75%;border-radius:0;color:grey;padding-top:0px;padding-bottom:0px;font-size:9px;text-align:left" >{{readPositionValues()}}</button>
+                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('position', currentVehicleId)" style="width:75%;border-radius:0;color:grey;padding-top:0px;padding-bottom:0px;font-size:9px;text-align:left" >{{readValues('position')}}</button>
                     <button type="button" class="btn btn-default" style="width:25%;border-radius:0;padding-top:0px;padding-left:0px;padding-right:0px;padding-bottom:0px;font-size:9px" uib-dropdown-toggle>
                         <span class="caret"></span>
                         <span class="sr-only">Split button!</span>
@@ -230,7 +230,7 @@
                     <li role="menuitem"><a href="#" ng-click="openPositionList(currentVehicleId)">Show Parameters</a></li>
                 </ul>
                 </div>
-                <span ng-hide="readPositionValues()" class="pull-right req-label"> Required </span>
+                <span ng-hide="readValues('position') != 'Click for data'" class="pull-right req-label"> Required </span>
             </div>
             <div class="col-sm-1 tablecellstyle1"></div> 
         </div>
@@ -241,7 +241,7 @@
                     <label for="SelectVelocity" class="mbl-label">Select Velocity</label>
                 </div>
                 <div class="btn-group mbl-input-grp" uib-dropdown>
-                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('velocity', currentVehicleId)" style="width:75%;border-radius:0;color:grey;padding-top:0px;padding-bottom:0px;font-size:9px;text-align:left" >{{readVelocityValues()}}</button>
+                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('velocity', currentVehicleId)" style="width:75%;border-radius:0;color:grey;padding-top:0px;padding-bottom:0px;font-size:9px;text-align:left" >{{readValues('velocity')}}</button>
                     <button type="button" class="btn btn-default" style="width:25%;border-radius:0;padding-top:0px;padding-bottom:0px;font-size:9px;padding-left:0px;padding-right:0px" uib-dropdown-toggle>
                         <span class="caret"></span>
                         <span class="sr-only">Split button!</span>
@@ -251,7 +251,7 @@
                         <li role="menuitem"><a href="#" ng-click="openVelocityList(currentVehicleId)">Show Parameters</a></li>
                     </ul>
                 </div>
-                 <span ng-hide="readVelocityValues()" class="pull-right req-label"> Required </span>
+                 <span ng-hide="readValues('velocity') != 'Click for data'" class="pull-right req-label"> Required </span>
             </div>
             <div class="col-sm-1 tablecellstyle1"></div>
         </div>

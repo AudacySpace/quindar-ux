@@ -78,33 +78,6 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
         sidebarService.setMenuStatus(true); //set to true when data menu is opened and tree needs to be created
     }
 
-    $scope.readValue = function()
-    {
-        var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
-        if(data && data.vehicle !== "" && data.id !== "")
-        {
-            return data.id;
-        }
-        else
-        {
-            return "";
-        }
-    }
-
-    //display telemetry id chosen by the user in the input box
-    $scope.readValue = function()
-    {
-        var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
-        if(data && data.id !== "")
-        {
-            return data.id;
-        }
-        else
-        {
-            return "";
-        }
-    }
-
     //display telemetry id chosen by the user in the input box
     $scope.readValue = function()
     {

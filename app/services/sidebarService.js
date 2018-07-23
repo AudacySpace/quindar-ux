@@ -1,5 +1,5 @@
 app
-.factory('sidebarService', function(dashboardService) { 
+.factory('sidebarService', ['dashboardService', function(dashboardService) { 
 
     var widget;
     var widgetObject;
@@ -14,7 +14,7 @@ app
         widgetObject = tempWidgetObject;
     }
 
-    function setVehicleInfo(dataString, dashboard) {
+    function setVehicleInfo(dataString) {
         var vehicleInfo = {
             vehicle : '',
             id : '',
@@ -38,8 +38,6 @@ app
             {
                 widgetObject.getValue(true);
             }
-            //access last index in index array in widgets.settings.something
-            //find corresponding select data text field for widget at that index and display data selected over there
         } else {
             vehicleInfo = {
                 vehicle : '',
@@ -74,4 +72,4 @@ app
         //data : data,
         setTempWidget : setTempWidget
 	}
-});
+}]);
