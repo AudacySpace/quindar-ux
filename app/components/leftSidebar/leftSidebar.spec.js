@@ -13,7 +13,7 @@ describe('Testing leftSidebar component', function () {
         });
 
         inject( function($componentController, _$interval_, _$q_){
-            dashboardService = jasmine.createSpyObj('dashboardService', ['getTelemetryValues', 'getLock']);
+            dashboardService = jasmine.createSpyObj('dashboardService', ['getTelemetryValues', 'getLock','displayAlert']);
             sidebarService = jasmine.createSpyObj('sidebarService', ['setVehicleInfo', 'getMenuStatus', 'setMenuStatus']);
             $interval = _$interval_;
 
@@ -275,7 +275,7 @@ describe('Testing leftSidebar component', function () {
         $controller.filter();
 
         expect($controller.dataTree).toEqual($controller.previousTree);
-        expect(windowMock.alert).toHaveBeenCalledWith('No match found!');
+        expect(dashboardService.displayAlert).toHaveBeenCalledWith('No match found!','bottom left','',false);
     });
 
     it('should filter the tree, on filter function call(empty searchID)', function(){
