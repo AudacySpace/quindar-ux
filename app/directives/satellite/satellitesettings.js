@@ -73,8 +73,8 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 			$scope.attitudeDisplay = "Click for data";
 			$scope.settings.positionData = [];
 			$scope.positionDisplay = "Click for data";
-            $scope.widget.settings.totalPositionArray = [];
             $scope.widget.settings.totalAttitudeArray = [];
+            $scope.widget.settings.totalPositionArray = [];
 		}
 
         if ($window.innerWidth >= 1400)
@@ -146,8 +146,6 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                 widget.settings.active = false;
                 widget.saveLoad = false;
                 widget.delete = false;
-                widget.settings.attitudeData = [];
-                widget.settings.positionData = [];
                 $scope.attitudeDisplay = "";
                 $scope.positionDisplay = "";
 
@@ -158,11 +156,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                 widget.settings.vehicle = $scope.vehicle;
 
                 //reset arrays that handle data selected by the user
-                $scope.widget.settings.totalAttitudeArray = getRecentSelectedValues($scope.widget.settings.totalAttitudeArray, 4);
-                $scope.widget.settings.totalPositionArray = getRecentSelectedValues($scope.widget.settings.totalPositionArray, 3);
                 widget.settings.dataArray = [];
-                $scope.settings.attitudeData = [];
-                $scope.settings.positionData = [];
 
                 if ($window.innerWidth >= 1400){
                     $scope.lock = dashboardService.getLock();
@@ -342,6 +336,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                         $scope.settings.attitudeData = attitudeSettingsfiltered2;
                         $scope.attitudeDisplay = attitudeDisplayText;
                         $scope.vehicle = attitudeSettingsfiltered2[0].vehicle;
+                        $scope.widget.settings.totalAttitudeArray = angular.copy(attitudeSettingsfiltered2);
                     }else if(attitudeSettingsfiltered2.length < 4){
                         $scope.attitudeBooleans[0] = false;
                     }
@@ -380,6 +375,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                         $scope.settings.positionData = positionSettingsfiltered2;
                         $scope.positionDisplay = positionDisplayText;
                         $scope.vehicle = positionSettingsfiltered2[0].vehicle;
+                        $scope.widget.settings.totalPositionArray = angular.copy(positionSettingsfiltered2);
                     }else if(positionSettingsfiltered2.length < 3){
                         $scope.positionBooleans[0] = false;
                     }
