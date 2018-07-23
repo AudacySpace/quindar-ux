@@ -1,14 +1,8 @@
 app
 .component('leftSidebar', {
-<<<<<<< HEAD
   	templateUrl: "./components/leftSidebar/left_sidebar.html",
   	controller: function(sidebarService, dashboardService, $interval, $window, $mdSidenav, gridService) {
   		var vm = this;
-=======
-    templateUrl: "./components/leftSidebar/left_sidebar.html",
-    controller: function(sidebarService, dashboardService, $interval, $window, gridService) {
-        var vm = this;
->>>>>>> f1a7e7e39e500d77e1f1a439e30f3cd55c43b37b
 
         vm.searchID = "";
         vm.previousTree = [];
