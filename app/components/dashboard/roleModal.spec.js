@@ -158,7 +158,7 @@ describe('Testing role modal controller', function () {
 
         expect(userService.setCurrentRole).toHaveBeenCalledWith(controller.role.currentRole, mission.missionName);
         expect(modalInstance.close).toHaveBeenCalled();
-        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,"bottom right",'#dashboardtoaster',false);
+        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,"bottom right",'#dashboardtoaster',5000);
     });
 
     it('should not update the role of the user when update role is called(response status other than 200)', function() {
