@@ -6,7 +6,7 @@ app.directive('timelinesettings', function() {
   	}; 
 })
 
-app.controller('timelineSettingsCtrl', function($scope,gridService){
+app.controller('timelineSettingsCtrl', function($scope,gridService,dashboardService){
 
 	$scope.selectByGroupData = [];
 	var reloaded = false;
@@ -143,7 +143,12 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
 				if ($scope.selected.timezone) {
 					tzExistsStatus = tzExists(widget.settings.timezones,$scope.selected.timezone.name);
 						if(tzExistsStatus === true){
-							alert("This time axis already exists in the qwidget.");
+							var position = "top left";
+                			var queryId = '#timezonetoaster';
+                			var delay = false;
+                			var usermessage = "This time axis already exists in the qwidget!";
+                			var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+
 							widget.settings.timezones = widget.settings.timezones;
 							$scope.selected.timezone = {};
 						}else {
@@ -179,7 +184,11 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
 					widget.saveLoad = false;
 					widget.delete =  false;
 				}else if($scope.selectByGroupModel.length === 0){
-					alert("Select atleast one event");
+					var position = "top left";
+                	var queryId = '#eventstoaster';
+                	var delay = false;
+                	var usermessage = "Please select atleast one event.";
+                	var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
 				}
 			} 
 		} 
