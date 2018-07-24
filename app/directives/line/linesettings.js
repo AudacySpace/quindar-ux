@@ -11,7 +11,7 @@ app.controller('LineSettingsCtrl',
     function($scope, $mdSidenav, $window, dashboardService, sidebarService, $interval){
 
         var colors = [ "#0AACCF", "#FF9100", "#64DD17", "#07D1EA", "#0D8DB8", "#172168", "#228B22", "#12C700", "#C6FF00" ];
-        var previousSettings;
+        $scope.previousSettings;
         $scope.interval;
         var hasValue;
 
@@ -105,19 +105,19 @@ app.controller('LineSettingsCtrl',
                                 }
                             }
 
+                            if ($window.innerWidth >= 1400)
+                            {
+                                $scope.lock = dashboardService.getLock();
+                                $scope.lock.lockLeft = false;
+                                dashboardService.setLeftLock($scope.lock.lockLeft);
+                            }
+
                             if(count != 0){ //as long as data and vehicles are selected, continue with data implementation in line plot
                                 widget.main = true;
                                 widget.settings.active = false;
-                                previousSettings = angular.copy($scope.settings);
+                                $scope.previousSettings = angular.copy($scope.settings);
                                 var lastCell = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
                                 $scope.widget.settings.dataArray = [lastCell];
-                                console.log(previousSettings);
-                                if ($window.innerWidth >= 1400)
-                                {
-                                    $scope.lock = dashboardService.getLock();
-                                    $scope.lock.lockLeft = false;
-                                    dashboardService.setLeftLock($scope.lock.lockLeft);
-                                }
                             } else {
                                 $window.alert("Please select atleast one vehicle and save!");
                             }
@@ -143,7 +143,7 @@ app.controller('LineSettingsCtrl',
             
             widget.main = true;
             widget.settings.active = false;
-            $scope.settings = angular.copy(previousSettings);
+            $scope.settings = angular.copy($scope.previousSettings);
             $scope.widget.settings.dataArray = [$scope.settings.data];
             if ($window.innerWidth >= 1400)
             {
@@ -215,8 +215,8 @@ app.controller('LineSettingsCtrl',
                             }
                         }
                     }
-                    previousSettings = angular.copy($scope.settings);
-                    $scope.widget.settings.dataArray = [$scope.settings.data];
+                    $scope.previousSettings = angular.copy($scope.settings);
+                    $scope.widget.settings.dataArray = [angular.copy($scope.settings.data)];
                     hasValue = true;
                 }
             });

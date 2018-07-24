@@ -6,7 +6,7 @@ app.directive('datalogsettings', function() {
     };
 });
 
-app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebarService,dashboardService, gridService){
+app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebarService,dashboardService){
     checkForLogData();
 
     var hasValue;

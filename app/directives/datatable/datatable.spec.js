@@ -40,7 +40,7 @@ describe('Testing data table controller', function () {
 
         inject(function($controller, $rootScope, $interval){
             $intervalSpy = jasmine.createSpy('$interval', $interval);
-            sidebarService = jasmine.createSpyObj('sidebarService', ['getVehicleInfo', 'setMenuStatus']);;
+            sidebarService = jasmine.createSpyObj('sidebarService', ['getVehicleInfo', 'setMenuStatus', 'setTempWidget']);;
             dashboardService = jasmine.createSpyObj('dashboardService', 
                 ['getLock', 'setLeftLock', 'icons', 'getData']);
             datastatesService = jasmine.createSpyObj('datastatesService', ['colorValues', 'getDataColor']);
@@ -131,21 +131,19 @@ describe('Testing data table controller', function () {
         expect(scope.getValue).toBeDefined();
     });
 
-    it('should alert the user if the vehicle and id from the left menu are not available', function() {
-        spyOn(windowMock, "alert");
-        var data = {
-            parameters:[]
-        };
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
+    it('should not add anything if the vehicle and id from the left menu are not available', function() {
+        scope.arrow = arrow;
 
-        scope.getValue(ev, {}, 1);
-        expect(windowMock.alert).toHaveBeenCalledWith("Vehicle data not set. Please select from Data Menu");
-        expect(arrow.style.color).toEqual('#07D1EA');
+        scope.widget.settings.dataArray = [];
+
+        scope.getValue();
+
+        expect(scope.widget.settings.dataArray.length).toEqual(0);
+        expect(scope.widget.settings.dataArray.length).toEqual(0);
+        expect(arrow.style.color).toEqual('#b3b3b3');
     });
 
-    it('should alert the user if a group(not ID) is selected from the left menu', function() {
+    /*it('should alert the user if a group(not ID) is selected from the left menu', function() {
         spyOn(windowMock, "alert");
         var data = {
             parameters:[]
@@ -174,10 +172,9 @@ describe('Testing data table controller', function () {
 
         expect(windowMock.alert).toHaveBeenCalledWith("Please select telemetry ID(leaf node) from Data Menu");
         expect(arrow.style.color).toEqual('#07D1EA');
-    });
+    });*/
 
-    it('should store the value of selected vehicle and id in scope.data variable', function() {
-        windowMock.innerWidth = 1000;
+    it('should store the value of selected vehicle and id in scope.widget.settings.data variable', function() {
         var index = 1;
         var vehicleInfo = { 
             id: 'vx',
@@ -185,15 +182,15 @@ describe('Testing data table controller', function () {
             key: 'A0.GNC.velocity.vx',
             category: 'category' 
         };
-        var data = {
-            parameters:[]
-        };
-        data.parameters[0] = vehicleInfo;
 
-
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
+        dashboardService.getLock.and.callFake(function(){
+            return { lockLeft : true, lockRight : false }
         });
+
+        scope.widget.settings.dataArray = [vehicleInfo];
+        scope.askedForGroup = false;
+        scope.currentIndex = index;
+        scope.arrow = arrow;
 
         dashboardService.getData.and.callFake(function() {
             return {
@@ -207,7 +204,7 @@ describe('Testing data table controller', function () {
             };
         });
 
-        scope.getValue(ev, {}, index);
+        scope.getValue(false);
 
         expect(scope.widget.settings.data[index].type).toEqual('data');
         expect(scope.widget.settings.data[index].value).toEqual('A0.GNC.velocity.vx');
@@ -218,7 +215,9 @@ describe('Testing data table controller', function () {
 
     it('should close the left menu after storing data into variable(window width>1400)', function() {
         windowMock.innerWidth = 1440;
-        scope.lock = { lockLeft : true, lockRight : false };
+        dashboardService.getLock.and.callFake(function(){
+            return { lockLeft : true, lockRight : false }
+        });
         var index = 1;
         var vehicleInfo = { 
             id: 'vx',
@@ -226,15 +225,11 @@ describe('Testing data table controller', function () {
             key: 'A0.GNC.velocity.vx',
             category: 'category' 
         };
-        var data = {
-            parameters:[]
-        };
-        data.parameters[0] = vehicleInfo;
 
-
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
+        scope.widget.settings.dataArray = [vehicleInfo];
+        scope.askedForGroup = false;
+        scope.currentIndex = index;
+        scope.arrow = arrow;
 
         dashboardService.getData.and.callFake(function() {
             return {
@@ -248,7 +243,7 @@ describe('Testing data table controller', function () {
             };
         });
 
-        scope.getValue(ev, {}, index);
+        scope.getValue(false);
 
         expect(scope.widget.settings.data[index].type).toEqual('data');
         expect(scope.widget.settings.data[index].value).toEqual('A0.GNC.velocity.vx');
@@ -263,7 +258,7 @@ describe('Testing data table controller', function () {
         expect(scope.applyGroup).toBeDefined();
     });
 
-    it('should alert the user if the vehicle and id from the left menu are not available', function() {
+    /*it('should alert the user if the vehicle and id from the left menu are not available', function() {
         spyOn(windowMock, "alert");
 
         var data = {
@@ -279,44 +274,30 @@ describe('Testing data table controller', function () {
 
         expect(windowMock.alert).toHaveBeenCalledWith("Data not set. Please select from Data Menu");
         expect(arrow.style.color).toEqual('#07D1EA');
-    });
+    });*/
 
     it('should alert the user if an ID(not group) is selected from the left menu', function() {
         spyOn(windowMock, "alert");
-        var vehicleInfo = { 
-            id: 'vx',
+        scope.arrow = arrow;
+        
+        var data = { 
+            id: 'velocity',
             vehicle: 'A0',
-            key: 'A0.GNC.velocity.vx',
-            category: 'category' 
-        };
-        var data = {
-            parameters:[]
-        };
-        data.parameters[0] = vehicleInfo;
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
+            key: 'A0.GNC.velocity',
+            category: 'GNC'
+        }
+        
+        scope.widget.settings.dataArray = [data];
+        scope.askedForGroup = true;
 
-        dashboardService.getData.and.callFake(function() {
-            return {
-                "value": -0.3201368817947103,
-                "warn_high": "10",
-                "warn_low": "-10",
-                "alarm_high": "14",
-                "alarm_low": "-14",
-                "units": "km/s",
-                "notes": ""
-            };
-        });
+        scope.getValue(false);
 
-        scope.applyGroup(ev, {}, 1);
-
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select group(not ID) from Data Menu");
-        expect(arrow.style.color).toEqual('#07D1EA');
+        expect(windowMock.alert).toHaveBeenCalledWith("Be sure to select a group!");
+        expect(arrow.style.color).toEqual('#b3b3b3');
+        expect(scope.widget.settings.dataArray.length).toEqual(0);
     });
 
     it('should store the value of selected group keys in widget settings variable', function() {
-        windowMock.innerWidth = 1000;
         var index = 1;
         var vehicleInfo = { 
             id: 'velocity',
@@ -325,14 +306,14 @@ describe('Testing data table controller', function () {
             category: 'GNC' 
         };
 
-        var data = {
-            parameters:[]
-        };
-        data.parameters[0] = vehicleInfo;
-
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
+        dashboardService.getLock.and.callFake(function(){
+            return { lockLeft : true, lockRight : false }
         });
+
+        scope.widget.settings.dataArray = [vehicleInfo];
+        scope.currentIndex = index;
+        scope.askedForGroup = true;
+        scope.arrow = arrow;
 
         dashboardService.getData.and.callFake(function() {
             return {
@@ -343,7 +324,7 @@ describe('Testing data table controller', function () {
             };
         });
 
-        scope.applyGroup(ev, {}, index);
+        scope.getValue(true);
 
         expect(scope.widget.settings.data[index].type).toEqual('data');
         expect(scope.widget.settings.data[index].value).toEqual('A0.GNC.velocity.v');
@@ -368,7 +349,9 @@ describe('Testing data table controller', function () {
 
     it('should close the left menu after storing keys of the group into settings variable(window width>1400)', function() {
         windowMock.innerWidth = 1440;
-        scope.lock = { lockLeft : true, lockRight : false };
+        dashboardService.getLock.and.callFake(function(){
+            return { lockLeft : true, lockRight : false }
+        });
         var index = 1;
         var vehicleInfo = { 
             id: 'velocity',
@@ -376,14 +359,10 @@ describe('Testing data table controller', function () {
             key: 'A0.GNC.velocity' 
         };
 
-        var data = {
-            parameters:[]
-        };
-        data.parameters[0] = vehicleInfo;
-
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
+        scope.widget.settings.dataArray = [vehicleInfo];
+        scope.currentIndex = index;
+        scope.askedForGroup = true;
+        scope.arrow = arrow;
 
         dashboardService.getData.and.callFake(function() {
             return {
@@ -394,7 +373,7 @@ describe('Testing data table controller', function () {
             };
         });
 
-        scope.applyGroup(ev, {}, index);
+        scope.getValue(true);
 
         expect(scope.widget.settings.data[index].type).toEqual('data');
         expect(scope.widget.settings.data[index].value).toEqual('A0.GNC.velocity.v');
@@ -608,7 +587,6 @@ describe('Testing data table controller', function () {
     });
 
     it('should undo apply telemetry id and show a blank row', function() {
-        windowMock.innerWidth = 1000;
         var index = 2;
         var vehicleInfo = { 
             id: 'vx',
@@ -616,15 +594,15 @@ describe('Testing data table controller', function () {
             key: 'A0.GNC.velocity.vx',
             category: 'category' 
         };
-        var data = {
-            parameters:[]
-        };
-        data.parameters[0] = vehicleInfo;
 
-
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
+        dashboardService.getLock.and.callFake(function(){
+            return { lockLeft : true, lockRight : false }
         });
+
+        scope.widget.settings.dataArray = [vehicleInfo];
+        scope.currentIndex = index;
+        scope.askedForGroup = false;
+        scope.arrow = arrow;
 
         dashboardService.getData.and.callFake(function() {
             return {
@@ -640,7 +618,7 @@ describe('Testing data table controller', function () {
             };
         });
 
-        scope.getValue(ev, {}, index);
+        scope.getValue(false);
 
         expect(scope.widget.settings.data[index].type).toEqual('data');
         expect(scope.widget.settings.data[index].value).toEqual('A0.GNC.velocity.vx');
@@ -681,8 +659,7 @@ describe('Testing data table controller', function () {
 
     });
 
-    it('should undo convert header and previously applied telemetry id', function() {
-        windowMock.innerWidth = 1000;
+    it('should undo convert header and show previously applied telemetry id', function() {
         var index = 2;
         var vehicleInfo = { 
             id: 'vx',
@@ -690,15 +667,15 @@ describe('Testing data table controller', function () {
             key: 'A0.GNC.velocity.vx',
             category: 'category' 
         };
-        var data = {
-            parameters:[]
-        };
-        data.parameters[0] = vehicleInfo;
 
-
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
+        dashboardService.getLock.and.callFake(function(){
+            return { lockLeft : true, lockRight : false }
         });
+
+        scope.widget.settings.dataArray = [vehicleInfo];
+        scope.currentIndex = index;
+        scope.askedForGroup = false;
+        scope.arrow = arrow;
 
         dashboardService.getData.and.callFake(function() {
             return {
@@ -714,7 +691,7 @@ describe('Testing data table controller', function () {
             };
         });
 
-        scope.getValue(ev, {}, index);
+        scope.getValue(false);
         
         scope.convertHeader(index);
 
