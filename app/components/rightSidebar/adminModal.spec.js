@@ -1,5 +1,5 @@
 describe('Testing adminModal controller', function () {
-    var controller, scope, userService, deferredRole, deferredUser, deferredSet;
+    var controller, scope, userService, deferredRole, deferredUser, deferredSet,dashboardService;
     var windowMock = {
         alert: function(message) {
             
@@ -20,6 +20,7 @@ describe('Testing adminModal controller', function () {
             deferredSet = _$q_.defer();
             scope = $rootScope.$new();
             userService = jasmine.createSpyObj('userService', ['getRoles', 'getUsers', 'setAllowedRoles']);
+            dashboardService = jasmine.createSpyObj('dashboardService',['displayAlert']);
 
             userService.getRoles.and.callFake(function() {
                 return deferredRole.promise;
@@ -33,11 +34,16 @@ describe('Testing adminModal controller', function () {
                 return deferredSet.promise;
             });
 
+            dashboardService.displayAlert.and.callFake(function(){
+                return true;
+            })
+
             controller = $controller('adminCtrl', {
                 $uibModalInstance: modalInstance,
                 userService: userService,
                 $scope: scope,
-                mission: mission
+                mission: mission,
+                dashboardService : dashboardService
             });
             
         });
@@ -212,7 +218,7 @@ describe('Testing adminModal controller', function () {
         controller.selected = undefined;
 
         controller.save();
-        expect(windowMock.alert).toHaveBeenCalledWith('Please select the user from dropdown menu');
+        expect(dashboardService.displayAlert).toHaveBeenCalledWith('Please select the user from dropdown menu.','bottom right','#allowedrolestoaster',false);
     });
 
     it('should alert the administrator if no role is checked for the user, on call of save function', function() {
@@ -243,7 +249,7 @@ describe('Testing adminModal controller', function () {
         }];
 
         controller.save();
-        expect(windowMock.alert).toHaveBeenCalledWith('Please choose at least one role');
+        expect(dashboardService.displayAlert).toHaveBeenCalledWith('Please choose at least one role.','bottom right','#allowedrolestoaster',false);
     });
 
     it('should call service to update user allowed roles and alert administrator, on call of save function', function() {
@@ -294,13 +300,11 @@ describe('Testing adminModal controller', function () {
         deferredSet.resolve({ data : {}, status : 200 })
         controller.save();
 
-        expect(windowMock.alert).not.toHaveBeenCalledWith('Allowed roles updated for John Smith')
-
         //call digest cycle for resolve to work
         scope.$digest();
         expect(controller.selected.user.allowedRoles).toEqual({GCC : 1, NAV : 1});
         expect(userService.setAllowedRoles).toHaveBeenCalledWith(user, roles, controller.mission);
-        expect(windowMock.alert).toHaveBeenCalledWith('Allowed roles updated for John Smith');
+        expect(dashboardService.displayAlert).toHaveBeenCalledWith('Allowed roles updated for John Smith!','bottom right','#allowedrolestoaster',5000);
     });
 
     it('should not be able to save allowed roles for user (status other than 200), on call of save function', function() {

@@ -175,6 +175,15 @@ div.vis-timeline.vis-bottom{
     visibility: visible !important;
 }
 
+div#timelinetoaster md-toast{
+    margin:10%;
+}
+
+div.eventBtn  div.md-toast-content{
+    padding:10px !important;
+    line-height: 1.5em !important;
+    width:60% !important;
+}
 /*Mobile screen styles*/
 @media only screen and (max-width: 599px) {
     .mbl-timeline{
