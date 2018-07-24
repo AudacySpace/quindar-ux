@@ -142,7 +142,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
         else if(status === false)
         {
 			$window.alert("Both Attitude and Position Values should be of the same vehicle.");
-		}else if($scope.widget.settings.totalAttitudeArray.length < 4 && $scope.widget.settings.totalPositionArray.length < 3){
+		}/*else if($scope.widget.settings.totalAttitudeArray.length < 4 && $scope.widget.settings.totalPositionArray.length < 3){
 			$window.alert("Please select all the quaternion coordinates:q1,q2,q3,qc and position coordinates:x,y,z");
             $scope.settings.attitudeData = [];
             $scope.settings.positionData = [];
@@ -150,10 +150,10 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 		else if($scope.widget.settings.totalAttitudeArray.length < 4 && $scope.widget.settings.totalPositionArray.length === 3){
             $scope.settings.attitudeData = [];
 			$window.alert("Please select all the quaternion coordinates:q1,q2,q3,qc");
-		}else if($scope.widget.settings.totalAttitudeArray.length < 3 && $scope.widget.settings.totalPositionArray.length === 4){
+		}else if($scope.widget.settings.totalPositionArray.length < 3 && $scope.widget.settings.totalAttitudeArray.length === 4){
             $scope.settings.positionData = [];
 			$window.alert("Please select all the position coordinates:x,y,z");		
-        }
+        }*/
 	}
 
 	$scope.getTelemetrydata = function(category){
@@ -522,6 +522,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                 //handle modal close with response
                 if(dataItems.tempAttitudes.length === 4){
                     $scope.widget.settings.totalAttitudeArray = angular.copy(dataItems.tempAttitudes);
+                    $scope.settings.attitudeData = angular.copy($scope.widget.settings.totalAttitudeArray);
                 }
             },
             function () {
@@ -545,6 +546,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
             //handle modal close with response
             if(dataItems.tempPositions.length === 3){
                 $scope.widget.settings.totalPositionArray = angular.copy(dataItems.tempPositions);
+                $scope.settings.positionData = angular.copy($scope.widget.settings.totalPositionArray);
             }
         },
         function () {

@@ -294,7 +294,6 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                 if(isDiffPositionVeh === false && positionfilteredData.length === positionSettingsfiltered2.length){ // condition to check if the values are of same vehicle and same category
                     if(positionSettingsfiltered2.length === 3){  
                         $scope.positionData[$scope.vehicleId] = angular.copy(positionSettingsfiltered2);
-                        
                         $scope.parameters.pdata[$scope.vehicleId] = angular.copy(positionSettingsfiltered2);
                         $scope.vehicle[$scope.vehicleId] = positionSettingsfiltered2[0].vehicle;
                         $scope.widget.settings.totalPositionArray[$scope.vehicleId] = angular.copy(positionSettingsfiltered2);
@@ -354,7 +353,6 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                     $scope.velocityData[$scope.vehicleId] = [];
                     $scope.velocityBooleans[2] = false;
                 }
-
             }else {
                 $scope.vehicle[$scope.vehicleId] = "";
                 $scope.velocityData[$scope.vehicleId] = [];
@@ -384,69 +382,52 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
     }
 
     //display telemetry id chosen by the user in the right input box
-    $scope.readValues = function(field)
-    {
+    $scope.readValues = function(field) {
         var trimmedData = [];
         var stringData = "";
 
-        if(field == "velocity")
-        {
-            if($scope.widget.settings.totalVelocityArray[$scope.currentVehicleId])
-            {
+        if(field == "velocity") {
+            if($scope.widget.settings.totalVelocityArray[$scope.currentVehicleId]) {
                 trimmedData = getRecentSelectedValues($scope.widget.settings.totalVelocityArray[$scope.currentVehicleId], 3);
             }
             
-            for(var i = 0; i < trimmedData.length; i++)
-            {
-                if(trimmedData[i])
-                {
-                    if(i == trimmedData.length - 1)
-                    {
+            for(var i = 0; i < trimmedData.length; i++) {
+                if(trimmedData[i]) {
+                    if(i == trimmedData.length - 1) {
                         stringData += trimmedData[i].id
                     }
-                    else
-                    {
+                    else {
                         stringData += trimmedData[i].id + ", ";
                     }
                 }
             }
-            if(stringData)
-            {
+            if(stringData) {
                 return stringData;
             }
-            else
-            {
+            else {
                 return "Click for data";
             }
         }
-        else if(field == "position")
-        {
-            if($scope.widget.settings.totalPositionArray[$scope.currentVehicleId])
-            {
+        else if(field == "position") {
+            if($scope.widget.settings.totalPositionArray[$scope.currentVehicleId]) {
                 trimmedData = getRecentSelectedValues($scope.widget.settings.totalPositionArray[$scope.currentVehicleId], 3);
             }
             
-            for(var i = 0; i < trimmedData.length; i++)
-            {
-                if(trimmedData[i])
-                {
-                    if(i == trimmedData.length - 1)
-                    {
+            for(var i = 0; i < trimmedData.length; i++) {
+                if(trimmedData[i]) {
+                    if(i == trimmedData.length - 1) {
                         stringData += trimmedData[i].id
                     }
-                    else
-                    {
+                    else {
                         stringData += trimmedData[i].id + ", ";
                     }
                 }
             }
 
-            if(stringData)
-            {
+            if(stringData) {
                 return stringData;
             }
-            else
-            {
+            else {
                 return "Click for data";
             }
         }
@@ -528,8 +509,8 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                 $scope.settings.iconstatus[$scope.currentVehicleId] = angular.copy($scope.iconstatus[$scope.currentVehicleId]);
                 $scope.settings.orbitstatus[$scope.currentVehicleId] = angular.copy($scope.orbitstatus[$scope.currentVehicleId]);
 
-                $scope.widget.settings.totalVelocityArray[$scope.vehicleId] = getRecentSelectedValues($scope.widget.settings.totalVelocityArray[$scope.vehicleId], 3);
-                $scope.widget.settings.totalPositionArray[$scope.vehicleId] = getRecentSelectedValues($scope.widget.settings.totalPositionArray[$scope.vehicleId], 3);
+                $scope.widget.settings.totalVelocityArray[$scope.currentVehicleId] = getRecentSelectedValues($scope.widget.settings.totalVelocityArray[$scope.currentVehicleId], 3);
+                $scope.widget.settings.totalPositionArray[$scope.currentVehicleId] = getRecentSelectedValues($scope.widget.settings.totalPositionArray[$scope.currentVehicleId], 3);
                 $scope.widget.settings.dataArray = [];
                
                 if ($window.innerWidth >= 1400){
@@ -574,7 +555,8 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
 
     $scope.openPositionList = function(vehicleId) {
         // Just pro$scope.vehicleIde a template url, a controller and call 'open'.
-        $scope.settings.tempPositions = angular.copy(getRecentSelectedValues($scope.widget.settings.totalPositionArray, 3));
+        $scope.settings.tempPositions = angular.copy($scope.widget.settings.totalPositionArray);
+        $scope.settings.tempPositions[$scope.currentVehicleId] = angular.copy(getRecentSelectedValues($scope.widget.settings.totalPositionArray[$scope.currentVehicleId], 3));
         $uibModal.open({
             templateUrl: "./directives/groundtrack/positionList.html",
             controller: 'positionParametersCtrl',
@@ -601,7 +583,8 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
 
     $scope.openVelocityList = function(vehicleId) {
         // Just pro$scope.vehicleIde a template url, a controller and call 'open'.
-        $scope.settings.tempVelocities = angular.copy(getRecentSelectedValues($scope.widget.settings.totalVelocityArray, 3)); 
+        $scope.settings.tempVelocities = angular.copy($scope.widget.settings.totalVelocityArray);
+        $scope.settings.tempVelocities[$scope.currentVehicleId] = angular.copy(getRecentSelectedValues($scope.widget.settings.totalVelocityArray[$scope.currentVehicleId], 3)); 
         $uibModal.open({
             templateUrl: "./directives/groundtrack/velocityList.html",
             controller: 'velocityParametersCtrl',

@@ -25,7 +25,7 @@ describe('Testing Groundtrack settings controller', function () {
             dashboardService = jasmine.createSpyObj('dashboardService', 
                 ['sortObject','getLock', 'setLeftLock','getData', 'isEmpty', 'telemetry']);
 
-            sidebarService = jasmine.createSpyObj('sidebarService',['getVehicleInfo', 'setMenuStatus']);
+            sidebarService = jasmine.createSpyObj('sidebarService',['getVehicleInfo', 'setMenuStatus', 'setTempWidget']);
 
             scope = $rootScope.$new();
             scope.widget = {
@@ -102,10 +102,10 @@ describe('Testing Groundtrack settings controller', function () {
         expect(scope.velocityData).toEqual([[], []]);
         expect(scope.settings.pdata).toEqual([[], []]);
         expect(scope.settings.vdata).toEqual([[], []]);
+        expect(scope.widget.settings.totalPositionArray).toEqual([[], []]);
+        expect(scope.widget.settings.totalVelocityArray).toEqual([[], []]);
         expect(scope.settings.orbitstatus).toEqual([true, true]);
         expect(scope.settings.iconstatus).toEqual([true, true]);
-        expect(scope.pdisplay).toEqual(["Click for data", "Click for data"]);
-        expect(scope.vdisplay).toEqual(["Click for data", "Click for data"]);
         expect(scope.checkedValues).toEqual([{status:false}, {status:false}])
         expect(scope.settings.vehicles.length).toEqual(2);
     });
@@ -218,6 +218,10 @@ describe('Testing Groundtrack settings controller', function () {
             {vehicle:'A0',id:'vy',key:'A0.GNC.velocity.vy',category:'velocity'},
             {vehicle:'A0',id:'vz',key:'A0.GNC.velocity.vz',category:'velocity'}
         ];
+
+        scope.widget.settings.totalPositionArray[0] = angular.copy(scope.settings.pdata[0]);
+        scope.widget.settings.totalVelocityArray[0] = angular.copy(scope.settings.vdata[0]);
+        scope.currentVehicleId = 0;
         scope.vehicle = 'A0';
         scope.widget.main = false;
         scope.widget.settings.active = true;
@@ -242,7 +246,6 @@ describe('Testing Groundtrack settings controller', function () {
 
         expect(modalInstance.open).toHaveBeenCalled();
         expect(mockModalInstance.result.then).toHaveBeenCalledWith(jasmine.any(Function),jasmine.any(Function));
-        expect(scope.vdisplay[0]).toEqual('vx,vy,vz');
 
     });
 
@@ -257,6 +260,9 @@ describe('Testing Groundtrack settings controller', function () {
             {vehicle:'A0',id:'vy',key:'A0.GNC.velocity.vy',category:'velocity'},
             {vehicle:'A0',id:'vz',key:'A0.GNC.velocity.vz',category:'velocity'}
         ];
+        scope.widget.settings.totalPositionArray[0] = angular.copy(scope.settings.pdata[0]);
+        scope.widget.settings.totalVelocityArray[0] = angular.copy(scope.settings.vdata[0]);
+        scope.currentVehicleId = 0;
         scope.vehicle = 'A0';
         scope.widget.main = false;
         scope.widget.settings.active = true;
@@ -281,7 +287,6 @@ describe('Testing Groundtrack settings controller', function () {
 
         expect(modalInstance.open).toHaveBeenCalled();
         expect(mockModalInstance.result.then).toHaveBeenCalledWith(jasmine.any(Function),jasmine.any(Function));
-        expect(scope.pdisplay[0]).toEqual('x,y,z');
 
     });
 
@@ -317,19 +322,15 @@ describe('Testing Groundtrack settings controller', function () {
 
     it('should alert the user if the vehicle and id from the left menu are not available', function() {
         spyOn(windowMock, "alert");
-        var data = {
-            parameters:[]
-        };
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
+        scope.widget.settings.dataArray = [];
 
         scope.getValue('position',0);
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select the parameters before apply!");
+        scope.saveParameters(scope.widget);
+        expect(windowMock.alert).toHaveBeenCalledWith("Please select the parameters before applying!");
     });
 
     it('should store the value of selected velocity parameters for vehicleid 0 when category is velocity and vehicleid is 0', function() {
-        windowMock.innerWidth = 1440;
+        //windowMock.innerWidth = 1440;
         dashboardService.getData.and.callFake(function(){
             return {
                 "value": -0.31187798675604184,
@@ -342,33 +343,38 @@ describe('Testing Groundtrack settings controller', function () {
             }
         });
 
-        var data = { 
-            parameters:[
-                {vehicle:'A0',id:'vx',key:'A0.GNC.velocity.vx',category:'velocity'},
-                {vehicle:'A0',id:'vy',key:'A0.GNC.velocity.vy',category:'velocity'},
-                {vehicle:'A0',id:'vz',key:'A0.GNC.velocity.vz',category:'velocity'}
-            ]
-        };
-        scope.lock = { lockLeft : true, lockRight : false }
-
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
         scope.currentScreenVehicle = 'A0';
-        scope.getValue('velocity',0);
+        scope.vehicleId = 0;
+        scope.chosenCategory = 'velocity';
+
+        scope.widget.settings.dataArray = [];
+        scope.widget.settings.totalPositionArray = [[]];
+        scope.widget.settings.totalVelocityArray = [[]];
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'vx',key:'A0.GNC.velocity.vx',category:'velocity'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'vy',key:'A0.GNC.velocity.vy',category:'velocity'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'vz',key:'A0.GNC.velocity.vz',category:'velocity'});
+        scope.getValue(false);
+        //scope.lock = { lockLeft : true, lockRight : false }
+
+        expect(scope.widget.settings.totalVelocityArray[0]).toEqual([
+            {vehicle:'A0',id:'vx',key:'A0.GNC.velocity.vx',category:'velocity'},
+            {vehicle:'A0',id:'vy',key:'A0.GNC.velocity.vy',category:'velocity'},
+            {vehicle:'A0',id:'vz',key:'A0.GNC.velocity.vz',category:'velocity'}
+        ]);
         expect(scope.velocityData[0]).toEqual([
             {vehicle:'A0',id:'vx',key:'A0.GNC.velocity.vx',category:'velocity'},
             {vehicle:'A0',id:'vy',key:'A0.GNC.velocity.vy',category:'velocity'},
             {vehicle:'A0',id:'vz',key:'A0.GNC.velocity.vz',category:'velocity'}
         ]);
         expect(scope.vehicle[0]).toEqual('A0');
-        expect(scope.vdisplay[0]).toEqual('vx,vy,vz');
-        expect(scope.lock.lockLeft).toEqual(false);
-        expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false); 
+        //expect(scope.lock.lockLeft).toEqual(false);
+        //expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false); 
     });
 
     it('should store only the value of last three selected velocity parameters when category is velocity and number of paramters selected is more than 3', function() {
-        windowMock.innerWidth = 1440;
+        //windowMock.innerWidth = 1440;
         dashboardService.getData.and.callFake(function(){
             return {
                 "value": -0.31187798675604184,
@@ -380,53 +386,88 @@ describe('Testing Groundtrack settings controller', function () {
                 "notes": ""
             }
         });
-        var data = { 
-            parameters:[
-                {vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
-                {vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'},
-                {vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'},
-                {vehicle:'A0',id:'q1',key:'A0.GNC.attitude.q1',category:'attitude'},
-                {vehicle:'A0',id:'vx',key:'A0.GNC.velocity.vx',category:'velocity'},
-                {vehicle:'A0',id:'vy',key:'A0.GNC.velocity.vy',category:'velocity'},
-                {vehicle:'A0',id:'vz',key:'A0.GNC.velocity.vz',category:'velocity'}
-            ]
-        };
-        scope.lock = { lockLeft : true, lockRight : false }
 
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
-        scope.currentScreenVehicle = 'A0'
-        scope.getValue('velocity',0);
+        scope.currentScreenVehicle = 'A0';
+        scope.vehicleId = 0;
+        scope.chosenCategory = 'velocity';
+
+        scope.widget.settings.dataArray = [];
+        scope.widget.settings.totalPositionArray = [[]];
+        scope.widget.settings.totalVelocityArray = [[]];
+
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'q1',key:'A0.GNC.attitude.q1',category:'attitude'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'vx',key:'A0.GNC.velocity.vx',category:'velocity'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'vy',key:'A0.GNC.velocity.vy',category:'velocity'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'vz',key:'A0.GNC.velocity.vz',category:'velocity'});
+        scope.getValue(false);
+
+        //scope.lock = { lockLeft : true, lockRight : false }
+
+        expect(scope.widget.settings.totalVelocityArray[0]).toEqual([
+            {vehicle:'A0',id:'vx',key:'A0.GNC.velocity.vx',category:'velocity'},
+            {vehicle:'A0',id:'vy',key:'A0.GNC.velocity.vy',category:'velocity'},
+            {vehicle:'A0',id:'vz',key:'A0.GNC.velocity.vz',category:'velocity'}
+        ]);
         expect(scope.velocityData[0]).toEqual([
             {vehicle:'A0',id:'vx',key:'A0.GNC.velocity.vx',category:'velocity'},
             {vehicle:'A0',id:'vy',key:'A0.GNC.velocity.vy',category:'velocity'},
             {vehicle:'A0',id:'vz',key:'A0.GNC.velocity.vz',category:'velocity'}
         ]);
         expect(scope.vehicle[0]).toEqual('A0');
-        expect(scope.vdisplay[0]).toEqual('vx,vy,vz');
-        expect(scope.lock.lockLeft).toEqual(false);
-        expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false); 
+        //expect(scope.lock.lockLeft).toEqual(false);
+        //expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false); 
     });
 
     it('should not store the value of selected velocity parameters when category is velocity and number of parameters is not equal to 3', function() {
         spyOn(windowMock, "alert");
 
-        var data = { 
-            parameters:[
-                {vehicle:'A0',id:'vx',key:'A0.GNC.velocity.vx',category:'velocity'},
-                {vehicle:'A0',id:'vy',key:'A0.GNC.velocity.vy',category:'velocity'}
-            ]
-        };
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
+        dashboardService.getData.and.callFake(function(){
+            return {
+                "value": -0.31187798675604184,
+                "warn_high": "10",
+                "warn_low": "-10",
+                "alarm_high": "14",
+                "alarm_low": "-14",
+                "units": "km/s",
+                "notes": ""
+            }
         });
 
         scope.currentScreenVehicle = 'A0';
-        scope.getValue('velocity',0);
+        scope.currentVehicleId = 0;
+        scope.vehicleId = 0;
+        scope.chosenCategory = 'velocity';
+
+        scope.widget.settings.dataArray = [];
+        scope.widget.settings.totalPositionArray = [[
+            {vehicle: "A0", id: "z", key: "A0.GNC.position.z", category: "position"},
+            {vehicle: "A0", id: "x", key: "A0.GNC.position.x", category: "position"},
+            {vehicle: "A0", id: "y", key: "A0.GNC.position.y", category: "position"}
+        ]];
+        scope.widget.settings.totalVelocityArray = [[]];
+
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'vy',key:'A0.GNC.velocity.vy',category:'velocity'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'vz',key:'A0.GNC.velocity.vz',category:'velocity'});
+        scope.getValue(false);
+
+        scope.saveParameters(scope.widget);
+
         expect(scope.velocityData[0]).toEqual([]);
         expect(scope.vehicle[0]).toEqual('');
-        expect(scope.vdisplay[0]).toEqual('Click for data');
+        expect(scope.widget.settings.totalVelocityArray[0]).toEqual([
+            {vehicle:'A0',id:'vy',key:'A0.GNC.velocity.vy',category:'velocity'},
+            {vehicle:'A0',id:'vz',key:'A0.GNC.velocity.vz',category:'velocity'}
+        ]);
         expect(windowMock.alert).toHaveBeenCalledWith("Please select all velocity values:vx,vy,vz");
     });
 
@@ -443,22 +484,36 @@ describe('Testing Groundtrack settings controller', function () {
                 "notes": ""
             }
         });
-        var data = { 
-            parameters:[
-                {vehicle: "Audacy2", id: "vx", key: "Audacy2.GNC.velocity.vx", category: "velocity"},
-                {vehicle: "Audacy2", id: "vy", key: "Audacy2.GNC.velocity.vy", category: "velocity"},
-                {vehicle: "Audacy2", id: "vz", key: "Audacy2.GNC.velocity.vz", category: "velocity"}
-            ]
-        };
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
 
         scope.currentScreenVehicle = "Audacy1";
-        scope.getValue('velocity',0);
+        scope.currentVehicleId = 0;
+        scope.vehicleId = 0;
+        scope.chosenCategory = 'velocity';
+
+        scope.widget.settings.dataArray = [];
+        scope.widget.settings.totalPositionArray = [[
+            {vehicle: "Audacy1", id: "z", key: "Audacy1.GNC.position.z", category: "position"},
+            {vehicle: "Audacy1", id: "x", key: "Audacy1.GNC.position.x", category: "position"},
+            {vehicle: "Audacy1", id: "y", key: "Audacy1.GNC.position.y", category: "position"}
+        ]];
+        scope.widget.settings.totalVelocityArray = [[]];
+
+        scope.widget.settings.dataArray.push({vehicle: "Audacy2", id: "vx", key: "Audacy2.GNC.velocity.vx", category: "velocity"});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle: "Audacy2", id: "vy", key: "Audacy2.GNC.velocity.vy", category: "velocity"});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle: "Audacy2", id: "vz", key: "Audacy2.GNC.velocity.vz", category: "velocity"});
+        scope.getValue(false);
+
+        scope.saveParameters(scope.widget);
+
         expect(scope.velocityData[0]).toEqual([]);
         expect(scope.vehicle[0]).toEqual('');
-        expect(scope.vdisplay[0]).toEqual('Click for data');
+        expect(scope.widget.settings.totalVelocityArray[0]).toEqual([
+            {vehicle: "Audacy2", id: "vx", key: "Audacy2.GNC.velocity.vx", category: "velocity"},
+            {vehicle: "Audacy2", id: "vy", key: "Audacy2.GNC.velocity.vy", category: "velocity"},
+            {vehicle: "Audacy2", id: "vz", key: "Audacy2.GNC.velocity.vz", category: "velocity"}
+        ]);
         expect(windowMock.alert).toHaveBeenCalledWith("Please select all the velocity values:vx,vy,vz from the same vehicle: Audacy1");
     });
 
@@ -475,48 +530,72 @@ describe('Testing Groundtrack settings controller', function () {
                 "notes": ""
             }
         });
-        var data = { 
-            parameters:[
-                {vehicle: "Audacy1", id: "vx", key: "Audacy2.GNC.velocity.vx", category: "velocity"},
-                {vehicle: "Audacy1", id: "x", key: "Audacy2.GNC.velocity.x", category: "position"},
-                {vehicle: "Audacy1", id: "vz", key: "Audacy2.GNC.velocity.vz", category: "velocity"}
-            ]
-        };
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
 
         scope.currentScreenVehicle = "Audacy1";
-        scope.getValue('velocity',0);
+        scope.currentVehicleId = 0;
+        scope.vehicleId = 0;
+        scope.chosenCategory = 'velocity';
+
+        scope.widget.settings.dataArray = [];
+        scope.widget.settings.totalPositionArray = [[
+            {vehicle: "Audacy1", id: "z", key: "Audacy1.GNC.position.z", category: "position"},
+            {vehicle: "Audacy1", id: "x", key: "Audacy1.GNC.position.x", category: "position"},
+            {vehicle: "Audacy1", id: "y", key: "Audacy1.GNC.position.y", category: "position"}
+        ]];
+        scope.widget.settings.totalVelocityArray = [[]];
+
+        scope.widget.settings.dataArray.push({vehicle: "Audacy1", id: "vx", key: "Audacy1.GNC.velocity.vx", category: "velocity"});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle: "Audacy1", id: "x", key: "Audacy1.GNC.position.x", category: "position"});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle: "Audacy1", id: "vz", key: "Audacy1.GNC.velocity.vz", category: "velocity"});
+        scope.getValue(false);
+
+        scope.saveParameters(scope.widget);
+
         expect(scope.velocityData[0]).toEqual([]);
         expect(scope.vehicle[0]).toEqual('');
-        expect(scope.vdisplay[0]).toEqual('Click for data');
+        expect(scope.widget.settings.totalVelocityArray[0]).toEqual([
+            {vehicle: "Audacy1", id: "vx", key: "Audacy1.GNC.velocity.vx", category: "velocity"},
+            {vehicle: "Audacy1", id: "x", key: "Audacy1.GNC.position.x", category: "position"},
+            {vehicle: "Audacy1", id: "vz", key: "Audacy1.GNC.velocity.vz", category: "velocity"}
+        ]);
         expect(windowMock.alert).toHaveBeenCalledWith("Please select all the velocity values:vx,vy,vz from the same category of vehicle: Audacy1");
     });
 
     it('should not store the value of selected velocity parameters when category is velocity and selected parameters do not have available data', function() {
         spyOn(windowMock, "alert");
-        var data = { 
-            parameters:[
-                {vehicle: "Audacy1", id: "z", key: "Audacy2.GNC.velocity.z", category: "position"},
-                {vehicle: "Audacy1", id: "x", key: "Audacy2.GNC.velocity.x", category: "position"},
-                {vehicle: "Audacy1", id: "y", key: "Audacy2.GNC.velocity.y", category: "position"}
-            ]
-        };
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
 
         scope.currentScreenVehicle = "Audacy1";
-        scope.getValue('velocity',0);
-        expect(scope.velocityData[0]).toEqual([]);
+        scope.currentVehicleId = 0;
+        scope.vehicleId = 0;
+        scope.chosenCategory = 'velocity';
+
+        scope.widget.settings.dataArray = [];
+        scope.widget.settings.totalPositionArray = [[
+            {vehicle: "Audacy1", id: "z", key: "Audacy1.GNC.position.z", category: "position"},
+            {vehicle: "Audacy1", id: "x", key: "Audacy1.GNC.position.x", category: "position"},
+            {vehicle: "Audacy1", id: "y", key: "Audacy1.GNC.position.y", category: "position"}
+        ]];
+        scope.widget.settings.totalVelocityArray = [[]];
+
+        scope.widget.settings.dataArray.push({vehicle: "Audacy1", id: "z", key: "Audacy2.GNC.velocity.z", category: "position"});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle: "Audacy1", id: "x", key: "Audacy2.GNC.velocity.x", category: "position"});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle: "Audacy1", id: "y", key: "Audacy2.GNC.velocity.y", category: "position"});
+        scope.getValue(false);
+        scope.positionBooleans[0] = true;
+
         expect(scope.vehicle[0]).toEqual('');
-        expect(scope.vdisplay[0]).toEqual('Click for data');
+
+        scope.saveParameters(scope.widget);
+
         expect(windowMock.alert).toHaveBeenCalledWith("You have either not selected all velocity values: or there may be no data available for the selected velocity coordinates.");
     });
 
     it('should store the value of selected position parameters for vehicleid 0 when category is position and vehicleid is 0', function() {
-        windowMock.innerWidth = 1440;
+        //windowMock.innerWidth = 1440;
         dashboardService.getData.and.callFake(function(){
             return {
                 "value":0.688,
@@ -529,29 +608,36 @@ describe('Testing Groundtrack settings controller', function () {
             }
         });
 
-        var data = { 
-            parameters:[
-                {vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
-                {vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'},
-                {vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'}
-            ]
-        };
-        scope.lock = { lockLeft : true, lockRight : false }
-
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
         scope.currentScreenVehicle = 'A0';
-        scope.getValue('position',0);
+        scope.currentVehicleId = 0;
+        scope.vehicleId = 0;
+        scope.chosenCategory = 'position';
+
+        scope.widget.settings.dataArray = [];
+        scope.widget.settings.totalPositionArray = [[]];
+        scope.widget.settings.totalVelocityArray = [[
+            {vehicle: "A0", id: "vx", key: "A0.GNC.velocity.vx", category: "velocity"},
+            {vehicle: "A0", id: "vy", key: "A0.GNC.velocity.vy", category: "velocity"},
+            {vehicle: "A0", id: "vz", key: "A0.GNC.velocity.vz", category: "velocity"}
+        ]];
+
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'});
+        scope.getValue(false);
+
+        //scope.lock = { lockLeft : true, lockRight : false }
+
         expect(scope.positionData[0]).toEqual([
             {vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
             {vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'},
             {vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'}
         ]);
         expect(scope.vehicle[0]).toEqual('A0');
-        expect(scope.pdisplay[0]).toEqual('x,y,z');
-        expect(scope.lock.lockLeft).toEqual(false);
-        expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false); 
+        //expect(scope.lock.lockLeft).toEqual(false);
+        //expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false); 
     });
 
     it('should store only the value of last three selected position parameters when category is position and number of paramters selected is more than 3', function() {
@@ -567,53 +653,72 @@ describe('Testing Groundtrack settings controller', function () {
                 "notes": ""            
             }
         });
-        var data = { 
-            parameters:[
-                {vehicle:'A0',id:'q1',key:'A0.GNC.attitude.q1',category:'attitude'},
-                {vehicle:'A0',id:'vx',key:'A0.GNC.velocity.vx',category:'velocity'},
-                {vehicle:'A0',id:'vy',key:'A0.GNC.velocity.vy',category:'velocity'},
-                {vehicle:'A0',id:'vz',key:'A0.GNC.velocity.vz',category:'velocity'},
-                {vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
-                {vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'},
-                {vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'}
-            ]
-        };
-        scope.lock = { lockLeft : true, lockRight : false }
 
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
-        scope.currentScreenVehicle = 'A0'
-        scope.getValue('position',0);
+        scope.currentScreenVehicle = 'A0';
+        scope.currentVehicleId = 0;
+        scope.vehicleId = 0;
+        scope.chosenCategory = 'position';
+
+        scope.widget.settings.dataArray = [];
+        scope.widget.settings.totalPositionArray = [[]];
+        scope.widget.settings.totalVelocityArray = [[
+            {vehicle: "A0", id: "vx", key: "A0.GNC.velocity.vx", category: "velocity"},
+            {vehicle: "A0", id: "vy", key: "A0.GNC.velocity.vy", category: "velocity"},
+            {vehicle: "A0", id: "vz", key: "A0.GNC.velocity.vz", category: "velocity"}
+        ]];
+
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'q1',key:'A0.GNC.attitude.q1',category:'attitude'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'vx',key:'A0.GNC.velocity.vx',category:'velocity'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'vy',key:'A0.GNC.velocity.vy',category:'velocity'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'vz',key:'A0.GNC.velocity.vz',category:'velocity'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'});
+        scope.getValue(false);
+
+        //scope.lock = { lockLeft : true, lockRight : false }
+
         expect(scope.positionData[0]).toEqual([
             {vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
             {vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'},
             {vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'}
         ]);
         expect(scope.vehicle[0]).toEqual('A0');
-        expect(scope.pdisplay[0]).toEqual('x,y,z');
-        expect(scope.lock.lockLeft).toEqual(false);
-        expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false); 
+        //expect(scope.lock.lockLeft).toEqual(false);
+        //expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false); 
     });
 
     it('should not store the value of selected position parameters when category is position and number of parameters is not equal to 3', function() {
         spyOn(windowMock, "alert");
 
-        var data = { 
-            parameters:[
-                {vehicle:'A0',id:'x',key:'A0.GNC.position.vx',category:'position'},
-                {vehicle:'A0',id:'y',key:'A0.GNC.position.vy',category:'position'}
-            ]
-        };
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
-
         scope.currentScreenVehicle = 'A0';
-        scope.getValue('position',0);
+        scope.currentVehicleId = 0;
+        scope.vehicleId = 0;
+        scope.chosenCategory = 'position';
+
+        scope.widget.settings.dataArray = [];
+        scope.widget.settings.totalPositionArray = [[]];
+        scope.widget.settings.totalVelocityArray = [[
+            {vehicle: "A0", id: "vx", key: "A0.GNC.velocity.vx", category: "velocity"},
+            {vehicle: "A0", id: "vy", key: "A0.GNC.velocity.vy", category: "velocity"},
+            {vehicle: "A0", id: "vz", key: "A0.GNC.velocity.vz", category: "velocity"}
+        ]];
+
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'x',key:'A0.GNC.position.vx',category:'position'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'y',key:'A0.GNC.position.vy',category:'position'});
+        scope.getValue(false);
+
+        scope.saveParameters(scope.widget);
+
         expect(scope.positionData[0]).toEqual([]);
         expect(scope.vehicle[0]).toEqual('');
-        expect(scope.pdisplay[0]).toEqual('Click for data');
         expect(windowMock.alert).toHaveBeenCalledWith("Please select all position values:x,y,z");
     });
 
@@ -630,22 +735,31 @@ describe('Testing Groundtrack settings controller', function () {
                 "notes": ""  
             }
         });
-        var data = { 
-            parameters:[
-                {vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
-                {vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'},
-                {vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'}
-            ]
-        };
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
 
         scope.currentScreenVehicle = "Audacy1";
-        scope.getValue('position',0);
+        scope.currentVehicleId = 0;
+        scope.vehicleId = 0;
+        scope.chosenCategory = 'position';
+
+        scope.widget.settings.dataArray = [];
+        scope.widget.settings.totalPositionArray = [[]];
+        scope.widget.settings.totalVelocityArray = [[
+            {vehicle: "A0", id: "vx", key: "A0.GNC.velocity.vx", category: "velocity"},
+            {vehicle: "A0", id: "vy", key: "A0.GNC.velocity.vy", category: "velocity"},
+            {vehicle: "A0", id: "vz", key: "A0.GNC.velocity.vz", category: "velocity"}
+        ]];
+
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'});
+        scope.getValue(false);
+
+        scope.saveParameters(scope.widget);
+
         expect(scope.positionData[0]).toEqual([]);
         expect(scope.vehicle[0]).toEqual('');
-        expect(scope.pdisplay[0]).toEqual('Click for data');
         expect(windowMock.alert).toHaveBeenCalledWith("Please select all the position values:x,y,z from the same vehicle: Audacy1");
     });
 
@@ -662,64 +776,65 @@ describe('Testing Groundtrack settings controller', function () {
                 "notes": "" 
             }
         });
-        var data = { 
-            parameters:[
-                {vehicle:'Audacy1',id:'x',key:'A0.GNC.position.x',category:'position'},
-                {vehicle:'Audacy1',id:'y',key:'A0.GNC.position.vy',category:'velocity'},
-                {vehicle:'Audacy1',id:'z',key:'A0.GNC.position.z',category:'position'}
-            ]
-        };
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
 
         scope.currentScreenVehicle = "Audacy1";
-        scope.getValue('position',0);
+        scope.currentVehicleId = 0;
+        scope.vehicleId = 0;
+        scope.chosenCategory = 'position';
+
+        scope.widget.settings.dataArray = [];
+        scope.widget.settings.totalPositionArray = [[]];
+        scope.widget.settings.totalVelocityArray = [[
+            {vehicle: "Audacy1", id: "vx", key: "Audacy1.GNC.velocity.vx", category: "velocity"},
+            {vehicle: "Audacy1", id: "vy", key: "Audacy1.GNC.velocity.vy", category: "velocity"},
+            {vehicle: "Audacy1", id: "vz", key: "Audacy1.GNC.velocity.vz", category: "velocity"}
+        ]];
+
+        scope.widget.settings.dataArray.push({vehicle:'Audacy1',id:'x',key:'A0.GNC.position.x',category:'position'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'Audacy1',id:'y',key:'A0.GNC.position.vy',category:'velocity'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'Audacy1',id:'z',key:'A0.GNC.position.z',category:'position'});
+        scope.getValue(false);
+
+        scope.saveParameters(scope.widget);
+
         expect(scope.positionData[0]).toEqual([]);
-        expect(scope.vehicle[0]).toEqual('');
-        expect(scope.pdisplay[0]).toEqual('Click for data');
+        expect(scope.widget.settings.totalPositionArray[0]).toEqual([
+            {vehicle:'Audacy1',id:'x',key:'A0.GNC.position.x',category:'position'},
+            {vehicle:'Audacy1',id:'y',key:'A0.GNC.position.vy',category:'velocity'},
+            {vehicle:'Audacy1',id:'z',key:'A0.GNC.position.z',category:'position'}
+        ]);
         expect(windowMock.alert).toHaveBeenCalledWith("Please select all the position values:x,y,z from the same category of vehicle: Audacy1");
     });
 
     it('should not store the value of selected position parameters when category is position and selected parameters do not have available data', function() {
         spyOn(windowMock, "alert");
-        var data = { 
-            parameters:[
-                {vehicle: "Audacy1", id: "z", key: "Audacy2.GNC.velocity.z", category: "position"},
-                {vehicle: "Audacy1", id: "x", key: "Audacy2.GNC.velocity.x", category: "position"},
-                {vehicle: "Audacy1", id: "y", key: "Audacy2.GNC.velocity.y", category: "position"}
-            ]
-        };
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
 
         scope.currentScreenVehicle = "Audacy1";
-        scope.getValue('position',0);
+        scope.currentVehicleId = 0;
+        scope.vehicleId = 0;
+        scope.chosenCategory = 'position';
+
+        scope.widget.settings.dataArray = [];
+        scope.widget.settings.totalPositionArray = [[]];
+        scope.widget.settings.totalVelocityArray = [[
+            {vehicle: "Audacy1", id: "vx", key: "Audacy1.GNC.velocity.vx", category: "velocity"},
+            {vehicle: "Audacy1", id: "vy", key: "Audacy1.GNC.velocity.vy", category: "velocity"},
+            {vehicle: "Audacy1", id: "vz", key: "Audacy1.GNC.velocity.vz", category: "velocity"}
+        ]];
+
+        scope.widget.settings.dataArray.push({vehicle: "Audacy1", id: "z", key: "Audacy2.GNC.velocity.z", category: "position"});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle: "Audacy1", id: "x", key: "Audacy2.GNC.velocity.x", category: "position"});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle: "Audacy1", id: "y", key: "Audacy2.GNC.velocity.y", category: "position"});
+        scope.getValue(false);
+
+        scope.saveParameters(scope.widget);
+
         expect(scope.positionData[0]).toEqual([]);
         expect(scope.vehicle[0]).toEqual('');
-        expect(scope.pdisplay[0]).toEqual('Click for data');
-        expect(windowMock.alert).toHaveBeenCalledWith("You have either not selected all position values:x,y,z or there may be no data available for the selected position coordinates.");
-    });
-
-    it('should not store the value of selected position parameters when category is position and selected parameters do not have available data', function() {
-        spyOn(windowMock, "alert");
-        var data = { 
-            parameters:[
-                {vehicle: "Audacy1", id: "z", key: "Audacy2.GNC.velocity.z", category: "position"},
-                {vehicle: "Audacy1", id: "x", key: "Audacy2.GNC.velocity.x", category: "position"},
-                {vehicle: "Audacy1", id: "y", key: "Audacy2.GNC.velocity.y", category: "position"}
-            ]
-        };
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
-
-        scope.currentScreenVehicle = "Audacy1";
-        scope.getValue('position',0);
-        expect(scope.positionData[0]).toEqual([]);
-        expect(scope.vehicle[0]).toEqual('');
-        expect(scope.pdisplay[0]).toEqual('Click for data');
         expect(windowMock.alert).toHaveBeenCalledWith("You have either not selected all position values:x,y,z or there may be no data available for the selected position coordinates.");
     });
 
@@ -729,6 +844,9 @@ describe('Testing Groundtrack settings controller', function () {
             return true;
         }
 
+        dashboardService.getLock.and.callFake(function(){
+            return { lockLeft : true, lockRight : false }
+        });
         scope.iconstatus[0] = true;
         scope.orbitstatus[0] = true;
         scope.positionData[0] = [];
@@ -737,6 +855,13 @@ describe('Testing Groundtrack settings controller', function () {
         scope.settings.vdata[0] = [4];
         scope.currentVehicleId = 0;
         scope.widget = {};
+        scope.widget.settings = {};
+        scope.widget.settings.totalPositionArray = [[]];
+        scope.widget.settings.totalPositionArray[0] = [4];
+        scope.widget.settings.totalVelocityArray = [[]];
+        scope.widget.settings.totalVelocityArray[0] = [4];
+        scope.positionBooleans = [true, true, true, true];
+        scope.velocityBooleans = [true, true, true, true];
         scope.currentScreenVehicle = "Audacy1";
         scope.saveParameters(scope.widget);
         expect(scope.secondScreen).toEqual(false);
@@ -750,6 +875,9 @@ describe('Testing Groundtrack settings controller', function () {
             return false;
         }
 
+        dashboardService.getLock.and.callFake(function(){
+            return { lockLeft : true, lockRight : false }
+        });
         scope.iconstatus[0] = true;
         scope.orbitstatus[0] = true;
         scope.positionData[0] = [];
@@ -758,6 +886,13 @@ describe('Testing Groundtrack settings controller', function () {
         scope.settings.vdata[0] = [4];
         scope.currentVehicleId = 0;
         scope.widget = {};
+        scope.widget.settings = {};
+        scope.widget.settings.totalPositionArray = [[]];
+        scope.widget.settings.totalPositionArray[0] = [4];
+        scope.widget.settings.totalVelocityArray = [[]];
+        scope.widget.settings.totalVelocityArray[0] = [4];
+        scope.positionBooleans = [true, true, true, true];
+        scope.velocityBooleans = [true, true, true, true];
         scope.currentScreenVehicle = "Audacy1";
         scope.saveParameters(scope.widget);
         expect(scope.secondScreen).toEqual(true);
@@ -769,6 +904,9 @@ describe('Testing Groundtrack settings controller', function () {
             return true;
         }
 
+        dashboardService.getLock.and.callFake(function(){
+            return { lockLeft : true, lockRight : false }
+        });
         scope.iconstatus[0] = false;
         scope.orbitstatus[0] = false;
         scope.positionData[0] = [];
@@ -777,6 +915,13 @@ describe('Testing Groundtrack settings controller', function () {
         scope.settings.vdata[0] = [4];
         scope.currentVehicleId = 0;
         scope.widget = {};
+        scope.widget.settings = {};
+        scope.widget.settings.totalPositionArray = [[]];
+        scope.widget.settings.totalPositionArray[0] = [4];
+        scope.widget.settings.totalVelocityArray = [[]];
+        scope.widget.settings.totalVelocityArray[0] = [4];
+        scope.positionBooleans = [true, true, true, true];
+        scope.velocityBooleans = [true, true, true, true];
         scope.currentScreenVehicle = "Audacy1";
         scope.saveParameters(scope.widget);
         expect(scope.secondScreen).toEqual(true);
@@ -793,6 +938,9 @@ describe('Testing Groundtrack settings controller', function () {
             
         }
 
+        dashboardService.getLock.and.callFake(function(){
+            return { lockLeft : true, lockRight : false }
+        });
         scope.iconstatus[0] = false;
         scope.orbitstatus[0] = false;
         scope.positionData[0] = [];
@@ -801,6 +949,13 @@ describe('Testing Groundtrack settings controller', function () {
         scope.settings.vdata[0] = [4];
         scope.currentVehicleId = 0;
         scope.widget = {};
+        scope.widget.settings = {};
+        scope.widget.settings.totalPositionArray = [[]];
+        scope.widget.settings.totalPositionArray[0] = [4];
+        scope.widget.settings.totalVelocityArray = [[]];
+        scope.widget.settings.totalVelocityArray[0] = [4];
+        scope.positionBooleans = [true, true, true, true];
+        scope.velocityBooleans = [true, true, true, true];
         scope.currentScreenVehicle = "Audacy1";
         scope.saveParameters(scope.widget);
         expect(scope.secondScreen).toEqual(false);
@@ -819,6 +974,9 @@ describe('Testing Groundtrack settings controller', function () {
             
         }
 
+        dashboardService.getLock.and.callFake(function(){
+            return { lockLeft : true, lockRight : false }
+        });
         scope.iconstatus[0] = false;
         scope.orbitstatus[0] = false;
         scope.positionData[0] = [];
@@ -827,6 +985,13 @@ describe('Testing Groundtrack settings controller', function () {
         scope.settings.vdata[0] = [4];
         scope.currentVehicleId = 0;
         scope.widget = {};
+        scope.widget.settings = {};
+        scope.widget.settings.totalPositionArray = [[]];
+        scope.widget.settings.totalPositionArray[0] = [4];
+        scope.widget.settings.totalVelocityArray = [[]];
+        scope.widget.settings.totalVelocityArray[0] = [4];
+        scope.positionBooleans = [true, true, true, true];
+        scope.velocityBooleans = [true, true, true, true];
         scope.currentScreenVehicle = "Audacy1";
         scope.saveParameters(scope.widget);
         expect(scope.secondScreen).toEqual(true);
