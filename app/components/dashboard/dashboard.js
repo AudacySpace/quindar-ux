@@ -91,7 +91,7 @@ angular.module('app')
 				}
 			},
 			function () {
-				console.log('Modal dismissed');
+				// console.log('Modal dismissed');
       		});
 	    }
 	}

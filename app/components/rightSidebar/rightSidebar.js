@@ -42,8 +42,12 @@ app
                 gridService.save(vm.email, name)
                 .then(function(response) {
                     if(response.status == 200){
-                        alert("Layout saved succcessfully -- " + name);
                         $window.document.title = "Quindar - " + name;
+                        var position = "bottom right";
+                        var queryId = '';
+                        var delay = false;
+                        var usermessage = "Layout: "+name+" saved succcessfully.";
+                        var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
                     }
                 });
             });
@@ -154,7 +158,7 @@ app.controller('docController', ['$scope','$uibModalInstance', function($scope,$
 
 }]);
 
-app.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userService, mission, $window) {
+app.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userService, mission, $window,dashboardService) {
     var $ctrl = this;
 
     $ctrl.users = [];
@@ -194,6 +198,7 @@ app.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userSer
     };
 
     $ctrl.save = function() {
+        var position,queryId,delay,usermessage,alertstatus;
         if($ctrl.selected){
             if(roleChosen()){
                 var newRoles = [];
@@ -214,14 +219,26 @@ app.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userSer
                 userService.setAllowedRoles($ctrl.selected.user, newRoles, $ctrl.mission)
                 .then(function(response) {
                     if(response.status == 200){
-                        $window.alert("Allowed roles updated for " + $ctrl.selected.user.google.name);
+                        position = "bottom right";
+                        queryId = '#allowedrolestoaster';
+                        delay = 5000;
+                        usermessage = "Allowed roles updated for " + $ctrl.selected.user.google.name +"!";
+                        alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
                     }
                 })
             } else {
-                $window.alert("Please choose at least one role");
+                position = "bottom right";
+                queryId = '#allowedrolestoaster';
+                delay = false;
+                usermessage = "Please choose at least one role.";
+                alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
             }
         } else {
-            $window.alert("Please select the user from dropdown menu");
+            position = "bottom right";
+            queryId = '#allowedrolestoaster';
+            delay = false;
+            usermessage = "Please select the user from dropdown menu.";
+            alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
         }
     }
 

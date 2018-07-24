@@ -7,7 +7,7 @@ app
     }
 });
 
-app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardService,$element) {
+app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardService,$element,$window,$mdToast) {
 
     var globalgroups = [] ;
     var names = [];
@@ -251,7 +251,20 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
             $scope.realtimebutton.style = {background:'#FFFFFF'};
             $scope.widget.settings.datetime = $scope.datetime;
         }else {
-            alert("Select a date and time and then set.");
+            if($window.innerWidth > 1400){
+                var position = "top right";
+                var queryId = '#datetimetoaster';
+                var delay = false;
+                var usermessage = "Select a date and time and then set.";
+                var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+            }else {
+                var position = "top right";
+                var queryId = '';
+                var delay = false;
+                var usermessage = "Select a date and time and then set in the timeline qwidget.";
+                var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+            }
+
         }
     };
 
@@ -482,6 +495,8 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                 if(group.nestedInGroup){
                     label.innerHTML = group.content ;
                     container.insertAdjacentElement('beforeEnd',label);
+                    container.id = "timelineOpstoaster"+group.id;
+                    container.className = "eventBtn";
                     var outerdiv = document.createElement('div');
                     var button = document.createElement("button");
                     var arrow = document.createElement("i");
@@ -549,7 +564,20 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                                         break;
                                     }
                                     else {
-                                        alert("You have reached the top of the list");
+                                        if($window.innerWidth > 1400){
+                                            var position = "top left";
+                                            var queryId = '#timelineOpstoaster'+group.id;
+                                            var delay = false;
+                                            var usermessage = "You have reached the top of the list!";
+                                            var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                                        }else {
+                                            var position = "top right";
+                                            var queryId = '';
+                                            var delay = false;
+                                            var usermessage = "You have reached the top of the list!";
+                                            var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                                        }
+
                                         break;
                                     }
                                 }
@@ -561,7 +589,20 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                                 setEvents(content1,content2);
                             }
                         }else if(group.id === 0){
-                            alert("You have reached the top of the list");
+                            if($window.innerWidth > 1400){
+                                var position = "top left";
+                                var queryId = '#timelineOpstoaster'+group.id;
+                                var delay = false;
+                                var usermessage = "You have reached the top of the list!";
+                                var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay);
+                            }else {
+                                var position = "top right";
+                                var queryId = '';
+                                var delay = false;
+                                var usermessage = "You have reached the top of the list!";
+                                var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay);
+                            }
+ 
                         }
                     });
 
@@ -579,7 +620,20 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                                         content2 = globalgroups._data[i+1].content;
                                         break;
                                     }else {
-                                        alert("You have reached the bottom of the list");
+                                         if($window.innerWidth > 1400){
+                                            var position = "top left";
+                                            var queryId = '#timelineOpstoaster'+group.id;
+                                            var delay = false;
+                                            var usermessage = "You have reached the bottom of the list!";
+                                            var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                                         }else {
+                                            var position = "top right";
+                                            var queryId = '';
+                                            var delay = false;
+                                            var usermessage = "You have reached the bottom of the list!";
+                                            var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                                         }
+
                                         break;
                                     }
                                 }
@@ -591,7 +645,19 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                             }
 
                         }else if(group.id === globalgroups.length-1){
-                            alert("You have reached the bottom of the list");
+                            if($window.innerWidth > 1400){
+                                var position = "top left";
+                                var queryId = '#timelineOpstoaster'+group.id;
+                                var delay = false;
+                                var usermessage = "You have reached the bottom of the list!";
+                                var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                            }else {
+                                var position = "top right";
+                                var queryId = '';
+                                var delay = false;
+                                var usermessage = "You have reached the bottom of the list!";
+                                var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                            }
                         }
                     });
                     container.insertAdjacentElement('afterbegin',outerdiv);
