@@ -28,7 +28,8 @@ describe('Testing gridService', function () {
                         vehicles : [],
                         value : "",
                         key : ""
-                    }
+                    },
+                    dataArray: []
                 },
                 saveLoad: false,
                 delete: false
@@ -48,7 +49,10 @@ describe('Testing gridService', function () {
                 },
                 main: true,
                 settings: {
-                    active: false
+                    active: false,
+                    dataArray: [],
+                    totalAttitudeArray: [],
+                    totalPositionArray: []
                 },
                 saveLoad: false,
                 delete: false
@@ -173,7 +177,8 @@ describe('Testing gridService', function () {
                     vehicles : [],
                     value : "", 
                     key: ""
-                }
+                },
+                dataArray: []
             },
             saveLoad: false,
             delete: false
@@ -207,7 +212,8 @@ describe('Testing gridService', function () {
                     vehicles : [],
                     value : "", 
                     key: ""
-                }
+                },
+                dataArray: []
             },
             saveLoad: false,
             delete: false

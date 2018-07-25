@@ -4,8 +4,8 @@
 <div class="modal-body" style="padding-left:20px; padding-right:20px;">
     <h5><b>Required Order:</b>x,y,z</h5>
     <div id="scrollable-containerPositionValues">
-        <div class="sortable-row" as-sortable="sortableOptions" data-ng-model="$ctrl.data.pdata[$ctrl.currentVehicleId]">
-            <div ng-repeat="item in $ctrl.data.pdata[$ctrl.currentVehicleId]" as-sortable-item>
+        <div class="sortable-row" as-sortable="sortableOptions" data-ng-model="$ctrl.data.tempPositions[$ctrl.currentVehicleId]">
+            <div ng-repeat="item in $ctrl.data.tempPositions[$ctrl.currentVehicleId]" as-sortable-item>
                 <div as-sortable-item-handle style="color:#000000">{{item.key}}</div>
             </div>
         </div>

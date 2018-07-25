@@ -19,7 +19,7 @@ describe('Testing datalog settings controller', function () {
         });
 
         inject(function($controller, $rootScope, _$q_){
-            sidebarService = jasmine.createSpyObj('sidebarService', ['getVehicleInfo', 'setMenuStatus']);;
+            sidebarService = jasmine.createSpyObj('sidebarService', ['getVehicleInfo', 'setMenuStatus', 'setTempWidget']);;
             dashboardService = jasmine.createSpyObj('dashboardService', ['getLock', 'setLeftLock','getData']);
             scope = $rootScope.$new();
             scope.widget = {
@@ -59,6 +59,10 @@ describe('Testing datalog settings controller', function () {
     });
 
     it('should close the settings menu on close', function() {
+        dashboardService.getLock.and.callFake(function(){
+            return { lockLeft : false, lockRight : false }
+        });
+
         scope.widget.main = false;
         scope.widget.settings.active = true;
         scope.widget.settings.data = {
@@ -81,11 +85,13 @@ describe('Testing datalog settings controller', function () {
     });
 
     it('should not close the settings menu on save if data is not selected', function() {
-        scope.data = {
+        var data = {
             id: '',
             vehicle: '',
             key: ''
         };
+        scope.widget.settings.dataArray = [data];
+
         scope.widget.main = false;
         scope.widget.settings.active = true;
 
@@ -96,23 +102,67 @@ describe('Testing datalog settings controller', function () {
     });
 
     it('should close the settings menu on save if data is selected', function() {
-        scope.data = {
+        var data = {
             id: 'vx',
             vehicle: 'A0',
             key: 'A0.GNC.velocity.vx'
         };
+
+        dashboardService.getData.and.callFake(function() {
+            return {
+                "value": -0.3201368817947103,
+                "warn_high": "10",
+                "warn_low": "-10",
+                "alarm_high": "14",
+                "alarm_low": "-14",
+                "units": "km/s",
+                "notes": ""
+            };
+        });
+
+        scope.widget.settings.dataArray = [data];
         scope.widget.main = false;
         scope.widget.settings.active = true;
 
+        scope.getValue(false);
         scope.saveDataLogSettings(scope.widget);
         
         expect(scope.widget.main).toEqual(true);
         expect(scope.widget.settings.active).toEqual(false);
-        expect(scope.widget.settings.data).toEqual(scope.data);
+        expect(scope.widget.settings.data).toEqual(data);
     });
 
     it('should define function getTelemetrydata', function() {
         expect(scope.getTelemetrydata).toBeDefined();
+    });
+
+    it('should define function readValue', function() {
+        expect(scope.readValue).toBeDefined();
+    });
+
+    it('should show the id of selected vehicle in the input box', function() {
+        var vehicleInfo = { 
+            id: 'vx',
+            vehicle: 'A0',
+            key: 'A0.GNC.velocity.vx',
+            category: 'velocity' 
+        };
+
+        scope.widget.settings.dataArray = [vehicleInfo];
+
+        dashboardService.getData.and.callFake(function() {
+            return {
+                "value": -0.3201368817947103,
+                "warn_high": "10",
+                "warn_low": "-10",
+                "alarm_high": "14",
+                "alarm_low": "-14",
+                "units": "km/s",
+                "notes": ""
+            };
+        });
+
+        expect(scope.readValue()).toEqual('vx');
     });
 
     it('should open the left sidebar/Data Menu when function is called(window width < 1400)', function() {
@@ -143,16 +193,32 @@ describe('Testing datalog settings controller', function () {
 
     it('should alert the user if the vehicle and id from the left menu are not available', function() {
         spyOn(windowMock, "alert");
-        var data = {
-            parameters: []
-        };
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
 
-        scope.getValue();
+        scope.widget.settings.dataArray = [];
+        scope.saveDataLogSettings(scope.widget);
 
         expect(windowMock.alert).toHaveBeenCalledWith("Vehicle data not set. Please select from Data Menu");
+    });
+
+    it('should alert the user if no data is available for selected telemetry id', function() {
+        spyOn(windowMock, "alert");
+        var vehicleInfo = { 
+            id: 'vx',
+            vehicle: 'A0',
+            key: 'A0.GNC.velocity.vx',
+            category: 'velocity' 
+        };
+
+        dashboardService.getData.and.callFake(function() {
+            return null;
+        });
+
+        scope.widget.settings.dataArray = [vehicleInfo];
+
+        scope.getValue(false);
+        scope.saveDataLogSettings(scope.widget);
+
+        expect(windowMock.alert).toHaveBeenCalledWith("Currently there is no data available for this telemetry id.");
     });
 
     it('should store the value of selected vehicle and id in scope.data variable', function() {
@@ -164,15 +230,7 @@ describe('Testing datalog settings controller', function () {
             category: 'velocity' 
         };
 
-        var data = {
-            parameters:[]
-        };
-
-        data.parameters[0] = vehicleInfo;
-
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
+        scope.widget.settings.dataArray = [vehicleInfo];
 
         dashboardService.getData.and.callFake(function() {
             return {
@@ -186,9 +244,11 @@ describe('Testing datalog settings controller', function () {
             };
         });
 
-        scope.getValue();
+        scope.getValue(false);
+        scope.saveDataLogSettings(scope.widget);
 
         expect(scope.data).toEqual(vehicleInfo);
+        expect(scope.widget.settings.data).toEqual(vehicleInfo);
     });
 
     it('should close the left menu after storing data into variable(window width>1400)', function() {
@@ -201,15 +261,7 @@ describe('Testing datalog settings controller', function () {
             category: 'velocity' 
         };
 
-        var data = {
-            parameters:[]
-        };
-
-        data.parameters[0] = vehicleInfo;
-
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
+        scope.widget.settings.dataArray = [vehicleInfo];
 
         dashboardService.getData.and.callFake(function() {
             return {
@@ -223,7 +275,14 @@ describe('Testing datalog settings controller', function () {
             };
         });
 
-        scope.getValue();
+        dashboardService.getLock.and.callFake(function(){
+            return { lockLeft : true, lockRight : false }
+        });
+
+        scope.getValue(false);
+        scope.saveDataLogSettings(scope.widget);
+        
+        expect(scope.widget.settings.data).toEqual(vehicleInfo);
 
         expect(scope.data).toEqual(vehicleInfo);
         expect(scope.lock.lockLeft).toEqual(false);

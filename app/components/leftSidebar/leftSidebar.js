@@ -154,9 +154,5 @@ app
             }
             return words.join(' ');
         }
-
-        vm.$onDestroy = function(event) {
-            $interval.cancel(vm.interval );
-        }
-	}
+    }
 });

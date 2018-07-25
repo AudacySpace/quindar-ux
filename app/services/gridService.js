@@ -32,7 +32,8 @@ function gridService ($http, $sessionStorage, $window, userService) {
                 vehicles : [],
                 value : "", 
                 key: ""
-            }
+            },
+            dataArray: []
         },
 		saveLoad: false,
 		delete: false
@@ -63,7 +64,8 @@ function gridService ($http, $sessionStorage, $window, userService) {
                 checkedNotes: true
             },
             data : [],
-            previous : []
+            previous : [],
+            dataArray: []
         },
 		saveLoad: false,
 		delete: false
@@ -81,7 +83,10 @@ function gridService ($http, $sessionStorage, $window, userService) {
         },
         main: true,
         settings: {
-            active: false
+            active: false,
+            dataArray: [],
+            totalAttitudeArray: [],
+            totalPositionArray: []
         },
         saveLoad: false,
         delete: false
@@ -100,7 +105,10 @@ function gridService ($http, $sessionStorage, $window, userService) {
         main: true,
         settings: {
             active: false,
-            vehicles : []
+            vehicles : [],
+            dataArray: [],
+            totalPositionArray: [],
+            totalVelocityArray: []
         },
         saveLoad: false,
         delete: false
@@ -136,7 +144,8 @@ function gridService ($http, $sessionStorage, $window, userService) {
         },
         main: true,
         settings: {
-            active: false
+            active: false,
+            dataArray: []
         },
         saveLoad: false,
         delete: false
@@ -192,7 +201,8 @@ function gridService ($http, $sessionStorage, $window, userService) {
         main: true,
         settings: {
             active: false,
-            commandlog: true
+            commandlog: true,
+            dataArray: []
         },
         saveLoad: false,
         delete: false
@@ -248,7 +258,8 @@ function gridService ($http, $sessionStorage, $window, userService) {
                                 vehicles : [],
                                 value : "",
                                 key : ""
-                            }
+                            },
+                            dataArray: []
                         },
                         saveLoad: false,
                         delete: false
@@ -268,7 +279,10 @@ function gridService ($http, $sessionStorage, $window, userService) {
                         },
                         main: true,
                         settings: {
-                            active: false
+                            active: false,
+                            dataArray: [],
+                            totalAttitudeArray: [],
+                            totalPositionArray: []
                         },
                         saveLoad: false,
                         delete: false

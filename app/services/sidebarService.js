@@ -1,19 +1,25 @@
 app
-.factory('sidebarService', function() { 
+.factory('sidebarService', ['dashboardService', function(dashboardService) { 
 
-    var data = {
-        parameters:[]
-    };
+    var widget;
+    var widgetObject;
 
     //variable used to create data menu
     var menuStatus = false;
+
+    //receive what widget has been called and what functions it has
+    function setTempWidget(tempWidget, tempWidgetObject)
+    {
+        widget = tempWidget;
+        widgetObject = tempWidgetObject;
+    }
 
     function setVehicleInfo(dataString) {
         var vehicleInfo = {
             vehicle : '',
             id : '',
             key : '',
-            category:''
+            category:''//,
         }
         if(dataString){
             var nodes = dataString.split(".");
@@ -22,24 +28,33 @@ app
             vehicleInfo.category = nodes[nodes.length-2];
             vehicleInfo.key = dataString;
             var item = vehicleInfo;
-            data.parameters.push(item);
+            widget.settings.dataArray.push(item);
+            var datavalue = dashboardService.getData(item.key);
+            if(datavalue && datavalue.hasOwnProperty("value")) //if data chosen is telemetry id, notify getValue function that last selected data is a group 
+            {
+                widgetObject.getValue(false);
+            }
+            else //if data chosen is a group, notify getValue function that last selected data is a group
+            {
+                widgetObject.getValue(true);
+            }
         } else {
             vehicleInfo = {
                 vehicle : '',
                 id : '',
                 key : '',
-                category:''
+                category:''//,
             };
         }
     }
 
-    function getVehicleInfo(){
+    /*function getVehicleInfo(){
         var newData = angular.copy(data);
         data = {
             parameters:[]
         }
         return newData;
-    }
+    }*/
 
     function setMenuStatus(status){
         menuStatus = status;
@@ -51,9 +66,10 @@ app
 
 	return {
         setVehicleInfo : setVehicleInfo,
-        getVehicleInfo : getVehicleInfo,
-        data : data,
         setMenuStatus : setMenuStatus,
-        getMenuStatus : getMenuStatus
+        getMenuStatus : getMenuStatus,
+        //getVehicleInfo : getVehicleInfo,
+        //data : data,
+        setTempWidget : setTempWidget
 	}
-});
+}]);

@@ -30,6 +30,11 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                         '-webkit-animation': 'background-fade 0.5s forwards',
                         '-moz-animation': 'background-fade 0.5s forwards'
                     };
+    $scope.arrow;
+    var tempNum = 0;
+    var valueReceived = false;
+    $scope.currentIndex;
+    $scope.askedForGroup;
     //watch to check the database icon color to know about database status
     $scope.$watch('dataStatus',function(newVal,oldVal){
         dServiceObjVal = newVal; 
@@ -119,70 +124,72 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     for (var i = 0; i <= num_of_rows; i++) {
         tableCols.push(angular.copy(dataObject));      
     }
-
     //Function to select telemetry Id
-    $scope.getTelemetrydata = function($event){
-        var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
-        arrow.style.color = "#07D1EA";
-
+    $scope.getTelemetrydata = function($event, $index, askedForGroup){
+        sidebarService.setTempWidget($scope.widget, this); //pass widget and controller functions to sidebarService
+        $scope.arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
+        $scope.arrow.style.color = "#07D1EA";
+        $scope.currentIndex = $index;
+        $scope.askedForGroup = askedForGroup;
         if ($window.innerWidth < 1400){
             $mdSidenav('left').open();
         } else {
             $scope.lock = dashboardService.getLock();
-            if($scope.lock.lockLeft !== true) {
-                $scope.lock.lockLeft = !$scope.lock.lockLeft;
-                dashboardService.setLeftLock($scope.lock.lockLeft);
-            }
+            $scope.lock.lockLeft = true;
+            dashboardService.setLeftLock($scope.lock.lockLeft);
         }
         sidebarService.setMenuStatus(true); //set to true when data menu is opened and tree needs to be created
     }
 
+    $scope.getValue = function(isGroup)
+    {
+        if(isGroup && $scope.askedForGroup) //if the user has asked to see group and chosen a group from left sidebar
+        {
+            $scope.applyGroup();
+        }
+        else if(!isGroup && !$scope.askedForGroup) //if the user has asked to see telemetry id and chosen telemetry id from left sidebar
+        {
+            $scope.applyValue();
+        }
+        else if(!isGroup && $scope.askedForGroup) //if the user has asked to see group and has instead chosen telemetry id from left sidebar
+        {
+            $window.alert("Be sure to select a group!");
+        }
+        $scope.arrow.style.color = "#b3b3b3";
+        $scope.widget.settings.dataArray = []; //once data has been added to table, reset dataArray
+    }
     //Function to display selected telemetry Id value and its corresponding data values.
-    $scope.getValue = function($event, row, $index){
-        var vehicleInfo = sidebarService.getVehicleInfo();
-        var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
-        var data = vehicleInfo.parameters[vehicleInfo.parameters.length-1];
+    $scope.applyValue = function(){
+        var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
         if(data && data.key) {
             var datavalue = dashboardService.getData(data.key);
             if(datavalue){
-                if(datavalue.hasOwnProperty("value")){
-                    
-                    if(savePrevious($index)) //save info (if object not already created for this row, create it)
+                if(datavalue.hasOwnProperty("value"))
+                { 
+                    if(savePrevious($scope.currentIndex)) //save info (if object not already created for this row, create it)
                     {  
-                        $scope.widget.settings.data[$index] = new Object();
+                        $scope.widget.settings.data[$scope.currentIndex] = new Object();
                     }
 
-                    $scope.widget.settings.data[$index].type = "data";
-                    $scope.widget.settings.data[$index].value = data.key;
-                    $scope.widget.settings.data[$index].undone = false;
-
-                    arrow.style.color = "#b3b3b3";
-                    if ($window.innerWidth >= 1400){
-                        if($scope.lock.lockLeft !== false){
-                            $scope.lock.lockLeft = !$scope.lock.lockLeft;
-                            dashboardService.setLeftLock($scope.lock.lockLeft);
-                        }
+                    $scope.widget.settings.data[$scope.currentIndex].type = "data";
+                    $scope.widget.settings.data[$scope.currentIndex].value = data.key;
+                    $scope.widget.settings.data[$scope.currentIndex].undone = false;
+                        
+                    $scope.arrow.style.color = "#b3b3b3";
+                    if ($window.innerWidth >= 1400)
+                    {
+                        $scope.lock = dashboardService.getLock();
+                        $scope.lock.lockLeft = false;
+                        dashboardService.setLeftLock($scope.lock.lockLeft);
                     }
-                } else {
-                    arrow.style.color = "#07D1EA";
-                    $window.alert("Please select telemetry ID(leaf node) from Data Menu");
                 }
-            }else {
-                arrow.style.color = "#07D1EA";
-                $window.alert("Currently there is no data available for this telemetry id.");
             }
-        } else {
-            arrow.style.color = "#07D1EA";
-            $window.alert("Vehicle data not set. Please select from Data Menu");
         }
     }
 
     //function to assign key to specific row indices for the selected group
-    $scope.applyGroup = function($event, row, $index){
-        var vehicleInfo = sidebarService.getVehicleInfo();
-        var arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
-        var data = vehicleInfo.parameters[vehicleInfo.parameters.length - 1];
-    
+    $scope.applyGroup = function(){
+        var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
         if(data && data.key) {
             var datavalue = dashboardService.getData(data.key);
             if(datavalue){
@@ -191,35 +198,24 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
 
                     for(var i=0; i<idList.length; i++){
 
-                        if(savePrevious($index + i)) //save info (if object not already created for this row, create it)
+                        if(savePrevious($scope.currentIndex + i)) //save info (if object not already created for this row, create it)
                         {
-                            $scope.widget.settings.data[$index + i] = new Object();
+                            $scope.widget.settings.data[$scope.currentIndex + i] = new Object();
                         }
 
-                        $scope.widget.settings.data[$index + i].type = "data";
-                        $scope.widget.settings.data[$index + i].value = data.key + '.' + idList[i];
-                        $scope.widget.settings.data[$index + i].undone = false;
+                        $scope.widget.settings.data[$scope.currentIndex + i].type = "data";
+                        $scope.widget.settings.data[$scope.currentIndex + i].value = data.key + '.' + idList[i];
+                        $scope.widget.settings.data[$scope.currentIndex + i].undone = false;
                     }
 
-                    arrow.style.color = "#b3b3b3";
+                    $scope.arrow.style.color = "#b3b3b3";
                     if ($window.innerWidth >= 1400){
-                        if($scope.lock.lockLeft !== false){
-                            $scope.lock.lockLeft = !$scope.lock.lockLeft;
-                            dashboardService.setLeftLock($scope.lock.lockLeft);
-                        }
+                        $scope.lock = dashboardService.getLock();
+                        $scope.lock.lockLeft = false;
+                        dashboardService.setLeftLock($scope.lock.lockLeft);
                     }
-                } else {
-                    arrow.style.color = "#07D1EA";
-                    $window.alert("Please select group(not ID) from Data Menu");
                 }
-            }else {
-                arrow.style.color = "#07D1EA";
-                $window.alert("Currently there is no data available for the selected group.");
             }
-
-        } else {
-            arrow.style.color = "#07D1EA";
-            $window.alert("Data not set. Please select from Data Menu");
         }
     }
 
