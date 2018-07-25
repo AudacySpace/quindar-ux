@@ -128,7 +128,7 @@ app.controller('LineSettingsCtrl',
                 }else {
                     //when no telemetry value available for the telemetry id,set the value in the input but also alert the user.
                     $scope.settings.data = angular.copy(data);
-                    $window.alert("Currently there is no data available for this telemetry Id.");
+                    $window.alert("Currently there is no data available for this telemetry id.");
                 }
             }else { 
                 $window.alert("Vehicle data not set. Please select from Data Menu");

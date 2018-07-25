@@ -148,6 +148,51 @@ describe('Testing satellite settings controller', function () {
         expect(sidebarService.setMenuStatus).toHaveBeenCalledWith(true);
     });
 
+    it('should define function readValues', function() {
+        expect(scope.readValues).toBeDefined();
+    });
+
+    it('should show attitude values that the user has selected in input box', function() {
+        scope.chosenCategory = 'attitude';
+        scope.widget.settings.dataArray = [];
+
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'q1',key:'A0.GNC.attitude.q1',category:'attitude'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'q2',key:'A0.GNC.attitude.q2',category:'attitude'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'q3',key:'A0.GNC.attitude.q3',category:'attitude'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'qc',key:'A0.GNC.attitude.qc',category:'attitude'});
+        scope.getValue(false);
+
+        expect(scope.widget.settings.totalAttitudeArray).toEqual([
+            {vehicle:'A0',id:'q1',key:'A0.GNC.attitude.q1',category:'attitude'},
+            {vehicle:'A0',id:'q2',key:'A0.GNC.attitude.q2',category:'attitude'},
+            {vehicle:'A0',id:'q3',key:'A0.GNC.attitude.q3',category:'attitude'},
+            {vehicle:'A0',id:'qc',key:'A0.GNC.attitude.qc',category:'attitude'}
+        ]);
+        expect(scope.readValues('attitude')).toEqual('q1, q2, q3, qc');
+    });
+
+    it('should show position values that the user has selected in input box', function() {
+        scope.chosenCategory = 'position';
+        scope.widget.settings.dataArray = [];
+
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'});
+        scope.getValue(false);
+        scope.widget.settings.dataArray.push({vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'});
+        scope.getValue(false);
+
+        expect(scope.widget.settings.totalPositionArray).toEqual([
+            {vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
+            {vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'},
+            {vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'},
+        ]);
+        expect(scope.readValues('position')).toEqual('x, y, z');
+    });
+
     it('should define function getValue', function() {
         expect(scope.getValue).toBeDefined();
     });
@@ -468,6 +513,57 @@ describe('Testing satellite settings controller', function () {
         scope.saveSettings(scope.widget);
         
         expect(windowMock.alert).toHaveBeenCalledWith("Both Attitude and Position Values should be of the same vehicle.");
+    });
+
+    it('should properly give values to arrays when close button is clicked on settings menu given that data has already been saved once before', function() {
+        windowMock.innerWidth = 1440;
+        scope.widget.settings.attitudeData = [
+            {vehicle:'A0',id:'q1',key:'A0.GNC.attitude.q1',category:'attitude'},
+            {vehicle:'A0',id:'q2',key:'A0.GNC.attitude.q2',category:'attitude'},
+            {vehicle:'A0',id:'q3',key:'A0.GNC.attitude.q3',category:'attitude'},
+            {vehicle:'A0',id:'qc',key:'A0.GNC.attitude.qc',category:'attitude'}
+        ];
+        scope.widget.settings.positionData = [
+            {vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
+            {vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'},
+            {vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'}
+        ];
+        scope.widget.settings.vehicle = 'A0';
+        scope.widget.main = false;
+        scope.widget.settings.active = true;
+        dashboardService.getLock.and.callFake(function(){
+            return { lockLeft : true, lockRight : false }
+        });
+
+        scope.closeSettings(scope.widget);
+        
+        expect(scope.widget.main).toEqual(true);
+        expect(scope.widget.settings.active).toEqual(false);
+        expect(scope.settings.attitudeData).toEqual([
+            {vehicle:'A0',id:'q1',key:'A0.GNC.attitude.q1',category:'attitude'},
+            {vehicle:'A0',id:'q2',key:'A0.GNC.attitude.q2',category:'attitude'},
+            {vehicle:'A0',id:'q3',key:'A0.GNC.attitude.q3',category:'attitude'},
+            {vehicle:'A0',id:'qc',key:'A0.GNC.attitude.qc',category:'attitude'}
+        ]);
+        expect(scope.widget.settings.totalAttitudeArray).toEqual([
+            {vehicle:'A0',id:'q1',key:'A0.GNC.attitude.q1',category:'attitude'},
+            {vehicle:'A0',id:'q2',key:'A0.GNC.attitude.q2',category:'attitude'},
+            {vehicle:'A0',id:'q3',key:'A0.GNC.attitude.q3',category:'attitude'},
+            {vehicle:'A0',id:'qc',key:'A0.GNC.attitude.qc',category:'attitude'}
+        ]);
+        expect(scope.settings.positionData).toEqual([
+            {vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
+            {vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'},
+            {vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'}
+        ]);
+        expect(scope.widget.settings.totalPositionArray).toEqual([
+            {vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
+            {vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'},
+            {vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'}
+        ]);
+        expect(scope.vehicle).toEqual('A0');
+        expect(scope.lock.lockLeft).toEqual(false);
+        expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false);        
     });
 
 

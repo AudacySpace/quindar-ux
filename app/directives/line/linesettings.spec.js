@@ -258,6 +258,7 @@ describe('Testing lineplot settings controller', function () {
         
         expect(scope.widget.main).not.toEqual(true);
         expect(scope.widget.settings.active).not.toEqual(false);
+        expect(scope.widget.settings.dataArray[0]).toEqual(scope.settings.data);
         expect(scope.widget.settings.data.key).toEqual('A0.GNC.velocity.vx');
         expect(scope.widget.settings.data.value).toEqual('vx');
         expect(scope.widget.settings.data.vehicles).toEqual([]);
@@ -267,6 +268,7 @@ describe('Testing lineplot settings controller', function () {
     it('should define function getTelemetrydata', function() {
         expect(scope.getTelemetrydata).toBeDefined();
     });
+
 
     it('should open the left sidebar/Data Menu when function is called(window width < 1400)', function() {
         scope.getTelemetrydata();
@@ -290,6 +292,35 @@ describe('Testing lineplot settings controller', function () {
         expect(sidebarService.setMenuStatus).toHaveBeenCalledWith(true);
     });
 
+    it('should define function readValue', function() {
+        expect(scope.readValue).toBeDefined();
+    });
+
+    it('should show the id of selected vehicle in the input box', function() {
+        var vehicleInfo = { 
+            id: 'vx',
+            vehicle: 'A0',
+            key: 'A0.GNC.velocity.vx',
+            category: 'velocity' 
+        };
+
+        scope.widget.settings.dataArray = [vehicleInfo];
+
+        dashboardService.getData.and.callFake(function() {
+            return {
+                "value": -0.3201368817947103,
+                "warn_high": "10",
+                "warn_low": "-10",
+                "alarm_high": "14",
+                "alarm_low": "-14",
+                "units": "km/s",
+                "notes": ""
+            };
+        });
+
+        expect(scope.readValue()).toEqual('vx');
+    });
+
     it('should define function getValue', function() {
         expect(scope.getValue).toBeDefined();
     });
@@ -301,6 +332,27 @@ describe('Testing lineplot settings controller', function () {
         scope.saveWidget(scope.widget);
 
         expect(windowMock.alert).toHaveBeenCalledWith("Vehicle data not set. Please select from Data Menu");
+    });
+
+    it('should alert the user if no data is available for selected telemetry id', function() {
+        spyOn(windowMock, "alert");
+        var vehicleInfo = { 
+            id: 'vx',
+            vehicle: 'A0',
+            key: 'A0.GNC.velocity.vx',
+            category: 'velocity' 
+        };
+
+        dashboardService.getData.and.callFake(function() {
+            return null;
+        });
+
+        scope.widget.settings.dataArray = [vehicleInfo];
+
+        scope.getValue(false);
+        scope.saveWidget(scope.widget);
+
+        expect(windowMock.alert).toHaveBeenCalledWith("Currently there is no data available for this telemetry id.");
     });
 
     it('should store the value of selected vehicle and id in scope.settings variable', function() {

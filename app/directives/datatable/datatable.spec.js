@@ -286,7 +286,7 @@ describe('Testing data table controller', function () {
             key: 'A0.GNC.velocity',
             category: 'GNC'
         }
-        
+    
         scope.widget.settings.dataArray = [data];
         scope.askedForGroup = true;
 
@@ -295,6 +295,25 @@ describe('Testing data table controller', function () {
         expect(windowMock.alert).toHaveBeenCalledWith("Be sure to select a group!");
         expect(arrow.style.color).toEqual('#b3b3b3');
         expect(scope.widget.settings.dataArray.length).toEqual(0);
+    });
+
+    it('should not execute anything if a group(not ID) is selected from the left menu', function() {
+        scope.arrow = arrow;
+        
+        var data = { 
+            id: 'velocity',
+            vehicle: 'A0',
+            key: 'A0.GNC.velocity',
+            category: 'GNC'
+        }
+        
+        scope.widget.settings.dataArray = [data];
+        scope.askedForGroup = false;
+
+        scope.getValue(true);
+
+        expect(arrow.style.color).toEqual('#b3b3b3');
+        expect(scope.widget.settings.dataArray).toEqual([]);
     });
 
     it('should store the value of selected group keys in widget settings variable', function() {
