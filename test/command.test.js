@@ -30,7 +30,6 @@ describe('Test Suite for Command Route Controller New Instance', function() {
                     "time": "040.13:09:17 UTC",
                     "timestamp": "2018-02-09T13:09:17.471Z",
                     "argument": "earth",
-                    "type": "Set",
                     "name": "pointing"
                 },
                 email:'tgattu@gmail.com'
@@ -58,7 +57,6 @@ describe('Test Suite for Command Route Controller New Instance', function() {
                     "time": "040.13:09:17 UTC",
                     "timestamp": "2018-02-09T13:09:17.471Z",
                     "argument": "earth",
-                    "type": "Set",
                     "name": "pointing"
                 },
                 email:'tgattu@gmail.com'
@@ -93,7 +91,6 @@ describe('Test Suite for Command Route Controller', function() {
                                 "time": "040.13:09:17 UTC",
                                 "timestamp": "2018-02-09T13:09:17.471Z",
                                 "argument": "earth",
-                                "type": "Set",
                                 "name": "pointing",
                                 "user": "tgattu@gmail.com",
                             },
@@ -143,7 +140,6 @@ describe('Test Suite for Command Route Controller', function() {
                     "time": "040.13:09:17 UTC",
                     "timestamp": "2018-02-09T13:09:17.471Z",
                     "argument": "earth",
-                    "type": "Set",
                     "name": "pointing",
                     "user": "tgattu@gmail.com",
                 },
@@ -190,7 +186,6 @@ describe('Test Suite for Command Model ', function() {
             // expect(err.errors.response).to.exist;
             expect(err.errors.sent_to_satellite).to.exist;
             expect(err.errors.time).to.exist;
-            expect(err.errors.type).to.exist;
         });
     });
 
@@ -203,8 +198,7 @@ describe('Test Suite for Command Model ', function() {
             mission:'AZero',
             response:'success',
             sent_to_satellite:true,
-            time:'040.13:09:17 UTC',
-            type:'Set'
+            time:'040.13:09:17 UTC'
         });
         m.validate(function(err){
             // expect(err).toEqual(null);
@@ -221,8 +215,7 @@ describe('Test Suite for Command Model ', function() {
             mission:'AZero',
             response:'success',
             sent_to_satellite:true,
-            time:'040.13:09:17 UTC',
-            type:'Set'
+            time:'040.13:09:17 UTC'
         });
         m.validate(function(err){
             expect(err.errors.name).to.exist;
@@ -238,8 +231,7 @@ describe('Test Suite for Command Model ', function() {
             mission:'AZero',
             response:'success',
             sent_to_satellite:true,
-            time:'040.13:09:17 UTC',
-            type:'Set'
+            time:'040.13:09:17 UTC'
         });
         m.validate(function(err){
             expect(err.errors.timestamp).to.exist;
@@ -255,8 +247,7 @@ describe('Test Suite for Command Model ', function() {
             mission:'AZero',
             response:'success',
             sent_to_satellite:true,
-            time:'040.13:09:17 UTC',
-            type:'Set'
+            time:'040.13:09:17 UTC'
         });
         m.validate(function(err){
             expect(err.errors.argument).to.exist;
@@ -272,8 +263,7 @@ describe('Test Suite for Command Model ', function() {
             mission:'AZero',
             response:'success',
             sent_to_satellite:true,
-            time:'040.13:09:17 UTC',
-            type:'Set'
+            time:'040.13:09:17 UTC'
         });
         m.validate(function(err){
             expect(err.errors.user).to.exist;
@@ -289,8 +279,7 @@ describe('Test Suite for Command Model ', function() {
             user:'taruni.gattu@gmail.com',
             response:'success',
             sent_to_satellite:true,
-            time:'040.13:09:17 UTC',
-            type:'Set'
+            time:'040.13:09:17 UTC'
         });
         m.validate(function(err){
             expect(err.errors.mission).to.exist;
@@ -307,8 +296,7 @@ describe('Test Suite for Command Model ', function() {
             mission:'AZero',
             response:'',
             sent_to_satellite:true,
-            time:'040.13:09:17 UTC',
-            type:'Set'
+            time:'040.13:09:17 UTC'
         });
         m.validate(function(err){
             assert.isNull(err);
@@ -323,8 +311,7 @@ describe('Test Suite for Command Model ', function() {
             user:'taruni.gattu@gmail.com',
             mission:'AZero',
             response:'success',
-            time:'040.13:09:17 UTC',
-            type:'Set'
+            time:'040.13:09:17 UTC'
         });
         m.validate(function(err){
             expect(err.errors.sent_to_satellite).to.exist;
@@ -340,8 +327,7 @@ describe('Test Suite for Command Model ', function() {
             user:'taruni.gattu@gmail.com',
             mission:'AZero',
             response:'success',
-            sent_to_satellite:true,
-            type:'Set'
+            sent_to_satellite:true
         });
         m.validate(function(err){
             expect(err.errors.time).to.exist;

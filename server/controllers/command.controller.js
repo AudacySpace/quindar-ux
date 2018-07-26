@@ -22,14 +22,14 @@ module.exports = {
         
         newCommand.user = email;
         newCommand.name = command.name;
-        newCommand.type = command.type;
-        newCommand.argument = command.argument;
-        newCommand.timestamp = command.timestamp;
+        newCommand.arguments = command.arguments;
+        newCommand.sent_timestamp = command.sent_timestamp;
         newCommand.time = command.time;
         newCommand.mission = mission;
-        newCommand.response = "";
+        newCommand.response = [];
         newCommand.sent_to_satellite = false;
 
+        console.log(newCommand);
         newCommand.save(function(err,result) {
             if (err){
                 console.log(err);

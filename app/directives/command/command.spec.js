@@ -94,22 +94,18 @@ describe('Testing command controller', function () {
     it('should initialise the initial variables on scope.initialise call when controller is defined', function(){
         var nullCommand = {
             name : "",
-            argument : "",
-            timestamp : "",
+            arguments : "",
+            sent_timestamp : "",
             time : "",
-            type: ""
         }
 
-        expect(scope.selected).toEqual({});
-        expect(scope.argument).toEqual("");
+        expect(scope.arguments).toEqual("");
         expect(scope.entered).toEqual(false);
         expect(scope.locked).toEqual(false);
         expect(scope.disableEnter).toEqual(false);
         expect(scope.disableInput).toEqual(false);
         expect(scope.disableLock).toEqual(true);
         expect(scope.command).toEqual(nullCommand);
-        expect(scope.types).toEqual([]);
-        expect(commandService.getCommandList).toHaveBeenCalled();
     })
 
     it('should set the user email and current mission name', function(){
@@ -128,25 +124,22 @@ describe('Testing command controller', function () {
     })
 
     it('should update the scope.command when scope.enter is called', function(){
-        scope.selected = {
-            command: "Null Command Echo"
-        }
-        scope.argument = "00";
+        scope.cmd = "GET";
+        scope.arguments = "00";
 
         scope.enter();
-        expect(scope.command.name).toEqual('Null Command Echo');
-        expect(scope.command.argument).toEqual('00');
+        expect(scope.command.name).toEqual('GET');
+        expect(scope.command.arguments).toEqual('00');
         expect(scope.entered).toEqual(true);
         expect(scope.disableEnter).toEqual(true);
     })
 
     it('should alert the user when command is not selected and scope.enter is called', function(){
         spyOn(windowMock, 'alert');
-        scope.selected = {};
-        scope.argument = "00";
+        scope.arguments = "00";
 
         scope.enter();
-        expect(windowMock.alert).toHaveBeenCalledWith('Please select the command from select dropdown');
+        expect(windowMock.alert).toHaveBeenCalledWith('Please enter the command.');
     })
 
     it('should define function scope.lockCommand', function(){
@@ -229,7 +222,7 @@ describe('Testing command controller', function () {
         scope.sendCommand();
         //expect(scope.sent).toEqual(true);
         expect(scope.command.time).toEqual(time.utc);
-        expect(scope.command.timestamp).toEqual(time.today);
+        expect(scope.command.sent_timestamp).toEqual(time.today);
     })
 
     it('should call saveCommand route and reset all values when scope.sendCommand is called', function() {
@@ -243,14 +236,14 @@ describe('Testing command controller', function () {
         };
         var command = {
             name: "Null Command Echo",
-            argument: "00",
-            timestamp: '',
+            arguments: "00",
+            sent_timestamp: '',
             time: '070.10:10:50 UTC'
         };
 
         scope.command = {
             name: "Null Command Echo",
-            argument: "00"
+            arguments: "00"
         };
         dashboardService.getTime.and.callFake(function() {
             return time;
@@ -265,9 +258,8 @@ describe('Testing command controller', function () {
         .toHaveBeenCalledWith(scope.email, command, scope.mission.missionName);
 
         //expect values to reset
-        expect(scope.command).toEqual({ name: '', argument: '', timestamp: '', time: '', type: "" });
-        expect(scope.selected).toEqual({});
-        expect(scope.argument).toEqual("");
+        expect(scope.command).toEqual({ name: '', arguments: '', sent_timestamp: '', time: ''});
+        expect(scope.arguments).toEqual("");
         expect(scope.entered).toEqual(false);
         expect(scope.locked).toEqual(false);
         expect(scope.disableEnter).toEqual(false);
@@ -286,14 +278,14 @@ describe('Testing command controller', function () {
         };
         var command = {
             name: "Null Command Echo",
-            argument: "00",
-            timestamp: '',
+            arguments: "00",
+            sent_timestamp: '',
             time: '070.10:10:50 UTC'
         };
 
         scope.command = {
             name: "Null Command Echo",
-            argument: "00"
+            arguments: "00"
         };
         dashboardService.getTime.and.callFake(function() {
             return time;
@@ -320,16 +312,16 @@ describe('Testing command controller', function () {
         };
 
         var result = [{ 
-            argument: "87",
+            arguments: "87",
             mission: "ATest",
             name: "Null Command Echo",
-            timestamp: "010.16:52:44 UTC",
+            sent_timestamp: "010.16:52:44 UTC",
             user: "john.smith@gmail.com"
         }, { 
-            argument: "00",
+            arguments: "00",
             mission: "ATest",
             name: "Dummy Command",
-            timestamp: "010.22:52:44 UTC",
+            sent_timestamp: "010.22:52:44 UTC",
             user: "john.smith@gmail.com"
         }];
 
@@ -340,28 +332,6 @@ describe('Testing command controller', function () {
 
         expect(commandService.getCommandLog).toHaveBeenCalledWith(scope.mission.missionName);
         expect(scope.commandLog).toEqual(result);
-    });
-
-    it('should define function scope.updateTypes', function(){
-        expect(scope.updateTypes).toBeDefined();
-    })
-
-    it('should update the types list when the command is selected', function() {
-        var item = {
-            "value": "Pointing",
-            "types": [{
-                "value": "Get"
-            },
-            {
-                "value": "Set"
-            }]
-        };
-        var model = item.value;
-
-        scope.updateTypes(item, model);
-
-        expect(scope.selected.type).toEqual({});
-        expect(scope.types).toEqual(item.types);
     });
 
     it('should call $interval one time', function(){

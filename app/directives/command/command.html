@@ -1,66 +1,38 @@
 <div layout="column" style="height:100%">
 <md-content flex-gt-sm="50" flex-xs="80" flex-sm="70" layout="column" layout-padding class="comm-widget">
     <div layout="row" flex="50" id="comm-row">
-        <md-input-container flex="30" class="input-container">
+        <md-input-container flex="25" class="input-container">
             <label>Command<span>*</span></label>
-                <ui-select tagging ng-model="selected.command" theme="bootstrap" class="select-command" ng-change="changeInput()" ng-disabled="disableInput" on-select="updateTypes($item, $model)">
-                    <ui-select-match class="selected-command" placeholder="Select">
-                        {{$select.selected.value}}
-                    </ui-select-match>
-                    <ui-select-choices repeat="command.value as command in commandList | filter: $select.search track by command.value">
-                        <div ng-bind="command.value"></div>
-                        <!-- <div ng-bind="command.value | highlight: $select.selected.value"></div> -->
-                    </ui-select-choices>
-                </ui-select>
+            <input ng-model="cmd" placeholder="Command" type="text" ng-change="changeInput()" ng-disabled="disableInput" ng-class="disableInput ? 'disabled' : 'input-arg'" pattern='[A-Za-z\\s]*'>
         </md-input-container>
-
-        <md-input-container flex="20" class="input-container">
-            <label>Type</label>
-            <ui-select tagging ng-model="selected.type" theme="bootstrap" class="select-command" ng-change="changeInput()" ng-disabled="disableInput">
-                <ui-select-match class="selected-command" placeholder="Type">
-                    {{$select.selected.value}}
-                </ui-select-match>
-                <ui-select-choices repeat="type.value as type in types | filter: $select.search track by type.value">
-                    <div ng-bind="type.value"></div>
-                    <!-- <div ng-bind="command.value | highlight: $select.selected.value"></div> -->
-                </ui-select-choices>
-            </ui-select>
+        <md-input-container flex="65" class="input-container">
+            <label>Arguments</label>
+            <input ng-model="arguments" placeholder="Value" type="text" ng-change="changeInput()" ng-disabled="disableInput" ng-class="disableInput ? 'disabled' : 'input-arg'">
         </md-input-container>
-
-        <md-input-container flex="20" class="input-container">
-            <label>Value</label>
-            <input ng-model="argument" placeholder="Value" ng-change="changeInput()" ng-disabled="disableInput" ng-class="disableInput ? 'disabled' : 'input-arg'">
-        </md-input-container>
-
-        <md-input-container flex="30" class="input-container">
+        <md-input-container flex="10" class="input-container">
             <input aria-label="Enter" type="button" value="ENTER" ng-disabled="disableEnter" ng-click="enter()" ng-class="entered ? 'enter-clicked' : 'enter-button'">
         </md-input-container>
     </div>
     <div layout="row" flex="50" id="lock-row">
-        <md-input-container flex="30" class="lock-container">
-            <input aria-label="command" ng-model="command.name" class="disabled" ng-disabled="true">
+        <md-input-container flex="25" class="lock-container">
+            <input aria-label="command" ng-model="command.name" type="text" class="disabled" ng-disabled="true">
         </md-input-container>
-
-        <md-input-container flex="20" class="lock-container">
-            <input aria-label="command" ng-model="command.type" class="disabled" ng-disabled="true">
+        <md-input-container flex="65" class="lock-container">
+            <input aria-label="argument" ng-model="command.arguments" type="text" class="disabled" ng-disabled="true">
         </md-input-container>
-
-        <md-input-container flex="20" class="lock-container">
-            <input aria-label="argument" ng-model="command.argument" class="disabled" ng-disabled="true">
-        </md-input-container>
-        <md-input-container flex="30" class="lock-container">
+        <md-input-container flex="10" class="lock-container">
             <input aria-label="Lock" type="button" value="LOCK" ng-disabled="disableLock" ng-click="lockCommand()" ng-class="locked ? 'enter-clicked' : 'enter-button'">
         </md-input-container>
     </div>
     <div layout="row" flex="50">
-        <md-input-container flex="50" class="lock-container">
+        <md-input-container flex="25" class="lock-container">
             <input aria-label="Gateway" value="Gateway" class="gateway" ng-disabled="true">
         </md-input-container>
 
-        <md-input-container flex="20" class="lock-container">
+        <md-input-container flex="65" class="lock-container">
             <input aria-label="SFES" class="greentext disabled" ng-disabled="true" value="SFES">
         </md-input-container>
-        <md-input-container flex="30" class="lock-container">
+        <md-input-container flex="10" class="lock-container">
             <input aria-label="Send" type="button" value="SEND" ng-click="sendCommand()" ng-disabled="!disableLock || !disableEnter" ng-class="sent ? 'send-clicked' : 'enter-button'">
         </md-input-container>
     </div>
@@ -68,39 +40,39 @@
 <md-content flex-gt-sm="50" flex-xs="20" flex-sm="30" layout="column" class="command-log" ng-show="widget.settings.commandlog">
     <md-content class="header-log">
         <div layout="row">
-            <div flex="25" id="left-header">
+            <div flex="15" id="left-header">
                 Time
             </div>
-            <div flex="30" id="left-header">
+            <div flex="10" id="left-header">
                 Command
             </div>
-            <div flex="15" id="left-header">
-                Type
+            <div flex="30" id="left-header">
+                Arguments
             </div>
             <div flex="15" id="left-header">
-                Value
+                Status
             </div>
-            <div flex="15" id="right-header">
-                Response
+            <div flex="30" id="right-header">
+                Response Data
             </div>
         </div>
     </md-content>
     <md-content>
         <div layout="row" ng-repeat = "comm in commandLog | orderBy : '-timestamp'">
-            <div flex="25" id="left-row">
+            <div flex="15" id="left-row">
                 {{comm.time}}
             </div>
-            <div flex="30" id="left-row" style="text-overflow:ellipsis; white-space: nowrap;">
+            <div flex="10" id="left-row" style="text-overflow:ellipsis; white-space: nowrap;">
                 {{comm.name}}
             </div>
-            <div flex="15" id="left-row">
-                {{comm.type}}
+            <div flex="30" id="left-row" style="word-wrap: break-word;">
+                {{comm.arguments}}
             </div>
-            <div flex="15" id="left-row">
-                {{comm.argument}}
+            <div flex="15" id="left-row" style="word-wrap: break-word;">
+                {{comm.response[comm.response.length - 1].status}}
             </div>
-            <div flex="15" id="right-row">
-                {{comm.response}}
+            <div flex="30" id="right-row" style="word-wrap: break-word;">
+                {{comm.response[comm.response.length - 1].data}}
             </div>
         </div>
     </md-content>
