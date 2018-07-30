@@ -335,21 +335,4 @@ describe('Test Suite for Command Model ', function() {
         });  
     });
 
-    it('should invalidate if type is not defined', function() {
-        var m = new CMD({
-            name: 'pointing',
-            sent_timestamp:'2018-02-09T13:09:17.471Z',
-            arguments:'earth',
-            user:'taruni.gattu@gmail.com',
-            mission:'AZero',
-            response:'success',
-            sent_to_satellite:true,
-            time:'040.13:09:17 UTC'
-        });
-        m.validate(function(err){
-            expect(err.errors.type).to.exist;
-            expect(err.errors.type.name).to.equal('ValidatorError');
-        });  
-    });
-
 });
