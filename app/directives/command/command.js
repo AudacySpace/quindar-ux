@@ -71,8 +71,6 @@ app.controller('CommandCtrl',
     	var time = dashboardService.getTime(0);
     	$scope.command.sent_timestamp = time.today;
     	$scope.command.time = time.utc;
-    	// $scope.command.sent_timestamp = new Date();
-    	// $scope.command.time = time.utc;
 
     	commandService.saveCommand($scope.email, $scope.command, $scope.mission.missionName)
     	.then(function(response) {

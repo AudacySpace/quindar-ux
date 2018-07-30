@@ -5,11 +5,11 @@
             <label>Command<span>*</span></label>
             <input ng-model="cmd" placeholder="Command" type="text" ng-change="changeInput()" ng-disabled="disableInput" ng-class="disableInput ? 'disabled' : 'input-arg'" pattern='[A-Za-z\\s]*'>
         </md-input-container>
-        <md-input-container flex="65" class="input-container">
+        <md-input-container flex="50" class="input-container">
             <label>Arguments</label>
             <input ng-model="arguments" placeholder="Value" type="text" ng-change="changeInput()" ng-disabled="disableInput" ng-class="disableInput ? 'disabled' : 'input-arg'">
         </md-input-container>
-        <md-input-container flex="10" class="input-container">
+        <md-input-container flex="25" class="input-container">
             <input aria-label="Enter" type="button" value="ENTER" ng-disabled="disableEnter" ng-click="enter()" ng-class="entered ? 'enter-clicked' : 'enter-button'">
         </md-input-container>
     </div>
@@ -17,10 +17,10 @@
         <md-input-container flex="25" class="lock-container">
             <input aria-label="command" ng-model="command.name" type="text" class="disabled" ng-disabled="true">
         </md-input-container>
-        <md-input-container flex="65" class="lock-container">
+        <md-input-container flex="50" class="lock-container">
             <input aria-label="argument" ng-model="command.arguments" type="text" class="disabled" ng-disabled="true">
         </md-input-container>
-        <md-input-container flex="10" class="lock-container">
+        <md-input-container flex="25" class="lock-container">
             <input aria-label="Lock" type="button" value="LOCK" ng-disabled="disableLock" ng-click="lockCommand()" ng-class="locked ? 'enter-clicked' : 'enter-button'">
         </md-input-container>
     </div>
@@ -29,10 +29,10 @@
             <input aria-label="Gateway" value="Gateway" class="gateway" ng-disabled="true">
         </md-input-container>
 
-        <md-input-container flex="65" class="lock-container">
+        <md-input-container flex="50" class="lock-container">
             <input aria-label="SFES" class="greentext disabled" ng-disabled="true" value="SFES">
         </md-input-container>
-        <md-input-container flex="10" class="lock-container">
+        <md-input-container flex="25" class="lock-container">
             <input aria-label="Send" type="button" value="SEND" ng-click="sendCommand()" ng-disabled="!disableLock || !disableEnter" ng-class="sent ? 'send-clicked' : 'enter-button'">
         </md-input-container>
     </div>
@@ -40,38 +40,38 @@
 <md-content flex-gt-sm="50" flex-xs="20" flex-sm="30" layout="column" class="command-log" ng-show="widget.settings.commandlog">
     <md-content class="header-log">
         <div layout="row">
-            <div flex="15" id="left-header">
+            <div flex="15" class="left-cmdlogheader">
                 Time
             </div>
-            <div flex="10" id="left-header">
+            <div flex="20" class="left-cmdlogheader">
                 Command
             </div>
-            <div flex="30" id="left-header">
+            <div flex="20" class="left-cmdlogheader">
                 Arguments
             </div>
-            <div flex="15" id="left-header">
+            <div flex="15" class="left-cmdlogheader">
                 Status
             </div>
-            <div flex="30" id="right-header">
+            <div flex="30" class="right-cmdlogheader">
                 Response Data
             </div>
         </div>
     </md-content>
     <md-content>
         <div layout="row" ng-repeat = "comm in commandLog | orderBy : '-timestamp'">
-            <div flex="15" id="left-row">
+            <div flex="15" class="left-cmdlogrow">
                 {{comm.time}}
             </div>
-            <div flex="10" id="left-row" style="text-overflow:ellipsis; white-space: nowrap;">
+            <div flex="20" class="left-cmdlogrow" style="text-overflow:ellipsis; white-space: nowrap;">
                 {{comm.name}}
             </div>
-            <div flex="30" id="left-row" style="word-wrap: break-word;">
+            <div flex="20" class="left-cmdlogrow" style="word-wrap: break-word;">
                 {{comm.arguments}}
             </div>
-            <div flex="15" id="left-row" style="word-wrap: break-word;">
+            <div flex="15" class="left-cmdlogrow" style="word-wrap: break-word;">
                 {{comm.response[comm.response.length - 1].status}}
             </div>
-            <div flex="30" id="right-row" style="word-wrap: break-word;">
+            <div flex="30" class="right-cmdlogrow" style="word-wrap: break-word;">
                 {{comm.response[comm.response.length - 1].data}}
             </div>
         </div>
