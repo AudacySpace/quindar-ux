@@ -234,8 +234,8 @@ describe('Test Suite for Command Model ', function() {
             time:'040.13:09:17 UTC'
         });
         m.validate(function(err){
-            expect(err.errors.timestamp).to.exist;
-            expect(err.errors.timestamp.name).to.equal('ValidatorError');
+            expect(err.errors.sent_timestamp).to.exist;
+            expect(err.errors.sent_timestamp.name).to.equal('ValidatorError');
         });  
     });
 
@@ -250,8 +250,8 @@ describe('Test Suite for Command Model ', function() {
             time:'040.13:09:17 UTC'
         });
         m.validate(function(err){
-            expect(err.errors.argument).to.exist;
-            expect(err.errors.argument.name).to.equal('ValidatorError');
+            expect(err.errors.arguments).to.exist;
+            expect(err.errors.arguments.name).to.equal('ValidatorError');
         });  
     });
 
