@@ -16,8 +16,8 @@ app.controller('CommandCtrl',
 	$scope.sent = false;
 
 	$scope.initialise = function(){
-		$scope.selected = {};
-		$scope.argument = "";
+		$scope.cmd = "";
+		$scope.arguments = "";
 		$scope.entered =  false;
 		$scope.locked = false;
 		$scope.disableEnter = false;
@@ -26,30 +26,24 @@ app.controller('CommandCtrl',
 
 		$scope.command = {
 			name : "",
-			argument : "",
-			type : "",
-			timestamp : "",
+			arguments : "",
+			sent_timestamp : "",
 			time : ""
 		};
-		$scope.types = [];
-
-		commandService.getCommandList($scope.mission.missionName)
-		.then(function(response) {
-	        if(response.status == 200) {
-	            $scope.commandList = response.data;
-	        }
-	    });
 	}
 
     $scope.enter = function(){
-    	if($scope.selected.command) {
-			$scope.command.name = $scope.selected.command;
-		    $scope.command.argument = $scope.argument;
-		    $scope.command.type = $scope.selected.type;
+    	if($scope.cmd && $scope.arguments) {
+			$scope.command.name = $scope.cmd;
+		    $scope.command.arguments = $scope.arguments;
 		   	$scope.entered = true;
 		   	$scope.disableEnter = true;
-	    } else {
-	    	$window.alert("Please select the command from select dropdown");
+	    } else if($scope.cmd.length === 0 && $scope.arguments.length > 0) {
+	    	$window.alert("Please enter the command.");
+	    } else if($scope.cmd.length > 0 && $scope.arguments.length === 0){
+	    	$window.alert("Please enter the argument values.");
+	    } else if($scope.cmd.length === 0 && $scope.arguments.length === 0){
+	    	$window.alert("Please enter the command and argument values.");
 	    }
     }
 
@@ -75,9 +69,8 @@ app.controller('CommandCtrl',
 
     $scope.sendCommand = function(){   	
     	var time = dashboardService.getTime(0);
-    	$scope.command.timestamp = time.today;
+    	$scope.command.sent_timestamp = time.today;
     	$scope.command.time = time.utc;
-    	//$scope.sent = true;
 
     	commandService.saveCommand($scope.email, $scope.command, $scope.mission.missionName)
     	.then(function(response) {
@@ -94,11 +87,6 @@ app.controller('CommandCtrl',
 	            $scope.commandLog = response.data;
 	        }
 	    });
-	}
-
-	$scope.updateTypes = function(item, model){
-		$scope.selected.type = {};
-		$scope.types = item.types;
 	}
 
 	$scope.initialise();
