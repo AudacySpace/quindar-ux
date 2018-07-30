@@ -62,7 +62,7 @@ app.controller('DataLogCtrl',function ($scope,$interval,dashboardService,datasta
 	}
 
     //Called every time user scrolls in widget
-    $scope.boxReference.scroll(function () {
+    $scope.boxReference.scroll(function() {
         if($scope.box.scrollHeight == Math.floor($scope.box.scrollTop) + $scope.box.clientHeight) //Check if user is scrolled to bottom of data log
         {
             $scope.scrollToBottom = true;
@@ -72,7 +72,6 @@ app.controller('DataLogCtrl',function ($scope,$interval,dashboardService,datasta
             $scope.scrollToBottom = false;
         }
         $scope.autoScroll();
-        return true;
     });
 
     //Check to see if necessary to stay scrolled at the bottom of the data log

@@ -19,7 +19,6 @@ describe('Testing data log controller', function () {
                 }
             };
             
-
             gridService.getDashboard.and.callFake(function() {
                 return {
                     current:

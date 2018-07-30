@@ -21,7 +21,7 @@ describe('Testing lineplot settings controller', function () {
 
         inject(function($controller, $rootScope, _$interval_){
             $interval = _$interval_;
-            sidebarService = jasmine.createSpyObj('sidebarService', ['getVehicleInfo', 'setMenuStatus']);;
+            sidebarService = jasmine.createSpyObj('sidebarService', ['getVehicleInfo', 'setMenuStatus', 'setTempWidget']);;
             dashboardService = jasmine.createSpyObj('dashboardService', 
                 ['getLock', 'setLeftLock', 'sortObject','getData', 'isEmpty', 'telemetry']);
             scope = $rootScope.$new();
@@ -119,6 +119,18 @@ describe('Testing lineplot settings controller', function () {
     });
 
     it('should close the settings menu on close', function() {
+        dashboardService.getLock.and.callFake(function(){
+            return { lockLeft : true, lockRight : false }
+        });
+
+        scope.settings.data = {
+            id: '',
+            vehicle: '',
+            key: ''
+        };
+
+        scope.previousSettings = angular.copy(scope.settings.data);
+
         scope.widget.main = false;
         scope.widget.settings.active = true;
 
@@ -126,18 +138,23 @@ describe('Testing lineplot settings controller', function () {
         
         expect(scope.widget.main).toEqual(true);
         expect(scope.widget.settings.active).toEqual(false);
+        expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false);
     });
 
     it('should define function saveWidget', function() {
         expect(scope.saveWidget).toBeDefined();
     });
 
-    it('should not close the settings menu on save if data is not selected', function() {
+    it('should alert and not close the settings menu on save if data is not selected', function() {
+        spyOn(windowMock, "alert");
         scope.settings.data = {
             id: '',
             vehicle: '',
             key: ''
         };
+
+        scope.widget.settings.dataArray = [];
+
         scope.widget.main = false;
         scope.widget.settings.active = true;
 
@@ -145,6 +162,7 @@ describe('Testing lineplot settings controller', function () {
         
         expect(scope.widget.main).not.toEqual(true);
         expect(scope.widget.settings.active).not.toEqual(false);
+        expect(windowMock.alert).toHaveBeenCalledWith("Vehicle data not set. Please select from Data Menu");
     });
 
     it('should close the settings menu on save if data is selected', function() {
@@ -169,9 +187,24 @@ describe('Testing lineplot settings controller', function () {
             'checked': false,
             'color' : '#FF9100' 
         }];
+
+        dashboardService.getData.and.callFake(function(){
+            return {
+                "value": 7.5977371245409495,
+                "warn_high": "10",
+                "warn_low": "-10",
+                "alarm_high": "14",
+                "alarm_low": "-14",
+                "units": "km/s",
+                "notes": ""
+            }
+        });
+
+        scope.widget.settings.dataArray = [angular.copy(scope.settings.data)];
         scope.widget.main = false;
         scope.widget.settings.active = true;
 
+        scope.getValue(false);
         scope.saveWidget(scope.widget);
         
         expect(scope.widget.main).toEqual(true);
@@ -179,9 +212,10 @@ describe('Testing lineplot settings controller', function () {
         expect(scope.widget.settings.data.key).toEqual('A0.GNC.velocity.vx');
         expect(scope.widget.settings.data.value).toEqual('vx');
         expect(scope.widget.settings.data.vehicles).toEqual(expectedVehicles);
+        expect(scope.widget.settings.dataArray[0]).toEqual(scope.settings.data);
     });
 
-    it('should alert he user on save if data is selected but none of the vehicles is checked', function() {
+    it('should alert the user on save if data is selected but none of the vehicles is checked', function() {
         spyOn(windowMock, "alert");
 
         scope.settings.data = {
@@ -200,13 +234,31 @@ describe('Testing lineplot settings controller', function () {
             'checked': false,
             'color' : '#FF9100' 
         }];
+
+        dashboardService.getData.and.callFake(function(){
+            return {
+                "value": 7.5977371245409495,
+                "warn_high": "10",
+                "warn_low": "-10",
+                "alarm_high": "14",
+                "alarm_low": "-14",
+                "units": "km/s",
+                "notes": ""
+            }
+        });
+
+        scope.widget.settings.dataArray = [angular.copy(scope.settings.data)];
         scope.widget.main = false;
         scope.widget.settings.active = true;
 
+        scope.getValue(false);
+        scope.settings.vehicles[0].checked = false;
+        scope.settings.vehicles[1].checked = false;
         scope.saveWidget(scope.widget);
         
         expect(scope.widget.main).not.toEqual(true);
         expect(scope.widget.settings.active).not.toEqual(false);
+        expect(scope.widget.settings.dataArray[0]).toEqual(scope.settings.data);
         expect(scope.widget.settings.data.key).toEqual('A0.GNC.velocity.vx');
         expect(scope.widget.settings.data.value).toEqual('vx');
         expect(scope.widget.settings.data.vehicles).toEqual([]);
@@ -216,6 +268,7 @@ describe('Testing lineplot settings controller', function () {
     it('should define function getTelemetrydata', function() {
         expect(scope.getTelemetrydata).toBeDefined();
     });
+
 
     it('should open the left sidebar/Data Menu when function is called(window width < 1400)', function() {
         scope.getTelemetrydata();
@@ -239,22 +292,67 @@ describe('Testing lineplot settings controller', function () {
         expect(sidebarService.setMenuStatus).toHaveBeenCalledWith(true);
     });
 
+    it('should define function readValue', function() {
+        expect(scope.readValue).toBeDefined();
+    });
+
+    it('should show the id of selected vehicle in the input box', function() {
+        var vehicleInfo = { 
+            id: 'vx',
+            vehicle: 'A0',
+            key: 'A0.GNC.velocity.vx',
+            category: 'velocity' 
+        };
+
+        scope.widget.settings.dataArray = [vehicleInfo];
+
+        dashboardService.getData.and.callFake(function() {
+            return {
+                "value": -0.3201368817947103,
+                "warn_high": "10",
+                "warn_low": "-10",
+                "alarm_high": "14",
+                "alarm_low": "-14",
+                "units": "km/s",
+                "notes": ""
+            };
+        });
+
+        expect(scope.readValue()).toEqual('vx');
+    });
+
     it('should define function getValue', function() {
         expect(scope.getValue).toBeDefined();
     });
 
     it('should alert the user if the vehicle and id from the left menu are not available', function() {
         spyOn(windowMock, "alert");
-        var data = {
-            parameters:[]
-        };
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
+        scope.widget.settings.dataArray = [];
 
-        scope.getValue();
+        scope.saveWidget(scope.widget);
 
         expect(windowMock.alert).toHaveBeenCalledWith("Vehicle data not set. Please select from Data Menu");
+    });
+
+    it('should alert the user if no data is available for selected telemetry id', function() {
+        spyOn(windowMock, "alert");
+        var vehicleInfo = { 
+            id: 'vx',
+            vehicle: 'A0',
+            key: 'A0.GNC.velocity.vx',
+            category: 'velocity' 
+        };
+
+        dashboardService.getData.and.callFake(function() {
+            return null;
+        });
+
+        scope.widget.settings.dataArray = [vehicleInfo];
+
+        scope.getValue(false);
+        scope.saveWidget(scope.widget);
+
+        expect(windowMock.alert).toHaveBeenCalledWith("Currently there is no data available for this telemetry id.");
     });
 
     it('should store the value of selected vehicle and id in scope.settings variable', function() {
@@ -265,15 +363,9 @@ describe('Testing lineplot settings controller', function () {
             key: 'A0.GNC.velocity.vx',
             category: 'velocity' 
         };
-        var data = {
-            parameters:[]
-        }
+        
+        scope.widget.settings.dataArray = [vehicleInfo];
 
-        data.parameters[0] = vehicleInfo;
-
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
         dashboardService.getData.and.callFake(function(){
             return {
                 "value": 7.5977371245409495,
@@ -286,14 +378,17 @@ describe('Testing lineplot settings controller', function () {
             }
         });
 
-        scope.getValue();
+        scope.getValue(false);
+        scope.saveWidget(scope.widget);
 
         expect(scope.settings.data).toEqual(vehicleInfo);
     });
 
     it('should close the left menu after storing data into variable(window width>1400)', function() {
         windowMock.innerWidth = 1440;
-        scope.lock = { lockLeft : true, lockRight : false }
+        dashboardService.getLock.and.callFake(function(){
+            return { lockLeft : true, lockRight : false }
+        });
         var vehicleInfo = { 
             id: 'vx',
             vehicle: 'A0',
@@ -301,15 +396,7 @@ describe('Testing lineplot settings controller', function () {
             category: 'velocity'
         };
 
-        var data = {
-            parameters:[]
-        }
-
-        data.parameters[0] = vehicleInfo;
-
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
+        scope.widget.settings.dataArray = [vehicleInfo];
 
         dashboardService.getData.and.callFake(function(){
             return {
@@ -323,7 +410,8 @@ describe('Testing lineplot settings controller', function () {
             }
         });
 
-        scope.getValue();
+        scope.getValue(false);
+        scope.saveWidget(scope.widget);
 
         expect(scope.settings.data).toEqual(vehicleInfo);
         expect(scope.lock.lockLeft).toEqual(false);
@@ -362,15 +450,7 @@ describe('Testing lineplot settings controller', function () {
             category: 'velocity'
         };
 
-        var data = {
-            parameters:[]
-        }
-
-        data.parameters[0] = vehicleInfo;
-
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
+        scope.widget.settings.dataArray = [vehicleInfo];
 
         dashboardService.getData.and.callFake(function(){
             return {
@@ -384,10 +464,10 @@ describe('Testing lineplot settings controller', function () {
             }
         });
 
-        scope.getValue();
+        scope.getValue(false);
+        scope.saveWidget(scope.widget);
 
         expect(scope.settings.vehicles).toEqual(result);
-
     });
 
     it('should define function createVehicleData', function() {
