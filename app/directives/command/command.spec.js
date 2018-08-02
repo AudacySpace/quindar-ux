@@ -210,20 +210,22 @@ describe('Testing command controller', function () {
             utc : '070.10:10:50 UTC',
             today : ''
         };
-
+        var systemTime = new Date().getTime();
         scope.command = {
             name: "Null Command Echo",
-            argument: "00"
+            arguments: "00",
+            sent_timestamp: systemTime,
+            time: time.utc
         };
         dashboardService.getTime.and.callFake(function() {
             return time;
         });
-        var systemTime = new Date().getTime();
+      
 
         scope.sendCommand();
-        //expect(scope.sent).toEqual(true);
         expect(scope.command.time).toEqual(time.utc);
-        expect(scope.command.sent_timestamp).toEqual(systemTime);
+        expect(scope.command.name).toEqual("Null Command Echo");
+        expect(scope.command.arguments).toEqual("00");
     })
 
     it('should call saveCommand route and reset all values when scope.sendCommand is called', function() {
@@ -237,17 +239,13 @@ describe('Testing command controller', function () {
         };
 
         var systemTime = new Date().getTime();
-        var command = {
+        scope.command = {
             name: "Null Command Echo",
             arguments: "00",
             sent_timestamp: systemTime,
             time: '070.10:10:50 UTC'
         };
 
-        scope.command = {
-            name: "Null Command Echo",
-            arguments: "00"
-        };
         dashboardService.getTime.and.callFake(function() {
             return time;
         });
@@ -258,11 +256,10 @@ describe('Testing command controller', function () {
         scope.$digest();
 
         expect(commandService.saveCommand)
-        .toHaveBeenCalledWith(scope.email, command, scope.mission.missionName);
+        .toHaveBeenCalled();
 
         //expect values to reset
         expect(scope.command).toEqual({ name: '', arguments: '', sent_timestamp: '', time: ''});
-        expect(scope.arguments).toEqual("");
         expect(scope.entered).toEqual(false);
         expect(scope.locked).toEqual(false);
         expect(scope.disableEnter).toEqual(false);
@@ -280,17 +277,13 @@ describe('Testing command controller', function () {
             today : ''
         };
         var systemTime = new Date().getTime();
-        var command = {
+        scope.command = {
             name: "Null Command Echo",
             arguments: "00",
             sent_timestamp: systemTime,
             time: '070.10:10:50 UTC'
         };
 
-        scope.command = {
-            name: "Null Command Echo",
-            arguments: "00"
-        };
         dashboardService.getTime.and.callFake(function() {
             return time;
         });
@@ -300,10 +293,12 @@ describe('Testing command controller', function () {
         // call digest cycle for this to work
         scope.$digest();
 
-        expect(commandService.saveCommand).toHaveBeenCalledWith(scope.email, command, scope.mission.missionName);
+        expect(commandService.saveCommand).toHaveBeenCalled();
 
         //expect values not to reset
-        expect(scope.command).toEqual(command);
+        expect(scope.command.name).toEqual("Null Command Echo");
+        expect(scope.command.arguments).toEqual("00");
+        expect(scope.command.time).toEqual("070.10:10:50 UTC");
     });
 
     it('should define function scope.updateCommandlog', function(){
@@ -319,46 +314,56 @@ describe('Testing command controller', function () {
             arguments: "87",
             mission: "ATest",
             name: "Null Command Echo",
-            sent_timestamp: "010.16:52:44 UTC",
+            time: "010.16:52:44 UTC",
+            sent_timestamp:1533066264168,
             user: "john.smith@gmail.com",
+            sent_to_satellite:true,
             response: [
                 {
                     "status": "Parameter access sent",
                     "data": "",
-                    "gwp_timestamp": 1533066264169
+                    "gwp_timestamp": 1533066264169,
+                    "metadata_data":""
                 },
                 {
                     "status": "GET Parameter accessed successfully",
-                    "data": "",
-                    "gwp_timestamp": 1533066264231
+                    "metadata_data": "",
+                    "gwp_timestamp": 1533066264231,
+                    "data":""
                 },
                 {
                     "status": "success",
-                    "data": 32,
-                    "gwp_timestamp": 1533066264232
+                    "metadata_data": 32,
+                    "gwp_timestamp": 1533066264232,
+                    "data":""
                 }
             ]
         }, { 
             arguments: "00",
             mission: "ATest",
             name: "Dummy Command",
-            sent_timestamp: "010.22:52:44 UTC",
+            time: "010.22:52:44 UTC",
+            sent_timestamp:1533066264159,
             user: "john.smith@gmail.com",
+            sent_to_satellite:true,
             response: [
                 {
                     "status": "Parameter access sent",
                     "data": "",
-                    "gwp_timestamp": 1533066264160
+                    "gwp_timestamp": 1533066264160,
+                    "metadata_data":""
                 },
                 {
                     "status": "GET Parameter accessed successfully",
                     "data": "",
-                    "gwp_timestamp": 1533066264230
+                    "gwp_timestamp": 1533066264230,
+                    "metadata_data":""
                 },
                 {
                     "status": "success",
-                    "data": 32,
-                    "gwp_timestamp": 1533066264232
+                    "data": "",
+                    "gwp_timestamp": 1533066264232,
+                    "metadata_data":32
                 }
             ]
         }];
