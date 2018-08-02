@@ -218,11 +218,12 @@ describe('Testing command controller', function () {
         dashboardService.getTime.and.callFake(function() {
             return time;
         });
+        var systemTime = new Date().getTime();
 
         scope.sendCommand();
         //expect(scope.sent).toEqual(true);
         expect(scope.command.time).toEqual(time.utc);
-        expect(scope.command.sent_timestamp).toEqual(time.today);
+        expect(scope.command.sent_timestamp).toEqual(systemTime);
     })
 
     it('should call saveCommand route and reset all values when scope.sendCommand is called', function() {
@@ -234,10 +235,12 @@ describe('Testing command controller', function () {
             utc : '070.10:10:50 UTC',
             today : ''
         };
+
+        var systemTime = new Date().getTime();
         var command = {
             name: "Null Command Echo",
             arguments: "00",
-            sent_timestamp: '',
+            sent_timestamp: systemTime,
             time: '070.10:10:50 UTC'
         };
 
@@ -276,10 +279,11 @@ describe('Testing command controller', function () {
             utc : '070.10:10:50 UTC',
             today : ''
         };
+        var systemTime = new Date().getTime();
         var command = {
             name: "Null Command Echo",
             arguments: "00",
-            sent_timestamp: '',
+            sent_timestamp: systemTime,
             time: '070.10:10:50 UTC'
         };
 
@@ -316,13 +320,47 @@ describe('Testing command controller', function () {
             mission: "ATest",
             name: "Null Command Echo",
             sent_timestamp: "010.16:52:44 UTC",
-            user: "john.smith@gmail.com"
+            user: "john.smith@gmail.com",
+            response: [
+                {
+                    "status": "Parameter access sent",
+                    "data": "",
+                    "gwp_timestamp": 1533066264169
+                },
+                {
+                    "status": "GET Parameter accessed successfully",
+                    "data": "",
+                    "gwp_timestamp": 1533066264231
+                },
+                {
+                    "status": "success",
+                    "data": 32,
+                    "gwp_timestamp": 1533066264232
+                }
+            ]
         }, { 
             arguments: "00",
             mission: "ATest",
             name: "Dummy Command",
             sent_timestamp: "010.22:52:44 UTC",
-            user: "john.smith@gmail.com"
+            user: "john.smith@gmail.com",
+            response: [
+                {
+                    "status": "Parameter access sent",
+                    "data": "",
+                    "gwp_timestamp": 1533066264160
+                },
+                {
+                    "status": "GET Parameter accessed successfully",
+                    "data": "",
+                    "gwp_timestamp": 1533066264230
+                },
+                {
+                    "status": "success",
+                    "data": 32,
+                    "gwp_timestamp": 1533066264232
+                }
+            ]
         }];
 
         deferredCommandLog.resolve({ data : result, status: 200 });
