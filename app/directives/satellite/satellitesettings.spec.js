@@ -23,7 +23,7 @@ describe('Testing satellite settings controller', function () {
             dashboardService = jasmine.createSpyObj('dashboardService', 
                 ['getLock', 'setLeftLock','getData']);
 
-            sidebarService = jasmine.createSpyObj('sidebarService',['getVehicleInfo', 'setMenuStatus', 'setTempWidget']);
+            sidebarService = jasmine.createSpyObj('sidebarService',['getVehicleInfo', 'setMenuStatus', 'setTempWidget', 'setOpenLogo']);
 
             scope = $rootScope.$new();
             scope.widget = {
@@ -132,6 +132,7 @@ describe('Testing satellite settings controller', function () {
         //expect the mocked mdSidenav open function to be called
         expect(sideNavOpenMock).toHaveBeenCalled();
         expect(sidebarService.setMenuStatus).toHaveBeenCalledWith(true);
+        expect(sidebarService.setOpenLogo).toHaveBeenCalledWith(false);
     });
 
     it('should open the left sidebar/Data Menu when function is called(window width > 1400)', function() {
@@ -146,6 +147,7 @@ describe('Testing satellite settings controller', function () {
         expect(scope.lock).toEqual({ lockLeft : true, lockRight : false });
         expect(dashboardService.setLeftLock).toHaveBeenCalledWith(true);
         expect(sidebarService.setMenuStatus).toHaveBeenCalledWith(true);
+        expect(sidebarService.setOpenLogo).toHaveBeenCalledWith(false);
     });
 
     it('should define function readValues', function() {
