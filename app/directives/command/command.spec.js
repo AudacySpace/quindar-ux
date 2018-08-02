@@ -210,11 +210,11 @@ describe('Testing command controller', function () {
             utc : '070.10:10:50 UTC',
             today : ''
         };
-        var systemTime = new Date().getTime();
+
         scope.command = {
             name: "Null Command Echo",
             arguments: "00",
-            sent_timestamp: systemTime,
+            sent_timestamp: 1533066264232,
             time: time.utc
         };
         dashboardService.getTime.and.callFake(function() {
@@ -238,11 +238,10 @@ describe('Testing command controller', function () {
             today : ''
         };
 
-        var systemTime = new Date().getTime();
         scope.command = {
             name: "Null Command Echo",
             arguments: "00",
-            sent_timestamp: systemTime,
+            sent_timestamp: 1533066264232,
             time: '070.10:10:50 UTC'
         };
 
@@ -276,11 +275,11 @@ describe('Testing command controller', function () {
             utc : '070.10:10:50 UTC',
             today : ''
         };
-        var systemTime = new Date().getTime();
+
         scope.command = {
             name: "Null Command Echo",
             arguments: "00",
-            sent_timestamp: systemTime,
+            sent_timestamp: 1533066264232,
             time: '070.10:10:50 UTC'
         };
 
@@ -360,7 +359,7 @@ describe('Testing command controller', function () {
                     "metadata_data":""
                 },
                 {
-                    "status": "success",
+                    "status": "success received",
                     "data": "",
                     "gwp_timestamp": 1533066264232,
                     "metadata_data":32
@@ -375,6 +374,10 @@ describe('Testing command controller', function () {
 
         expect(commandService.getCommandLog).toHaveBeenCalledWith(scope.mission.missionName);
         expect(scope.commandLog).toEqual(result);
+        expect(scope.commandLog[0].responseStatus).toEqual("success");
+        expect(scope.commandLog[0].responseData).toEqual(32);
+        expect(scope.commandLog[1].responseStatus).toEqual("success received");
+        expect(scope.commandLog[1].responseData).toEqual(32);
     });
 
     it('should call $interval one time', function(){
