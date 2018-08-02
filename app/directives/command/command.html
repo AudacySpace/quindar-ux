@@ -44,16 +44,16 @@
             <div flex="15" class="left-cmdlogheader">
                 Time
             </div>
-            <div flex="20" class="left-cmdlogheader">
+            <div flex="10" class="left-cmdlogheader">
                 Command
             </div>
             <div flex="20" class="left-cmdlogheader">
                 Arguments
             </div>
-            <div flex="15" class="left-cmdlogheader">
+            <div flex="35" class="left-cmdlogheader">
                 Status
             </div>
-            <div flex="30" class="right-cmdlogheader">
+            <div flex="25" class="right-cmdlogheader">
                 Response Data
             </div>
         </div>
@@ -63,17 +63,17 @@
             <div flex="15" class="left-cmdlogrow">
                 {{comm.time}}
             </div>
-            <div flex="20" class="left-cmdlogrow" style="text-overflow:ellipsis; white-space: nowrap;">
+            <div flex="10" class="left-cmdlogrow" style="text-overflow:ellipsis; white-space: nowrap;">
                 {{comm.name}}
             </div>
             <div flex="20" class="left-cmdlogrow" style="word-wrap: break-word;">
                 {{comm.arguments}}
             </div>
-            <div flex="15" class="left-cmdlogrow" style="word-wrap: break-word;">
-                {{comm.response[comm.response.length - 1].status}}
+            <div flex="35" class="left-cmdlogrow" style="word-wrap: break-word;">
+                {{ comm.responseStatus }}
             </div>
-            <div flex="30" class="right-cmdlogrow" style="word-wrap: break-word;">
-                {{comm.response[comm.response.length - 1].data}}
+            <div flex="25" class="right-cmdlogrow" style="word-wrap: break-word;">
+                {{ comm.responseData }}
             </div>
         </div>
     </md-content>
