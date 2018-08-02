@@ -14,7 +14,7 @@ describe('Testing leftSidebar component', function () {
 
         inject( function($componentController, _$interval_, _$q_){
             dashboardService = jasmine.createSpyObj('dashboardService', ['getTelemetryValues', 'getLock']);
-            sidebarService = jasmine.createSpyObj('sidebarService', ['setVehicleInfo', 'getMenuStatus', 'setMenuStatus']);
+            sidebarService = jasmine.createSpyObj('sidebarService', ['setVehicleInfo', 'getMenuStatus', 'setMenuStatus', 'getOpenLogo']);
             $interval = _$interval_;
 
             $controller = $componentController('leftSidebar', {
@@ -140,12 +140,15 @@ describe('Testing leftSidebar component', function () {
             "active":false
         };
 
+        sidebarService.getOpenLogo.and.callFake(function(){
+            return true;
+        });
+
         $controller.selectData(data);
 
         expect(data.active).toEqual(true);
-        //set vehicleInfo on sidebarService to empty values
-        expect(sidebarService.setVehicleInfo).toHaveBeenCalled();
-        expect(sidebarService.setVehicleInfo).toHaveBeenCalledWith('');
+        //do not call setVehicleInfo if the data menu is opened through the logo
+        expect(sidebarService.setVehicleInfo).not.toHaveBeenCalled();
     });
 
     it('should set vehicleInfo in sidebarService if no children of child nodes(parent of leaf node)', function(){
@@ -161,10 +164,14 @@ describe('Testing leftSidebar component', function () {
             "active":false
         };
 
+        sidebarService.getOpenLogo.and.callFake(function(){
+            return false;
+        });
+
         $controller.selectData(data);
 
         expect(data.active).toEqual(true);
-        //set vehicleInfo on sidebarService to empty values
+        //data menu opened through a qwidget
         expect(sidebarService.setVehicleInfo).toHaveBeenCalled();
         expect(sidebarService.setVehicleInfo).toHaveBeenCalledWith('A0.GNC.Attitude');
     });
@@ -177,8 +184,13 @@ describe('Testing leftSidebar component', function () {
             "active":false
         };
 
+        sidebarService.getOpenLogo.and.callFake(function(){
+            return false;
+        });
+
         $controller.selectData(data);
 
+        //data menu opened through a qwidget
         expect(sidebarService.setVehicleInfo).toHaveBeenCalled();
         expect(sidebarService.setVehicleInfo).toHaveBeenCalledWith('A0.GNC.Attitude.q1');
     });

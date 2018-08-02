@@ -40,7 +40,7 @@ describe('Testing data table controller', function () {
 
         inject(function($controller, $rootScope, $interval){
             $intervalSpy = jasmine.createSpy('$interval', $interval);
-            sidebarService = jasmine.createSpyObj('sidebarService', ['getVehicleInfo', 'setMenuStatus', 'setTempWidget']);;
+            sidebarService = jasmine.createSpyObj('sidebarService', ['getVehicleInfo', 'setMenuStatus', 'setTempWidget', 'setOpenLogo']);;
             dashboardService = jasmine.createSpyObj('dashboardService', 
                 ['getLock', 'setLeftLock', 'icons', 'getData']);
             datastatesService = jasmine.createSpyObj('datastatesService', ['colorValues', 'getDataColor']);
@@ -111,6 +111,7 @@ describe('Testing data table controller', function () {
         expect(sideNavOpenMock).toHaveBeenCalled();
         expect(arrow.style.color).toEqual('#07D1EA');
         expect(sidebarService.setMenuStatus).toHaveBeenCalledWith(true);
+        expect(sidebarService.setOpenLogo).toHaveBeenCalledWith(false);
     });
 
     it('should open the left sidebar/Data Menu when function is called(window width > 1400)', function() {
@@ -125,6 +126,7 @@ describe('Testing data table controller', function () {
         expect(dashboardService.setLeftLock).toHaveBeenCalledWith(true);
         expect(arrow.style.color).toEqual('#07D1EA');
         expect(sidebarService.setMenuStatus).toHaveBeenCalledWith(true);
+        expect(sidebarService.setOpenLogo).toHaveBeenCalledWith(false);
     });
 
     it('should define function getValue', function() {

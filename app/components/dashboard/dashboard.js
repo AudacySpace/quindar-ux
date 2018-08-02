@@ -34,6 +34,7 @@ angular.module('app')
 	    		dashboardService.setLeftLock(vm.locks.lockLeft); 
 	    	}
 			sidebarService.setMenuStatus(true); //set to true when data menu is opened and tree needs to be created
+			sidebarService.setOpenLogo(true); //set to true if data menu opened through Quindar logo on Dashboard
 	    }
 
 	    vm.logout = function () {

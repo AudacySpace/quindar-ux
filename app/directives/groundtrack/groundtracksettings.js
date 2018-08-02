@@ -199,11 +199,11 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                                 $scope.settings.iconstatus[j] = $scope.widget.settings.vehicles[i].iconStatus;
                                 $scope.positionData[j] = angular.copy($scope.widget.settings.vehicles[i].pdata);
                                 $scope.settings.pdata[j] = angular.copy($scope.widget.settings.vehicles[i].pdata);
-                                $scope.widget.settings.totalPositionArray[j] = angular.copy($scope.widget.settings.vehicles[j].pdata);
+                                $scope.widget.settings.totalPositionArray[i] = angular.copy($scope.widget.settings.vehicles[i].pdata);
                                 
                                 $scope.velocityData[j] = angular.copy($scope.widget.settings.vehicles[i].vdata);
                                 $scope.settings.vdata[j] = angular.copy($scope.widget.settings.vehicles[i].vdata);
-                                $scope.widget.settings.totalVelocityArray[j] = angular.copy($scope.widget.settings.vehicles[j].vdata);
+                                $scope.widget.settings.totalVelocityArray[i] = angular.copy($scope.widget.settings.vehicles[i].vdata);
                             }
                         }
                     }
@@ -379,6 +379,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             dashboardService.setLeftLock($scope.lock.lockLeft);
         }
         sidebarService.setMenuStatus(true); //set to true when data menu is opened and tree needs to be created
+        sidebarService.setOpenLogo(false); //set to false if data menu opened through this Qwidget
     }
 
     //display telemetry id chosen by the user in the right input box

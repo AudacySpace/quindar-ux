@@ -25,7 +25,7 @@ describe('Testing dashboard component', function () {
             dashboardService = jasmine.createSpyObj('dashboardService', ['getLock', 'getCurrentMission', 'getTime', 'setLeftLock', 'setRightLock']);
             gridService = jasmine.createSpyObj('gridService', ['save', 'getDashboard']);
             userService = jasmine.createSpyObj('userService', ['userRole', 'getUserName', 'getUserEmail']);
-            sidebarService = jasmine.createSpyObj('sidebarService', ['setMenuStatus']);
+            sidebarService = jasmine.createSpyObj('sidebarService', ['setMenuStatus', 'setOpenLogo']);
             //$interval = _$interval_;
             
             userService.getUserEmail.and.callFake(function() {
@@ -122,6 +122,7 @@ describe('Testing dashboard component', function () {
         //expect the mocked mdSidenav open function to be called
         expect(sideNavOpenMock).toHaveBeenCalled();
         expect(sidebarService.setMenuStatus).toHaveBeenCalledWith(true);
+        expect(sidebarService.setOpenLogo).toHaveBeenCalledWith(true);
     });
 
     it('should open the left navigation menu, window width 1400 or more', function(){
@@ -132,6 +133,7 @@ describe('Testing dashboard component', function () {
         expect($controller.locks.lockLeft).toEqual(true);
         expect(dashboardService.setLeftLock).toHaveBeenCalledWith(true);
         expect(sidebarService.setMenuStatus).toHaveBeenCalledWith(true);
+        expect(sidebarService.setOpenLogo).toHaveBeenCalledWith(true);
     });
 
     it('should define the function openRightNav', function(){

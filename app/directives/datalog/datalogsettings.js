@@ -76,6 +76,7 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
             dashboardService.setLeftLock($scope.lock.lockLeft);
         }
         sidebarService.setMenuStatus(true); //set to true when data menu is opened and tree needs to be created
+        sidebarService.setOpenLogo(false); //set to false if data menu opened through this Qwidget
     }
 
     //display telemetry id chosen by the user in the input box
