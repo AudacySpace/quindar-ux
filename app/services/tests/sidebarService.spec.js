@@ -128,5 +128,21 @@ describe('Testing sidebarService', function () {
 
         expect(result).toEqual(true);
     });
+
+    it('should define the function setOpenLogo', function () {
+        expect(sidebarService.setOpenLogo).toBeDefined();
+    });
+
+    it('should define the function getOpenLogo', function () {
+        expect(sidebarService.getOpenLogo).toBeDefined();
+    });
+
+    it('should set the openLogo variable to true', function(){
+        sidebarService.setOpenLogo(true);
+
+        var result = sidebarService.getOpenLogo();
+
+        expect(result).toEqual(true);
+    });
  
 });

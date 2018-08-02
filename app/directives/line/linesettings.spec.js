@@ -21,7 +21,7 @@ describe('Testing lineplot settings controller', function () {
 
         inject(function($controller, $rootScope, _$interval_){
             $interval = _$interval_;
-            sidebarService = jasmine.createSpyObj('sidebarService', ['getVehicleInfo', 'setMenuStatus', 'setTempWidget']);;
+            sidebarService = jasmine.createSpyObj('sidebarService', ['getVehicleInfo', 'setMenuStatus', 'setTempWidget', 'setOpenLogo']);;
             dashboardService = jasmine.createSpyObj('dashboardService', 
                 ['getLock', 'setLeftLock', 'sortObject','getData', 'isEmpty', 'telemetry']);
             scope = $rootScope.$new();
@@ -276,6 +276,7 @@ describe('Testing lineplot settings controller', function () {
         //expect the mocked mdSidenav open function to be called
         expect(sideNavOpenMock).toHaveBeenCalled();
         expect(sidebarService.setMenuStatus).toHaveBeenCalledWith(true);
+        expect(sidebarService.setOpenLogo).toHaveBeenCalledWith(false);
     });
 
     it('should open the left sidebar/Data Menu when function is called(window width > 1400)', function() {
@@ -290,6 +291,7 @@ describe('Testing lineplot settings controller', function () {
         expect(scope.lock).toEqual({ lockLeft : true, lockRight : false });
         expect(dashboardService.setLeftLock).toHaveBeenCalledWith(true);
         expect(sidebarService.setMenuStatus).toHaveBeenCalledWith(true);
+        expect(sidebarService.setOpenLogo).toHaveBeenCalledWith(false);
     });
 
     it('should define function readValue', function() {

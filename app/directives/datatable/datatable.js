@@ -139,6 +139,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             dashboardService.setLeftLock($scope.lock.lockLeft);
         }
         sidebarService.setMenuStatus(true); //set to true when data menu is opened and tree needs to be created
+        sidebarService.setOpenLogo(false); //set to false if data menu opened through this Qwidget
     }
 
     $scope.getValue = function(isGroup)
