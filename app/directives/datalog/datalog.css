@@ -39,6 +39,14 @@
     display:none;
 }
 
+#datalogIdToaster md-toast{
+    padding:0 !important;
+}
+
+#datalogIdToaster div.md-toast-content{
+    padding:0 6px !important;
+}
+
 @media only screen and (max-width: 599px) {
     #datalogtable {
         max-height: 200px;

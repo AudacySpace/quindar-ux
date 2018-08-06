@@ -2,18 +2,18 @@
 <md-content flex-gt-sm="50" flex-xs="80" flex-sm="70" layout="column" layout-padding class="comm-widget">
     <div layout="row" flex="50" id="comm-row">
         <md-input-container flex="25" class="input-container">
-            <label>Command<span>*</span></label>
+            <label>Command</label><span id="commandNametoaster"></span>
             <input ng-model="cmd" placeholder="Command" type="text" ng-change="changeInput()" ng-disabled="disableInput" ng-class="disableInput ? 'disabled' : 'input-arg'">
-  <!--           <input ng-model="cmd" placeholder="Command" type="text" ng-change="changeInput()" ng-disabled="disableInput" ng-class="disableInput ? 'disabled' : 'input-arg'" pattern='[A-Za-z\\s]*'> -->
         </md-input-container>
         <md-input-container flex="50" class="input-container">
-            <label>Arguments</label>
+            <label>Arguments</label><span id="commandArgtoaster"></span>
             <input ng-model="arguments" placeholder="Value" type="text" ng-change="changeInput()" ng-disabled="disableInput" ng-class="disableInput ? 'disabled' : 'input-arg'">
         </md-input-container>
         <md-input-container flex="25" class="input-container">
             <input aria-label="Enter" type="button" value="ENTER" ng-disabled="disableEnter" ng-click="enter()" ng-class="entered ? 'enter-clicked' : 'enter-button'">
         </md-input-container>
     </div>
+    <span id="commandArgsToaster" style="padding:0px;float:right"></span>
     <div layout="row" flex="50" id="lock-row">
         <md-input-container flex="25" class="lock-container">
             <input aria-label="command" ng-model="command.name" type="text" class="disabled" ng-disabled="true">
