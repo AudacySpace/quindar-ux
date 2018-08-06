@@ -7,7 +7,7 @@ app.directive('command', function() {
 })
 
 app.controller('CommandCtrl', 
-	function($scope, userService, commandService, dashboardService, $interval, $window){
+	function($scope, userService, commandService, dashboardService, $interval, $window,$mdToast){
 
 	$scope.email = userService.getUserEmail();
 	$scope.mission = dashboardService.getCurrentMission();
@@ -39,11 +39,42 @@ app.controller('CommandCtrl',
 		   	$scope.entered = true;
 		   	$scope.disableEnter = true;
 	    } else if($scope.cmd.length === 0 && $scope.arguments.length > 0) {
-	    	$window.alert("Please enter the command.");
+	    	// $window.alert("Please enter the command.");
+            if($window.innerWidth > 1400){
+	    		var position = "top left";
+            	var queryId = '#commandNametoaster';
+            	var delay = false;
+            	var usermessage = "Please enter the command.";
+            	var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+            }else {
+                var position = "top right";
+                var queryId = '#commandArgsToaster';
+                var delay = false;
+                var usermessage = "Please enter the command.";
+                var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+            }
 	    } else if($scope.cmd.length > 0 && $scope.arguments.length === 0){
-	    	$window.alert("Please enter the argument values.");
+	    	// $window.alert("Please enter the argument values.");
+	    	if($window.innerWidth > 1400){
+	    		var position = "top left";
+            	var queryId = '#commandArgtoaster';
+            	var delay = false;
+            	var usermessage = "Please enter the argument values.";
+            	var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+            }else {
+            	var position = "top left";
+            	var queryId = '#commandArgsToaster';
+            	var delay = false;
+            	var usermessage = "Please enter the argument values.";
+            	var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+            }
 	    } else if($scope.cmd.length === 0 && $scope.arguments.length === 0){
-	    	$window.alert("Please enter the command and argument values.");
+	    	// $window.alert("Please enter the command and argument values.");
+	    	var position = "top left";
+            var queryId = '#commandArgsToaster';
+            var delay = false;
+            var usermessage = "Please enter the command and argument values.";
+            var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
 	    }
     }
 
@@ -53,7 +84,12 @@ app.controller('CommandCtrl',
 	    	$scope.disableInput = true;
 	    	$scope.disableLock = true;
 	    } else {
-	    	$window.alert("Please enter the commands before locking");
+	    	// $window.alert("Please enter the command and arguments before locking.");
+	    	var position = "top left";
+            var queryId = '#commandArgsToaster';
+            var delay = false;
+            var usermessage = "Please enter the command and arguments before locking.";
+            var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
 	    }
     }
 

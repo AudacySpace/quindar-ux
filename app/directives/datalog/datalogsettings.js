@@ -33,15 +33,71 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
                     var lastCell = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
                     $scope.widget.settings.dataArray = [lastCell];
                 }else{
-                   $window.alert("Please select telemetry ID(leaf node) from Data Menu"); 
+                    //$window.alert("Please select telemetry ID(leaf node) from Data Menu."); 
+                    if($window.innerWidth > 1400){
+                        var position = "top left";
+                        var queryId = '#datalogIdToaster';
+                        var delay = false;
+                        var usermessage = "Please select telemetry ID(leaf node) from Data Menu.";
+                        var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                    }else if($window.innerWidth < 640){
+                        var position = "top left";
+                        var queryId = '#datalogIdToastersml';
+                        var delay = false;
+                        var usermessage = "Please select telemetry ID(leaf node) from Data Menu.";
+                        var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                    }else if($window.innerWidth > 640){
+                        var position = "top left";
+                        var queryId = '#datalogIdToastertablet';
+                        var delay = false;
+                        var usermessage = "Please select telemetry ID(leaf node) from Data Menu.";
+                        var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                    }
                 }
-
             }else{
                 $scope.data = angular.copy(data);
-                $window.alert("Currently there is no data available for this telemetry id.");
+                // $window.alert("Currently there is no data available for this telemetry id.");
+                if($window.innerWidth > 1400){
+                    var position = "top left";
+                    var queryId = '#datalogIdToaster';
+                    var delay = false;
+                    var usermessage = "Currently there is no data available for this telemetry id.";
+                    var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                }else if($window.innerWidth < 640){
+                    var position = "top left";
+                    var queryId = '#datalogIdToastersml';
+                    var delay = false;
+                    var usermessage = "Currently there is no data available for this telemetry id.";
+                    var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                }else if($window.innerWidth > 640){
+                    var position = "top left";
+                    var queryId = '#datalogIdToastertablet';
+                    var delay = false;
+                    var usermessage = "Currently there is no data available for this telemetry id.";
+                    var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                }
             }
         }else {
-            $window.alert("Vehicle data not set. Please select from Data Menu");
+            //$window.alert("Vehicle data not set. Please select from Data Menu");
+            if($window.innerWidth > 1400){
+                var position = "top left";
+                var queryId = '#datalogIdToaster';
+                var delay = false;
+                var usermessage = "Vehicle data not set. Please select from Data Menu.";
+                var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+            }else if($window.innerWidth < 640){
+                var position = "top left";
+                var queryId = '#datalogIdToastersml';
+                var delay = false;
+                var usermessage = "Vehicle data not set. Please select from Data Menu.";
+                var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+            }else if($window.innerWidth > 640){
+                var position = "top left";
+                var queryId = '#datalogIdToastertablet';
+                var delay = false;
+                var usermessage = "Vehicle data not set. Please select from Data Menu.";
+                var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+            }
         }
 
     };

@@ -20,7 +20,7 @@ describe('Testing datalog settings controller', function () {
 
         inject(function($controller, $rootScope, _$q_){
             sidebarService = jasmine.createSpyObj('sidebarService', ['getVehicleInfo', 'setMenuStatus', 'setTempWidget', 'setOpenLogo']);;
-            dashboardService = jasmine.createSpyObj('dashboardService', ['getLock', 'setLeftLock','getData']);
+            dashboardService = jasmine.createSpyObj('dashboardService', ['getLock', 'setLeftLock','getData','displayAlert']);
             scope = $rootScope.$new();
             scope.widget = {
                 name: "Data Log",
@@ -195,11 +195,15 @@ describe('Testing datalog settings controller', function () {
 
     it('should alert the user if the vehicle and id from the left menu are not available', function() {
         spyOn(windowMock, "alert");
+        var position = "top left";
+        var queryId = '#datalogIdToaster';
+        var delay = false;
+        var usermessage = "Vehicle data not set. Please select from Data Menu.";
 
         scope.widget.settings.dataArray = [];
         scope.saveDataLogSettings(scope.widget);
 
-        expect(windowMock.alert).toHaveBeenCalledWith("Vehicle data not set. Please select from Data Menu");
+        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
     });
 
     it('should alert the user if no data is available for selected telemetry id', function() {
@@ -216,11 +220,14 @@ describe('Testing datalog settings controller', function () {
         });
 
         scope.widget.settings.dataArray = [vehicleInfo];
+        var position = "top left";
+        var queryId = '#datalogIdToaster';
+        var delay = false;
+        var usermessage = "Currently there is no data available for this telemetry id.";
 
         scope.getValue(false);
         scope.saveDataLogSettings(scope.widget);
-
-        expect(windowMock.alert).toHaveBeenCalledWith("Currently there is no data available for this telemetry id.");
+        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
     });
 
     it('should store the value of selected vehicle and id in scope.data variable', function() {
