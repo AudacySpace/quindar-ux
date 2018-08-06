@@ -131,8 +131,10 @@ app.controller('modalCtrl', function($uibModalInstance, userService, mission, $w
        				userService.setCurrentRole($ctrl.role.currentRole, mission.missionName)
 	        		.then(function(response) {
 	        			if(response.status == 200){
-	                		$window.alert("User's current role updated");
+	                		$window.alert("User's current role updated.");
 	                		$uibModalInstance.close($ctrl.role.currentRole);
+	            		}else {
+	            			$window.alert("An error occurred.User's role not updated!");
 	            		}
 	        		});
         		}

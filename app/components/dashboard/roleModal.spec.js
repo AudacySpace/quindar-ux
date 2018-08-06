@@ -23,9 +23,11 @@ describe('Testing role modal controller', function () {
             deferredGetRole = _$q_.defer();
             deferredSetRole = _$q_.defer();
             deferredAllowed = _$q_.defer();
+            deferredRole = _$q_.defer();
             spyOn(userService, "getCurrentRole").and.returnValue(deferredGetRole.promise);
             spyOn(userService, "setCurrentRole").and.returnValue(deferredSetRole.promise);
             spyOn(userService, "getAllowedRoles").and.returnValue(deferredAllowed.promise);
+            spyOn(userService, "getRoles").and.returnValue(deferredRole.promise);
 
             controller = $controller('modalCtrl', {
                 $scope : scope,
@@ -141,11 +143,59 @@ describe('Testing role modal controller', function () {
                 callsign : 'VIP'
             }
         };
+        var roles = {
+            'MD' : {
+                'name' : 'Mission Director',
+                'callsign' : 'MD',
+                'multiple' : false
+            },
+            'CC' : {
+                'name' : 'Spacecraft Communications Controller',
+                'callsign' : 'CC',
+                'multiple' : true
+            },
+            'SYS' : {
+                'name' : 'Spacecraft Systems Controller',
+                'callsign' : 'SYS',
+                'multiple' : true
+            },
+            'GC' : {
+                'name' : 'Ground Communications Controller',
+                'callsign' : 'GC',
+                'multiple' : true
+            },
+            'NAV' : {
+                'name' : 'Navigation and Control Specialist',
+                'callsign' : 'NAV',
+                'multiple' : true
+            },
+            'IT' : {
+                'name' : 'Information Technology Specialist',
+                'callsign' : 'IT',
+                'multiple' : true
+            },
+            'PROXY' : {
+                'name' : 'Proxy Services and Encyption Specialist',
+                'callsign' : 'PROXY',
+                'multiple' : true
+            },
+            'SIM' : {
+                'name' : 'Simulation Specialist',
+                'callsign' : 'SIM',
+                'multiple' : true
+            },
+            'VIP' : {
+                'name' : 'Observer',
+                'callsign' : 'VIP',
+                'multiple' : true
+            }
+        };
 
         spyOn(windowMock, 'alert');
         spyOn(modalInstance, 'close');
 
         deferredSetRole.resolve({ data : {}, status : 200 });
+        deferredRole.resolve({ data : {"roles":roles}, status : 200 });
         controller.updateRole();
 
         // call digest cycle for this to work
@@ -153,7 +203,7 @@ describe('Testing role modal controller', function () {
 
         expect(userService.setCurrentRole).toHaveBeenCalledWith(controller.role.currentRole, mission.missionName);
         expect(modalInstance.close).toHaveBeenCalled();
-        expect(windowMock.alert).toHaveBeenCalledWith("User's current role updated");
+        expect(windowMock.alert).toHaveBeenCalledWith("User's current role updated.");
     });
 
     it('should not update the role of the user when update role is called(response status other than 200)', function() {
@@ -167,18 +217,65 @@ describe('Testing role modal controller', function () {
                 callsign : 'VIP'
             }
         };
+        var roles = {
+            'MD' : {
+                'name' : 'Mission Director',
+                'callsign' : 'MD',
+                'multiple' : false
+            },
+            'CC' : {
+                'name' : 'Spacecraft Communications Controller',
+                'callsign' : 'CC',
+                'multiple' : true
+            },
+            'SYS' : {
+                'name' : 'Spacecraft Systems Controller',
+                'callsign' : 'SYS',
+                'multiple' : true
+            },
+            'GC' : {
+                'name' : 'Ground Communications Controller',
+                'callsign' : 'GC',
+                'multiple' : true
+            },
+            'NAV' : {
+                'name' : 'Navigation and Control Specialist',
+                'callsign' : 'NAV',
+                'multiple' : true
+            },
+            'IT' : {
+                'name' : 'Information Technology Specialist',
+                'callsign' : 'IT',
+                'multiple' : true
+            },
+            'PROXY' : {
+                'name' : 'Proxy Services and Encyption Specialist',
+                'callsign' : 'PROXY',
+                'multiple' : true
+            },
+            'SIM' : {
+                'name' : 'Simulation Specialist',
+                'callsign' : 'SIM',
+                'multiple' : true
+            },
+            'VIP' : {
+                'name' : 'Observer',
+                'callsign' : 'VIP',
+                'multiple' : true
+            }
+        };
 
         spyOn(windowMock, 'alert');
         spyOn(modalInstance, 'close');
 
         deferredSetRole.resolve({ data : {}, status : 404 });
+        deferredRole.resolve({ data : {"roles":roles}, status : 200 });
         controller.updateRole();
 
         // call digest cycle for this to work
         scope.$digest();
 
-        expect(userService.setCurrentRole).toHaveBeenCalledWith(controller.role.currentRole, mission.missionName);
         expect(modalInstance.close).not.toHaveBeenCalled();
-        expect(windowMock.alert).not.toHaveBeenCalledWith("User's current role updated");
+        expect(windowMock.alert).toHaveBeenCalledWith("An error occurred.User's role not updated!");
     });
 });
