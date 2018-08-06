@@ -95,9 +95,9 @@ app.controller('modalCtrl', function($uibModalInstance, userService, mission, $w
 	userService.getCurrentRole(mission.missionName)
 	.then(function(response) {
 		if(response.status == 200){
-			$ctrl.cRole = response.data;
+			$ctrl.cRole = angular.copy(response.data);
 			$ctrl.role = {
-				currentRole : $ctrl.cRole
+				currentRole:$ctrl.cRole
 			};
 		}
 	});
@@ -119,13 +119,24 @@ app.controller('modalCtrl', function($uibModalInstance, userService, mission, $w
 			$window.alert("No mission without the Mission Director. Your role cannot be updated");
 			$uibModalInstance.close($ctrl.cRole);
 		} else {
-	        userService.setCurrentRole($ctrl.role.currentRole, mission.missionName)
-	        .then(function(response) {
-	        	if(response.status == 200){
-	                $window.alert("User's current role updated");
-	                $uibModalInstance.close($ctrl.role.currentRole);
-	            }
-	        });
+			userService.getRoles()
+    		.then(function(response) {
+        		if(response.status == 200) {
+        			for(var a in response.data.roles){
+        				if(response.data.roles[a].name === $ctrl.role.currentRole.name){
+        					$ctrl.role.currentRole.callsign = response.data.roles[a].callsign;
+        					break;
+        				}
+        			}
+       				userService.setCurrentRole($ctrl.role.currentRole, mission.missionName)
+	        		.then(function(response) {
+	        			if(response.status == 200){
+	                		$window.alert("User's current role updated");
+	                		$uibModalInstance.close($ctrl.role.currentRole);
+	            		}
+	        		});
+        		}
+    		});
 	    }
     }
 });
