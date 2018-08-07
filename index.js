@@ -18,7 +18,24 @@ var fs = require('fs-extra');
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/app'));
 
-mongoose.connect(configDB.url); // connect to our database
+mongoose.Promise = global.Promise;
+mongoose.connect(configDB.url, {useMongoClient : true}); // connect to our database
+
+// CONNECTION EVENTS
+// When successfully connected
+mongoose.connection.on('connected', function () {
+    console.log('Mongoose default connection open\n');
+});
+
+// If the connection throws an error
+mongoose.connection.on('error',function (err) {
+    console.log('Mongoose default connection error: ' + err + '\n');
+});
+
+// When the connection is disconnected
+mongoose.connection.on('disconnected', function () {
+    console.log('Mongoose default connection disconnected');
+});
 
 require('./server/config/passport')(passport); // pass passport for configuration
 
