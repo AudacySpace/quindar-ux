@@ -338,6 +338,42 @@ app
 
     }
 
+    function displayWidgetAlert(message,position,queryId,delay){
+        if(queryId === ""){
+            var toast = $mdToast.simple()
+                            .textContent(message)
+                            .action('OK')
+                            .hideDelay(delay)
+                            .highlightAction(true)
+                            .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
+                            .position(position);
+            $mdToast.show(toast).then(function(response) {
+                if ( response == 'ok' ) {}
+            });
+            return true;
+        }else {
+            var toast = $mdToast.simple()
+                            .textContent(message)
+                            .action('OK')
+                            // .parent(document.querySelectorAll(queryId))
+                            .parent(queryId)
+                            .hideDelay(delay)
+                            .highlightAction(true)
+                            .highlightClass('md-accent')// Accent is used by default, this just demonstrates the usage.
+                            .position(position);
+
+            $mdToast.show(toast).then(function(response) {
+                if ( response == 'ok' ) {
+                }
+            },function(error){
+                // console.log(error);
+            });
+
+            return true;
+        }
+
+    }
+
 	return {
         locks : locks,
         telemetry : telemetry,
@@ -356,5 +392,6 @@ app
         getConfig : getConfig,
         getTelemetryValues : getTelemetryValues,
         displayAlert : displayAlert,
+        displayWidgetAlert : displayWidgetAlert
 	}
 }]);

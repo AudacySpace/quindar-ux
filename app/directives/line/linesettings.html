@@ -2,18 +2,16 @@
 	<div class="settingstop">
 		<div class="row settingsrightcol" style="display: table">
 			<div class="col-sm-1" style="display: table-cell; float:none"></div>
-			<div class="col-sm-5" style="display: table-cell; float:none">
+			<div class="col-sm-4" style="display: table-cell; float:none">
 				<div class="row">
 					<label for="SelectData">Select Data</label>
   				</div>
 				<div class="row settingsspace" style="display: table"></div>
-				<div class="input-group">
+				<div class="input-group load-widget-styles">
 					<input type="text" class="form-control lpdata-input" style="border-radius:0px;background-color: #fff" ng-click="getTelemetrydata()" value="{{readValue()}}" placeholder="Click for data" readonly="readonly">
-            		<!--<span class="input-group-btn">
-        				<button class="btn btn-secondary applybtn" type="button" ng-click="getValue()">Apply</button>
-      				</span>-->
     			</div>
     			<span ng-hide="readValue()"> Required </span>
+                <div class="row"><div id="lineplotIdToaster"></div></div>
   			</div>
   			<div class="col-sm-1"></div>
 			<div class="col-sm-1" style="display: table-cell; float:none"></div>
@@ -35,6 +33,9 @@
                             </li>
                         </ul>
                     </div>
+                </div>
+                <div class="row">
+                    <div id="lineplotVehToaster"></div> 
                 </div>
             </div>
 			<div class="col-sm-1" style="display: table-cell; float:none"></div>
@@ -61,11 +62,8 @@
 <div class="container mbl-lp">
   <form>
     <label for="SelectData" class="mbl-label">Select Data</label>
-    <div class="input-group mbl-input-grp">
+    <div class="input-group mbl-input-grp" id="lineplotToastersml">
 		<input type="text" class="form-control mbl-label mbl-inputitems" style="background-color: #fff" ng-click="getTelemetrydata()" value="{{readValue()}}" placeholder="Click for data" readonly="readonly">
-        <!--<span class="input-group-btn">
-            <button class="btn btn-secondary applybtn" type="button" ng-click="getValue()">Apply</button>
-      	</span>-->
     </div>
     <span ng-hide="settings.data.id" class="req-label"> Required </span>
     <label for="SelectVehicle" class="mbl-label">Select Vehicle</label>
@@ -99,9 +97,6 @@
                 </div>
                 <div class="input-group mbl-input-grp">
                     <input type="text" class="form-control mbl-label mbl-inputitems" ng-click="getTelemetrydata()" value="{{readValue()}}" placeholder="Click for data" readonly="readonly">
-                    <!--<span class="input-group-btn">
-                        <button class="btn btn-secondary applybtn" type="button" ng-click="getValue()" style="">Apply</button>
-                    </span>-->
                 </div>
                 <span ng-hide="settings.data.id" class="pull-right req-label"> Required </span>
             </div>
@@ -130,6 +125,9 @@
         </div>
         <div class="row settingstablet-col1-3el tablestyle"></div>
         <div class="row settingstabletbottom-col1-3el tablestyle">
+            <div class="row">
+                <div id="lineplotToastertablet"></div> 
+            </div>
             <div class="row">
                 <div class="col-sm-1 tablecellstyle1"></div>
                 <div class="col-sm-10 tablecellstyle10">

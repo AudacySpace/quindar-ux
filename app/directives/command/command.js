@@ -7,13 +7,20 @@ app.directive('command', function() {
 })
 
 app.controller('CommandCtrl', 
-	function($scope, userService, commandService, dashboardService, $interval, $window,$mdToast){
+	function($scope, userService, commandService, dashboardService, $interval, $window,$mdToast,$element){
 
 	$scope.email = userService.getUserEmail();
 	$scope.mission = dashboardService.getCurrentMission();
 
     $scope.isLoaded = false;
 	$scope.sent = false;
+
+	// var temp1 = $element[0].getElementsByTagName("div")[1];
+    var screenToaster1 = $element[0].getElementsByTagName("span")[0];
+    var screenToaster2 = $element[0].getElementsByTagName("span")[1];
+    var screenToaster3 = $element[0].getElementsByTagName("span")[2];
+
+    console.log($element[0].getElementsByTagName("span"));
 
 	$scope.initialise = function(){
 		$scope.cmd = "";
@@ -42,39 +49,39 @@ app.controller('CommandCtrl',
 	    	// $window.alert("Please enter the command.");
             if($window.innerWidth > 1400){
 	    		var position = "top left";
-            	var queryId = '#commandNametoaster';
+            	var queryId = screenToaster1;
             	var delay = false;
             	var usermessage = "Please enter the command.";
-            	var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+            	var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
             }else {
-                var position = "top right";
-                var queryId = '#commandArgsToaster';
+                var position = "top left";
+                var queryId = screenToaster3;
                 var delay = false;
                 var usermessage = "Please enter the command.";
-                var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
             }
 	    } else if($scope.cmd.length > 0 && $scope.arguments.length === 0){
 	    	// $window.alert("Please enter the argument values.");
 	    	if($window.innerWidth > 1400){
-	    		var position = "top left";
-            	var queryId = '#commandArgtoaster';
+	    		var position = "top right";
+            	var queryId = screenToaster2;
             	var delay = false;
             	var usermessage = "Please enter the argument values.";
-            	var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+            	var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
             }else {
-            	var position = "top left";
-            	var queryId = '#commandArgsToaster';
+            	var position = "top right";
+            	var queryId = screenToaster3;
             	var delay = false;
             	var usermessage = "Please enter the argument values.";
-            	var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+            	var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
             }
 	    } else if($scope.cmd.length === 0 && $scope.arguments.length === 0){
 	    	// $window.alert("Please enter the command and argument values.");
 	    	var position = "top left";
-            var queryId = '#commandArgsToaster';
+            var queryId = screenToaster3;
             var delay = false;
             var usermessage = "Please enter the command and argument values.";
-            var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
 	    }
     }
 
@@ -86,10 +93,10 @@ app.controller('CommandCtrl',
 	    } else {
 	    	// $window.alert("Please enter the command and arguments before locking.");
 	    	var position = "top left";
-            var queryId = '#commandArgsToaster';
+            var queryId = screenToaster3;
             var delay = false;
             var usermessage = "Please enter the command and arguments before locking.";
-            var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
 	    }
     }
 

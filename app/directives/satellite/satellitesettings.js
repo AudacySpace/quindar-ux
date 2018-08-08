@@ -7,11 +7,14 @@ app
     }
 });
 
-app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarService, $window, $mdSidenav,$uibModal){
+app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarService, $window, $mdSidenav,$uibModal,$element){
 
     $scope.chosenCategory;
     $scope.attitudeBooleans = [true, true, true, true];
     $scope.positionBooleans = [true, true, true, true];
+    var temp1 = $element[0].getElementsByTagName("div")[1];
+    var innerScreenToaster = temp1.getElementsByTagName("div")[6];
+
     checkforPreSavedData();
 
 	$scope.closeSettings = function(widget){
@@ -63,40 +66,84 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 		var status = checkforSameVehicle($scope.settings.attitudeData,$scope.settings.positionData);
 		if($scope.widget.settings.totalAttitudeArray.length == 0 || $scope.widget.settings.totalPositionArray.length == 0)
         {
-            $window.alert("Please select the parameters before applying!");
+            //$window.alert("Please select all the parameters before saving!");
+            var usermessage = "Please select all the parameters before saving!";
+            var position = "top left";
+            var delay = false;
+            var queryId = innerScreenToaster;
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
         }
         else if(!$scope.attitudeBooleans[3])
         {
-            $window.alert("Please select all attitude values:q1,q2,q3,qc");
+           // $window.alert("Please select all attitude values:q1,q2,q3,qc");
+            var usermessage = "Please select all attitude values:q1,q2,q3,qc";
+            var position = "top left";
+            var delay = false;
+            var queryId = innerScreenToaster;
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
         }
         else if(!$scope.attitudeBooleans[2])
         {
-            $window.alert("Please select all the attitude values:q1,q2,q3,qc from the same vehicle.");
+            //$window.alert("Please select all the attitude values:q1,q2,q3,qc from the same vehicle.");
+            var usermessage = "Please select all the attitude values:q1,q2,q3,qc from the same vehicle.";
+            var position = "top left";
+            var delay = false;
+            var queryId = innerScreenToaster;
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
         }
         else if(!$scope.attitudeBooleans[1])
         {
-            $window.alert("Please select all the attitude values:q1,q2,q3,qc from the same category of single vehicle.");
+           // $window.alert("Please select all the attitude values:q1,q2,q3,qc from the same category of single vehicle.");
+            var usermessage = "Please select all the attitude values:q1,q2,q3,qc from the same category of single vehicle.";
+            var position = "top left";
+            var delay = false;
+            var queryId = innerScreenToaster;
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
         }
         else if(!$scope.attitudeBooleans[0])
         {
-            $window.alert("You have either not selected all attitude values:q1,q2,q3,qc or there may be no data available for the selected quaternion coordinates."); 
+            //$window.alert("You have either not selected all attitude values:q1,q2,q3,qc or there may be no data available for the selected quaternion coordinates."); 
+            var usermessage = "You have either not selected all attitude values:q1,q2,q3,qc or there may be no data available for the selected quaternion coordinates.";
+            var position = "top left";
+            var delay = false;
+            var queryId = innerScreenToaster;
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
         }
         else if(!$scope.positionBooleans[3])
         {
-            $window.alert("Please select all position values:x,y,z");
+            //$window.alert("Please select all position values:x,y,z");
+            var usermessage = "Please select all position values:x,y,z";
+            var position = "top left";
+            var delay = false;
+            var queryId = innerScreenToaster;
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
         }
         else if(!$scope.positionBooleans[2])
         {
-            $window.alert("Please select all the position values:x,y,z from the same vehicle.");
+            //$window.alert("Please select all the position values:x,y,z from the same vehicle.");
+            var usermessage = "Please select all the position values:x,y,z from the same vehicle.";
+            var position = "top left";
+            var delay = false;
+            var queryId = innerScreenToaster;
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
         }
         else if(!$scope.positionBooleans[1])
         {
-            $window.alert("Please select all the position values:x,y,z from the same vehicle's category.");
-
+           // $window.alert("Please select all the position values:x,y,z from the same vehicle's category.");
+            var usermessage = "Please select all the position values:x,y,z from the same vehicle's category.";
+            var position = "top left";
+            var delay = false;
+            var queryId = innerScreenToaster;
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
         }
         else if(!$scope.positionBooleans[0])
         {
-            $window.alert("You have either not selected all position values:x,y,z or there may be no data available for the position coordinates."); 
+           // $window.alert("You have either not selected all position values:x,y,z or there may be no data available for the position coordinates."); 
+            var usermessage = "You have either not selected all position values:x,y,z or there may be no data available for the position coordinates.";
+            var position = "top left";
+            var delay = false;
+            var queryId = innerScreenToaster;
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
         }
         else if($scope.widget.settings.totalAttitudeArray.length === 4 && $scope.widget.settings.totalPositionArray.length === 3 && status === true){
             $uibModal.open({

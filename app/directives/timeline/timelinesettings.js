@@ -6,7 +6,7 @@ app.directive('timelinesettings', function() {
   	}; 
 })
 
-app.controller('timelineSettingsCtrl', function($scope,gridService,dashboardService){
+app.controller('timelineSettingsCtrl', function($scope,gridService,dashboardService,$element){
 
 	$scope.selectByGroupData = [];
 	var reloaded = false;
@@ -74,6 +74,9 @@ app.controller('timelineSettingsCtrl', function($scope,gridService,dashboardServ
             return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
         }
     };
+
+    var timezoneToaster = $element[0].getElementsByTagName("div")["timezonetoaster"];
+    var eventsToaster = $element[0].getElementsByTagName("div")["eventstoaster"];
 
     //Function to created unique groups from a list of groups
     function uniqueItems(origArr) {
@@ -144,10 +147,10 @@ app.controller('timelineSettingsCtrl', function($scope,gridService,dashboardServ
 					tzExistsStatus = tzExists(widget.settings.timezones,$scope.selected.timezone.name);
 						if(tzExistsStatus === true){
 							var position = "top left";
-                			var queryId = '#timezonetoaster';
+                			var queryId = timezoneToaster;
                 			var delay = false;
                 			var usermessage = "This time axis already exists in the qwidget!";
-                			var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                			var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
 
 							widget.settings.timezones = widget.settings.timezones;
 							$scope.selected.timezone = {};
@@ -185,10 +188,10 @@ app.controller('timelineSettingsCtrl', function($scope,gridService,dashboardServ
 					widget.delete =  false;
 				}else if($scope.selectByGroupModel.length === 0){
 					var position = "top left";
-                	var queryId = '#eventstoaster';
+                	var queryId = eventsToaster;
                 	var delay = false;
                 	var usermessage = "Please select atleast one event.";
-                	var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                	var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
 				}
 			} 
 		} 

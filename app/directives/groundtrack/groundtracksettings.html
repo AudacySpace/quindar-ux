@@ -20,14 +20,13 @@
                     </div>
                     <span ng-hide="vehicleSelected"> Required </span> 
                 </div>
+                <div class="row"></div>
             </div>
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
         </div>
-        <!-- Second Screen-->
         <div class="row settingsrightcol"  ng-show="secondScreen" style="display: table">
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
             <div class="col-sm-4" style="display: table-cell; float:none">
-                <!-- Multi selection of data from data menu -->
                 <div class="row">
                     <label for="Position">Select Position for: <b>{{currentScreenVehicle}}</b></label>
                 </div>
@@ -39,12 +38,10 @@
                         <span class="sr-only">Split button!</span>
                     </button>
                     <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0" aria-labelledby="split-button">
-                        <!--<li role="menuitem"><a href="#" ng-click="getValue('position',currentVehicleId)">Apply</a></li>-->
                         <li role="menuitem"><a href="#" ng-click="openPositionList(currentVehicleId)">Show Parameters</a></li>
                     </ul>
                 </div>
-                    <span ng-hide="readValues('position') != 'Click for data'"> Required </span>
-                <!-- End of Multi Selection of Data from Data menu -->
+                <span ng-hide="readValues('position') != 'Click for data'"> Required </span>
                 <div class="row" style="margin-top:5%">
                     <label for="SatelliteOrbit">Orbit</label>
                    <div class="input-group" style="margin-top:0px;margin-bottom:0px" ng-cloak>
@@ -52,10 +49,11 @@
                         </md-switch>
                     </div>
                 </div>
+                <div class="row">
+                </div>
             </div>
             <div class="col-sm-2" style="display: table-cell; float:none"></div>
             <div class="col-sm-4" style="display: table-cell; float:none">
-                <!-- Multi selection of data from data menu -->
                 <div class="row">
                     <label for="Velocity">Select Velocity for: <b>{{currentScreenVehicle}}</b></label>
                 </div>
@@ -67,12 +65,10 @@
                         <span class="sr-only">Split button!</span>
                     </button>
                     <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0" aria-labelledby="split-button">
-                        <!--<li role="menuitem"><a href="#" ng-click="getValue('velocity',currentVehicleId)">Apply</a></li>-->
                         <li role="menuitem"><a href="#" ng-click="openVelocityList(currentVehicleId)">Show Parameters</a></li>
                     </ul>
                 </div>
                     <span ng-hide="readValues('velocity') != 'Click for data'"> Required </span>
-                <!-- End of Multi Selection of Data from Data menu -->
                 <div class="row" style="margin-top:5%">
                     <label for="SatelliteIcon">Icon</label>
                     <div class="input-group" style="margin-top:0px;margin-bottom:0px" ng-cloak>

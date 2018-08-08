@@ -3,7 +3,6 @@ describe('Testing lineplot settings controller', function () {
         sideNavOpenMock, $interval;
 
     var windowMock = {
-        alert : function() {},
         innerWidth: 1000
     };
 
@@ -23,7 +22,7 @@ describe('Testing lineplot settings controller', function () {
             $interval = _$interval_;
             sidebarService = jasmine.createSpyObj('sidebarService', ['getVehicleInfo', 'setMenuStatus', 'setTempWidget', 'setOpenLogo']);;
             dashboardService = jasmine.createSpyObj('dashboardService', 
-                ['getLock', 'setLeftLock', 'sortObject','getData', 'isEmpty', 'telemetry']);
+                ['getLock', 'setLeftLock', 'sortObject','getData', 'isEmpty', 'telemetry', 'displayAlert']);
             scope = $rootScope.$new();
             scope.widget = {
                 name: "Line Plot",
@@ -146,7 +145,6 @@ describe('Testing lineplot settings controller', function () {
     });
 
     it('should alert and not close the settings menu on save if data is not selected', function() {
-        spyOn(windowMock, "alert");
         scope.settings.data = {
             id: '',
             vehicle: '',
@@ -158,11 +156,17 @@ describe('Testing lineplot settings controller', function () {
         scope.widget.main = false;
         scope.widget.settings.active = true;
 
+        var usermessage = "Vehicle data not set.Please select from Data Menu.";
+        var position = "top left";
+        var queryId = "#lineplotToastertablet";
+        var delay = false;
+
         scope.saveWidget(scope.widget);
         
         expect(scope.widget.main).not.toEqual(true);
         expect(scope.widget.settings.active).not.toEqual(false);
-        expect(windowMock.alert).toHaveBeenCalledWith("Vehicle data not set. Please select from Data Menu");
+        //expect(windowMock.alert).toHaveBeenCalledWith("Vehicle data not set. Please select from Data Menu");
+        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
     });
 
     it('should close the settings menu on save if data is selected', function() {
@@ -216,8 +220,6 @@ describe('Testing lineplot settings controller', function () {
     });
 
     it('should alert the user on save if data is selected but none of the vehicles is checked', function() {
-        spyOn(windowMock, "alert");
-
         scope.settings.data = {
             id: 'vx',
             vehicle: 'A0',
@@ -254,6 +256,11 @@ describe('Testing lineplot settings controller', function () {
         scope.getValue(false);
         scope.settings.vehicles[0].checked = false;
         scope.settings.vehicles[1].checked = false;
+
+        var usermessage = "Please select atleast one vehicle and save!";
+        var position = "top left";
+        var queryId = "#lineplotToastertablet";
+        var delay = false;
         scope.saveWidget(scope.widget);
         
         expect(scope.widget.main).not.toEqual(true);
@@ -262,7 +269,8 @@ describe('Testing lineplot settings controller', function () {
         expect(scope.widget.settings.data.key).toEqual('A0.GNC.velocity.vx');
         expect(scope.widget.settings.data.value).toEqual('vx');
         expect(scope.widget.settings.data.vehicles).toEqual([]);
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select atleast one vehicle and save!");
+       // expect(windowMock.alert).toHaveBeenCalledWith("Please select atleast one vehicle and save!");
+        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
     });
 
     it('should define function getTelemetrydata', function() {
@@ -328,16 +336,20 @@ describe('Testing lineplot settings controller', function () {
     });
 
     it('should alert the user if the vehicle and id from the left menu are not available', function() {
-        spyOn(windowMock, "alert");
+        windowMock.innerWidth = 1000;
         scope.widget.settings.dataArray = [];
+        var usermessage = "Vehicle data not set.Please select from Data Menu.";
+        var position = "top left";
+        var queryId = "#lineplotToastertablet";
+        var delay = false;
 
         scope.saveWidget(scope.widget);
 
-        expect(windowMock.alert).toHaveBeenCalledWith("Vehicle data not set. Please select from Data Menu");
+        //expect(windowMock.alert).toHaveBeenCalledWith("Vehicle data not set. Please select from Data Menu");
+        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
     });
 
     it('should alert the user if no data is available for selected telemetry id', function() {
-        spyOn(windowMock, "alert");
         var vehicleInfo = { 
             id: 'vx',
             vehicle: 'A0',
@@ -351,10 +363,16 @@ describe('Testing lineplot settings controller', function () {
 
         scope.widget.settings.dataArray = [vehicleInfo];
 
+        var usermessage = "Currently there is no data available for this telemetry id.";
+        var position = "top left";
+        var queryId = "#lineplotToastertablet";
+        var delay = false;
+
         scope.getValue(false);
         scope.saveWidget(scope.widget);
 
-        expect(windowMock.alert).toHaveBeenCalledWith("Currently there is no data available for this telemetry id.");
+        //expect(windowMock.alert).toHaveBeenCalledWith("Currently there is no data available for this telemetry id.");
+        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
     });
 
     it('should store the value of selected vehicle and id in scope.settings variable', function() {

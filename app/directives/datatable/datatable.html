@@ -3,7 +3,6 @@
         <tr>
             <th id="category" style="width:0.1%;padding:4px"></th>
             <th id="id" style="text-align:left;width:10%;padding:4px" class="id mbl-dt-header" ng-show="checkedValues.checkedId" title="Telemetry Id">ID</th>
-<!--             <th id="name" style="text-align:left;width:25%;padding:4px" class="name mbl-dt-header" ng-show="checkedValues.checkedName" title="Telemetry Name">NAME</th> -->
             <th id="alarm_low" style="text-align:center;width:7%;padding:4px" class="alarm_low numeric mbl-dt-header" ng-show="checkedValues.checkedAlow"><img src="../icons/datatable-widget/data_table_cat_ALARMLOW.svg" class="img_alow" title="Alarm low value"/></th>
             <th id="warn_low" style="text-align:center;width:7%;padding:4px" class="warn_low numeric mbl-dt-headerimg" ng-show="checkedValues.checkedWlow"><img src="../icons/datatable-widget/data_table_cat_WARNLOW.svg" class="img_alow" title="Warn low value"/></th>
             <th id="value" style="text-align:center;width:7%;padding:4px" class="value numeric mbl-dt-headerimg" ng-show="checkedValues.checkedValue"><img src="../icons/datatable-widget/data_table_cat_VALUE.svg" class="img_alow" title="Value"/></th>
@@ -16,15 +15,13 @@
     <tbody>
         <tr ng-repeat="row in table.rows" class="animate-repeat" ng-style="row.colorin">
             <td class="categoryID-arrow" style="padding:2px 4px;text-align: center">
-                <div class="btn-group selectmenu">
+                <div class="btn-group selectmenu" id="$index">
                    <a href="#" style="width:100%" class="btn btn-default arrowbtn" data-toggle="dropdown"><span class="glyphicon glyphicon-menu-right side-arrow" id="side-arrow" style="font-weight:bolder"></span>
                       <span class="sr-only">Toggle Dropdown</span>
                     </a>
                     <ul class="dropdown-menu drpmenu" role="menu" id="drpmenu">
                         <li class="uldrpmenu"><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || getTelemetrydata($event, $index, false)">Select Telemetry Id</a></li>
-                        <!--<li><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || getValue($event,row,$index)">Apply Telemetry Id</a></li>-->
                         <li class="uldrpmenu"><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || getTelemetrydata($event, $index, true)">Select Group</a></li>
-                        <!--<li><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || applyGroup($event,row,$index)">Apply Group</a></li>-->
                         <li class="divider liner"></li>
                         <li><a href="#" class="row-above" ng-click="addRowAbove($index)">Add Row Above</a></li>
                         <li><a href="#" class="row-below" ng-click="addRowBelow($index)">Add Row Below</a></li>

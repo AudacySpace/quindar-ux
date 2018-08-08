@@ -8,7 +8,7 @@ app
 }); 
 
 app.controller('LineSettingsCtrl', 
-    function($scope, $mdSidenav, $window, dashboardService, sidebarService, $interval){
+    function($scope, $mdSidenav, $window, dashboardService, sidebarService, $interval,$element){
 
         var colors = [ "#0AACCF", "#FF9100", "#64DD17", "#07D1EA", "#0D8DB8", "#172168", "#228B22", "#12C700", "#C6FF00" ];
         $scope.previousSettings;
@@ -120,19 +120,40 @@ app.controller('LineSettingsCtrl',
                                 var lastCell = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
                                 $scope.widget.settings.dataArray = [lastCell];
                             } else {
-                                $window.alert("Please select atleast one vehicle and save!");
+                                // $window.alert("Please select atleast one vehicle and save!");
+                                var usermessage = "Please select atleast one vehicle and save!";
+                                alertUser($window.innerWidth,usermessage,false,'');
                             }
                         }
                     } else {
-                        $window.alert("Please select telemetry ID(leaf node) from Data Menu");
+                        //$window.alert("Please select telemetry ID(leaf node) from Data Menu.");
+                        var screenToaster2 = $element[0].getElementsByTagName("div")["lineplotIdToaster"];
+                        var usermessage = "Please select telemetry ID(leaf node) from Data Menu.";
+                        var idname = screenToaster2;
+                        alertUser($window.innerWidth,usermessage,false,idname);
                     }
                 }else {
                     //when no telemetry value available for the telemetry id,set the value in the input but also alert the user.
                     $scope.settings.data = angular.copy(data);
-                    $window.alert("Currently there is no data available for this telemetry id.");
+                   // $window.alert("Currently there is no data available for this telemetry id.");
+                    var screenToaster2 = $element[0].getElementsByTagName("div")["lineplotIdToaster"];
+                    var usermessage = "Currently there is no data available for this telemetry id.";
+                    var idname = screenToaster2;
+                    alertUser($window.innerWidth,usermessage,false,idname);
                 }
             }else { 
-                $window.alert("Vehicle data not set. Please select from Data Menu");
+                if(data && data.key !== "" && hasValue === false){
+                    //$window.alert("Telemetry data not available for this id.");
+                    var screenToaster2 = $element[0].getElementsByTagName("div")["lineplotIdToaster"];
+                    var usermessage = "Telemetry data not available for this id.";
+                     var idname = screenToaster2;
+                    alertUser($window.innerWidth,usermessage,false,idname);
+                }else {
+                    // $window.alert("Vehicle data not set.Please select from Data Menu.");
+
+                    var usermessage = "Vehicle data not set.Please select from Data Menu.";
+                    alertUser($window.innerWidth,usermessage,false,'');
+                } 
             }
         }
                 
@@ -234,6 +255,29 @@ app.controller('LineSettingsCtrl',
                 var partKey = nodes.slice(1);
                 var newKey = vehicle + "." + partKey.join(".");
                 return newKey;
+            }
+        }
+
+        function alertUser(windowWidth,usermessage,delay,idName){
+            var position = "top left";
+            var queryId;
+            console.log(windowWidth);
+            if(windowWidth > 1023){
+                var screenToaster1 = $element[0].getElementsByTagName("div")["lineplotVehToaster"];
+                queryId = screenToaster1;
+                if(idName === ''){
+                     var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+                }else {
+                    var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,idName,delay); 
+                }
+            }else if(windowWidth < 640){
+                 var screenToaster3 = $element[0].getElementsByTagName("div")["lineplotToastersml"];
+                queryId = screenToaster3;
+                var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+            }else if(windowWidth > 640 && windowWidth <= 1023){
+                  var screenToaster4 = $element[0].getElementsByTagName("div")["lineplotToastertablet"];
+                queryId = screenToaster4;
+                var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
             }
         }
 
