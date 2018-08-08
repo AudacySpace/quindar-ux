@@ -6,7 +6,7 @@ app.directive('groundtracksettings', function() {
     }
 });
 
-app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interval,$mdSidenav,$window,sidebarService,$uibModal) {
+app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interval,$mdSidenav,$window,sidebarService,$uibModal,$element) {
     var colors = [ "#07D1EA", "#0D8DB8", "#172168", "#228B22", "#12C700", "#C6FF00" ];
     var previousCheckedValues;
     $scope.settings = new Object();
@@ -52,6 +52,12 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             return sourceItemHandleScope.itemScope.sortableScope.$id === destSortableScope.$id;
         }
     };
+
+    var temp1 = $element[0].getElementsByTagName("div")[1];
+    var innerScreenToaster = temp1.getElementsByTagName("div")[21];
+    var outerScreenToaster = $element[0].getElementsByTagName("div")[8];
+
+    console.log(temp1.getElementsByTagName("div"));
 
     $scope.closeWidget = function(widget){
         widget.main = true;
@@ -108,8 +114,18 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                     }
                     $scope.widget.settings.vehicles.push(vehicle);
                 }else {
-                    $window.alert("Please select all parameters for selected vehicle "
-                        + $scope.settings.vehicles[i].label + " or uncheck it!");
+                    // $window.alert("Please select all parameters for selected vehicle "
+                    //     + $scope.settings.vehicles[i].label + " or uncheck it!");
+                    // break;
+
+                    // $window.alert("Please select all parameters for selected vehicle "
+                    //     + $scope.settings.vehicles[i].label);
+                    var usermessage = "Please select all parameters for selected vehicle "
+                        + $scope.settings.vehicles[i].label;
+                    var position = "top left";
+                    var delay = false;
+                    var queryId = outerScreenToaster;
+                    var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
                     break;
                 }
             }
@@ -127,7 +143,12 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
         } else {
             widget.main = false;
             widget.settings.active = true;
-            $window.alert("Please select atleast one vehicle before you save!");
+           // $window.alert("Please select atleast one vehicle before you save!");
+            var usermessage = "Please select atleast one vehicle before you save!"
+            var position = "top left";
+            var delay = false;
+            var queryId = outerScreenToaster;
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
         }
     }
 
@@ -436,49 +457,159 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
 
     $scope.saveParameters = function(widget){
         //display alerts for conditions that were originally checked in getValue
+        console.log($scope.widget.settings.totalPositionArray);
+        console.log($scope.widget.settings.totalPositionArray[$scope.currentVehicleId]);
         if(!$scope.widget.settings.totalPositionArray[$scope.currentVehicleId] || !$scope.widget.settings.totalVelocityArray[$scope.currentVehicleId])
         {
-            $window.alert("Please select the parameters before applying!");
+            //$window.alert("Please select the parameters before applying!");
+            var usermessage = "Please select the parameters before applying!";
+            var position = "top left";
+            var delay = false;
+            var queryId = innerScreenToaster;
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+
         }
         else if(!$scope.positionBooleans[3])
         {
-            $window.alert("Please select all position values:x,y,z");
+           // $window.alert("Please select all position values:x,y,z");
+            var usermessage = "Please select all position values:x,y,z";
+            var position = "top left";
+            var delay = false;
+            var queryId = innerScreenToaster;
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
         }
         else if(!$scope.positionBooleans[2])
         {
-            $window.alert("Please select all the position values:x,y,z from the same vehicle: "+$scope.currentScreenVehicle);
+            //$window.alert("Please select all the position values:x,y,z from the same vehicle: "+$scope.currentScreenVehicle);
+            var usermessage = "Please select all the position values:x,y,z from the same vehicle: "+$scope.currentScreenVehicle;
+            var position = "top left";
+            var delay = false;
+            var queryId = innerScreenToaster;
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
         }
         else if(!$scope.positionBooleans[1])
         {
-            $window.alert("Please select all the position values:x,y,z from the same category of vehicle: "+$scope.currentScreenVehicle);
+            //$window.alert("Please select all the position values:x,y,z from the same category of vehicle: "+$scope.currentScreenVehicle);
+            var usermessage = "Please select all the position values:x,y,z from the same category of vehicle: "+$scope.currentScreenVehicle;
+            var position = "top left";
+            var delay = false;
+            var queryId = innerScreenToaster;
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
         }
         else if(!$scope.positionBooleans[0])
         {
-            $window.alert("You have either not selected all position values:x,y,z or there may be no data available for the selected position coordinates."); 
+          //  $window.alert("You have either not selected all position values:x,y,z or there may be no data available for the selected position coordinates."); 
+            var usermessage = "You have either not selected all position values:x,y,z or there may be no data available for the selected position coordinates.";
+            var position = "top left";
+            var delay = false;
+            var queryId = innerScreenToaster;
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
         }
         else if(!$scope.velocityBooleans[3])
         {
-            $window.alert("Please select all velocity values:vx,vy,vz"); 
+            //$window.alert("Please select all velocity values:vx,vy,vz");
+            var usermessage = "Please select all velocity values:vx,vy,vz";
+            var position = "top left";
+            var delay = false;
+            var queryId = innerScreenToaster;
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
         }
         else if(!$scope.velocityBooleans[2])
         {
-            $window.alert("Please select all the velocity values:vx,vy,vz from the same vehicle: "+$scope.currentScreenVehicle);
+           // $window.alert("Please select all the velocity values:vx,vy,vz from the same vehicle: "+$scope.currentScreenVehicle);
+            var usermessage = "Please select all the velocity values:vx,vy,vz from the same vehicle: "+$scope.currentScreenVehicle;
+            var position = "top left";
+            var delay = false;
+            var queryId = innerScreenToaster;
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
         }
         else if(!$scope.velocityBooleans[1])
         {
-            $window.alert("Please select all the velocity values:vx,vy,vz from the same category of vehicle: "+$scope.currentScreenVehicle);
+            //$window.alert("Please select all the velocity values:vx,vy,vz from the same category of vehicle: "+$scope.currentScreenVehicle);
+            var usermessage = "Please select all the velocity values:vx,vy,vz from the same category of vehicle: "+$scope.currentScreenVehicle;
+            var position = "top left";
+            var delay = false;
+            var queryId = innerScreenToaster;
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
         }
         else if(!$scope.velocityBooleans[0])
         {
-            $window.alert("You have either not selected all velocity values: or there may be no data available for the selected velocity coordinates.");
+           // $window.alert("You have either not selected all velocity values: or there may be no data available for the selected velocity coordinates.");
+            var usermessage = "You have either not selected all velocity values: or there may be no data available for the selected velocity coordinates.";
+            var position = "top left";
+            var delay = false;
+            var queryId = innerScreenToaster;
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
         }
         else if($scope.orbitstatus[$scope.currentVehicleId] === false && $scope.iconstatus[$scope.currentVehicleId] === false){
-            if($window.confirm("You have not enabled orbit and icon for this vehicle.Do you want to enable either orbit or icon for the vehicle?")){
-                   $scope.secondScreen = true;
-                   $scope.firstScreen = false;
-            } else {
-                if($window.confirm("Please click ok if the selected \n position parameters are: x,y,z and velocity parameters are: vx,vy,vz.")){
-                    $scope.secondScreen = false;
+            // if($window.confirm("You have not enabled orbit and icon for this vehicle.Do you want to enable either orbit or icon for the vehicle?")){
+            //        $scope.secondScreen = true;
+            //        $scope.firstScreen = false;
+            // } else {
+            //     if($window.confirm("Please click ok if the selected \n position parameters are: x,y,z and velocity parameters are: vx,vy,vz.")){
+            //         $scope.secondScreen = false;
+            //         $scope.firstScreen = true;
+            //         $scope.settings.pdata[$scope.currentVehicleId] = angular.copy($scope.positionData[$scope.currentVehicleId]);
+            //         $scope.settings.vdata[$scope.currentVehicleId] = angular.copy($scope.velocityData[$scope.currentVehicleId]);
+            //         $scope.settings.iconstatus[$scope.currentVehicleId] = angular.copy($scope.iconstatus[$scope.currentVehicleId]);
+            //         $scope.settings.orbitstatus[$scope.currentVehicleId] = angular.copy($scope.orbitstatus[$scope.currentVehicleId]);
+
+            //         $scope.widget.settings.totalVelocityArray[$scope.currentVehicleId] = getRecentSelectedValues($scope.widget.settings.totalVelocityArray[$scope.currentVehicleId], 3);
+            //         $scope.widget.settings.totalPositionArray[$scope.currentVehicleId] = getRecentSelectedValues($scope.widget.settings.totalPositionArray[$scope.currentVehicleId], 3);
+            //         $scope.widget.settings.dataArray = [];
+
+            //         if ($window.innerWidth >= 1400){
+            //             $scope.lock = dashboardService.getLock();
+            //             $scope.lock.lockLeft = false;
+            //             dashboardService.setLeftLock($scope.lock.lockLeft);
+            //         }
+
+            //     }else {
+            //         $scope.secondScreen = true;
+            //         $scope.firstScreen = false;
+            //     }
+
+            // } 
+
+
+
+            $uibModal.open({
+                templateUrl: "./directives/groundtrack/confirmParameter.html",
+                controller: 'confirmParametersCtrl',
+                controllerAs: '$ctrl',
+                bindToController: true,
+                scope: $scope,
+                resolve: {
+                    dataLabel: function () {
+                        return "You have not enabled orbit and icon for this vehicle.Do you want to enable either orbit or icon for the vehicle?";
+                    },
+                    dataItems: function(){
+                        return $scope.settings;
+                    }
+                }
+            }).result.then(function(dataItems){
+                //handle modal close with response
+                $scope.secondScreen = true;
+                $scope.firstScreen = false;
+            },
+            function () {
+            //handle modal dismiss
+             $uibModal.open({
+                templateUrl: "./directives/groundtrack/confirmParameter.html",
+                controller: 'confirmParametersCtrl',
+                controllerAs: '$ctrl',
+                bindToController: true,
+                scope: $scope,
+                resolve: {
+                    dataLabel: function () {
+                        return "Please click ok if the selected \n position parameters are: x,y,z and velocity parameters are: vx,vy,vz.";
+                    },
+                    dataItems: function(){
+                        return $scope.settings;
+                    }
+                }
+            }).result.then(function(dataItems){
+$scope.secondScreen = false;
                     $scope.firstScreen = true;
                     $scope.settings.pdata[$scope.currentVehicleId] = angular.copy($scope.positionData[$scope.currentVehicleId]);
                     $scope.settings.vdata[$scope.currentVehicleId] = angular.copy($scope.velocityData[$scope.currentVehicleId]);
@@ -494,15 +625,56 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                         $scope.lock.lockLeft = false;
                         dashboardService.setLeftLock($scope.lock.lockLeft);
                     }
-
-                }else {
+            },
+            function () {
+            //handle modal dismiss
                     $scope.secondScreen = true;
                     $scope.firstScreen = false;
-                }
-
-            }      
+            });
+            });     
+        }else if($scope.widget.settings.totalPositionArray[$scope.currentVehicleId].length === 0 || $scope.widget.settings.totalVelocityArray[$scope.currentVehicleId].length === 0){
+            //$window.alert("Please enter all the required parameters: position(x,y,z) and velocity(vx,vy,vz).");
+            var usermessage = "Please enter all the required parameters: position(x,y,z) and velocity(vx,vy,vz).";
+            var position = "top left";
+            var delay = false;
+            var queryId = innerScreenToaster;
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
         }else {
-            if($window.confirm("Please click ok if the selected \n position parameters are: x,y,z and velocity parameters are: vx,vy,vz.")){
+            //if($window.confirm("Please click ok if the selected \n position parameters are: x,y,z and velocity parameters are: vx,vy,vz.")){
+                // $scope.secondScreen = false;
+                // $scope.firstScreen = true;
+                // $scope.settings.pdata[$scope.currentVehicleId] = angular.copy($scope.positionData[$scope.currentVehicleId]);
+                // $scope.settings.vdata[$scope.currentVehicleId] = angular.copy($scope.velocityData[$scope.currentVehicleId]);
+                // $scope.settings.iconstatus[$scope.currentVehicleId] = angular.copy($scope.iconstatus[$scope.currentVehicleId]);
+                // $scope.settings.orbitstatus[$scope.currentVehicleId] = angular.copy($scope.orbitstatus[$scope.currentVehicleId]);
+
+                // $scope.widget.settings.totalVelocityArray[$scope.currentVehicleId] = getRecentSelectedValues($scope.widget.settings.totalVelocityArray[$scope.currentVehicleId], 3);
+                // $scope.widget.settings.totalPositionArray[$scope.currentVehicleId] = getRecentSelectedValues($scope.widget.settings.totalPositionArray[$scope.currentVehicleId], 3);
+                // $scope.widget.settings.dataArray = [];
+               
+                // if ($window.innerWidth >= 1400){
+                //     $scope.lock = dashboardService.getLock();
+                //     $scope.lock.lockLeft = false;
+                //     dashboardService.setLeftLock($scope.lock.lockLeft);
+                // }
+
+
+                $uibModal.open({
+                templateUrl: "./directives/groundtrack/confirmParameter.html",
+                controller: 'confirmParametersCtrl',
+                controllerAs: '$ctrl',
+                bindToController: true,
+                scope: $scope,
+                resolve: {
+                    dataLabel: function () {
+                        return "Please click ok if the selected \n position parameters are: x,y,z and velocity parameters are: vx,vy,vz.";
+                    },
+                    dataItems: function(){
+                        return $scope.settings;
+                    }
+                }
+            }).result.then(function(dataItems){
+                //handle modal close with response
                 $scope.secondScreen = false;
                 $scope.firstScreen = true;
                 $scope.settings.pdata[$scope.currentVehicleId] = angular.copy($scope.positionData[$scope.currentVehicleId]);
@@ -519,10 +691,16 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                     $scope.lock.lockLeft = false;
                     dashboardService.setLeftLock($scope.lock.lockLeft);
                 }
-            }else {
-                $scope.firstScreen = false;
+            },
+            function () {
+            //handle modal dismiss
+                            $scope.firstScreen = false;
                 $scope.secondScreen = true;
-            }
+            });
+           // }else {
+               //$scope.firstScreen = false;
+               // $scope.secondScreen = true;
+            //}
         } 
     }
 

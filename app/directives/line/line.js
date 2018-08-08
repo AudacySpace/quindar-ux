@@ -6,7 +6,7 @@ app.directive('graph', function() {
     }
 });
 
-app.controller("LineCtrl", function($scope, $element, $interval, $window, dashboardService, d3Service) {
+app.controller("LineCtrl", function($scope, $element, $interval, $window, dashboardService, d3Service,$mdToast) {
     var telemetry = dashboardService.telemetry;
     var parseTime = d3Service.timeParse("%Y-%m-%dT%H:%M:%S.%LZ");
     var prevSettings;
@@ -136,8 +136,15 @@ app.controller("LineCtrl", function($scope, $element, $interval, $window, dashbo
                             key: ""
                         };
 
-                        $window.alert(paramY + " is of datatype " + typeof(currentData.value) + 
-                            ". Please select another ID from data menu.");
+                        // $window.alert(paramY + " is of datatype " + typeof(currentData.value) + 
+                        //     ". Please select another ID from data menu.");
+                        var screenToaster1 = $element[0].getElementsByTagName("div")["lineplottoaster"];
+                        var position = "top left";
+                        var queryId = screenToaster1;
+                        var delay = false;
+                        var usermessage = paramY + " is of datatype " + typeof(currentData.value) + 
+                            ". Please select another ID from data menu.";
+                        var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
                     } else {
                         graph.updateOptions({
                             file: $scope.plotData,

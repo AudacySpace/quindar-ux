@@ -45,6 +45,7 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
         }          
     },true);
 
+    var screenToaster1 = $element[0].getElementsByTagName("div")["datetimetoaster"];
 
     //Function to load events and its order whenever user has changed in settings
     function displayEvents(events,eventorder){
@@ -251,14 +252,14 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
             $scope.realtimebutton.style = {background:'#FFFFFF'};
             $scope.widget.settings.datetime = $scope.datetime;
         }else {
-            if($window.innerWidth > 1400){
+            if($window.innerWidth > 1023){
                 var position = "top right";
-                var queryId = '#datetimetoaster';
+                var queryId = screenToaster1;
                 var delay = false;
                 var usermessage = "Select a date and time and then set.";
-                var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
             }else {
-                var position = "top right";
+                var position = "top left";
                 var queryId = '';
                 var delay = false;
                 var usermessage = "Select a date and time and then set in the timeline qwidget.";

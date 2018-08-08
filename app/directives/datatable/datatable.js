@@ -8,7 +8,7 @@ app.directive('datatable',function() {
     }; 
 });
 
-app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$timeout,dashboardService,sidebarService,datastatesService) {  
+app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$timeout,dashboardService,sidebarService,datastatesService,$element) {  
 
     //Get values of the checkboxes in settings category display
     $scope.checkedValues = $scope.widget.settings.checkedValues;
@@ -35,6 +35,9 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     var valueReceived = false;
     $scope.currentIndex;
     $scope.askedForGroup;
+    $scope.currentActiveRowIndex;
+
+    var temp1 = $element[0].getElementsByTagName("div");
     //watch to check the database icon color to know about database status
     $scope.$watch('dataStatus',function(newVal,oldVal){
         dServiceObjVal = newVal; 
@@ -126,6 +129,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     }
     //Function to select telemetry Id
     $scope.getTelemetrydata = function($event, $index, askedForGroup){
+        $scope.currentActiveRowIndex = $index;
         sidebarService.setTempWidget($scope.widget, this); //pass widget and controller functions to sidebarService
         $scope.arrow = $event.target.parentElement.parentElement.parentElement.firstElementChild.firstElementChild;
         $scope.arrow.style.color = "#07D1EA";
@@ -154,7 +158,12 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
         }
         else if(!isGroup && $scope.askedForGroup) //if the user has asked to see group and has instead chosen telemetry id from left sidebar
         {
-            $window.alert("Be sure to select a group!");
+            // $window.alert("Be sure to select a group!");
+            var usermessage = "Be sure to select a group!";
+            var position = "top left";
+            var delay = false;
+            var queryId = temp1[$scope.currentActiveRowIndex];
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
         }
         $scope.arrow.style.color = "#b3b3b3";
         $scope.widget.settings.dataArray = []; //once data has been added to table, reset dataArray
@@ -227,7 +236,12 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             $scope.widget.settings.data.splice($index, 0, {});
             $scope.widget.settings.previous.splice($index, 0, {});
         }else {
-            $window.alert("You have reached the maximum limit for rows!");
+           // $window.alert("You have reached the maximum limit for rows!");
+            var usermessage = "You have reached the maximum limit for rows!";
+            var position = "top left";
+            var delay = false;
+            var queryId = temp1[$index];
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
         }
        
     }
@@ -239,7 +253,12 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             $scope.widget.settings.data.splice($index+1, 0, {}); 
             $scope.widget.settings.previous.splice($index+1, 0, {}); 
        }else {
-            $window.alert("You have reached the maximum limit for rows!");
+           // $window.alert("You have reached the maximum limit for rows!");
+            var usermessage = "You have reached the maximum limit for rows!";
+            var position = "top left";
+            var delay = false;
+            var queryId = temp1[$index];
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
        }
        
     }
@@ -247,7 +266,12 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     //Function to delete the current row.
     $scope.deleteRow = function($index){
         if(($index === 0) && ($scope.table.rows.length) === 1){
-            $window.alert("Please do not delete this row!Add row above to delete this row.");
+           // $window.alert("Please do not delete this row!Add row above to delete this row.");
+            var usermessage = "Please do not delete this row!Add row above to delete this row.";
+            var position = "top left";
+            var delay = false;
+            var queryId = temp1[$index];
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
         }else {
             $scope.table.rows.splice($index, 1);
             $scope.widget.settings.data.splice($index,1);
@@ -269,7 +293,13 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             }, 500);
         }
         else{
-            $window.alert("This row cannot be moved further up!");
+            // $window.alert("This row cannot be moved further up!");
+
+            var usermessage = "This row cannot be moved further up!";
+            var position = "top left";
+            var delay = false;
+            var queryId = temp1[$index];
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
         }
     }
 
@@ -287,7 +317,13 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             }, 500);  
         }
         else{
-            $window.alert("This row cannot be moved further down! You have reached the end of the table.");
+           // $window.alert("This row cannot be moved further down! You have reached the end of the table.");
+
+            var usermessage = "This row cannot be moved further down! You have reached the end of the table.";
+            var position = "top left";
+            var delay = false;
+            var queryId = temp1[$index];
+            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
         }
     }
 

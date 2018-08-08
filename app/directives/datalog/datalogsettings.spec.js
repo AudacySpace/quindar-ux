@@ -20,7 +20,7 @@ describe('Testing datalog settings controller', function () {
 
         inject(function($controller, $rootScope, _$q_){
             sidebarService = jasmine.createSpyObj('sidebarService', ['getVehicleInfo', 'setMenuStatus', 'setTempWidget', 'setOpenLogo']);;
-            dashboardService = jasmine.createSpyObj('dashboardService', ['getLock', 'setLeftLock','getData','displayAlert']);
+            dashboardService = jasmine.createSpyObj('dashboardService', ['getLock', 'setLeftLock','getData','displayWidgetAlert']);
             scope = $rootScope.$new();
             scope.widget = {
                 name: "Data Log",
