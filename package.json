@@ -25,7 +25,7 @@
     "passport-google-oauth2": "^0.1.6"
   },
   "engines": {
-    "node": "4.0.0"
+    "node":">=6.0"
   },
   "repository": {
     "type": "git",
