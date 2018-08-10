@@ -115,7 +115,7 @@ app.controller('modalCtrl', function($uibModalInstance, userService, mission, $w
 	});
 
 	$ctrl.updateRole = function(){
-		if($ctrl.cRole.callsign == 'MD' && $ctrl.role.currentRole.callsign != 'MD') {
+		if($ctrl.cRole.callsign === 'MD' && $ctrl.role.currentRole.name !== 'Mission Director') {
 			$window.alert("No mission without the Mission Director. Your role cannot be updated");
 			$uibModalInstance.close($ctrl.cRole);
 		} else {
