@@ -216,6 +216,15 @@ span.header-span{
         font-size:8px;
         white-space: normal;
     }
+
+    div#toasterDT {
+        position: static !important;
+    }
+
+    div#toasterDT md-toast{
+        width: 300px !important;
+        left: 50px !important; 
+    }
 }
 
 @media only screen and (min-width: 600px) and (max-width: 768px) {
@@ -258,6 +267,10 @@ span.header-span{
         padding:0px 0px;
         font-size:8px;
         white-space: normal;
+    }
+
+    div#toasterDT {
+        position: static !important;
     }
 }
 

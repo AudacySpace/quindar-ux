@@ -15,8 +15,8 @@ describe('Testing leftSidebar component', function () {
         });
 
         inject( function($componentController, _$interval_, _$q_){
-            sidebarService = jasmine.createSpyObj('sidebarService', ['setVehicleInfo', 'getMenuStatus', 'setMenuStatus', 'getOpenLogo']);
             dashboardService = jasmine.createSpyObj('dashboardService', ['getTelemetryValues', 'getLock','displayAlert']);
+            sidebarService = jasmine.createSpyObj('sidebarService', ['setVehicleInfo', 'getMenuStatus', 'setMenuStatus', 'getOpenLogo']);
             $interval = _$interval_;
 
             $controller = $componentController('leftSidebar', {

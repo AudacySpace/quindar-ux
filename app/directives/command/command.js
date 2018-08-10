@@ -18,6 +18,13 @@ app.controller('CommandCtrl',
     var screenToaster2 = $element[0].getElementsByTagName("span")["commandArgtoaster"];
     var screenToaster3 = $element[0].getElementsByTagName("span")["commandArgsToaster"];
 
+	// var temp1 = $element[0].getElementsByTagName("div")[1];
+    var screenToaster1 = $element[0].getElementsByTagName("span")[0];
+    var screenToaster2 = $element[0].getElementsByTagName("span")[1];
+    var screenToaster3 = $element[0].getElementsByTagName("span")[2];
+
+    console.log($element[0].getElementsByTagName("span"));
+
 	$scope.initialise = function(){
 		$scope.cmd = "";
 		$scope.arguments = "";

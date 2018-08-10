@@ -38,6 +38,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     $scope.currentActiveRowIndex;
 
     var temp1 = $element[0].getElementsByTagName("div");
+    var toasterDT = $element[0].getElementsByTagName("div")["toasterDT"];
     //watch to check the database icon color to know about database status
     $scope.$watch('dataStatus',function(newVal,oldVal){
         dServiceObjVal = newVal; 
@@ -158,11 +159,20 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
         }
         else if(!isGroup && $scope.askedForGroup) //if the user has asked to see group and has instead chosen telemetry id from left sidebar
         {
-            $scope.toasterusermessage = "Be sure to select a group!";
-            $scope.toasterposition = "top left";
-            $scope.toasterdelay = false;
-            $scope.toasterqueryId = temp1[$scope.currentActiveRowIndex];
-            var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage = "Be sure to select a group!";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = temp1[$scope.currentActiveRowIndex];
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+            }else {
+                $scope.toasterusermessage = "Be sure to select a group!";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = toasterDT;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+            }
+
         }
         $scope.arrow.style.color = "#b3b3b3";
         $scope.widget.settings.dataArray = []; //once data has been added to table, reset dataArray

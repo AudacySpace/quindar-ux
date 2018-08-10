@@ -59,7 +59,6 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
     var outerScreenToasterMbl = $element[0].getElementsByTagName("div")["outerScreenToasterMbl"];
     var innerScreenToasterTablet = $element[0].getElementsByTagName("div")["innerScreenToasterTablet"];
     var outerScreenToasterTablet = $element[0].getElementsByTagName("div")["outerScreenToasterTablet"];
-    console.log(outerScreenToasterMbl);
 
     $scope.closeWidget = function(widget){
         widget.main = true;
@@ -142,7 +141,6 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                         var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
                         break;
                     }
-
                 }
             }
         }
@@ -178,7 +176,6 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                 $scope.toasterqueryId = outerScreenToasterMbl;
                 var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
             }
-
         }
     }
 
@@ -957,19 +954,6 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
         }
         return status;
     }
-
-    /*function displayStringForInput(selectedArray){
-        var dString = "";
-        var arrayLen = selectedArray.length
-        for(var k=0;k<arrayLen;k++){
-            if(k < arrayLen-1){
-                dString = dString + selectedArray[k].id + "," ;
-            }else if(k === arrayLen-1){
-                dString = dString + selectedArray[k].id;
-            }
-        }
-        return dString;
-    }*/
 
     function getSelectedArray(selectedArray){
         var data = [];

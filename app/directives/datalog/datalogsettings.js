@@ -10,7 +10,6 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
     checkForLogData();
 
     var hasValue;
-
     var elScreen1 = $element[0].getElementsByTagName("div")["datalogIdToaster"];
     var elScreen2 = $element[0].getElementsByTagName("div")["datalogIdToastertablet"];
     var elScreen3 = $element[0].getElementsByTagName("div")["datalogIdToastersml"];
@@ -100,7 +99,6 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
                 var alertstatus = dashboardService.displayWidgetAlert( $scope.toasterusermessage, $scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);  
             }
         }
-
     };
 
     $scope.closeDataLogSettings = function(widget){

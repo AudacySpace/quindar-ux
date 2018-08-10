@@ -150,7 +150,6 @@ describe('Testing command controller', function () {
         expect(scope.toasterdelay).toEqual(false);
     })
 
-
     it('should alert the user when arguments is not entered and enter button is clicked', function(){
         scope.cmd = "get";
         scope.enter();

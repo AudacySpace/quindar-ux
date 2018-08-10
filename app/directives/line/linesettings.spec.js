@@ -167,8 +167,6 @@ describe('Testing lineplot settings controller', function () {
         
         expect(scope.widget.main).not.toEqual(true);
         expect(scope.widget.settings.active).not.toEqual(false);
-        //expect(windowMock.alert).toHaveBeenCalledWith("Vehicle data not set. Please select from Data Menu");
-        //expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
         expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
     });
 
@@ -272,8 +270,6 @@ describe('Testing lineplot settings controller', function () {
         expect(scope.widget.settings.data.key).toEqual('A0.GNC.velocity.vx');
         expect(scope.widget.settings.data.value).toEqual('vx');
         expect(scope.widget.settings.data.vehicles).toEqual([]);
-       // expect(windowMock.alert).toHaveBeenCalledWith("Please select atleast one vehicle and save!");
-        //expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
         expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
     });
 
@@ -348,9 +344,6 @@ describe('Testing lineplot settings controller', function () {
         var delay = false;
 
         scope.saveWidget(scope.widget);
-
-        //expect(windowMock.alert).toHaveBeenCalledWith("Vehicle data not set. Please select from Data Menu");
-        //expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
         expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
     });
 
@@ -375,9 +368,6 @@ describe('Testing lineplot settings controller', function () {
 
         scope.getValue(false);
         scope.saveWidget(scope.widget);
-
-        //expect(windowMock.alert).toHaveBeenCalledWith("Currently there is no data available for this telemetry id.");
-        //expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
         expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
     });
 

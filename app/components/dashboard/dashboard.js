@@ -150,7 +150,7 @@ app.controller('modalCtrl', function($uibModalInstance, userService, mission, $w
 	                		$uibModalInstance.close($ctrl.role.currentRole);
 	               			position = "bottom right";
             				queryId = '#dashboardtoaster';
-            				delay = false;
+            				delay = 5000;
             				usermessage = "User's current role updated!";
             				alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay);
 	            		}else {

@@ -271,11 +271,11 @@ app.controller('LineSettingsCtrl',
                     var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,idName,delay); 
                 }
             }else if(windowWidth <= 640){
-                 var screenToaster3 = $element[0].getElementsByTagName("div")["lineplotToastersml"];
+                var screenToaster3 = $element[0].getElementsByTagName("div")["lineplotToastersml"];
                 queryId = screenToaster3;
                 var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
-            }else if(windowWidth > 640 && windowWidth < 1024){
-                  var screenToaster4 = $element[0].getElementsByTagName("div")["lineplotToastertablet"];
+            }else if(windowWidth > 640 && windowWidth <= 1023){
+                var screenToaster4 = $element[0].getElementsByTagName("div")["lineplotToastertablet"];
                 queryId = screenToaster4;
                 var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
             }

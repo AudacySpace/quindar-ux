@@ -12,7 +12,6 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
     $scope.chosenCategory;
     $scope.attitudeBooleans = [true, true, true, true];
     $scope.positionBooleans = [true, true, true, true];
-
     var outerScreenToaster1 = $element[0].getElementsByTagName("div")["outerScreenToaster1"];
     var outerScreenToaster2 = $element[0].getElementsByTagName("div")["outerScreenToaster2"];
     var outerScreenToasterMbl = $element[0].getElementsByTagName("div")["outerScreenToasterMbl"];
@@ -260,9 +259,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                 var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
 
             }
-        }
-        else if(!$scope.positionBooleans[0])
-        {
+        }else if(!$scope.positionBooleans[0]){
             if($window.innerWidth >= 1024){
                 $scope.toasterusermessage = "You have either not selected all position values:x,y,z or there may be no data available for the position coordinates.";
                 $scope.toasterposition = "top left";
@@ -285,8 +282,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                 var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
 
             }
-        }
-        else if($scope.widget.settings.totalAttitudeArray.length === 4 && $scope.widget.settings.totalPositionArray.length === 3 && status === true){
+        }else if($scope.widget.settings.totalAttitudeArray.length === 4 && $scope.widget.settings.totalPositionArray.length === 3 && status === true){
             $uibModal.open({
                 templateUrl: "./directives/satellite/confirmSettings.html",
                 controller: 'confirmCtrl',
