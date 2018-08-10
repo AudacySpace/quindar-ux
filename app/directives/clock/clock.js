@@ -26,7 +26,7 @@ app.controller('ClockCtrl', function($scope, dashboardService, datastatesService
     	if(!$scope.widget.settings.clocks){
 			$scope.widget.settings.clocks = [{
 				name : 'UTC',
-				timezone : 0,
+				timezone : 'UTC',
 			}];
 		}
 
@@ -73,7 +73,7 @@ app.controller('ClockCtrl', function($scope, dashboardService, datastatesService
 			} else { //Block for timer
 				tempTime = dashboardService.countdown($scope.widget.settings.clocks[i].reference);
 				$scope.clocks[i].name = $scope.widget.settings.clocks[i].name;
-				$scope.clocks[i].time = dashboardService.countdown($scope.widget.settings.clocks[i].reference);
+				$scope.clocks[i].time = tempTime;
 				$scope.clocks[i].delta = tempTime.sign;
 
 				if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green"){

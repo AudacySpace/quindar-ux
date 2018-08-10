@@ -70,22 +70,22 @@ app.controller('ClockSettingsCtrl', function($scope){
 	{
         'key': 1,
 		'value': 'UTC',
-		'zone': 0
+		'zone': 'UTC'
 	}, 
 	{
 		'key': 2,
 		'value': 'San Francisco',
-		'zone': -8
+		'zone': 'America/Los_Angeles'
 	}, 
 	{
 		'key': 3,
 		'value': 'Singapore',
-		'zone': 8
+		'zone': 'Asia/Singapore'
 	}, 
 	{
 		'key': 4,
 		'value': 'Luxembourg',
-		'zone': 2
+		'zone': 'Europe/Luxembourg'
 	}];
 
 })

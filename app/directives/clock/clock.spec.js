@@ -17,7 +17,7 @@ describe('Testing clock controller', function () {
                     active: false,
                     clocks: [{
                         name : 'UTC',
-                        timezone : 0,
+                        timezone : 'UTC',
                     },{
                         name : 'AAA',
                         reference : "2018-07-12T17:00:00.000Z",
@@ -55,7 +55,7 @@ describe('Testing clock controller', function () {
     it('should update the scope.clock time when clock type', function(){
         scope.widget.settings.clocks =[{
                         name : 'UTC',
-                        timezone : 0,
+                        timezone : 'UTC',
                     }];
 
         dashboardService.getTime.and.callFake(function() {

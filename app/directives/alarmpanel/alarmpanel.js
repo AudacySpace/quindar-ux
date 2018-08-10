@@ -71,7 +71,7 @@ app.controller('AlarmPanelCtrl',
         var alowValue,ahighValue,dataValue,wlowValue,whighValue,valueType;
         var newtablearray = [];
 
-        time = dashboardService.getTime(0);
+        time = dashboardService.getTime('UTC');
 
         for(var i=0;i<$scope.contents.length;i++){
             $scope.contents[i].tableArray = [];

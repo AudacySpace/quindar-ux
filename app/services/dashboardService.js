@@ -111,7 +111,7 @@ app
        locks.lockRight = lock; 
     }
 
-    function getTime(offset) {
+    function getTime(timezone) {
         var days = "000",
             h = "00",
             m = "00",
@@ -119,18 +119,13 @@ app
             clock = days + "." + h + ":" + m + ":" + s + " " + "UTC";
 
         if(time != "") {
-            var today = new Date(time);
-            var todayZone = new Date(today.getTime() + (3600000*offset) + (today.getTimezoneOffset() * 60000));
-            var start = new Date(todayZone.getFullYear(), 0, 0);
-            var diff = todayZone - start;
-            h = todayZone.getHours();
-            m = todayZone.getMinutes();
-            s = todayZone.getSeconds();
-            days = Math.floor(diff/(1000*60*60*24));
-            days = checkDays(days);
-            h = checkTime(h);
-            m = checkTime(m);
-            s = checkTime(s);
+            var missionTime = moment(time).tz(timezone); // moment object of mission time in timezone defined
+
+            var today = missionTime.toDate();
+            days = checkDays(missionTime.dayOfYear());
+            h = checkTime(missionTime.hours());
+            m = checkTime(missionTime.minutes());
+            s = checkTime(missionTime.seconds());
             clock = days + "." + h + ":" + m + ":" + s + " " + "UTC";
         }
 
@@ -159,37 +154,33 @@ app
     }
 
     function countdown(target) {
-        var targettimestamp;
-        if(typeof target === "string"){
-            targettimestamp = new Date(target);
-        }else {
-            targettimestamp = target;
-        }
         var days = "000",
             hours = "00",
             minutes = "00",
             seconds = "00",
             sign = '';
+        var diff;
 
         if(time != "") {
-            var today = new Date(time);
-            var currentDate = new Date(today.getTime() + (today.getTimezoneOffset() * 60000));
-            var signedDiff = targettimestamp - currentDate;
+            var targetTime = moment(target).tz('UTC'); //moment object of target time in UTC
+            var missionTime = moment(time).tz('UTC'); //moment object of mission time in UTC
 
-            //remove sign to calculate individual numbers
-            var difference = Math.abs(signedDiff);
-            // Time calculations for days, hours, minutes and seconds
-            var days = Math.floor(difference / (1000 * 60 * 60 * 24));
-            var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-            var seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-            // define sign
-            if (signedDiff < 0) {
-                sign = '+';
+            if(missionTime.isAfter(targetTime)){
+                diff = missionTime.diff(targetTime);
+                sign = '+'
             } else {
-                sign = '-';   
+                diff = targetTime.diff(missionTime);
+                sign = '-'
             }
+
+            //duration of the difference in time
+            var duration = moment.duration(diff);
+
+            // Time calculations for days, hours, minutes and seconds
+            days = Math.floor(duration.asDays());
+            hours = duration.hours();
+            minutes = duration.minutes();
+            seconds = duration.seconds();
 
             days = checkDays(days);
             hours = checkTime(hours);

@@ -156,7 +156,7 @@ app.controller("LineCtrl", function($scope, $element, $interval, $window, dashbo
                                 },
                                 x: {
                                     valueFormatter: function(x) {
-                                        return dashboardService.getTime(0).utc;
+                                        return dashboardService.getTime('UTC').utc;
                                     }
                                 }
                             },

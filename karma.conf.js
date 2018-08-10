@@ -39,6 +39,8 @@ module.exports = function(config) {
       './public/scripts/marked.js',
       './public/scripts/angularjs-dropdown-multiselect.js',
       './public/scripts/ng-sortable.js',
+      './public/scripts/moment.js',
+      './public/scripts/moment-timezone-with-data-2012-2022.min.js',
       './app/app.js',
       './app/components/**/*.js',
       './app/services/*.js',

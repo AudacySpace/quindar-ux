@@ -21,7 +21,7 @@ angular.module('app')
   		vm.currentMission =  dashboardService.getCurrentMission();
 
   		vm.updateClock = function(){
-  			vm.clock = dashboardService.getTime(0);
+  			vm.clock = dashboardService.getTime('UTC');
   		}
 
   		vm.interval = $interval(vm.updateClock, 500);

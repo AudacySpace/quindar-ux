@@ -141,8 +141,8 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                  });
             }else {
                 $scope.tzoptions.push({
-                    start : new Date(vis.moment(dashboardService.getTime(0).today).utcOffset($scope.timezones[a].utcoffset) - 1000 * 60 * 60),
-                    end : new Date(vis.moment(dashboardService.getTime(0).today).utcOffset($scope.timezones[a].utcoffset) + 1000 * 60 * 60),
+                    start : new Date(vis.moment(dashboardService.getTime('UTC').today).utcOffset($scope.timezones[a].utcoffset) - 1000 * 60 * 60),
+                    end : new Date(vis.moment(dashboardService.getTime('UTC').today).utcOffset($scope.timezones[a].utcoffset) + 1000 * 60 * 60),
                     orientation: {axis: "top"},
                     moveable : false,
                     zoomable : false
@@ -208,13 +208,13 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
 
     //Function to Display current time using current mission time every second
     $scope.updateClock = function(){
-        if(dashboardService.getTime(0).today){
+        if(dashboardService.getTime('UTC').today){
             //sets current time in all timezones of the timeline 
-            timeline.setCurrentTime(vis.moment(dashboardService.getTime(0).today).utc());
+            timeline.setCurrentTime(vis.moment(dashboardService.getTime('UTC').today).utc());
             if($scope.timezones.length >0){
                 for(var i=0;i<$scope.timezones.length;i++){
                     try{
-                         $scope.tztimeline[i].setCurrentTime(vis.moment(dashboardService.getTime(0).today).utcOffset($scope.timezones[i].utcoffset));
+                         $scope.tztimeline[i].setCurrentTime(vis.moment(dashboardService.getTime('UTC').today).utcOffset($scope.timezones[i].utcoffset));
                     }catch(e){
                         console.log(e);
                     }
@@ -260,7 +260,7 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
         if($scope.interval){
             $interval.cancel($scope.interval);
         }
-        $scope.clock = dashboardService.getTime(0);
+        $scope.clock = dashboardService.getTime('UTC');
         timeline.setOptions({start: new Date(vis.moment($scope.clock.today).utc() - 1000 * 60 * 60),end:new Date(vis.moment($scope.clock.today).utc() + 1000 * 60 * 60) });  
         if($scope.timezones.length > 0){
             for(var i=0;i<$scope.timezones.length;i++){
@@ -619,8 +619,8 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
             var options = setStartAndEndForOptions($scope.widget.settings.start,$scope.widget.settings.end);
             $scope.options = options;
         }else {
-            var starttime = new Date(vis.moment(dashboardService.getTime(0).today).utc() - 1000 * 60 * 60 );
-            var endtime = new Date(vis.moment(dashboardService.getTime(0).today).utc() + 1000 * 60 * 60 ); 
+            var starttime = new Date(vis.moment(dashboardService.getTime('UTC').today).utc() - 1000 * 60 * 60 );
+            var endtime = new Date(vis.moment(dashboardService.getTime('UTC').today).utc() + 1000 * 60 * 60 ); 
             var options = setStartAndEndForOptions(starttime,endtime);
             $scope.options = options;
         }
