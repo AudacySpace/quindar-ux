@@ -1,8 +1,8 @@
 describe('Testing Groundtrack settings controller', function () {
     var controller, scope, dashboardService, $interval,sidebarService,sideNavOpenMock,$q;
+    var element = angular.element('<div></div>'); //provide element you want to test
 
     var windowMock = {
-        alert : function(message) {},
         innerWidth: 1000
     };
     var modalInstance = { open: function() {} };
@@ -23,7 +23,7 @@ describe('Testing Groundtrack settings controller', function () {
         inject(function($controller, $rootScope, _$q_, _$interval_){
             $interval = _$interval_;
             dashboardService = jasmine.createSpyObj('dashboardService', 
-                ['sortObject','getLock', 'setLeftLock','getData', 'isEmpty', 'telemetry']);
+                ['sortObject','getLock', 'setLeftLock','getData', 'isEmpty', 'telemetry','displayWidgetAlert']);
 
             sidebarService = jasmine.createSpyObj('sidebarService',['getVehicleInfo', 'setMenuStatus', 'setTempWidget', 'setOpenLogo']);
 
@@ -52,7 +52,8 @@ describe('Testing Groundtrack settings controller', function () {
                 dashboardService: dashboardService,
                 $interval: $interval,
                 $uibModal : modalInstance,
-                sidebarService: sidebarService
+                sidebarService: sidebarService,
+                $element: element
 
             });
         });
@@ -157,7 +158,6 @@ describe('Testing Groundtrack settings controller', function () {
     });
 
     it('should not save settings as widget property on save when all the parameters are not selected for the vehicle', function() {
-        spyOn(windowMock, "alert");
         scope.widget.main = false;
         scope.widget.settings.active = true;
         scope.settings.vehicles = [
@@ -184,11 +184,13 @@ describe('Testing Groundtrack settings controller', function () {
         expect(scope.widget.main).toEqual(false);
         expect(scope.widget.settings.active).toEqual(true);
         expect(scope.widget.settings.vehicles).toEqual([]);
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select all parameters for selected vehicle A0 or uncheck it!");
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("Please select all parameters for selected vehicle A0!");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     });
 
     it('should save settings as widget property on save(no vehicles checked or all vehicles unchecked)', function() {
-        spyOn(windowMock, "alert");
         scope.widget.main = false;
         scope.widget.settings.active = true;
         scope.settings.vehicles = [
@@ -203,7 +205,10 @@ describe('Testing Groundtrack settings controller', function () {
         expect(scope.widget.main).toEqual(false);
         expect(scope.widget.settings.active).toEqual(true);
         expect(scope.widget.settings.vehicles).toEqual([]);
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select atleast one vehicle before you save!");
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("Please select atleast one vehicle before you save!");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     });
 
 
@@ -379,16 +384,19 @@ describe('Testing Groundtrack settings controller', function () {
     });
 
     it('should alert the user if the vehicle and id from the left menu are not available', function() {
-        spyOn(windowMock, "alert");
+
         scope.widget.settings.dataArray = [];
 
         scope.getValue('position',0);
         scope.saveParameters(scope.widget);
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select the parameters before applying!");
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("Please select the parameters before saving!");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
+
     });
 
     it('should store the value of selected velocity parameters for vehicleid 0 when category is velocity and vehicleid is 0', function() {
-        //windowMock.innerWidth = 1440;
         dashboardService.getData.and.callFake(function(){
             return {
                 "value": -0.31187798675604184,
@@ -414,8 +422,6 @@ describe('Testing Groundtrack settings controller', function () {
         scope.getValue(false);
         scope.widget.settings.dataArray.push({vehicle:'A0',id:'vz',key:'A0.GNC.velocity.vz',category:'velocity'});
         scope.getValue(false);
-        //scope.lock = { lockLeft : true, lockRight : false }
-
         expect(scope.widget.settings.totalVelocityArray[0]).toEqual([
             {vehicle:'A0',id:'vx',key:'A0.GNC.velocity.vx',category:'velocity'},
             {vehicle:'A0',id:'vy',key:'A0.GNC.velocity.vy',category:'velocity'},
@@ -427,12 +433,9 @@ describe('Testing Groundtrack settings controller', function () {
             {vehicle:'A0',id:'vz',key:'A0.GNC.velocity.vz',category:'velocity'}
         ]);
         expect(scope.vehicle[0]).toEqual('A0');
-        //expect(scope.lock.lockLeft).toEqual(false);
-        //expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false); 
     });
 
     it('should store only the value of last three selected velocity parameters when category is velocity and number of paramters selected is more than 3', function() {
-        //windowMock.innerWidth = 1440;
         dashboardService.getData.and.callFake(function(){
             return {
                 "value": -0.31187798675604184,
@@ -467,9 +470,6 @@ describe('Testing Groundtrack settings controller', function () {
         scope.getValue(false);
         scope.widget.settings.dataArray.push({vehicle:'A0',id:'vz',key:'A0.GNC.velocity.vz',category:'velocity'});
         scope.getValue(false);
-
-        //scope.lock = { lockLeft : true, lockRight : false }
-
         expect(scope.widget.settings.totalVelocityArray[0]).toEqual([
             {vehicle:'A0',id:'vx',key:'A0.GNC.velocity.vx',category:'velocity'},
             {vehicle:'A0',id:'vy',key:'A0.GNC.velocity.vy',category:'velocity'},
@@ -481,13 +481,9 @@ describe('Testing Groundtrack settings controller', function () {
             {vehicle:'A0',id:'vz',key:'A0.GNC.velocity.vz',category:'velocity'}
         ]);
         expect(scope.vehicle[0]).toEqual('A0');
-        //expect(scope.lock.lockLeft).toEqual(false);
-        //expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false); 
     });
 
     it('should not store the value of selected velocity parameters when category is velocity and number of parameters is not equal to 3', function() {
-        spyOn(windowMock, "alert");
-
         dashboardService.getData.and.callFake(function(){
             return {
                 "value": -0.31187798675604184,
@@ -531,11 +527,13 @@ describe('Testing Groundtrack settings controller', function () {
             {vehicle: "A0", id: "x", key: "A0.GNC.position.x", category: "position"},
             {vehicle: "A0", id: "y", key: "A0.GNC.position.y", category: "position"}
         ]);
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select all velocity values:vx,vy,vz");
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("Please select all velocity values:vx,vy,vz.");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     });
 
     it('should not store the value of selected velocity parameters when category is velocity and selected parameters are of different vehicle', function() {
-        spyOn(windowMock, "alert");
         dashboardService.getData.and.callFake(function(){
             return {
                 "value": -0.31187798675604184,
@@ -582,11 +580,13 @@ describe('Testing Groundtrack settings controller', function () {
             {vehicle: "Audacy1", id: "x", key: "Audacy1.GNC.position.x", category: "position"},
             {vehicle: "Audacy1", id: "y", key: "Audacy1.GNC.position.y", category: "position"}
         ]);
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select all the velocity values:vx,vy,vz from the same vehicle: Audacy1");
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("Please select all the velocity values:vx,vy,vz from the same vehicle: Audacy1");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     });
 
     it('should not store the value of selected velocity parameters when category is velocity and selected parameters are of different category', function() {
-        spyOn(windowMock, "alert");
         dashboardService.getData.and.callFake(function(){
             return {
                 "value": -0.31187798675604184,
@@ -633,12 +633,14 @@ describe('Testing Groundtrack settings controller', function () {
             {vehicle: "Audacy1", id: "x", key: "Audacy1.GNC.position.x", category: "position"},
             {vehicle: "Audacy1", id: "y", key: "Audacy1.GNC.position.y", category: "position"}
         ]);
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select all the velocity values:vx,vy,vz from the same category of vehicle: Audacy1");
+
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("Please select all the velocity values:vx,vy,vz from the same category of vehicle: Audacy1");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     });
 
     it('should not store the value of selected velocity parameters when category is velocity and selected parameters do not have available data', function() {
-        spyOn(windowMock, "alert");
-
         scope.currentScreenVehicle = "Audacy1";
         scope.currentVehicleId = 0;
         scope.vehicleId = 0;
@@ -669,11 +671,14 @@ describe('Testing Groundtrack settings controller', function () {
             {vehicle: "Audacy1", id: "x", key: "Audacy2.GNC.velocity.x", category: "position"},
             {vehicle: "Audacy1", id: "y", key: "Audacy2.GNC.velocity.y", category: "position"}
         ]);
-        expect(windowMock.alert).toHaveBeenCalledWith("You have either not selected all velocity values: or there may be no data available for the selected velocity coordinates.");
+
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("You have either not selected all velocity values: or there may be no data available for the selected velocity coordinates.");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     });
 
     it('should store the value of selected position parameters for vehicleid 0 when category is position and vehicleid is 0', function() {
-        //windowMock.innerWidth = 1440;
         dashboardService.getData.and.callFake(function(){
             return {
                 "value":0.688,
@@ -706,8 +711,6 @@ describe('Testing Groundtrack settings controller', function () {
         scope.widget.settings.dataArray.push({vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'});
         scope.getValue(false);
 
-        //scope.lock = { lockLeft : true, lockRight : false }
-
         expect(scope.widget.settings.totalPositionArray[0]).toEqual([
             {vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
             {vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'},
@@ -724,8 +727,6 @@ describe('Testing Groundtrack settings controller', function () {
             {vehicle: "A0", id: "vz", key: "A0.GNC.velocity.vz", category: "velocity"}
         ]);
         expect(scope.vehicle[0]).toEqual('A0');
-        //expect(scope.lock.lockLeft).toEqual(false);
-        //expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false); 
     });
 
     it('should store only the value of last three selected position parameters when category is position and number of paramters selected is more than 3', function() {
@@ -770,8 +771,6 @@ describe('Testing Groundtrack settings controller', function () {
         scope.widget.settings.dataArray.push({vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'});
         scope.getValue(false);
 
-        //scope.lock = { lockLeft : true, lockRight : false }
-
         expect(scope.widget.settings.totalPositionArray[0]).toEqual([
             {vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
             {vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'},
@@ -788,13 +787,9 @@ describe('Testing Groundtrack settings controller', function () {
             {vehicle: "A0", id: "vz", key: "A0.GNC.velocity.vz", category: "velocity"}
         ]);
         expect(scope.vehicle[0]).toEqual('A0');
-        //expect(scope.lock.lockLeft).toEqual(false);
-        //expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false); 
     });
 
     it('should not store the value of selected position parameters when category is position and number of parameters is not equal to 3', function() {
-        spyOn(windowMock, "alert");
-
         scope.currentScreenVehicle = 'A0';
         scope.currentVehicleId = 0;
         scope.vehicleId = 0;
@@ -821,11 +816,13 @@ describe('Testing Groundtrack settings controller', function () {
         ]);
         expect(scope.positionData[0]).toEqual([]);
         expect(scope.vehicle[0]).toEqual('');
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select all position values:x,y,z");
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("Please select all position values:x,y,z.");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     });
 
     it('should not store the value of selected position parameters when category is position and selected parameters are of different vehicle', function() {
-        spyOn(windowMock, "alert");
         dashboardService.getData.and.callFake(function(){
             return {
                 "value":0.688,
@@ -862,11 +859,13 @@ describe('Testing Groundtrack settings controller', function () {
 
         expect(scope.positionData[0]).toEqual([]);
         expect(scope.vehicle[0]).toEqual('');
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select all the position values:x,y,z from the same vehicle: Audacy1");
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("Please select all the position values:x,y,z from the same vehicle: Audacy1");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     });
 
     it('should not store the value of selected position parameters when category is position and selected parameters are of different category', function() {
-        spyOn(windowMock, "alert");
         dashboardService.getData.and.callFake(function(){
             return {
                 "value":0.688,
@@ -907,12 +906,14 @@ describe('Testing Groundtrack settings controller', function () {
             {vehicle:'Audacy1',id:'y',key:'A0.GNC.position.vy',category:'velocity'},
             {vehicle:'Audacy1',id:'z',key:'A0.GNC.position.z',category:'position'}
         ]);
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select all the position values:x,y,z from the same category of vehicle: Audacy1");
+
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("Please select all the position values:x,y,z from the same category of vehicle: Audacy1");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     });
 
     it('should not store the value of selected position parameters when category is position and selected parameters do not have available data', function() {
-        spyOn(windowMock, "alert");
-
         scope.currentScreenVehicle = "Audacy1";
         scope.currentVehicleId = 0;
         scope.vehicleId = 0;
@@ -937,15 +938,14 @@ describe('Testing Groundtrack settings controller', function () {
 
         expect(scope.positionData[0]).toEqual([]);
         expect(scope.vehicle[0]).toEqual('');
-        expect(windowMock.alert).toHaveBeenCalledWith("You have either not selected all position values:x,y,z or there may be no data available for the selected position coordinates.");
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("You have either not selected all position values:x,y,z or there may be no data available for the selected position coordinates.");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     });
 
 
-    it('should save parameters on second settings screen on click on Save button and clicked ok on confirm', function() {
-        windowMock.confirm = function(message){
-            return true;
-        }
-
+    it('should save parameters on second settings screen on click on Save button and clicked yes on confirm', function() {
         dashboardService.getLock.and.callFake(function(){
             return { lockLeft : true, lockRight : false }
         });
@@ -965,47 +965,25 @@ describe('Testing Groundtrack settings controller', function () {
         scope.positionBooleans = [true, true, true, true];
         scope.velocityBooleans = [true, true, true, true];
         scope.currentScreenVehicle = "Audacy1";
+
+
+        var modalResult = scope.settings;
+        var mockModalInstance = { result: $q.resolve(modalResult) };
+        spyOn(mockModalInstance.result, 'then').and.callThrough();
+        spyOn(modalInstance, 'open').and.returnValue(mockModalInstance);
+
         scope.saveParameters(scope.widget);
+        scope.$digest();
+
+        expect(modalInstance.open).toHaveBeenCalled();
+        expect(mockModalInstance.result.then).toHaveBeenCalledWith(jasmine.any(Function),jasmine.any(Function));
         expect(scope.secondScreen).toEqual(false);
         expect(scope.firstScreen).toEqual(true);
         expect(scope.settings.pdata[0]).toEqual([]);
         expect(scope.settings.vdata[0]).toEqual([]);
-    });
-
-    it('should not save parameters on second settings screen on click on Save button and clicked cancel on confirm', function() {
-        windowMock.confirm = function(message){
-            return false;
-        }
-
-        dashboardService.getLock.and.callFake(function(){
-            return { lockLeft : true, lockRight : false }
-        });
-        scope.iconstatus[0] = true;
-        scope.orbitstatus[0] = true;
-        scope.positionData[0] = [];
-        scope.velocityData[0] = [];
-        scope.settings.pdata[0] = [4];
-        scope.settings.vdata[0] = [4];
-        scope.currentVehicleId = 0;
-        scope.widget = {};
-        scope.widget.settings = {};
-        scope.widget.settings.totalPositionArray = [[]];
-        scope.widget.settings.totalPositionArray[0] = [4];
-        scope.widget.settings.totalVelocityArray = [[]];
-        scope.widget.settings.totalVelocityArray[0] = [4];
-        scope.positionBooleans = [true, true, true, true];
-        scope.velocityBooleans = [true, true, true, true];
-        scope.currentScreenVehicle = "Audacy1";
-        scope.saveParameters(scope.widget);
-        expect(scope.secondScreen).toEqual(true);
-        expect(scope.firstScreen).toEqual(false);
     });
 
     it('should should alert the user if both orbit and icon are disabled', function() {
-        windowMock.confirm = function(message){
-            return true;
-        }
-
         dashboardService.getLock.and.callFake(function(){
             return { lockLeft : true, lockRight : false }
         });
@@ -1025,21 +1003,18 @@ describe('Testing Groundtrack settings controller', function () {
         scope.positionBooleans = [true, true, true, true];
         scope.velocityBooleans = [true, true, true, true];
         scope.currentScreenVehicle = "Audacy1";
+        var modalResult = scope.settings;
+        var mockModalInstance = { result: $q.resolve(modalResult) };
+        spyOn(mockModalInstance.result, 'then').and.callThrough();
+        spyOn(modalInstance, 'open').and.returnValue(mockModalInstance);
         scope.saveParameters(scope.widget);
-        expect(scope.secondScreen).toEqual(true);
-        expect(scope.firstScreen).toEqual(false);
+        expect(modalInstance.open).toHaveBeenCalled();
+        expect(mockModalInstance.result.then).toHaveBeenCalledWith(jasmine.any(Function),jasmine.any(Function));
+        expect(scope.secondScreen).toEqual(false);
+        expect(scope.firstScreen).toEqual(true);
     });
 
-    it('should should alert the user if both orbit and icon are disabled and save parameters if its ok on confirm', function() {
-        windowMock.confirm = function(message){
-            if(message === 'You have not enabled orbit and icon for this vehicle.Do you want to enable either orbit or icon for the vehicle?'){
-                return false;
-            }else {
-                return true;
-            }
-            
-        }
-
+    it('should alert the user if both orbit and icon are disabled and save parameters if its ok on confirm', function() {
         dashboardService.getLock.and.callFake(function(){
             return { lockLeft : true, lockRight : false }
         });
@@ -1047,58 +1022,31 @@ describe('Testing Groundtrack settings controller', function () {
         scope.orbitstatus[0] = false;
         scope.positionData[0] = [];
         scope.velocityData[0] = [];
-        scope.settings.pdata[0] = [4];
-        scope.settings.vdata[0] = [4];
+        scope.settings.pdata[0] = [];
+        scope.settings.vdata[0] = [];
         scope.currentVehicleId = 0;
         scope.widget = {};
         scope.widget.settings = {};
         scope.widget.settings.totalPositionArray = [[]];
-        scope.widget.settings.totalPositionArray[0] = [4];
+        scope.widget.settings.totalPositionArray[0] = [];
         scope.widget.settings.totalVelocityArray = [[]];
-        scope.widget.settings.totalVelocityArray[0] = [4];
+        scope.widget.settings.totalVelocityArray[0] = [];
         scope.positionBooleans = [true, true, true, true];
         scope.velocityBooleans = [true, true, true, true];
         scope.currentScreenVehicle = "Audacy1";
+        var modalResult = scope.settings;
+        var mockModalInstance = { result: $q.resolve(modalResult) };
+        spyOn(mockModalInstance.result, 'then').and.callThrough();
+        spyOn(modalInstance, 'open').and.returnValue(mockModalInstance);
         scope.saveParameters(scope.widget);
+        expect(modalInstance.open).toHaveBeenCalled();
+        expect(mockModalInstance.result.then).toHaveBeenCalledWith(jasmine.any(Function),jasmine.any(Function));
         expect(scope.secondScreen).toEqual(false);
         expect(scope.firstScreen).toEqual(true);
         expect(scope.settings.pdata[0]).toEqual([]);
         expect(scope.settings.vdata[0]).toEqual([]);
     });
 
-    it('should should alert the user if both orbit and icon are disabled and not save parameters if its cancel on confirm', function() {
-        windowMock.confirm = function(message){
-            if(message === 'You have not enabled orbit and icon for this vehicle.Do you want to enable either orbit or icon for the vehicle?'){
-                return false;
-            }else {
-                return false;
-            }
-            
-        }
-
-        dashboardService.getLock.and.callFake(function(){
-            return { lockLeft : true, lockRight : false }
-        });
-        scope.iconstatus[0] = false;
-        scope.orbitstatus[0] = false;
-        scope.positionData[0] = [];
-        scope.velocityData[0] = [];
-        scope.settings.pdata[0] = [4];
-        scope.settings.vdata[0] = [4];
-        scope.currentVehicleId = 0;
-        scope.widget = {};
-        scope.widget.settings = {};
-        scope.widget.settings.totalPositionArray = [[]];
-        scope.widget.settings.totalPositionArray[0] = [4];
-        scope.widget.settings.totalVelocityArray = [[]];
-        scope.widget.settings.totalVelocityArray[0] = [4];
-        scope.positionBooleans = [true, true, true, true];
-        scope.velocityBooleans = [true, true, true, true];
-        scope.currentScreenVehicle = "Audacy1";
-        scope.saveParameters(scope.widget);
-        expect(scope.secondScreen).toEqual(true);
-        expect(scope.firstScreen).toEqual(false);
-    });
 
     it('should close the settings menu on close', function() {
         windowMock.innerWidth = 1440;

@@ -53,11 +53,13 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
         }
     };
 
-    var temp1 = $element[0].getElementsByTagName("div")[1];
-    var innerScreenToaster = temp1.getElementsByTagName("div")[21];
-    var outerScreenToaster = $element[0].getElementsByTagName("div")[8];
-
-    console.log(temp1.getElementsByTagName("div"));
+    var innerScreenToaster = $element[0].getElementsByTagName("div")["innerScreenToaster"];
+    var outerScreenToaster = $element[0].getElementsByTagName("div")["outerScreenToaster"];
+    var innerScreenToasterMbl = $element[0].getElementsByTagName("div")["innerScreenToasterMbl"];
+    var outerScreenToasterMbl = $element[0].getElementsByTagName("div")["outerScreenToasterMbl"];
+    var innerScreenToasterTablet = $element[0].getElementsByTagName("div")["innerScreenToasterTablet"];
+    var outerScreenToasterTablet = $element[0].getElementsByTagName("div")["outerScreenToasterTablet"];
+    console.log(outerScreenToasterMbl);
 
     $scope.closeWidget = function(widget){
         widget.main = true;
@@ -114,19 +116,33 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                     }
                     $scope.widget.settings.vehicles.push(vehicle);
                 }else {
-                    // $window.alert("Please select all parameters for selected vehicle "
-                    //     + $scope.settings.vehicles[i].label + " or uncheck it!");
-                    // break;
+                    if($window.innerWidth >= 1024){
+                        $scope.toasterusermessage = "Please select all parameters for selected vehicle "
+                                            + $scope.settings.vehicles[i].label+"!";
+                        $scope.toasterposition = "top left";
+                        $scope.toasterdelay = false;
+                        $scope.toasterqueryId = outerScreenToaster;
+                        var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+                        break;
+                    }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                        $scope.toasterusermessage= "Please select all parameters for selected vehicle "
+                                            + $scope.settings.vehicles[i].label+"!";
+                        $scope.toasterposition = "top left";
+                        $scope.toasterdelay = false;
+                        $scope.toasterqueryId = outerScreenToasterTablet;
+                        var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+                        break;
+                    }
+                    else if($window.innerWidth <= 640){
+                        $scope.toasterusermessage = "Please select all parameters for selected vehicle "
+                                            + $scope.settings.vehicles[i].label+"!";
+                        $scope.toasterposition = "top left";
+                        $scope.toasterdelay = false;
+                        $scope.toasterqueryId = outerScreenToasterMbl;
+                        var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+                        break;
+                    }
 
-                    // $window.alert("Please select all parameters for selected vehicle "
-                    //     + $scope.settings.vehicles[i].label);
-                    var usermessage = "Please select all parameters for selected vehicle "
-                        + $scope.settings.vehicles[i].label;
-                    var position = "top left";
-                    var delay = false;
-                    var queryId = outerScreenToaster;
-                    var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
-                    break;
                 }
             }
         }
@@ -143,12 +159,26 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
         } else {
             widget.main = false;
             widget.settings.active = true;
-           // $window.alert("Please select atleast one vehicle before you save!");
-            var usermessage = "Please select atleast one vehicle before you save!"
-            var position = "top left";
-            var delay = false;
-            var queryId = outerScreenToaster;
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage = "Please select atleast one vehicle before you save!"
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay= false;
+                $scope.toasterqueryId = outerScreenToaster;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+            }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage = "Please select atleast one vehicle before you save!"
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterTablet;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+            }else if($window.innerWidth <= 640){
+                $scope.toasterusermessage = "Please select atleast one vehicle before you save!";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterMbl;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+            }
+
         }
     }
 
@@ -457,122 +487,207 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
 
     $scope.saveParameters = function(widget){
         //display alerts for conditions that were originally checked in getValue
-        console.log($scope.widget.settings.totalPositionArray);
-        console.log($scope.widget.settings.totalPositionArray[$scope.currentVehicleId]);
         if(!$scope.widget.settings.totalPositionArray[$scope.currentVehicleId] || !$scope.widget.settings.totalVelocityArray[$scope.currentVehicleId])
         {
-            //$window.alert("Please select the parameters before applying!");
-            var usermessage = "Please select the parameters before applying!";
-            var position = "top left";
-            var delay = false;
-            var queryId = innerScreenToaster;
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
-
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage = "Please select the parameters before saving!";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToaster;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+             }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage = "Please select the parameters before saving!";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToasterTablet;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+             }else if($window.innerWidth <= 640){
+                $scope.toasterusermessage = "Please select the parameters before saving!";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToasterMbl;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+             }
         }
         else if(!$scope.positionBooleans[3])
         {
-           // $window.alert("Please select all position values:x,y,z");
-            var usermessage = "Please select all position values:x,y,z";
-            var position = "top left";
-            var delay = false;
-            var queryId = innerScreenToaster;
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage = "Please select all position values:x,y,z.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId= innerScreenToaster;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+             }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage = "Please select all position values:x,y,z.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToasterTablet;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+             }else if($window.innerWidth <= 640){
+                $scope.toasterusermessage = "Please select all position values:x,y,z.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToasterMbl;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+             }
         }
         else if(!$scope.positionBooleans[2])
         {
-            //$window.alert("Please select all the position values:x,y,z from the same vehicle: "+$scope.currentScreenVehicle);
-            var usermessage = "Please select all the position values:x,y,z from the same vehicle: "+$scope.currentScreenVehicle;
-            var position = "top left";
-            var delay = false;
-            var queryId = innerScreenToaster;
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage = "Please select all the position values:x,y,z from the same vehicle: "+$scope.currentScreenVehicle;
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToaster;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+             }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage = "Please select all the position values:x,y,z from the same vehicle: "+$scope.currentScreenVehicle;
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToasterTablet;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+             }else if($window.innerWidth <= 640){
+                $scope.toasterusermessage = "Please select all the position values:x,y,z from the same vehicle: "+$scope.currentScreenVehicle;
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToasterMbl;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+             }
         }
         else if(!$scope.positionBooleans[1])
         {
-            //$window.alert("Please select all the position values:x,y,z from the same category of vehicle: "+$scope.currentScreenVehicle);
-            var usermessage = "Please select all the position values:x,y,z from the same category of vehicle: "+$scope.currentScreenVehicle;
-            var position = "top left";
-            var delay = false;
-            var queryId = innerScreenToaster;
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage  = "Please select all the position values:x,y,z from the same category of vehicle: "+$scope.currentScreenVehicle;
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToaster;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+             }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage  = "Please select all the position values:x,y,z from the same category of vehicle: "+$scope.currentScreenVehicle;
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToasterTablet;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+             }else if($window.innerWidth <= 640){
+                $scope.toasterusermessage  = "Please select all the position values:x,y,z from the same category of vehicle: "+$scope.currentScreenVehicle;
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToasterMbl;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+             }
         }
         else if(!$scope.positionBooleans[0])
         {
-          //  $window.alert("You have either not selected all position values:x,y,z or there may be no data available for the selected position coordinates."); 
-            var usermessage = "You have either not selected all position values:x,y,z or there may be no data available for the selected position coordinates.";
-            var position = "top left";
-            var delay = false;
-            var queryId = innerScreenToaster;
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage = "You have either not selected all position values:x,y,z or there may be no data available for the selected position coordinates.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId= innerScreenToaster;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+             }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage = "You have either not selected all position values:x,y,z or there may be no data available for the selected position coordinates.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToasterTablet;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+             }else if($window.innerWidth <= 640){
+                $scope.toasterusermessage = "You have either not selected all position values:x,y,z or there may be no data available for the selected position coordinates.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToasterMbl;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+             }
         }
         else if(!$scope.velocityBooleans[3])
         {
-            //$window.alert("Please select all velocity values:vx,vy,vz");
-            var usermessage = "Please select all velocity values:vx,vy,vz";
-            var position = "top left";
-            var delay = false;
-            var queryId = innerScreenToaster;
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage = "Please select all velocity values:vx,vy,vz.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToaster;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+             }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage = "Please select all velocity values:vx,vy,vz.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToasterTablet;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+             }else if($window.innerWidth <= 640){
+                $scope.toasterusermessage = "Please select all velocity values:vx,vy,vz.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToasterMbl;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);  
+             }
         }
         else if(!$scope.velocityBooleans[2])
         {
-           // $window.alert("Please select all the velocity values:vx,vy,vz from the same vehicle: "+$scope.currentScreenVehicle);
-            var usermessage = "Please select all the velocity values:vx,vy,vz from the same vehicle: "+$scope.currentScreenVehicle;
-            var position = "top left";
-            var delay = false;
-            var queryId = innerScreenToaster;
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage = "Please select all the velocity values:vx,vy,vz from the same vehicle: "+$scope.currentScreenVehicle;
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                var queryId = innerScreenToaster;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+
+             }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage = "Please select all the velocity values:vx,vy,vz from the same vehicle: "+$scope.currentScreenVehicle;
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToasterTablet;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+
+             }else if($window.innerWidth <= 640){
+                $scope.toasterusermessage = "Please select all the velocity values:vx,vy,vz from the same vehicle: "+$scope.currentScreenVehicle;
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToasterMbl;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);  
+             }
         }
         else if(!$scope.velocityBooleans[1])
         {
-            //$window.alert("Please select all the velocity values:vx,vy,vz from the same category of vehicle: "+$scope.currentScreenVehicle);
-            var usermessage = "Please select all the velocity values:vx,vy,vz from the same category of vehicle: "+$scope.currentScreenVehicle;
-            var position = "top left";
-            var delay = false;
-            var queryId = innerScreenToaster;
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage= "Please select all the velocity values:vx,vy,vz from the same category of vehicle: "+$scope.currentScreenVehicle;
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId  = innerScreenToaster;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+             }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage = "Please select all the velocity values:vx,vy,vz from the same category of vehicle: "+$scope.currentScreenVehicle;
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId  = innerScreenToasterTablet;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+             }else if($window.innerWidth <= 640){
+                $scope.toasterusermessage = "Please select all the velocity values:vx,vy,vz from the same category of vehicle: "+$scope.currentScreenVehicle;
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToasterMbl;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);  
+             }
         }
         else if(!$scope.velocityBooleans[0])
         {
-           // $window.alert("You have either not selected all velocity values: or there may be no data available for the selected velocity coordinates.");
-            var usermessage = "You have either not selected all velocity values: or there may be no data available for the selected velocity coordinates.";
-            var position = "top left";
-            var delay = false;
-            var queryId = innerScreenToaster;
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage = "You have either not selected all velocity values: or there may be no data available for the selected velocity coordinates.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToaster;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+             }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage = "You have either not selected all velocity values: or there may be no data available for the selected velocity coordinates.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToasterTablet;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+             }else if($window.innerWidth <= 640){
+                $scope.toasterusermessage = "You have either not selected all velocity values: or there may be no data available for the selected velocity coordinates.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay= false;
+                $scope.toasterqueryId = innerScreenToasterMbl;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+             }
         }
         else if($scope.orbitstatus[$scope.currentVehicleId] === false && $scope.iconstatus[$scope.currentVehicleId] === false){
-            // if($window.confirm("You have not enabled orbit and icon for this vehicle.Do you want to enable either orbit or icon for the vehicle?")){
-            //        $scope.secondScreen = true;
-            //        $scope.firstScreen = false;
-            // } else {
-            //     if($window.confirm("Please click ok if the selected \n position parameters are: x,y,z and velocity parameters are: vx,vy,vz.")){
-            //         $scope.secondScreen = false;
-            //         $scope.firstScreen = true;
-            //         $scope.settings.pdata[$scope.currentVehicleId] = angular.copy($scope.positionData[$scope.currentVehicleId]);
-            //         $scope.settings.vdata[$scope.currentVehicleId] = angular.copy($scope.velocityData[$scope.currentVehicleId]);
-            //         $scope.settings.iconstatus[$scope.currentVehicleId] = angular.copy($scope.iconstatus[$scope.currentVehicleId]);
-            //         $scope.settings.orbitstatus[$scope.currentVehicleId] = angular.copy($scope.orbitstatus[$scope.currentVehicleId]);
-
-            //         $scope.widget.settings.totalVelocityArray[$scope.currentVehicleId] = getRecentSelectedValues($scope.widget.settings.totalVelocityArray[$scope.currentVehicleId], 3);
-            //         $scope.widget.settings.totalPositionArray[$scope.currentVehicleId] = getRecentSelectedValues($scope.widget.settings.totalPositionArray[$scope.currentVehicleId], 3);
-            //         $scope.widget.settings.dataArray = [];
-
-            //         if ($window.innerWidth >= 1400){
-            //             $scope.lock = dashboardService.getLock();
-            //             $scope.lock.lockLeft = false;
-            //             dashboardService.setLeftLock($scope.lock.lockLeft);
-            //         }
-
-            //     }else {
-            //         $scope.secondScreen = true;
-            //         $scope.firstScreen = false;
-            //     }
-
-            // } 
-
-
-
             $uibModal.open({
                 templateUrl: "./directives/groundtrack/confirmParameter.html",
                 controller: 'confirmParametersCtrl',
@@ -609,7 +724,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                     }
                 }
             }).result.then(function(dataItems){
-$scope.secondScreen = false;
+                    $scope.secondScreen = false;
                     $scope.firstScreen = true;
                     $scope.settings.pdata[$scope.currentVehicleId] = angular.copy($scope.positionData[$scope.currentVehicleId]);
                     $scope.settings.vdata[$scope.currentVehicleId] = angular.copy($scope.velocityData[$scope.currentVehicleId]);
@@ -626,40 +741,35 @@ $scope.secondScreen = false;
                         dashboardService.setLeftLock($scope.lock.lockLeft);
                     }
             },
-            function () {
+            function (closemodal) {
             //handle modal dismiss
-                    $scope.secondScreen = true;
-                    $scope.firstScreen = false;
+                $scope.secondScreen = true;
+                $scope.firstScreen = false;
             });
             });     
         }else if($scope.widget.settings.totalPositionArray[$scope.currentVehicleId].length === 0 || $scope.widget.settings.totalVelocityArray[$scope.currentVehicleId].length === 0){
-            //$window.alert("Please enter all the required parameters: position(x,y,z) and velocity(vx,vy,vz).");
-            var usermessage = "Please enter all the required parameters: position(x,y,z) and velocity(vx,vy,vz).";
-            var position = "top left";
-            var delay = false;
-            var queryId = innerScreenToaster;
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage = "Please enter all the required parameters: position(x,y,z) and velocity(vx,vy,vz).";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToaster;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+             }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage = "Please enter all the required parameters: position(x,y,z) and velocity(vx,vy,vz).";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToasterTablet;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+             }else if($window.innerWidth <= 640){
+                $scope.toasterusermessage = "Please enter all the required parameters: position(x,y,z) and velocity(vx,vy,vz).";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = innerScreenToasterMbl;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+             }
+
         }else {
-            //if($window.confirm("Please click ok if the selected \n position parameters are: x,y,z and velocity parameters are: vx,vy,vz.")){
-                // $scope.secondScreen = false;
-                // $scope.firstScreen = true;
-                // $scope.settings.pdata[$scope.currentVehicleId] = angular.copy($scope.positionData[$scope.currentVehicleId]);
-                // $scope.settings.vdata[$scope.currentVehicleId] = angular.copy($scope.velocityData[$scope.currentVehicleId]);
-                // $scope.settings.iconstatus[$scope.currentVehicleId] = angular.copy($scope.iconstatus[$scope.currentVehicleId]);
-                // $scope.settings.orbitstatus[$scope.currentVehicleId] = angular.copy($scope.orbitstatus[$scope.currentVehicleId]);
-
-                // $scope.widget.settings.totalVelocityArray[$scope.currentVehicleId] = getRecentSelectedValues($scope.widget.settings.totalVelocityArray[$scope.currentVehicleId], 3);
-                // $scope.widget.settings.totalPositionArray[$scope.currentVehicleId] = getRecentSelectedValues($scope.widget.settings.totalPositionArray[$scope.currentVehicleId], 3);
-                // $scope.widget.settings.dataArray = [];
-               
-                // if ($window.innerWidth >= 1400){
-                //     $scope.lock = dashboardService.getLock();
-                //     $scope.lock.lockLeft = false;
-                //     dashboardService.setLeftLock($scope.lock.lockLeft);
-                // }
-
-
-                $uibModal.open({
+            $uibModal.open({
                 templateUrl: "./directives/groundtrack/confirmParameter.html",
                 controller: 'confirmParametersCtrl',
                 controllerAs: '$ctrl',
@@ -667,7 +777,7 @@ $scope.secondScreen = false;
                 scope: $scope,
                 resolve: {
                     dataLabel: function () {
-                        return "Please click ok if the selected \n position parameters are: x,y,z and velocity parameters are: vx,vy,vz.";
+                        return "Please click Yes if the selected \n position parameters are: x,y,z and velocity parameters are: vx,vy,vz.";
                     },
                     dataItems: function(){
                         return $scope.settings;
@@ -692,15 +802,10 @@ $scope.secondScreen = false;
                     dashboardService.setLeftLock($scope.lock.lockLeft);
                 }
             },
-            function () {
-            //handle modal dismiss
-                            $scope.firstScreen = false;
+            function (closemodal) {
+                $scope.firstScreen = false;
                 $scope.secondScreen = true;
             });
-           // }else {
-               //$scope.firstScreen = false;
-               // $scope.secondScreen = true;
-            //}
         } 
     }
 

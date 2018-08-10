@@ -2,6 +2,8 @@ describe('Testing command controller', function () {
     var controller, dashboardService, scope, commandService, userService, 
     $intervalSpy, deferredSave, deferredCommandLog, deferredCommandList;
 
+    var element = angular.element('<div></div>'); //provide element you want to test
+
     var mission = {
         missionName : 'ATest',
     };
@@ -49,7 +51,7 @@ describe('Testing command controller', function () {
             $intervalSpy = jasmine.createSpy('$interval', $interval);
 
             dashboardService = jasmine.createSpyObj('dashboardService', 
-                ['getTime', 'getCurrentMission', 'displayAlert']);
+                ['getTime', 'getCurrentMission', 'displayAlert','displayWidgetAlert']);
             userService = jasmine.createSpyObj('userService', ['getUserEmail']);
 
             deferredSave = _$q_.defer();
@@ -81,7 +83,8 @@ describe('Testing command controller', function () {
                 dashboardService: dashboardService,
                 commandService: commandService,
                 userService: userService,
-                $interval: $intervalSpy
+                $interval: $intervalSpy,
+                $element : element
             });
         });
 
@@ -140,40 +143,29 @@ describe('Testing command controller', function () {
 
     it('should alert the user when command is not entered and enter button is clicked', function(){
         scope.arguments = "00";
-
-        var position = "top left";
-        var queryId = '#commandNametoaster';
-        var delay = false;
-        var usermessage = "Please enter the command.";
-
         scope.enter();
-        // expect(windowMock.alert).toHaveBeenCalledWith('Please enter the command.');
-        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual('Please enter the command.');
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     })
 
 
     it('should alert the user when arguments is not entered and enter button is clicked', function(){
         scope.cmd = "get";
-
-        var position = "top left";
-        var queryId = '#commandArgtoaster';
-        var delay = false;
-        var usermessage = "Please enter the argument values.";
-
         scope.enter();
-        // expect(windowMock.alert).toHaveBeenCalledWith('Please enter the command.');
-        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual('Please enter the argument values.');
+        expect(scope.toasterposition).toEqual("top right");
+        expect(scope.toasterdelay).toEqual(false);
     })
 
     it('should alert the user when command and arguments is not entered and enter button is clicked', function(){
-        var position = "top left";
-        var queryId = '#commandArgsToaster';
-        var delay = false;
-        var usermessage = "Please enter the command and argument values.";
-
         scope.enter();
-        // expect(windowMock.alert).toHaveBeenCalledWith('Please enter the command.');
-        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual('Please enter the command and argument values.');
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     })
 
     it('should define function scope.lockCommand', function(){
@@ -195,28 +187,21 @@ describe('Testing command controller', function () {
     it('should alert the user when command is not entered and scope.lockCommand is called', function(){
         scope.command.name = "Null Command Echo";
         scope.entered = false;
-
-        var position = "top left";
-        var queryId = '#commandArgsToaster';
-        var delay = false;
-        var usermessage = "Please enter the command and arguments before locking.";
-
         scope.lockCommand();
-        // expect(windowMock.alert).toHaveBeenCalledWith('Please enter the command and arguments before locking.');
-        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("Please enter the command and arguments before locking.");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     })
 
     it('should alert the user when scope.command is null and scope.lockCommand is called', function(){
         scope.command = {};
         scope.entered = true;
-        var position = "top left";
-        var queryId = '#commandArgsToaster';
-        var delay = false;
-        var usermessage = "Please enter the command and arguments before locking.";
-
         scope.lockCommand();
-        // expect(windowMock.alert).toHaveBeenCalledWith('Please enter the commands before locking');
-        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("Please enter the command and arguments before locking.");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     })
 
     it('should define function scope.changeInput', function(){

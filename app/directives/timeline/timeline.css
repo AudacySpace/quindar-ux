@@ -345,6 +345,18 @@ div.eventBtn  div.md-toast-content{
     div.tzgroup .vis-labelset .vis-label .vis-inner {
         padding:5px 2px !important;
     }
+
+   div#visualization md-toast{
+        width:120px !important;
+        min-width:120px !important;
+        max-width:120px !important;
+    }
+
+    div#visualization div.eventBtn div.md-toast-content {
+        padding: 1px !important;
+        line-height: 1em !important;
+        width: 100% !important;
+    }
 }
 
 /*Tablet screen styles*/
@@ -515,5 +527,17 @@ div.eventBtn  div.md-toast-content{
 
     div.tzgroup .vis-labelset .vis-label .vis-inner {
         padding:8px 5px !important;
+    }
+
+    div#visualization md-toast{
+        width:175px !important;
+        min-width:175px !important;
+        max-width:190px !important;
+    }
+
+     div#visualization div.eventBtn div.md-toast-content {
+        padding: 3px !important;
+        line-height: 1em !important;
+        width: 100% !important;
     }
 }

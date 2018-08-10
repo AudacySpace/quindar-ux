@@ -12,8 +12,11 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
     $scope.chosenCategory;
     $scope.attitudeBooleans = [true, true, true, true];
     $scope.positionBooleans = [true, true, true, true];
-    var temp1 = $element[0].getElementsByTagName("div")[1];
-    var innerScreenToaster = temp1.getElementsByTagName("div")[6];
+
+    var outerScreenToaster1 = $element[0].getElementsByTagName("div")["outerScreenToaster1"];
+    var outerScreenToaster2 = $element[0].getElementsByTagName("div")["outerScreenToaster2"];
+    var outerScreenToasterMbl = $element[0].getElementsByTagName("div")["outerScreenToasterMbl"];
+    var outerScreenToasterTablet = $element[0].getElementsByTagName("div")["outerScreenToasterTablet"];
 
     checkforPreSavedData();
 
@@ -66,84 +69,222 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 		var status = checkforSameVehicle($scope.settings.attitudeData,$scope.settings.positionData);
 		if($scope.widget.settings.totalAttitudeArray.length == 0 || $scope.widget.settings.totalPositionArray.length == 0)
         {
-            //$window.alert("Please select all the parameters before saving!");
-            var usermessage = "Please select all the parameters before saving!";
-            var position = "top left";
-            var delay = false;
-            var queryId = innerScreenToaster;
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage = "Please select all the parameters before saving!";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToaster1;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+
+            }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage = "Please select all the parameters before saving!";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterTablet;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+
+            }else if($window.innerWidth <= 640){
+                $scope.toasterusermessage = "Please select all the parameters before saving!";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterMbl;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+
+            }
         }
         else if(!$scope.attitudeBooleans[3])
         {
-           // $window.alert("Please select all attitude values:q1,q2,q3,qc");
-            var usermessage = "Please select all attitude values:q1,q2,q3,qc";
-            var position = "top left";
-            var delay = false;
-            var queryId = innerScreenToaster;
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage = "Please select all attitude values:q1,q2,q3,qc.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToaster1;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+
+            }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage = "Please select all attitude values:q1,q2,q3,qc.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterTablet;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+
+            }else if($window.innerWidth <= 640){
+                $scope.toasterusermessage = "Please select all attitude values:q1,q2,q3,qc.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterMbl;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+            }
         }
         else if(!$scope.attitudeBooleans[2])
         {
-            //$window.alert("Please select all the attitude values:q1,q2,q3,qc from the same vehicle.");
-            var usermessage = "Please select all the attitude values:q1,q2,q3,qc from the same vehicle.";
-            var position = "top left";
-            var delay = false;
-            var queryId = innerScreenToaster;
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage = "Please select all the attitude values:q1,q2,q3,qc from the same vehicle.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToaster1;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+
+            }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage = "Please select all the attitude values:q1,q2,q3,qc from the same vehicle.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterTablet;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+
+            }else if($window.innerWidth <= 640){
+                $scope.toasterusermessage = "Please select all the attitude values:q1,q2,q3,qc from the same vehicle.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterMbl;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+
+            }
         }
         else if(!$scope.attitudeBooleans[1])
         {
-           // $window.alert("Please select all the attitude values:q1,q2,q3,qc from the same category of single vehicle.");
-            var usermessage = "Please select all the attitude values:q1,q2,q3,qc from the same category of single vehicle.";
-            var position = "top left";
-            var delay = false;
-            var queryId = innerScreenToaster;
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage = "Please select all the attitude values:q1,q2,q3,qc from the same category of single vehicle.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToaster1;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+
+            }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage = "Please select all the attitude values:q1,q2,q3,qc from the same category of single vehicle.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterTablet;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+
+            }else if($window.innerWidth <= 640){
+                $scope.toasterusermessage = "Please select all the attitude values:q1,q2,q3,qc from the same category of single vehicle.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterMbl;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+            }
         }
         else if(!$scope.attitudeBooleans[0])
         {
-            //$window.alert("You have either not selected all attitude values:q1,q2,q3,qc or there may be no data available for the selected quaternion coordinates."); 
-            var usermessage = "You have either not selected all attitude values:q1,q2,q3,qc or there may be no data available for the selected quaternion coordinates.";
-            var position = "top left";
-            var delay = false;
-            var queryId = innerScreenToaster;
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage = "You have either not selected all attitude values:q1,q2,q3,qc or there may be no data available for the selected quaternion coordinates.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToaster1;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+            }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage = "You have either not selected all attitude values:q1,q2,q3,qc or there may be no data available for the selected quaternion coordinates.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterTablet;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+            }else if($window.innerWidth <= 640){
+                $scope.toasterusermessage = "You have either not selected all attitude values:q1,q2,q3,qc or there may be no data available for the selected quaternion coordinates.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterMbl;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+            }
         }
         else if(!$scope.positionBooleans[3])
         {
-            //$window.alert("Please select all position values:x,y,z");
-            var usermessage = "Please select all position values:x,y,z";
-            var position = "top left";
-            var delay = false;
-            var queryId = innerScreenToaster;
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage = "Please select all position values:x,y,z.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToaster2;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+
+            }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage = "Please select all position values:x,y,z.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterTablet;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+
+            }else if($window.innerWidth <= 640){
+                $scope.toasterusermessagee = "Please select all position values:x,y,z.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterMbl;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+            }
         }
         else if(!$scope.positionBooleans[2])
         {
-            //$window.alert("Please select all the position values:x,y,z from the same vehicle.");
-            var usermessage = "Please select all the position values:x,y,z from the same vehicle.";
-            var position = "top left";
-            var delay = false;
-            var queryId = innerScreenToaster;
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessagee = "Please select all the position values:x,y,z from the same vehicle.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToaster2;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+
+            }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage = "Please select all the position values:x,y,z from the same vehicle.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterTablet;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+
+            }else if($window.innerWidth <= 640){
+                $scope.toasterusermessage = "Please select all the position values:x,y,z from the same vehicle.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterMbl;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+
+            }
         }
         else if(!$scope.positionBooleans[1])
         {
-           // $window.alert("Please select all the position values:x,y,z from the same vehicle's category.");
-            var usermessage = "Please select all the position values:x,y,z from the same vehicle's category.";
-            var position = "top left";
-            var delay = false;
-            var queryId = innerScreenToaster;
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage = "Please select all the position values:x,y,z from the same vehicle's category.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToaster2;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+
+            }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage = "Please select all the position values:x,y,z from the same vehicle's category.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterTablet;
+               var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+
+            }else if($window.innerWidth <= 640){
+                $scope.toasterusermessage= "Please select all the position values:x,y,z from the same vehicle's category.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterMbl;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+
+            }
         }
         else if(!$scope.positionBooleans[0])
         {
-           // $window.alert("You have either not selected all position values:x,y,z or there may be no data available for the position coordinates."); 
-            var usermessage = "You have either not selected all position values:x,y,z or there may be no data available for the position coordinates.";
-            var position = "top left";
-            var delay = false;
-            var queryId = innerScreenToaster;
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage = "You have either not selected all position values:x,y,z or there may be no data available for the position coordinates.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToaster2;
+             var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+
+            }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage = "You have either not selected all position values:x,y,z or there may be no data available for the position coordinates.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterTablet;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+
+            }else if($window.innerWidth <= 640){
+                $scope.toasterusermessage = "You have either not selected all position values:x,y,z or there may be no data available for the position coordinates.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterMbl;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+
+            }
         }
         else if($scope.widget.settings.totalAttitudeArray.length === 4 && $scope.widget.settings.totalPositionArray.length === 3 && status === true){
             $uibModal.open({
@@ -188,19 +329,28 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 		}
         else if(status === false)
         {
-			$window.alert("Both Attitude and Position Values should be of the same vehicle.");
-		}/*else if($scope.widget.settings.totalAttitudeArray.length < 4 && $scope.widget.settings.totalPositionArray.length < 3){
-			$window.alert("Please select all the quaternion coordinates:q1,q2,q3,qc and position coordinates:x,y,z");
-            $scope.settings.attitudeData = [];
-            $scope.settings.positionData = [];
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage = "Both Attitude and Position Values should be of the same vehicle.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToaster1;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
+
+            }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage = "Both Attitude and Position Values should be of the same vehicle.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterTablet;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+
+            }else if($window.innerWidth <= 640){
+                $scope.toasterusermessage = "Both Attitude and Position Values should be of the same vehicle.";
+                $scope.toasterposition = "top left";
+                $scope.toasterdelay = false;
+                $scope.toasterqueryId = outerScreenToasterMbl;
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+            }
 		}
-		else if($scope.widget.settings.totalAttitudeArray.length < 4 && $scope.widget.settings.totalPositionArray.length === 3){
-            $scope.settings.attitudeData = [];
-			$window.alert("Please select all the quaternion coordinates:q1,q2,q3,qc");
-		}else if($scope.widget.settings.totalPositionArray.length < 3 && $scope.widget.settings.totalAttitudeArray.length === 4){
-            $scope.settings.positionData = [];
-			$window.alert("Please select all the position coordinates:x,y,z");		
-        }*/
 	}
 
 	$scope.getTelemetrydata = function(category){
@@ -485,19 +635,6 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
             $scope.vehicle = "";
     	}
     }
-
-    /*function displayStringForInput(selectedArray){
-    	var dString = "";
-        var arrayLen = selectedArray.length
-    	for(var k=0;k<arrayLen;k++){
-            if(k < arrayLen-1){
-            	dString = dString + selectedArray[k].id + "," ;
-            }else if(k === arrayLen-1){
-            	dString = dString + selectedArray[k].id;
-            }
-        }
-        return dString;
-    }*/
 
     function getSelectedArray(selectedArray){
     	var data = [];

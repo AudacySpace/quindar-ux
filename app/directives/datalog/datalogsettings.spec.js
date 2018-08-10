@@ -1,8 +1,8 @@
 describe('Testing datalog settings controller', function () {
     var controller, scope, dashboardService, sidebarService, sideNavOpenMock;
+    var element = angular.element('<div></div>'); //provide element you want to test
 
     var windowMock = {
-        alert : function() {},
         innerWidth: 1000
     };
 
@@ -35,7 +35,8 @@ describe('Testing datalog settings controller', function () {
             controller = $controller('DataLogSettingsCtrl', {
                 $scope: scope, 
                 dashboardService: dashboardService,
-                sidebarService: sidebarService
+                sidebarService: sidebarService,
+                $element: element
             });
         });
 
@@ -194,7 +195,6 @@ describe('Testing datalog settings controller', function () {
     });
 
     it('should alert the user if the vehicle and id from the left menu are not available', function() {
-        spyOn(windowMock, "alert");
         var position = "top left";
         var queryId = '#datalogIdToaster';
         var delay = false;
@@ -203,11 +203,13 @@ describe('Testing datalog settings controller', function () {
         scope.widget.settings.dataArray = [];
         scope.saveDataLogSettings(scope.widget);
 
-        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual(usermessage);
+        expect(scope.toasterposition).toEqual(position);
+        expect(scope.toasterdelay).toEqual(delay);
     });
 
     it('should alert the user if no data is available for selected telemetry id', function() {
-        spyOn(windowMock, "alert");
         var vehicleInfo = { 
             id: 'vx',
             vehicle: 'A0',
@@ -227,7 +229,10 @@ describe('Testing datalog settings controller', function () {
 
         scope.getValue(false);
         scope.saveDataLogSettings(scope.widget);
-        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual(usermessage);
+        expect(scope.toasterposition).toEqual(position);
+        expect(scope.toasterdelay).toEqual(delay);
     });
 
     it('should store the value of selected vehicle and id in scope.data variable', function() {

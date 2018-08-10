@@ -6,9 +6,13 @@ app.directive('datatablesettings', function() {
     }
 });
 
-app.controller('DatatableSettingsCtrl', function($scope, $window){
+app.controller('DatatableSettingsCtrl', function($scope, $window,$element,dashboardService){
     $scope.checkedValues = $scope.widget.settings.checkedValues;
     var values = angular.copy($scope.checkedValues);
+
+    var settingsToaster = $element[0].getElementsByTagName("div")["datatablecolumnsToaster"];
+    var settingsToasterMbl = $element[0].getElementsByTagName("div")["datatablecolumnsToasterMbl"];
+    var settingsToasterTablet = $element[0].getElementsByTagName("div")["datatablecolumnsToasterTablet"];
 
     $scope.saveDataTableSettings = function(widget){
         var val = $scope.checkedValues;
@@ -25,7 +29,25 @@ app.controller('DatatableSettingsCtrl', function($scope, $window){
             widget.delete = false;
             values = angular.copy($scope.checkedValues);
         } else {
-            $window.alert("Please check at least one category");
+            if($window.innerWidth >= 1024){
+                $scope.toasterusermessage = "Please check at least one category!";
+                $scope.toasterposition = "top left";
+                $scope.toasterqueryId = settingsToaster;
+                $scope.toasterdelay = false;
+                var alertstatus = dashboardService.displayWidgetAlert( $scope.toasterusermessage, $scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+            }else if($window.innerWidth > 640 && $window.innerWidth < 1024){
+                $scope.toasterusermessage = "Please check at least one category!";
+                $scope.toasterposition = "top left";
+                $scope.toasterqueryId = settingsToasterTablet;
+                $scope.toasterdelay = false;
+                var alertstatus = dashboardService.displayWidgetAlert( $scope.toasterusermessage, $scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+            }else if($window.innerWidth <= 640){
+                $scope.toasterusermessage = "Please check at least one category!";
+                $scope.toasterposition = "top left";
+                $scope.toasterqueryId = settingsToasterMbl;
+                $scope.toasterdelay = false;
+                var alertstatus = dashboardService.displayWidgetAlert( $scope.toasterusermessage, $scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
+            }
         }
     };
 

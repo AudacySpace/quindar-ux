@@ -230,6 +230,10 @@ div#scrollable-containerPositionValues{
         padding-top:5px;
         padding-bottom:5px;
     }
+
+    .gtspans {
+        margin: 2px 8px 2px 0px !important;
+    }
 }
 
 @media only screen and (min-width: 600px) and (max-width: 768px) {

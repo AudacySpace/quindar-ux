@@ -158,12 +158,11 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
         }
         else if(!isGroup && $scope.askedForGroup) //if the user has asked to see group and has instead chosen telemetry id from left sidebar
         {
-            // $window.alert("Be sure to select a group!");
-            var usermessage = "Be sure to select a group!";
-            var position = "top left";
-            var delay = false;
-            var queryId = temp1[$scope.currentActiveRowIndex];
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
+            $scope.toasterusermessage = "Be sure to select a group!";
+            $scope.toasterposition = "top left";
+            $scope.toasterdelay = false;
+            $scope.toasterqueryId = temp1[$scope.currentActiveRowIndex];
+            var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
         }
         $scope.arrow.style.color = "#b3b3b3";
         $scope.widget.settings.dataArray = []; //once data has been added to table, reset dataArray
@@ -236,12 +235,11 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             $scope.widget.settings.data.splice($index, 0, {});
             $scope.widget.settings.previous.splice($index, 0, {});
         }else {
-           // $window.alert("You have reached the maximum limit for rows!");
-            var usermessage = "You have reached the maximum limit for rows!";
-            var position = "top left";
-            var delay = false;
-            var queryId = temp1[$index];
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
+            $scope.toasterusermessage = "You have reached the maximum limit for rows!";
+            $scope.toasterposition = "top left";
+            $scope.toasterdelay = false;
+            $scope.toasterqueryId = temp1[$index];
+            var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage ,$scope.toasterposition,$scope.toasterqueryId, $scope.toasterdelay);
         }
        
     }
@@ -253,12 +251,11 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             $scope.widget.settings.data.splice($index+1, 0, {}); 
             $scope.widget.settings.previous.splice($index+1, 0, {}); 
        }else {
-           // $window.alert("You have reached the maximum limit for rows!");
-            var usermessage = "You have reached the maximum limit for rows!";
-            var position = "top left";
-            var delay = false;
-            var queryId = temp1[$index];
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
+            $scope.toasterusermessage = "You have reached the maximum limit for rows!";
+            $scope.toasterposition = "top left";
+            $scope.toasterdelay = false;
+            $scope.toasterqueryId = temp1[$index];
+            var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage ,$scope.toasterposition,$scope.toasterqueryId, $scope.toasterdelay);
        }
        
     }
@@ -266,12 +263,11 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     //Function to delete the current row.
     $scope.deleteRow = function($index){
         if(($index === 0) && ($scope.table.rows.length) === 1){
-           // $window.alert("Please do not delete this row!Add row above to delete this row.");
-            var usermessage = "Please do not delete this row!Add row above to delete this row.";
-            var position = "top left";
-            var delay = false;
-            var queryId = temp1[$index];
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
+            $scope.toasterusermessage = "Please do not delete this row!Add row above to delete this row.";
+            $scope.toasterposition = "top left";
+            $scope.toasterdelay = false;
+            $scope.toasterqueryId = temp1[$index];
+            var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage ,$scope.toasterposition,$scope.toasterqueryId, $scope.toasterdelay);
         }else {
             $scope.table.rows.splice($index, 1);
             $scope.widget.settings.data.splice($index,1);
@@ -293,13 +289,11 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             }, 500);
         }
         else{
-            // $window.alert("This row cannot be moved further up!");
-
-            var usermessage = "This row cannot be moved further up!";
-            var position = "top left";
-            var delay = false;
-            var queryId = temp1[$index];
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
+            $scope.toasterusermessage = "This row cannot be moved further up!";
+            $scope.toasterposition = "top left";
+            $scope.toasterdelay = false;
+            $scope.toasterqueryId = temp1[$index];
+            var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage ,$scope.toasterposition,$scope.toasterqueryId, $scope.toasterdelay);
         }
     }
 
@@ -317,13 +311,11 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             }, 500);  
         }
         else{
-           // $window.alert("This row cannot be moved further down! You have reached the end of the table.");
-
-            var usermessage = "This row cannot be moved further down! You have reached the end of the table.";
-            var position = "top left";
-            var delay = false;
-            var queryId = temp1[$index];
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
+            $scope.toasterusermessage = "This row cannot be moved further down! You have reached the end of the table.";
+            $scope.toasterposition = "top left";
+            $scope.toasterdelay = false;
+            $scope.toasterqueryId = temp1[$index];
+            var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage ,$scope.toasterposition,$scope.toasterqueryId, $scope.toasterdelay);
         }
     }
 

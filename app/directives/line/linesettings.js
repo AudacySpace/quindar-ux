@@ -262,7 +262,7 @@ app.controller('LineSettingsCtrl',
             var position = "top left";
             var queryId;
             console.log(windowWidth);
-            if(windowWidth > 1023){
+            if(windowWidth >= 1024){
                 var screenToaster1 = $element[0].getElementsByTagName("div")["lineplotVehToaster"];
                 queryId = screenToaster1;
                 if(idName === ''){
@@ -270,11 +270,11 @@ app.controller('LineSettingsCtrl',
                 }else {
                     var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,idName,delay); 
                 }
-            }else if(windowWidth < 640){
+            }else if(windowWidth <= 640){
                  var screenToaster3 = $element[0].getElementsByTagName("div")["lineplotToastersml"];
                 queryId = screenToaster3;
                 var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
-            }else if(windowWidth > 640 && windowWidth <= 1023){
+            }else if(windowWidth > 640 && windowWidth < 1024){
                   var screenToaster4 = $element[0].getElementsByTagName("div")["lineplotToastertablet"];
                 queryId = screenToaster4;
                 var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 

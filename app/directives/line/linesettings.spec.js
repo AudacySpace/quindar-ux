@@ -1,6 +1,7 @@
 describe('Testing lineplot settings controller', function () {
     var controller, scope, dashboardService, sidebarService,
         sideNavOpenMock, $interval;
+    var element = angular.element('<div></div>'); //provide element you want to test
 
     var windowMock = {
         innerWidth: 1000
@@ -22,7 +23,7 @@ describe('Testing lineplot settings controller', function () {
             $interval = _$interval_;
             sidebarService = jasmine.createSpyObj('sidebarService', ['getVehicleInfo', 'setMenuStatus', 'setTempWidget', 'setOpenLogo']);;
             dashboardService = jasmine.createSpyObj('dashboardService', 
-                ['getLock', 'setLeftLock', 'sortObject','getData', 'isEmpty', 'telemetry', 'displayAlert']);
+                ['getLock', 'setLeftLock', 'sortObject','getData', 'isEmpty', 'telemetry', 'displayWidgetAlert']);
             scope = $rootScope.$new();
             scope.widget = {
                 name: "Line Plot",
@@ -50,7 +51,8 @@ describe('Testing lineplot settings controller', function () {
                 $scope: scope, 
                 dashboardService: dashboardService,
                 sidebarService: sidebarService,
-                $interval: $interval
+                $interval: $interval,
+                $element: element
             });
         });
 
@@ -166,7 +168,8 @@ describe('Testing lineplot settings controller', function () {
         expect(scope.widget.main).not.toEqual(true);
         expect(scope.widget.settings.active).not.toEqual(false);
         //expect(windowMock.alert).toHaveBeenCalledWith("Vehicle data not set. Please select from Data Menu");
-        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
+        //expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
     });
 
     it('should close the settings menu on save if data is selected', function() {
@@ -270,7 +273,8 @@ describe('Testing lineplot settings controller', function () {
         expect(scope.widget.settings.data.value).toEqual('vx');
         expect(scope.widget.settings.data.vehicles).toEqual([]);
        // expect(windowMock.alert).toHaveBeenCalledWith("Please select atleast one vehicle and save!");
-        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
+        //expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
     });
 
     it('should define function getTelemetrydata', function() {
@@ -346,7 +350,8 @@ describe('Testing lineplot settings controller', function () {
         scope.saveWidget(scope.widget);
 
         //expect(windowMock.alert).toHaveBeenCalledWith("Vehicle data not set. Please select from Data Menu");
-        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
+        //expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
     });
 
     it('should alert the user if no data is available for selected telemetry id', function() {
@@ -372,7 +377,8 @@ describe('Testing lineplot settings controller', function () {
         scope.saveWidget(scope.widget);
 
         //expect(windowMock.alert).toHaveBeenCalledWith("Currently there is no data available for this telemetry id.");
-        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
+        //expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,position,queryId,delay);
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
     });
 
     it('should store the value of selected vehicle and id in scope.settings variable', function() {

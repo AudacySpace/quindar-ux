@@ -1,8 +1,8 @@
 describe('Testing satellite settings controller', function () {
     var controller, scope, dashboardService,sidebarService,sideNavOpenMock,$q;
+    var element = angular.element('<div></div>'); //provide element you want to test
 
     var windowMock = {
-        alert : function(message) {},
         innerWidth: 1000
     };
     var modalInstance = { open: function() {} };
@@ -21,7 +21,7 @@ describe('Testing satellite settings controller', function () {
 
         inject(function($controller, $rootScope, _$q_){
             dashboardService = jasmine.createSpyObj('dashboardService', 
-                ['getLock', 'setLeftLock','getData']);
+                ['getLock', 'setLeftLock','getData','displayWidgetAlert']);
 
             sidebarService = jasmine.createSpyObj('sidebarService',['getVehicleInfo', 'setMenuStatus', 'setTempWidget', 'setOpenLogo']);
 
@@ -42,7 +42,8 @@ describe('Testing satellite settings controller', function () {
                 $scope: scope, 
                 dashboardService: dashboardService,
                 sidebarService: sidebarService,
-                $uibModal : modalInstance
+                $uibModal : modalInstance,
+                $element: element
             });
         });
 
@@ -200,16 +201,17 @@ describe('Testing satellite settings controller', function () {
     });
 
     it('should alert the user if the vehicle and id from the left menu are not available', function() {
-        spyOn(windowMock, "alert");
         scope.widget.settings.dataArray = [];
-
         scope.getValue();
         scope.saveSettings(scope.widget);
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select the parameters before applying!");
+
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("Please select all the parameters before saving!");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     });
 
     it('should store the value of selected attitude parameters when category is attitude', function() {
-        //windowMock.innerWidth = 1440;
         dashboardService.getData.and.callFake(function(){
             return {
                 "value":0.688,
@@ -236,8 +238,6 @@ describe('Testing satellite settings controller', function () {
         scope.widget.settings.dataArray.push({vehicle:'A0',id:'qc',key:'A0.GNC.attitude.qc',category:'attitude'});
         scope.getValue(false);
 
-        //scope.lock = { lockLeft : true, lockRight : false }
-
         expect(scope.settings.attitudeData).toEqual([
             {vehicle:'A0',id:'q1',key:'A0.GNC.attitude.q1',category:'attitude'},
             {vehicle:'A0',id:'q2',key:'A0.GNC.attitude.q2',category:'attitude'},
@@ -251,12 +251,9 @@ describe('Testing satellite settings controller', function () {
             {vehicle:'A0',id:'q3',key:'A0.GNC.attitude.q3',category:'attitude'},
             {vehicle:'A0',id:'qc',key:'A0.GNC.attitude.qc',category:'attitude'}
         ]);
-        //expect(scope.lock.lockLeft).toEqual(false);
-        //expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false); 
     });
 
     it('should store only the value of last four selected attitude parameters when category is attitude and number of paramters selected is more than 4', function() {
-        //windowMock.innerWidth = 1440;
         dashboardService.getData.and.callFake(function(){
             return {
                 "value":0.688,
@@ -289,8 +286,6 @@ describe('Testing satellite settings controller', function () {
         scope.widget.settings.dataArray.push({vehicle:'A0',id:'qc',key:'A0.GNC.attitude.qc',category:'attitude'});
         scope.getValue(false);
 
-        //scope.lock = { lockLeft : true, lockRight : false }
-
         expect(scope.settings.attitudeData).toEqual([
             {vehicle:'A0',id:'q1',key:'A0.GNC.attitude.q1',category:'attitude'},
             {vehicle:'A0',id:'q2',key:'A0.GNC.attitude.q2',category:'attitude'},
@@ -305,13 +300,9 @@ describe('Testing satellite settings controller', function () {
         ]);
 
         expect(scope.vehicle).toEqual('A0');
-        //expect(scope.lock.lockLeft).toEqual(false);
-        //expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false); 
     });
 
     it('should not store the value of selected attitude parameters when category is attitude and number of parameters is not equal to 4', function() {
-        spyOn(windowMock, "alert");
-
         scope.widget.settings.totalPositionArray = [{vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
             {vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'},
             {vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'}];
@@ -335,11 +326,13 @@ describe('Testing satellite settings controller', function () {
         ]);
         expect(scope.settings.attitudeData).toEqual([]);
         expect(scope.vehicle).toEqual('');
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select all attitude values:q1,q2,q3,qc");
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("Please select all attitude values:q1,q2,q3,qc.");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     });
 
     it('should store the value of selected position parameters when category is position', function() {
-        //windowMock.innerWidth = 1440;
         dashboardService.getData.and.callFake(function(){
             return {
                 "value":0.688,
@@ -364,8 +357,6 @@ describe('Testing satellite settings controller', function () {
         scope.widget.settings.dataArray.push({vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'});
         scope.getValue(false);
 
-        //scope.lock = { lockLeft : true, lockRight : false }
-
         expect(scope.settings.positionData).toEqual([
             {vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
             {vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'},
@@ -377,12 +368,9 @@ describe('Testing satellite settings controller', function () {
             {vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'}
         ]);
         expect(scope.vehicle).toEqual('A0');
-        //expect(scope.lock.lockLeft).toEqual(false);
-        //expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false);
     });
 
     it('should store only the value of last three selected position parameters when category is position and number of paramters selected is more than 3', function() {
-        //windowMock.innerWidth = 1440;
         dashboardService.getData.and.callFake(function(){
             return {
                 "value":0.688,
@@ -428,14 +416,10 @@ describe('Testing satellite settings controller', function () {
             {vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'}
         ]);
         expect(scope.vehicle).toEqual('A0');
-        //expect(scope.lock.lockLeft).toEqual(false);
-        //expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false); 
     });
 
 
     it('should not store the value of selected position parameters when category is position and number of parameters is not equal to 3', function() {
-        spyOn(windowMock, "alert");
-
         dashboardService.getData.and.callFake(function(){
             return {
                 "value":0.688,
@@ -487,8 +471,10 @@ describe('Testing satellite settings controller', function () {
         expect(scope.vehicle).toEqual('A0');
 
         scope.saveSettings(scope.widget);
-
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select all position values:x,y,z");
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("Please select all position values:x,y,z.");
+        expect(scope.toasterdelay).toEqual(false);
+        expect(scope.toasterposition).toEqual("top left");
     });
 
     it('should not close the settings menu on save if both attitude and position selected is of different vehicles', function() {
@@ -510,11 +496,12 @@ describe('Testing satellite settings controller', function () {
         scope.positionBooleans = [true, true, true, true];
         scope.widget.main = false;
         scope.widget.settings.active = true;
-        spyOn(windowMock, "alert");
 
         scope.saveSettings(scope.widget);
-        
-        expect(windowMock.alert).toHaveBeenCalledWith("Both Attitude and Position Values should be of the same vehicle.");
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("Both Attitude and Position Values should be of the same vehicle.");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     });
 
     it('should properly give values to arrays when close button is clicked on settings menu given that data has already been saved once before', function() {
@@ -567,71 +554,6 @@ describe('Testing satellite settings controller', function () {
         expect(scope.lock.lockLeft).toEqual(false);
         expect(dashboardService.setLeftLock).toHaveBeenCalledWith(false);        
     });
-
-
-    /*it('should not close the settings menu on save if both attitude and position are not selected completely', function() {
-        scope.settings.attitudeData = [
-
-        ];
-        scope.settings.positionData = [
-
-        ];
-
-        scope.widget.settings.totalPositionArray = [{vehicle:'A1',id:'x',key:'A0.GNC.position.x',category:'position'}];
-        scope.widget.settings.totalAttitudeArray = [{vehicle:'A0',id:'q1',key:'A0.GNC.attitude.q1',category:'attitude'}];
-        scope.attitudeBooleans = [true, true, true, true];
-        scope.positionBooleans = [true, true, true, true];
-        scope.widget.main = false;
-        scope.widget.settings.active = true;
-        spyOn(windowMock, "alert");
-
-        scope.saveSettings(scope.widget);
-        
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select all the quaternion coordinates:q1,q2,q3,qc and position coordinates:x,y,z");
-    });*/
-
-    /*it('should not close the settings menu on save if attitude is selected but all position parameters not selected', function() {
-        scope.widget.settings.totalPositionArray = [{vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'}];
-        scope.widget.settings.totalAttitudeArray = [
-            {vehicle:'A0',id:'q1',key:'A0.GNC.attitude.q1',category:'attitude'},
-            {vehicle:'A0',id:'q2',key:'A0.GNC.attitude.q2',category:'attitude'},
-            {vehicle:'A0',id:'q3',key:'A0.GNC.attitude.q3',category:'attitude'},
-            {vehicle:'A0',id:'qc',key:'A0.GNC.attitude.qc',category:'attitude'}
-        ];
-        scope.attitudeBooleans = [true, true, true, true];
-        scope.positionBooleans = [true, true, true, true];
-        scope.settings.positionData = [];
-        scope.settings.attitudeData = angular.copy(scope.widget.settings.totalAttitudeArray);
-        scope.widget.main = false;
-        scope.widget.settings.active = true;
-        spyOn(windowMock, "alert");
-
-        scope.saveSettings(scope.widget);
-
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select all the position coordinates:x,y,z");
-    });*/
-
-    /*it('should not close the settings menu on save if position is selected but all attitude parameters not selected', function() {
-        scope.settings.attitudeData = [];
-        scope.settings.positionData = [
-            {vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
-            {vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'},
-            {vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'}
-        ];
-        scope.widget.settings.totalAttitudeArray = [
-            {vehicle:'A0',id:'q1',key:'A0.GNC.attitude.q1',category:'attitude'}
-        ];
-        scope.widget.settings.totalPositionArray = [{vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'}];
-        scope.attitudeBooleans = [true, true, true, true];
-        scope.positionBooleans = [true, true, true, true];
-        scope.widget.main = false;
-        scope.widget.settings.active = true;
-        spyOn(windowMock, "alert");
-
-        scope.saveSettings(scope.widget);
-        
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select all the quaternion coordinates:q1,q2,q3,qc");
-    });*/
 
     it('should close the settings menu on save if data is selected', function() {
         scope.settings.attitudeData = [

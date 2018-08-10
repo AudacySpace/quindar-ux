@@ -25,6 +25,7 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
     $scope.tzoptions = [];
 
     var outercontainer = $element[0].getElementsByTagName("div")["timeline"];
+
     $scope.datetime = "";
 
     checkForTimezoneData();
@@ -252,7 +253,7 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
             $scope.realtimebutton.style = {background:'#FFFFFF'};
             $scope.widget.settings.datetime = $scope.datetime;
         }else {
-            if($window.innerWidth > 1023){
+            if($window.innerWidth > 1024){
                 var position = "top right";
                 var queryId = screenToaster1;
                 var delay = false;
@@ -260,7 +261,7 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                 var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
             }else {
                 var position = "top left";
-                var queryId = '';
+                var queryId = screenToaster1;
                 var delay = false;
                 var usermessage = "Select a date and time and then set in the timeline qwidget.";
                 var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
@@ -510,7 +511,6 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                     var movedownp = document.createElement("a");
                     var movedown = document.createElement("a");
 
-
                     outerdiv.className = "dropdown";
                     outerdiv.setAttribute('style', "display:inline");
                     var button1 = outerdiv.appendChild(button);
@@ -565,18 +565,18 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                                         break;
                                     }
                                     else {
-                                        if($window.innerWidth > 1400){
+                                        if($window.innerWidth > 1024){
                                             var position = "top left";
-                                            var queryId = '#timelineOpstoaster'+group.id;
+                                            var queryId = container;
                                             var delay = false;
                                             var usermessage = "You have reached the top of the list!";
-                                            var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                                            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
                                         }else {
                                             var position = "top right";
-                                            var queryId = '';
+                                            var queryId = container;
                                             var delay = false;
                                             var usermessage = "You have reached the top of the list!";
-                                            var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                                            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
                                         }
 
                                         break;
@@ -590,18 +590,18 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                                 setEvents(content1,content2);
                             }
                         }else if(group.id === 0){
-                            if($window.innerWidth > 1400){
+                            if($window.innerWidth > 1024){
                                 var position = "top left";
-                                var queryId = '#timelineOpstoaster'+group.id;
+                                var queryId = container;
                                 var delay = false;
                                 var usermessage = "You have reached the top of the list!";
-                                var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay);
+                                var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
                             }else {
                                 var position = "top right";
-                                var queryId = '';
+                                var queryId = container;
                                 var delay = false;
                                 var usermessage = "You have reached the top of the list!";
-                                var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay);
+                                var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay);
                             }
  
                         }
@@ -623,16 +623,16 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                                     }else {
                                          if($window.innerWidth > 1400){
                                             var position = "top left";
-                                            var queryId = '#timelineOpstoaster'+group.id;
+                                            var queryId = container;
                                             var delay = false;
                                             var usermessage = "You have reached the bottom of the list!";
-                                            var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                                            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
                                          }else {
                                             var position = "top right";
-                                            var queryId = '';
+                                            var queryId = container;
                                             var delay = false;
                                             var usermessage = "You have reached the bottom of the list!";
-                                            var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                                            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
                                          }
 
                                         break;
@@ -646,18 +646,18 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                             }
 
                         }else if(group.id === globalgroups.length-1){
-                            if($window.innerWidth > 1400){
+                            if($window.innerWidth > 1024){
                                 var position = "top left";
-                                var queryId = '#timelineOpstoaster'+group.id;
+                                var queryId = container;
                                 var delay = false;
                                 var usermessage = "You have reached the bottom of the list!";
-                                var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                                var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
                             }else {
                                 var position = "top right";
-                                var queryId = '';
+                                var queryId = container;
                                 var delay = false;
                                 var usermessage = "You have reached the bottom of the list!";
-                                var alertstatus = dashboardService.displayAlert(usermessage,position,queryId,delay); 
+                                var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
                             }
                         }
                     });

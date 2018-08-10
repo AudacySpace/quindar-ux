@@ -14,13 +14,9 @@ app.controller('CommandCtrl',
 
     $scope.isLoaded = false;
 	$scope.sent = false;
-
-	// var temp1 = $element[0].getElementsByTagName("div")[1];
-    var screenToaster1 = $element[0].getElementsByTagName("span")[0];
-    var screenToaster2 = $element[0].getElementsByTagName("span")[1];
-    var screenToaster3 = $element[0].getElementsByTagName("span")[2];
-
-    console.log($element[0].getElementsByTagName("span"));
+    var screenToaster1 = $element[0].getElementsByTagName("span")["commandNametoaster"];
+    var screenToaster2 = $element[0].getElementsByTagName("span")["commandArgtoaster"];
+    var screenToaster3 = $element[0].getElementsByTagName("span")["commandArgsToaster"];
 
 	$scope.initialise = function(){
 		$scope.cmd = "";
@@ -46,42 +42,39 @@ app.controller('CommandCtrl',
 		   	$scope.entered = true;
 		   	$scope.disableEnter = true;
 	    } else if($scope.cmd.length === 0 && $scope.arguments.length > 0) {
-	    	// $window.alert("Please enter the command.");
-            if($window.innerWidth > 1400){
-	    		var position = "top left";
-            	var queryId = screenToaster1;
-            	var delay = false;
-            	var usermessage = "Please enter the command.";
-            	var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+            if($window.innerWidth >= 1024){
+	    		$scope.toasterposition = "top left";
+            	$scope.toasterqueryId = screenToaster1;
+            	$scope.toasterdelay = false;
+            	$scope.toasterusermessage = "Please enter the command.";
+            	var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
             }else {
-                var position = "top left";
-                var queryId = screenToaster3;
-                var delay = false;
-                var usermessage = "Please enter the command.";
-                var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+                $scope.toasterposition = "top left";
+                $scope.toasterqueryId = screenToaster3;
+                $scope.toasterdelay = false;
+                $scope.toasterusermessage = "Please enter the command.";
+                var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
             }
 	    } else if($scope.cmd.length > 0 && $scope.arguments.length === 0){
-	    	// $window.alert("Please enter the argument values.");
-	    	if($window.innerWidth > 1400){
-	    		var position = "top right";
-            	var queryId = screenToaster2;
-            	var delay = false;
-            	var usermessage = "Please enter the argument values.";
-            	var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+	    	if($window.innerWidth >= 1024){
+	    		$scope.toasterposition = "top right";
+            	$scope.toasterqueryId = screenToaster2;
+            	$scope.toasterdelay = false;
+            	$scope.toasterusermessage = "Please enter the argument values.";
+            	var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
             }else {
-            	var position = "top right";
-            	var queryId = screenToaster3;
-            	var delay = false;
-            	var usermessage = "Please enter the argument values.";
-            	var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+            	$scope.toasterposition = "top right";
+            	$scope.toasterqueryId = screenToaster3;
+            	$scope.toasterdelay = false;
+            	$scope.toasterusermessage = "Please enter the argument values.";
+            	var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
             }
 	    } else if($scope.cmd.length === 0 && $scope.arguments.length === 0){
-	    	// $window.alert("Please enter the command and argument values.");
-	    	var position = "top left";
-            var queryId = screenToaster3;
-            var delay = false;
-            var usermessage = "Please enter the command and argument values.";
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+	    	$scope.toasterposition = "top left";
+           	$scope.toasterqueryId = screenToaster3;
+            $scope.toasterdelay = false;
+            $scope.toasterusermessage = "Please enter the command and argument values.";
+            var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay); 
 	    }
     }
 
@@ -91,12 +84,11 @@ app.controller('CommandCtrl',
 	    	$scope.disableInput = true;
 	    	$scope.disableLock = true;
 	    } else {
-	    	// $window.alert("Please enter the command and arguments before locking.");
-	    	var position = "top left";
-            var queryId = screenToaster3;
-            var delay = false;
-            var usermessage = "Please enter the command and arguments before locking.";
-            var alertstatus = dashboardService.displayWidgetAlert(usermessage,position,queryId,delay); 
+	    	$scope.toasterposition = "top left";
+           	$scope.toasterqueryId = screenToaster3;
+            $scope.toasterdelay = false;
+            $scope.toasterusermessage = "Please enter the command and arguments before locking.";
+            var alertstatus = dashboardService.displayWidgetAlert($scope.toasterusermessage,$scope.toasterposition,$scope.toasterqueryId,$scope.toasterdelay);
 	    }
     }
 

@@ -20,7 +20,7 @@
                     </div>
                     <span ng-hide="vehicleSelected"> Required </span> 
                 </div>
-                <div class="row"></div>
+                <div class="row" id="outerScreenToaster"></div>
             </div>
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
         </div>
@@ -49,7 +49,7 @@
                         </md-switch>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" id="innerScreenToaster">
                 </div>
             </div>
             <div class="col-sm-2" style="display: table-cell; float:none"></div>
@@ -119,6 +119,7 @@
             </ul>
             <span ng-hide="vehicleSelected"> Required </span> 
         </div>
+        <div id="outerScreenToasterMbl" style="padding:0;display:flex"></div>
         <hr class="hr-double-col1">
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveWidget(widget)">SAVE</button>
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeWidget(widget)">CLOSE</button>    
@@ -155,6 +156,7 @@
             </ul>
         </div>
         <span ng-hide="readValues('velocity') != 'Click for data'" class="req-label"> Required </span>
+        <div id="innerScreenToasterMbl" style="padding:0;display:flex"></div>
         <hr class="hr-double-col1-2-gt">
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveParameters(widget)">SAVE</button>
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeParameters(widget)">CLOSE</button>     
@@ -188,6 +190,7 @@
         <div class="row settingstablet-col1-3el tablestyle"></div>
         <div class="row settingstablet-col1-3el tablestyle"></div>
         <div class="row settingstabletbottom-col1-3el tablestyle">
+            <div class="row"><div id="outerScreenToasterTablet"></div></div>
             <div class="row">
                 <div class="col-sm-1 tablecellstyle1"></div>
                 <div class="col-sm-10 tablecellstyle10">
@@ -253,6 +256,7 @@
         </div>
         <div class="row settingstablet-col1-3el tablestyle"></div>
         <div class="row settingstabletbottom-col1-3el tablestyle">
+            <div class="row"><div id="innerScreenToasterTablet" style="padding:0;display:flex"></div></div>
             <div class="row">
                 <div class="col-sm-1 tablecellstyle1"></div>
                 <div class="col-sm-10 tablecellstyle10">

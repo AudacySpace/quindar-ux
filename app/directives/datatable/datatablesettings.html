@@ -24,7 +24,8 @@
                             <li class="checkbox cbox"><input style="margin-top: -2px" type="checkbox" value="" name="notes" ng-model="checkedValues.checkedNotes">Notes</li>
                         </ul>
                     </div>
-                </div>          
+                </div>  
+                <div id="datatablecolumnsToaster"></div>        
             </div>
             <div class="col-sm-2" style="display: table-cell; float:none"></div>
             <div class="col-sm-4" style="display: table-cell; float:none"></div>
@@ -68,6 +69,7 @@
                 <li class="checkbox cbox drpdown-list-item"><input class="drpdwn-input-item" type="checkbox" value="" name="notes" ng-model="checkedValues.checkedNotes" style="margin-top:0px"/>Notes</li>
             </ul>
         </div>
+        <div id="datatablecolumnsToasterMbl"></div>
         <hr class="hr-double-col1">
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveDataTableSettings(widget)">SAVE</button>
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeDataTableSettings(widget)">CLOSE</button>    
@@ -106,6 +108,7 @@
         <div class="row settingstablet-col1-3el tablestyle"></div>
         <div class="row settingstablet-col1-3el tablestyle"></div>
         <div class="row settingstabletbottom-col1-3el tablestyle">
+            <div class="row"><div id="datatablecolumnsToasterTablet"></div></div>
             <div class="row">
                 <div class="col-sm-1 tablecellstyle1"></div>
                 <div class="col-sm-10 tablecellstyle10">

@@ -1,9 +1,8 @@
 describe('Testing data table controller', function () {
     var controller, scope, dashboardService, sidebarService, sideNavOpenMock,
         datastatesService, $intervalSpy;
-
+    var element = angular.element('<div></div>'); //provide element you want to test
     var windowMock = {
-        alert : function() {},
         innerWidth: 1000
     };
 
@@ -42,7 +41,7 @@ describe('Testing data table controller', function () {
             $intervalSpy = jasmine.createSpy('$interval', $interval);
             sidebarService = jasmine.createSpyObj('sidebarService', ['getVehicleInfo', 'setMenuStatus', 'setTempWidget', 'setOpenLogo']);;
             dashboardService = jasmine.createSpyObj('dashboardService', 
-                ['getLock', 'setLeftLock', 'icons', 'getData']);
+                ['getLock', 'setLeftLock', 'icons', 'getData','displayWidgetAlert']);
             datastatesService = jasmine.createSpyObj('datastatesService', ['colorValues', 'getDataColor']);
             scope = $rootScope.$new();
             scope.widget = {
@@ -72,7 +71,8 @@ describe('Testing data table controller', function () {
                 dashboardService: dashboardService,
                 sidebarService: sidebarService,
                 datastatesService: datastatesService,
-                $interval: $intervalSpy
+                $interval: $intervalSpy,
+                $element: element
             });
         });
 
@@ -144,37 +144,6 @@ describe('Testing data table controller', function () {
         expect(scope.widget.settings.dataArray.length).toEqual(0);
         expect(arrow.style.color).toEqual('#b3b3b3');
     });
-
-    /*it('should alert the user if a group(not ID) is selected from the left menu', function() {
-        spyOn(windowMock, "alert");
-        var data = {
-            parameters:[]
-        };
-        data.parameters[0] = { 
-                id: 'velocity',
-                vehicle: 'A0',
-                key: 'A0.GNC.velocity',
-                category: 'GNC'
-
-            }
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
-
-        dashboardService.getData.and.callFake(function() {
-            return {
-                "v": {},
-                "vx": {},
-                "vy": {},
-                "vz": {}
-            };
-        });
-
-        scope.getValue(ev, {}, 1);
-
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select telemetry ID(leaf node) from Data Menu");
-        expect(arrow.style.color).toEqual('#07D1EA');
-    });*/
 
     it('should store the value of selected vehicle and id in scope.widget.settings.data variable', function() {
         var index = 1;
@@ -260,26 +229,7 @@ describe('Testing data table controller', function () {
         expect(scope.applyGroup).toBeDefined();
     });
 
-    /*it('should alert the user if the vehicle and id from the left menu are not available', function() {
-        spyOn(windowMock, "alert");
-
-        var data = {
-            parameters:[]
-        };
-
-
-        sidebarService.getVehicleInfo.and.callFake(function(){
-            return data;
-        });
-
-        scope.applyGroup(ev, {}, 1);
-
-        expect(windowMock.alert).toHaveBeenCalledWith("Data not set. Please select from Data Menu");
-        expect(arrow.style.color).toEqual('#07D1EA');
-    });*/
-
     it('should alert the user if an ID(not group) is selected from the left menu', function() {
-        spyOn(windowMock, "alert");
         scope.arrow = arrow;
         
         var data = { 
@@ -293,10 +243,12 @@ describe('Testing data table controller', function () {
         scope.askedForGroup = true;
 
         scope.getValue(false);
-
-        expect(windowMock.alert).toHaveBeenCalledWith("Be sure to select a group!");
         expect(arrow.style.color).toEqual('#b3b3b3');
         expect(scope.widget.settings.dataArray.length).toEqual(0);
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("Be sure to select a group!");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     });
 
     it('should not execute anything if a group(not ID) is selected from the left menu', function() {
@@ -432,13 +384,14 @@ describe('Testing data table controller', function () {
     });
 
     it('should alert the user when row limit(80) is reached for the table', function() {
-        spyOn(windowMock, 'alert');
         scope.table.rows.length = 80;
         var index = 2;
 
         scope.addRowAbove(index);
-
-        expect(windowMock.alert).toHaveBeenCalledWith("You have reached the maximum limit for rows!");
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("You have reached the maximum limit for rows!");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     });
 
     it('should define function addRowBelow', function() {
@@ -454,13 +407,13 @@ describe('Testing data table controller', function () {
     });
 
     it('should alert the user when row limit(80) is reached for the table', function() {
-        spyOn(windowMock, 'alert');
         scope.table.rows.length = 80;
         var index = 2;
-
         scope.addRowBelow(index);
-
-        expect(windowMock.alert).toHaveBeenCalledWith("You have reached the maximum limit for rows!");
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("You have reached the maximum limit for rows!");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     });
     
     it('should define function deleteRow', function() {
@@ -469,20 +422,18 @@ describe('Testing data table controller', function () {
 
     it('should decrease the number of rows by 1 in table when a row is deleted with deleteRow', function() {
         var index = 2;
-
         scope.deleteRow(index);
-
         expect(scope.table.rows.length).toEqual(39);
     });
 
     it('should alert the user when there is a single row in the table for deletion', function() {
-        spyOn(windowMock, 'alert');
         scope.table.rows.length = 1;
         var index = 0;
-
         scope.deleteRow(index);
-
-        expect(windowMock.alert).toHaveBeenCalledWith("Please do not delete this row!Add row above to delete this row.");
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("Please do not delete this row!Add row above to delete this row.");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     });
 
     it('should define function moveRowUp', function() {
@@ -490,12 +441,12 @@ describe('Testing data table controller', function () {
     });
 
     it('should alert the user when the index is 0 in the table when moveRowUp is called', function() {
-        spyOn(windowMock, 'alert');
         var index = 0;
-
         scope.moveRowUp(index);
-
-        expect(windowMock.alert).toHaveBeenCalledWith("This row cannot be moved further up!");
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("This row cannot be moved further up!");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     });
 
     it('should define function moveRowDown', function() {
@@ -503,13 +454,14 @@ describe('Testing data table controller', function () {
     });
 
     it('should alert the user when the end of the table is reached when moveRowDown is called', function() {
-        spyOn(windowMock, 'alert');
         var index = 39;
         scope.table.rows.length = 40
 
         scope.moveRowDown(index);
-
-        expect(windowMock.alert).toHaveBeenCalledWith("This row cannot be moved further down! You have reached the end of the table.");
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("This row cannot be moved further down! You have reached the end of the table.");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     });
 
     it('should define function convertHeader', function() {
