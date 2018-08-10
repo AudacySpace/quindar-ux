@@ -261,7 +261,7 @@ app.controller('LineSettingsCtrl',
         function alertUser(windowWidth,usermessage,delay,idName){
             var position = "top left";
             var queryId;
-            console.log(windowWidth);
+
             if(windowWidth >= 1024){
                 var screenToaster1 = $element[0].getElementsByTagName("div")["lineplotVehToaster"];
                 queryId = screenToaster1;

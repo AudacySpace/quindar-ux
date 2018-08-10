@@ -6,7 +6,7 @@ app.directive('datatablesettings', function() {
     }
 });
 
-app.controller('DatatableSettingsCtrl', function($scope, $window,$element,dashboardService){
+app.controller('DatatableSettingsCtrl', function($scope, $window, $element, dashboardService){
     $scope.checkedValues = $scope.widget.settings.checkedValues;
     var values = angular.copy($scope.checkedValues);
 

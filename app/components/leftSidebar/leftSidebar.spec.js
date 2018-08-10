@@ -1,6 +1,12 @@
 describe('Testing leftSidebar component', function () {
     var $controller, dashboardService, sidebarService, $interval;
-
+    var windowMock = {
+        user : {
+            role : {}
+        },
+        document:{},
+        innerWidth: 1440
+    }
 
     beforeEach(function () {
         // load the module

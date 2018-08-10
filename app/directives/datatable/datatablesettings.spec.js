@@ -1,17 +1,24 @@
 describe('Testing data table settings controller', function () {
-    var controller, scope;
+    var controller, scope, dashboardService;
+    var element = angular.element('<div></div>'); //provide element you want to test
 
     var windowMock = {
-        alert : function() {}
-    };
-
+        user : {
+            role : {}
+        },
+        document:{},
+        innerWidth: 1440
+    }
     beforeEach(function () {
         // load the module
         module('app', function ($provide) {
             $provide.value('$window', windowMock);
         });
 
-        inject(function($controller, $rootScope, _$q_){
+        inject(function($controller, $rootScope, _$q_, _dashboardService_){
+            dashboardService = _dashboardService_;
+            dashboardService = jasmine.createSpyObj('dashboardService', 
+                ['displayWidgetAlert']);
             scope = $rootScope.$new();
             scope.widget = {
                 name: "Data Table",
@@ -36,7 +43,9 @@ describe('Testing data table settings controller', function () {
             };
 
             controller = $controller('DatatableSettingsCtrl', {
-                $scope: scope
+                $scope: scope,
+                $element: element,
+                dashboardService: dashboardService,
             });
         });
 
@@ -85,13 +94,14 @@ describe('Testing data table settings controller', function () {
         scope.widget.main = false;
         scope.widget.settings.active = true;
 
-        spyOn(windowMock, 'alert');
-
         scope.saveDataTableSettings(scope.widget);
         
         expect(scope.widget.main).not.toEqual(true);
         expect(scope.widget.settings.active).not.toEqual(false);
-        expect(windowMock.alert).toHaveBeenCalledWith("Please check at least one category");
+        expect(dashboardService.displayWidgetAlert).toHaveBeenCalled();
+        expect(scope.toasterusermessage).toEqual("Please check at least one category!");
+        expect(scope.toasterposition).toEqual("top left");
+        expect(scope.toasterdelay).toEqual(false);
     });
 
     it('should close the settings menu on save if data is selected', function() {

@@ -203,7 +203,7 @@ describe('Testing role modal controller', function () {
 
         expect(userService.setCurrentRole).toHaveBeenCalledWith(controller.role.currentRole, mission.missionName);
         expect(modalInstance.close).toHaveBeenCalled();
-        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,"bottom right",'#dashboardtoaster',5000);
+        expect(dashboardService.displayAlert).toHaveBeenCalledWith(usermessage,"bottom right",'#dashboardtoaster',false);
     });
 
 });
