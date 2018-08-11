@@ -68,7 +68,7 @@ app.controller('CommandCtrl',
     }
 
     $scope.sendCommand = function(){   	
-    	var time = dashboardService.getTime(0);
+    	var time = dashboardService.getTime('UTC');
     	var systemTime = new Date();
     	var cmdId = systemTime.getTime();
     	$scope.command.sent_timestamp = cmdId;

@@ -135,7 +135,7 @@ describe('Testing dashboardService', function () {
     });
 
     it('should get the default time (time variable undefined) when getTime function is called', function() {
-        var result = dashboardService.getTime(0);
+        var result = dashboardService.getTime('UTC');
         var expected = { 
             today: undefined, 
             days: '000', 

@@ -51,22 +51,22 @@ describe('Testing clock settings controller', function () {
         var timezones = [{
             'key': 1,
             'value': 'UTC',
-            'zone': 0
+            'zone': 'UTC'
         }, 
         {
             'key': 2,
             'value': 'San Francisco',
-            'zone': -8
+            'zone': 'America/Los_Angeles'
         }, 
         {
             'key': 3,
             'value': 'Singapore',
-            'zone': 8
+            'zone': 'Asia/Singapore'
         }, 
         {
             'key': 4,
             'value': 'Luxembourg',
-            'zone': 2
+            'zone': 'Europe/Luxembourg'
         }];
 
         expect(scope.timezones).toBeDefined();
@@ -101,13 +101,13 @@ describe('Testing clock settings controller', function () {
     it('should push data to widget settings and close the settings menu on save when type Clock', function() {
         var result = [{
             name: 'UTC',
-            timezone : 0
+            timezone : 'UTC'
         }];
 
         scope.selected.type = { value : 'Clock'};
         scope.selected.timezone = {
             value : 'UTC',
-            zone : 0
+            zone : 'UTC'
         }
         scope.widget.main = false;
         scope.widget.settings.active = true;

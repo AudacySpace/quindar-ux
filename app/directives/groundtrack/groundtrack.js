@@ -404,7 +404,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 
     //Displays day and night regions on map according to time
     function showDayNight() {
-        time = dashboardService.getTime(0);
+        time = dashboardService.getTime('UTC');
         solarTime = time.today;
         if($scope.night){
             $scope.night.datum(circle.center(antipode(solarService.solarPosition(solarTime))).radius(90)).attr("d", path);
