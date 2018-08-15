@@ -16,9 +16,10 @@
 .labels {
     position: absolute;
     height: 30px;
-    width: -webkit-fill-available;
+    width: 100%;
     bottom: 10px;
     text-align: center;
+    overflow:hidden;
 }
 
 .settingstop {

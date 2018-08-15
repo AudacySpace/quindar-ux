@@ -138,9 +138,9 @@ md-switch.comm-switch {
 	margin-bottom:0px
 }
 
-div.right-cmdlogheader, div.left-cmdlogheader,
-div#center-header, div#center-row,
-div.left-cmdlogrow, div.right-cmdlogrow {
+.command-log div.right-cmdlogheader, .command-log div.left-cmdlogheader,
+.command-log div#center-header, .command-log div#center-row,
+.command-log div.left-cmdlogrow, .command-log div.right-cmdlogrow {
 		padding-left: 10px;
 		padding-right:10px;
 		margin:0 !important;
