@@ -30,16 +30,16 @@
     </div>  
 </div>
 <div layout="row"  ng-repeat="data in logData | filter:search">
-    <div flex="25" class="dlog-row dlog-center-row">
+    <div flex="25" class="dlog-row dlog-center-row" style="word-wrap: break-word;">
         {{data.parameter}}
     </div>
-    <div flex="25" class="dlog-row dlog-center-row" ng-style="data.style">
+    <div flex="25" class="dlog-row dlog-center-row" ng-style="data.style" style="word-wrap: break-word;">
         {{data.value}}
     </div>
-    <div flex="25" class="dlog-row dlog-center-row">
+    <div flex="25" class="dlog-row dlog-center-row" style="word-wrap: break-word;">
         {{data.timestamp}}
     </div>
-    <div flex="25" class="dlog-row">
+    <div flex="25" class="dlog-row" style="word-wrap: break-word;">
         {{data.vehicle}}
     </div>
     <span id = "invisibleSpan" ng-bind="autoScroll()"></span>
