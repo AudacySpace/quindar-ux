@@ -83,44 +83,45 @@ app.controller('CommandCtrl',
     }
 
 	$scope.updateCommandlog = function(){
-		commandService.getCommandLog($scope.mission.missionName)
-		.then(function(response) {
-	        if(response.status == 200) {
-	            $scope.commandLog = response.data;
+        commandService.getCommandLog($scope.mission.missionName)
+        .then(function(response) {
+            if(response.status == 200) {
+                $scope.commandLog = response.data;
 
-	            //get all the responses of a command
-	            //find the response with the max timestamp
-	            //assign the status and data to a the commandLog variable
-	            var commandLen = $scope.commandLog.length;
+                //get all the responses of a command
+                //find the response with the max timestamp
+                //assign the status and data to a the commandLog variable
+                var commandLen = $scope.commandLog.length;
 
-	            for(var i=0;i<commandLen;i++){
-	            	//call function to get the max date;
-	            	//loop through the responses and find the response which matches that response
-	            	//assign to a variable used to display in the command log
-	            	var maxTime = getMaxTime($scope.commandLog[i].response,"gwp_timestamp");
-	            	var responsesLen = $scope.commandLog[i].response.length;
-	            	for(var j=0;j<responsesLen;j++){
-	            		var dateformat = new Date($scope.commandLog[i].response[j].gwp_timestamp);
-	            		if(dateformat.getTime() === maxTime.getTime()){
-	            			$scope.commandLog[i].responseStatus = $scope.commandLog[i].response[j].status;
-	            			$scope.commandLog[i].responseData = $scope.commandLog[i].response[j].metadata_data;
-	            		}
-	            	}
-	            }
-	        }
-	    });
-	}
+                for(var i=0;i<commandLen;i++){
+                    //call function to get the max date;
+                    //loop through the responses and find the response which matches that response
+                    //assign to a variable used to display in the command log
+                    var maxTime = getMaxTime($scope.commandLog[i].response,"gwp_timestamp");
+                    var responsesLen = $scope.commandLog[i].response.length;
+                    for(var j=0;j<responsesLen;j++){
+                        var dateformat = moment($scope.commandLog[i].response[j].gwp_timestamp).tz('UTC');
+                        if(dateformat.valueOf() === maxTime){
+                            $scope.commandLog[i].responseStatus = $scope.commandLog[i].response[j].status;
+                            $scope.commandLog[i].responseData = $scope.commandLog[i].response[j].metadata_data;
+                        }
+                    }
+                }
+            }
+        });
+    }
 
-	function getMaxTime(responses,filter){
-		var timestampArray = [];
-		var maxTime;
-		for(var j=0;j<responses.length;j++){
-	        var dateformat = new Date(responses[j][filter]);
-	        timestampArray.push(dateformat);
-	    }
-	    maxTime = new Date(Math.max.apply(null,timestampArray));
-	    return maxTime;
-	}
+    function getMaxTime(responses,filter){
+        var timestampArray = [];
+        var maxTime;
+        var numOfResponses = responses.length;
+        for(var j=0;j<numOfResponses;j++){
+            var dateformat = moment(responses[j][filter]).tz('UTC');
+            timestampArray.push(dateformat.valueOf());
+        }
+        maxTime = Math.max.apply(null,timestampArray);
+        return maxTime;
+    }
 
 	$scope.initialise();
 
