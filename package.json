@@ -25,11 +25,11 @@
     "passport-google-oauth2": "^0.1.6"
   },
   "engines": {
-    "node": "4.0.0"
+    "node": ">=8.0.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/quindar/quindar-ux"
+    "url": "https://github.com/AudacySpace/quindar-ux"
   },
   "keywords": [
     "node",
