@@ -62,8 +62,8 @@
     background-color: #ccc;
     border:0;
     padding:0;
-    width:20px;
-    height:20px;
+    width:18px;
+    height:13px;
 }
 
 .colorpicker:focus {
@@ -85,6 +85,24 @@
 .lpdata-input{
     background-color: #fff;
 }
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    input.lineplotchkbox{margin-top:2px !important;}
+    .colorpicker{
+        height:20px !important;
+        width:20px !important;
+    }
+}
+
+/* Safari 11+ */
+
+@media not all and (min-resolution:.001dpcm)
+{ @supports (-webkit-appearance:none) and (stroke-color:transparent) {
+
+    .colorpicker{
+        display:none;
+    }
+}}
 
 @media only screen and (max-width: 599px) {
     .graph-container {
@@ -136,6 +154,7 @@
         width: 15px;
         height: 17px;
     }
+     input.lineplotchkbox{margin-top:0px !important;}
 }
 
 @media only screen and (min-width: 600px) and (max-width: 768px) {
@@ -183,4 +202,5 @@
     .mbl-lp {
         display:none;
     }
+    input.lineplotchkbox{margin-top:0px !important;}
 }

@@ -26,9 +26,10 @@
                         </button>
                         <ul class="dropdown-menu categorydrpdown" style="padding-top:0px;padding-bottom:0px">
                             <li ng-repeat="vehicle in settings.vehicles" class="checkbox cbox" style="font-size:14px">
-                            	<input style="margin-top: 2px;height:15px;width:15px" type="checkbox" value="" name="id" ng-model="vehicle.checked">
-                            	<span>{{vehicle.value}}</span>
-                            	<input type="color" ng-model="vehicle.color" class="colorpicker" style="margin-left:10px"/>
+                            	<input style="margin-top: 0px;height:15px;width:15px" type="checkbox" value="" name="id" ng-model="vehicle.checked" class="lineplotchkbox">
+                                <input type="color" ng-model="vehicle.color" class="colorpicker" style="float:right;margin-right:10px"/>
+                            	<label style="padding-left:0px">{{vehicle.value}}</label>
+                  
                             </li>
                         </ul>
                     </div>
@@ -70,9 +71,11 @@
         </button>
         <ul class="dropdown-menu categorydrpdown" style="padding-top:0px;padding-bottom:0px;">
             <li ng-repeat="vehicle in settings.vehicles" class="checkbox cbox drpdown-list-item">
-                <input class="drpdwn-input-item" type="checkbox" value="" name="id" ng-model="vehicle.checked">
-                <span>{{vehicle.value}}</span>
-                <input type="color" ng-model="vehicle.color" class="colorpicker" style="margin-left:10px"/>
+                <input class="drpdwn-input-item lineplotchkbox" type="checkbox" value="" name="id" ng-model="vehicle.checked">
+      <!--           <span>{{vehicle.value}}</span>
+                <input type="color" ng-model="vehicle.color" class="colorpicker" style="margin-left:10px"/> -->
+                <input type="color" ng-model="vehicle.color" class="colorpicker" style="float:right;margin-right:10px"/>
+                <label style="padding-left:0px">{{vehicle.value}}</label>
             </li>
         </ul>
     </div>
@@ -110,9 +113,11 @@
                     </button>
                     <ul class="dropdown-menu categorydrpdown" style="padding-top:0px;padding-bottom:0px">
                         <li ng-repeat="vehicle in settings.vehicles" class="checkbox cbox drpdown-list-item">
-                            <input type="checkbox" value="" name="id" ng-model="vehicle.checked" class="drpdwn-input-item">
-                                <span>{{vehicle.value}}</span>
-                                <input type="color" ng-model="vehicle.color" class="colorpicker"/>
+                            <input type="checkbox" value="" name="id" ng-model="vehicle.checked" class="drpdwn-input-item lineplotchkbox">
+              <!--            <span>{{vehicle.value}}</span>
+                                <input type="color" ng-model="vehicle.color" class="colorpicker"/> -->
+                            <input type="color" ng-model="vehicle.color" class="colorpicker" style="float:right;margin-right:10px"/>
+                            <label style="padding-left:0px">{{vehicle.value}}</label>
                         </li>
                     </ul>
                 </div>

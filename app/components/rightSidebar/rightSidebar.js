@@ -46,7 +46,7 @@ app
                         $window.document.title = "Quindar - " + name;
                     }
                 });
-            });
+            }).catch(function (err) {});
         }
 
         vm.load = function(){

@@ -54,8 +54,18 @@ div#visualization div.onlyotherevents div.vis-inner {
 
 div.tzgroup div.vis-inner {
     display:inline-flex !important;
-    min-width: 200px !important;
+    min-width: 201px !important /* macOS high sierra firefox*/
+ /* min-width: 219px !important;*/ /* windows 10 firefox*/
 }
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    div.tzgroup div.vis-inner {
+        display:inline-flex !important;
+    /*  min-width: 200px !important;*//* macOS high sierra chrome*/
+        min-width: 201px !important; /* windows 10 chrome*/
+    }
+}
+
 
 div.tzgroup div.vis-group {
     background: #428bca;
@@ -108,6 +118,7 @@ div.multiselect-parent.btn-group.dropdown-multiselect ul.dropdown-menu.dropdown-
 }
 div#scrollable-container{
     height:100% !important;
+    width:100% !important;
     overflow:auto !important;
     border: solid 1px #fff;
     background: #fff;
@@ -163,9 +174,21 @@ i.fa.fa-chevron-right{
     font-size: 12px !important;
 }
 
+    .vis-labelset{
+        height:100% !important;
+        width: 100% !important;
+        overflow: hidden;
+    }
+
 div.innerItem:nth-last-child(1),div.innerItem:nth-last-child(2){
-    border-bottom-width: 1px !important;
-    overflow:auto !important;  
+/*    border-bottom-width: 1px !important;
+    overflow:auto !important; */ 
+
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    padding-right: 17px; /* Increase/decrease this value for cross-browser compatibility */
+    box-sizing: content-box;
 }
 .vis-panel {
     box-sizing: content-box !important;
@@ -174,6 +197,7 @@ div.innerItem:nth-last-child(1),div.innerItem:nth-last-child(2){
 div.vis-timeline.vis-bottom{
     visibility: visible !important;
 }
+
 
 /*Mobile screen styles*/
 @media only screen and (max-width: 599px) {
@@ -336,6 +360,10 @@ div.vis-timeline.vis-bottom{
     div.tzgroup .vis-labelset .vis-label .vis-inner {
         padding:5px 2px !important;
     }
+
+/*    div.vis-label.draggable.vis-nested-group.innerItem {
+        height: 35px !important;
+    }*/
 }
 
 /*Tablet screen styles*/
@@ -507,4 +535,9 @@ div.vis-timeline.vis-bottom{
     div.tzgroup .vis-labelset .vis-label .vis-inner {
         padding:8px 5px !important;
     }
+
+/*    div.vis-label.draggable.vis-nested-group.innerItem {
+        height: 35px !important;
+    }*/
+
 }

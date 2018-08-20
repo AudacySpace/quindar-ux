@@ -32,11 +32,13 @@ app.controller("LineCtrl", function($scope, $element, $interval, $window, dashbo
         }, 
         //dateWindow: [0, 1], 
         legend: "always",
-        xlabel: "timestamp", 
+        xlabel: "timestamp",
+        ylabel: "", 
         axisLabelWidth : axisWidth,
         xLabelHeight : 16,
         yLabelWidth : 16,
-        labelsDiv: labelsDiv
+        labelsDiv: labelsDiv,
+        labels: ["time"]
     };
 
     var graph = new Dygraph(graphDiv, $scope.data, $scope.opts );

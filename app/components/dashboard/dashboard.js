@@ -53,7 +53,7 @@ angular.module('app')
                 });
             },function(){
             	$window.location.href = '/logout';
-            });
+            }).catch(function (err) {});
         };
 
 	    vm.openRightNav = function(){
