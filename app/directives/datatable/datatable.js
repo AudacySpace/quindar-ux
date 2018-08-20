@@ -223,7 +223,73 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     //Function to add row above the current row
     $scope.addRowAbove = function($index){
         if($scope.table.rows.length < 80){
-            $scope.table.rows.splice($index,0,{contents :[{"datavalue":"","headervalue":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false });
+            $scope.table.rows.splice($index,0,{contents :[
+                {
+                    "datavalue":"",
+                    "headervalue":"",
+                    "checked":"true",
+                    "style":textLeft,
+                    "colshow":"checkedValues.checkedId",
+                    "active": "false"
+                },
+                {
+                    "datavalue":"",
+                    "headervalue":"",
+                    "checked":"true",
+                    "style":textRight,
+                    "colshow":"checkedValues.checkedAlow",
+                    "active": "false"
+                },
+                {
+                    "datavalue":"",
+                    "headervalue":"",
+                    "checked":"true",
+                    "style":textRight,
+                    "colshow":"checkedValues.checkedWlow",
+                    "active": "false"
+                },
+                {
+                    "datavalue":"",
+                    "headervalue":"",
+                    "checked":"true",
+                    "style":textRight,
+                    "colshow":"checkedValues.checkedValue",
+                    "active": "false"
+                },
+                {
+                    "datavalue":"",
+                    "headervalue":"",
+                    "checked":"true",
+                    "style":textRight,
+                    "colshow":"checkedValues.checkedWhigh",
+                    "active": "false"
+                },
+                {
+                    "datavalue":"",
+                    "headervalue":"",
+                    "checked":"true",
+                    "style":textRight,
+                    "colshow":"checkedValues.checkedAhigh",
+                    "active": "false"
+                },
+                {
+                    "datavalue":"",
+                    "headervalue":"",
+                    "checked":"true",
+                    "style":textLeft,
+                    "colshow":"checkedValues.checkedUnits",
+                    "active": "false"
+                },
+                {
+                    "datavalue":"",
+                    "headervalue":"",
+                    "checked":"true",
+                    "style":textLeft,
+                    "colshow":"checkedValues.checkedNotes",
+                    "active": "false"
+                }], 
+                disabled:false 
+            });
             $scope.widget.settings.data.splice($index, 0, {});
             $scope.widget.settings.previous.splice($index, 0, {});
         }else {
@@ -235,7 +301,73 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     //Function to add below the current row
     $scope.addRowBelow = function($index){
         if($scope.table.rows.length < 80){
-            $scope.table.rows.splice($index+1,0,{contents :[{"datavalue":"","headervalue":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedId","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWlow","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedValue","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedWhigh","active": "false"},{"value":"","checked":"true","style":"text-align:right","colshow":"checkedValues.checkedAhigh","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedUnits","active": "false"},{"value":"","checked":"true","style":"text-align:left","colshow":"checkedValues.checkedNotes","active": "false"}], disabled:false });
+            $scope.table.rows.splice($index+1,0,{contents :[
+                {
+                    "datavalue":"",
+                    "headervalue":"",
+                    "checked":"true",
+                    "style":textLeft,
+                    "colshow":"checkedValues.checkedId",
+                    "active": "false"
+                },
+                {
+                    "datavalue":"",
+                    "headervalue":"",
+                    "checked":"true",
+                    "style":textRight,
+                    "colshow":"checkedValues.checkedAlow",
+                    "active": "false"
+                },
+                {
+                    "datavalue":"",
+                    "headervalue":"",
+                    "checked":"true",
+                    "style":textRight,
+                    "colshow":"checkedValues.checkedWlow",
+                    "active": "false"
+                },
+                {
+                    "datavalue":"",
+                    "headervalue":"",
+                    "checked":"true",
+                    "style":textRight,
+                    "colshow":"checkedValues.checkedValue",
+                    "active": "false"
+                },
+                {
+                    "datavalue":"",
+                    "headervalue":"",
+                    "checked":"true",
+                    "style":textRight,
+                    "colshow":"checkedValues.checkedWhigh",
+                    "active": "false"
+                },
+                {
+                    "datavalue":"",
+                    "headervalue":"",
+                    "checked":"true",
+                    "style":textRight,
+                    "colshow":"checkedValues.checkedAhigh",
+                    "active": "false"
+                },
+                {
+                    "datavalue":"",
+                    "headervalue":"",
+                    "checked":"true",
+                    "style":textLeft,
+                    "colshow":"checkedValues.checkedUnits",
+                    "active": "false"
+                },
+                {
+                    "datavalue":"",
+                    "headervalue":"",
+                    "checked":"true",
+                    "style":textLeft,
+                    "colshow":"checkedValues.checkedNotes",
+                    "active": "false"
+                }],
+                disabled:false 
+            });
             $scope.widget.settings.data.splice($index+1, 0, {}); 
             $scope.widget.settings.previous.splice($index+1, 0, {}); 
        }else {
