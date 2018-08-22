@@ -1,7 +1,7 @@
 app
 .component('leftSidebar', {
   	templateUrl: "./components/leftSidebar/left_sidebar.html",
-  	controller: function(sidebarService, dashboardService, $interval, $window, $mdSidenav) {
+  	controller: function(sidebarService, dashboardService, $interval, $window, $mdSidenav,$mdToast,$scope) {
   		var vm = this;
 
         vm.searchID = "";
@@ -41,28 +41,30 @@ app
         }
 
         //function to filter data menu using search ID
-        vm.filter = function(){
-            //copy the data menu pulled from configuration
-            vm.dataTree = angular.copy(vm.previousTree);
-
-            vm.dataTree = vm.dataTree.filter(function f(data) {
-                var name = data.name.toLowerCase();
-                var searchID = vm.searchID.toLowerCase();
-                
-                if (name.includes(searchID)) return true;
-
-                if (data.nodes) {
-                    data.nodes = data.nodes.filter(f);
-                    if(data.nodes.length){
-                        data.active = !data.active;
-                    }
-                    return data.nodes.length;
-                }
-            });
-
-            if(vm.dataTree.length == 0){
-                $window.alert("No match found!");
+        vm.filter = function(keyEvent){
+            if (keyEvent.which === 13 || keyEvent.type === "click"){ // when "enter" key is pressed
+                //copy the data menu pulled from configuration
                 vm.dataTree = angular.copy(vm.previousTree);
+
+                vm.dataTree = vm.dataTree.filter(function f(data) {
+                    var name = data.name.toLowerCase();
+                    var searchID = vm.searchID.toLowerCase();
+                
+                    if (name.includes(searchID)) return true;
+
+                    if (data.nodes) {
+                        data.nodes = data.nodes.filter(f);
+                        if(data.nodes.length){
+                            data.active = !data.active;
+                        }
+                        return data.nodes.length;
+                    }
+                });
+
+                if(vm.dataTree.length == 0){
+                    vm.noresultsmsg = "No results found for "+vm.searchID+" !";
+                    vm.searchID = "";
+                }
             }
         }
 
@@ -81,10 +83,25 @@ app
                             vm.previousTree = angular.copy(tree);
                             vm.dataTree = angular.copy(tree);
                         }
+
+                        // code to reset data tree if search id is removed
+                        if(vm.searchID.length === 0){
+                            vm.noresultsmsg = "";
+                            vm.previousTree = angular.copy(tree);
+                            vm.dataTree = angular.copy(tree);
+                        }
+                      
                     } else {
                         vm.dataTree = [];
                         vm.previousTree = angular.copy(vm.dataTree);
-                        //$window.alert("No telemetry data for the current mission. Please close the sidebar!");
+                        vm.noresultsmsg = "No Data available";
+
+                        if(vm.searchID.length === 0){
+                            vm.noresultsmsg = "";
+                            vm.dataTree = [];
+                            vm.previousTree = angular.copy(vm.dataTree);
+                            
+                        }
                     }
                     sidebarService.setMenuStatus(false); //set to false when above has been executed
                 }

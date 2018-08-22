@@ -231,6 +231,16 @@ ul.nav.navbar-nav.navbar-right {
 
 }
 
+/*styles required for md dialog prompt warnings on ok*/
+/*md-input-container .md-auto-hide .md-input-message-animation:not(.ng-animate) {
+    opacity: 0;
+    margin-top: -100px;
+}
+md-input-container:not(.md-input-invalid) .md-auto-hide .md-input-message-animation {
+    opacity: 0;
+    margin-top: -100px;
+}*/
+
 @media (min-width: 768px) {
     .navbar-nav>li>a {
         margin-top: 5px;

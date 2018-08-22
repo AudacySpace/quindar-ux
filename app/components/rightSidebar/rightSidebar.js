@@ -1,7 +1,7 @@
 app
 .component('rightSidebar', {
   	templateUrl: "./components/rightSidebar/right_sidebar.html",
-  	controller: function(gridService, dashboardService, prompt, $window, $mdSidenav, userService, $uibModal) {
+  	controller: function(gridService, dashboardService, prompt, $window, $mdSidenav, userService, $uibModal, $mdDialog) {
         var vm = this;
   		vm.name = userService.getUserName();
         vm.email = userService.getUserEmail();
@@ -32,21 +32,28 @@ app
             vm.addMenu = !vm.addMenu;
         }
 
-        vm.save = function(){
-            prompt({
-                title: 'Save Layout',
-                input: true,
-                label: 'Layout Name',
-                value: dashboard["current"].name
-            }).then(function(name){
-                gridService.save(vm.email, name)
+        vm.save = function(ev){
+            var confirm = $mdDialog.prompt()
+                .title('Save Layout')
+                .placeholder('Enter layout name here.')
+                .ariaLabel('Enter layout name here.')
+                .initialValue('')
+                .targetEvent(ev)
+                .required(true)
+                .ok('OK')
+                .cancel('Cancel');
+
+            $mdDialog.show(confirm).then(function(result) {
+                gridService.save(vm.email, result)
                 .then(function(response) {
                     if(response.status == 200){
-                        alert("Layout saved succcessfully -- " + name);
-                        $window.document.title = "Quindar - " + name;
+                        $window.document.title = "Quindar - " + result;
                     }
                 });
-            }).catch(function (err) {});
+            }, function() {
+            }).catch(function(error) {
+                //console.error('Error: ' + error);
+            });
         }
 
         vm.load = function(){
@@ -160,6 +167,7 @@ app.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userSer
     $ctrl.users = [];
     $ctrl.roles = [];
     $ctrl.mission = mission.missionName;
+    $scope.saveSuccess = false;
 
     userService.getRoles()
     .then(function(response) {
@@ -214,7 +222,8 @@ app.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userSer
                 userService.setAllowedRoles($ctrl.selected.user, newRoles, $ctrl.mission)
                 .then(function(response) {
                     if(response.status == 200){
-                        $window.alert("Allowed roles updated for " + $ctrl.selected.user.google.name);
+                        $scope.saveSuccess = true;
+                        $scope.successMessage = "Success! Roles updated for user: "+ $ctrl.selected.user.google.name;
                     }
                 })
             } else {
@@ -242,6 +251,11 @@ app.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userSer
             checked: true
         });
         return trues.length;
+    }
+
+    $ctrl.resetSuccessMessage = function(){
+        $scope.saveSuccess = false;
+        $scope.successMessage = "";
     }
 
 });
