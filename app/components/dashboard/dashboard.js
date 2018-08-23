@@ -4,7 +4,7 @@ angular.module('app')
   	scope: true,
    	bindToController: true,
   	templateUrl: "./components/dashboard/dashboard.html",
-  	controller: function(dashboardService,gridService, sidebarService, $interval,prompt,$mdSidenav,$window, userService, $uibModal) {
+  	controller: function(dashboardService,gridService, sidebarService, $interval,$mdSidenav,$window, userService, $uibModal,$mdDialog,prompt) {
   		var vm = this;
 
 		vm.clock = {
@@ -37,9 +37,9 @@ angular.module('app')
 			sidebarService.setOpenLogo(true); //set to true if data menu opened through Quindar logo on Dashboard
 	    }
 
-	    vm.logout = function () {
-            prompt({
-                title: 'Do you want to save this layout?',
+	    vm.logout = function (ev) {
+    		prompt({
+                title:'Do you want to save this layout?',
                 input: true,
                 label: 'Layout Name',
                 value: dashboard["current"].name
@@ -47,7 +47,6 @@ angular.module('app')
                 gridService.save(vm.email, name)
                 .then(function(response) {
                     if(response.status == 200){
-                        alert("Layout saved succcessfully -- " + name);
                         $window.location.href = '/logout';
                     }
                 });
@@ -81,13 +80,13 @@ angular.module('app')
 				}
 			},
 			function () {
-				console.log('Modal dismissed');
+				//console.log('Modal dismissed');
       		});
 	    }
 	}
 })
 
-app.controller('modalCtrl', function($uibModalInstance, userService, mission, $window) {
+app.controller('modalCtrl', function($uibModalInstance, userService, mission, $window,$mdDialog) {
 	var $ctrl = this;
 
 	$ctrl.cRole = {};
@@ -114,9 +113,9 @@ app.controller('modalCtrl', function($uibModalInstance, userService, mission, $w
 		}
 	});
 
-	$ctrl.updateRole = function(){
+	$ctrl.updateRole = function(ev){
 		if($ctrl.cRole.callsign === 'MD' && $ctrl.role.currentRole.name !== 'Mission Director') {
-			$window.alert("No mission without the Mission Director. Your role cannot be updated");
+			//$window.alert("No mission without the Mission Director. Your role cannot be updated!");
 			$uibModalInstance.close($ctrl.cRole);
 		} else {
 			userService.getRoles()
@@ -131,7 +130,7 @@ app.controller('modalCtrl', function($uibModalInstance, userService, mission, $w
        				userService.setCurrentRole($ctrl.role.currentRole, mission.missionName)
 	        		.then(function(response) {
 	        			if(response.status == 200){
-	                		$window.alert("User's current role updated.");
+	                		//$window.alert("User's current role updated.");
 	                		$uibModalInstance.close($ctrl.role.currentRole);
 	            		}else {
 	            			$window.alert("An error occurred.User's role not updated!");
@@ -147,18 +146,23 @@ app.controller('missionModalCtrl', function($uibModalInstance,dashboardService,$
 	var $ctrl = this;
 	$scope.missions = dashboardService.missions;
 	$ctrl.currentMission = {};
+	$ctrl.missionName = ''; 
 	$scope.$watch("missions",function(newVal,oldVal){
 		$ctrl.missions = newVal;
 	},true);
 
-	//save mission and close modal
+	//save mission and close modal 
 	$ctrl.setMission = function(){
-		if(dashboardService.isEmpty($ctrl.currentMission) === false){
-			dashboardService.setCurrentMission($ctrl.currentMission);
-	    	$uibModalInstance.close($ctrl.currentMission);
-	    	$window.alert("Mission has been set");
-	    }else {
-	    	$window.alert("Please select a mission before you save.");
-	    }   
+		var numOfMissions = $scope.missions.length;
+		for(var i=0;i<numOfMissions;i++){
+			if($ctrl.missionName === $scope.missions[i].missionName){
+				$ctrl.currentMission = angular.copy($scope.missions[i]);
+				if(dashboardService.isEmpty($ctrl.currentMission) === false){
+					dashboardService.setCurrentMission($ctrl.currentMission);
+	    			$uibModalInstance.close($ctrl.currentMission);
+	    			break;
+	    		}
+			}
+		}  
 	}
 });

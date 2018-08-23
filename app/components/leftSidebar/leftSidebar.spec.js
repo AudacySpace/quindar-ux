@@ -248,13 +248,14 @@ describe('Testing leftSidebar component', function () {
             "active":true
         }];
 
-        $controller.filter();
+        var keyEvent = { "which":13};
+        $controller.filter(keyEvent);
 
         expect($controller.dataTree).toEqual(filteredTree);
     });
 
     it('should alert the user, on filter function call(searchID not found)', function(){
-        spyOn(windowMock, 'alert');
+        //spyOn(windowMock, 'alert');
         $controller.previousTree = [{
             "name":"A0",
             "nodes":[{
@@ -283,11 +284,13 @@ describe('Testing leftSidebar component', function () {
             "active":false
         }];
         $controller.searchID = "77";
+        var keyEvent = { "type":'click'};
+        $controller.filter(keyEvent);
 
-        $controller.filter();
-
-        expect($controller.dataTree).toEqual($controller.previousTree);
-        expect(windowMock.alert).toHaveBeenCalledWith('No match found!');
+        expect($controller.dataTree).toEqual([]);
+        expect($controller.noresultsmsg).toEqual("No results found for 77 !");
+        expect($controller.searchID).toEqual("");
+        //expect(windowMock.alert).toHaveBeenCalledWith('No match found!');
     });
 
     it('should filter the tree, on filter function call(empty searchID)', function(){
@@ -319,8 +322,8 @@ describe('Testing leftSidebar component', function () {
             "active":false
         }];
         $controller.searchID = "";
-
-        $controller.filter();
+        var keyEvent = { "type":'click'};
+        $controller.filter(keyEvent);
 
         expect($controller.dataTree).toEqual($controller.previousTree);
     });

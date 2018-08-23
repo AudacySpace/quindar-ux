@@ -9,13 +9,13 @@
         <div class="row" ng-if="$even">
             <div class="col-xs-6">
                 <label class="radio">
-                    <input type="radio" ng-model="$ctrl.role.currentRole.name" ng-value="$ctrl.roles[$index].name"> 
+                    <input type="radio" ng-model="$ctrl.role.currentRole.name" ng-value="$ctrl.roles[$index].name" ng-disabled="$ctrl.role.currentRole.name =='Mission Director'"> 
                     {{ $ctrl.roles[$index].name }} ({{ $ctrl.roles[$index].callsign }})
                 </label>
             </div>
             <div class="col-xs-6" ng-show="$ctrl.roles[$index+1]">
                 <label class="radio">
-                    <input type="radio" ng-model="$ctrl.role.currentRole.name" ng-value="$ctrl.roles[$index+1].name"> 
+                    <input type="radio" ng-model="$ctrl.role.currentRole.name" ng-value="$ctrl.roles[$index+1].name" ng-disabled="$ctrl.role.currentRole.name =='Mission Director'"> 
                     {{ $ctrl.roles[$index+1].name }} ({{ $ctrl.roles[$index+1].callsign }})
                 </label> 
             </div>
@@ -24,5 +24,5 @@
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="$ctrl.close()">Close</button>
-    <button type="button" class="btn btn-primary" ng-click="$ctrl.updateRole()">Save</button>
+    <button type="button" class="btn btn-primary" ng-click="$ctrl.updateRole($event)">Save</button>
 </div>

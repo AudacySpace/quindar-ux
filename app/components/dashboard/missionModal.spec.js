@@ -1,19 +1,12 @@
 describe('Testing missionModal controller', function () {
     var controller, scope, dashboardService;
-    var windowMock = {
-        alert: function(message) {
-            
-        }
-    };
     var modalInstance = { close: function() {}, dismiss: function() {}, open: function() {} };
     var missions = [{ missionName : 'ATest', missionImage : '/media/icons/Audacy_Icon_White.svg'},
                     { missionName : 'AZero', missionImage : '/media/icons/Audacy_Zero.svg'}];
 
     beforeEach(function () {
         // load the module
-        module('app', function ($provide) {
-            $provide.value('$window', windowMock);
-        });
+        module('app');
 
         inject( function($controller, $rootScope){
             scope = $rootScope.$new();
@@ -57,9 +50,9 @@ describe('Testing missionModal controller', function () {
     });
 
     it('should set the mission for the dashboard when setMission is called', function() {
-        controller.currentMission = { missionName : 'AZero', missionImage : '/media/icons/Audacy_Zero.svg'};
+        controller.missionName = 'AZero';
+        scope.missions = missions;
 
-        spyOn(windowMock, 'alert');
         spyOn(modalInstance, 'close');
         dashboardService.isEmpty.and.callFake(function() {
             return false;
@@ -68,16 +61,5 @@ describe('Testing missionModal controller', function () {
         controller.setMission();
         expect(dashboardService.setCurrentMission).toHaveBeenCalledWith(controller.currentMission);
         expect(modalInstance.close).toHaveBeenCalled();
-        expect(windowMock.alert).toHaveBeenCalledWith('Mission has been set');
-    });
-
-    it('should alert the user if no mission is selected', function() {
-        spyOn(windowMock, 'alert');
-        dashboardService.isEmpty.and.callFake(function() {
-            return true;
-        });
-
-        controller.setMission();
-        expect(windowMock.alert).toHaveBeenCalledWith('Please select a mission before you save.');
     });
 });

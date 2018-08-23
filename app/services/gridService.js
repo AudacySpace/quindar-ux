@@ -378,7 +378,7 @@ function gridService ($http, $sessionStorage, $window, userService) {
 
     function getMissionImage(mname){
         var image = "";
-        if(mname === "AZero" || mname === "AudacyZero"){
+        if(mname === "AZero" || mname === "AudacyZero" || mname === "Audacy Zero" || mname === "A Zero" || mname === "A0"){
             image = "/media/icons/AudacyZero_Logo_White.jpg";
             return image;
         }else {

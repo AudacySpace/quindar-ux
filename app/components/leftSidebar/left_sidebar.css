@@ -12,6 +12,14 @@
     color: #FFFFFF;
 }
 
+.search-icon {
+    position: absolute;
+    top: 0%;
+    right: 10px;
+    margin-top: 3px;
+    z-index:100;
+}
+
 .md-sidenav-left {
     background-color: #020613;
 }

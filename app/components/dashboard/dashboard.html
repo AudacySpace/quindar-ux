@@ -40,8 +40,8 @@
                                 >{{ $ctrl.name }}</a>
                                 <small id="callsign"> {{ $ctrl.role.cRole.callsign }} </small>
                                 <ul class="dropdown-menu logout-bar">
-                                    <li ><a href="" ng-click="$ctrl.logout()" target="_self">Logout</a></li>
-                                    <li ><a href="#" ng-click="$ctrl.showSettings()">Settings</a></li>
+                                    <li ><a href="" ng-click="$ctrl.logout($event)" target="_self">Logout</a></li>
+                                    <li ><a href="#" ng-click="$ctrl.showSettings()" ng-show="$ctrl.role.cRole.callsign !== 'MD'">Settings</a></li>
                                 </ul>
                             </li>
                             <li id="cfgmenu">
