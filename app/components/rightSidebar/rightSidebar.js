@@ -33,27 +33,19 @@ app
         }
 
         vm.save = function(ev){
-            var confirm = $mdDialog.prompt()
-                .title('Save Layout')
-                .placeholder('Enter layout name here.')
-                .ariaLabel('Enter layout name here.')
-                .initialValue('')
-                .targetEvent(ev)
-                .required(true)
-                .ok('OK')
-                .cancel('Cancel');
-
-            $mdDialog.show(confirm).then(function(result) {
-                gridService.save(vm.email, result)
+            prompt({
+                title: 'Save Layout',
+                input: true,
+                label: 'Layout Name',
+                value: dashboard["current"].name
+            }).then(function(name){
+                gridService.save(vm.email, name)
                 .then(function(response) {
                     if(response.status == 200){
-                        $window.document.title = "Quindar - " + result;
+                        $window.document.title = "Quindar - " + name;
                     }
                 });
-            }, function() {
-            }).catch(function(error) {
-                //console.error('Error: ' + error);
-            });
+            }).catch(function (err) {});
         }
 
         vm.load = function(){

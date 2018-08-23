@@ -32,6 +32,7 @@ angular.module('cgPrompt').factory('prompt',['$uibModal','$q',function($uibModal
         $uibModal.open({
             templateUrl:'angular-prompt.html',
             controller: 'cgPromptCtrl',
+            backdrop: 'static',
             resolve: {
                 options:function(){
                     return options;
@@ -67,6 +68,7 @@ angular.module('cgPrompt').controller('cgPromptCtrl',['$scope','options','$timeo
             $scope.$dismiss();
             return;
         }
+
         if (options.input && $scope.form.cgPromptForm.$invalid){
             $scope.changed = true;
             return;
@@ -118,11 +120,11 @@ angular.module('cgPrompt').run(['$templateCache', function($templateCache) {
     "        </p>\n" +
     "\n" +
     "        <form id=\"cgPromptForm\" name=\"form.cgPromptForm\" ng-if=\"options.input\" ng-submit=\"submit()\">\n" +
-    "            <div class=\"form-group\" ng-class=\"{'has-error':cgPromptForm.$invalid && changed}\">\n" +
+    "            <div class=\"form-group\" ng-class=\"{'has-error':form.cgPromptForm.$invalid && changed}\">\n" +
     "                <label for=\"cgPromptInput\">{{options.label}}</label>\n" +
-    "                <input id=\"cgPromptInput\" type=\"text\" class=\"form-control\"  placeholder=\"{{options.label}}\" ng-model=\"input.name\" required ng-change=\"changed=true\" ng-if=\"!options.values || options.values.length === 0\"/ autofocus=\"autofocus\">\n" +
+    "                <input id=\"cgPromptInput\" type=\"text\" class=\"form-control\"  placeholder=\"{{options.label}}\" ng-model=\"input.name\" ng-change=\"changed=true\" ng-if=\"!options.values || options.values.length === 0\"/ autofocus=\"autofocus\" required>\n" +
     "                <div class=\"input-group\" ng-if=\"options.values\">\n" +
-    "                    <input id=\"cgPromptInput\" type=\"text\" class=\"form-control\" placeholder=\"{{options.label}}\" ng-model=\"input.name\" required ng-change=\"changed=true\" autofocus=\"autofocus\"/>\n" +
+    "                    <input id=\"cgPromptInput\" type=\"text\" class=\"form-control\" placeholder=\"{{options.label}}\" ng-model=\"input.name\" ng-change=\"changed=true\" autofocus=\"autofocus\" required/>\n" +
     "\n" +
     "                    <div class=\"input-group-btn\" dropdown>\n" +
     "                        <button type=\"button\" class=\"btn btn-default dropdown-toggle\" dropdown-toggle data-toggle=\"dropdown\"><span class=\"caret\"></span></button>\n" +

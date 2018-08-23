@@ -4,7 +4,7 @@ angular.module('app')
   	scope: true,
    	bindToController: true,
   	templateUrl: "./components/dashboard/dashboard.html",
-  	controller: function(dashboardService,gridService, sidebarService, $interval,$mdSidenav,$window, userService, $uibModal,$mdDialog) {
+  	controller: function(dashboardService,gridService, sidebarService, $interval,$mdSidenav,$window, userService, $uibModal,$mdDialog,prompt) {
   		var vm = this;
 
 		vm.clock = {
@@ -38,28 +38,21 @@ angular.module('app')
 	    }
 
 	    vm.logout = function (ev) {
-            var confirm = $mdDialog.prompt()
-     	 		.title('Do you want to save this layout?')
-      			.placeholder('Enter layout name here.')
-      			.ariaLabel('Enter layout name here.')
-      			.initialValue(dashboard["current"].name)
-      			.targetEvent(ev)
-      			.required(true)
-      			.ok('OK')
-      			.cancel('Cancel');
-
-    		$mdDialog.show(confirm).then(function(result) {
-      			gridService.save(vm.email, result)
+    		prompt({
+                title:'Do you want to save this layout?',
+                input: true,
+                label: 'Layout Name',
+                value: dashboard["current"].name
+            }).then(function(name){
+                gridService.save(vm.email, name)
                 .then(function(response) {
                     if(response.status == 200){
                         $window.location.href = '/logout';
                     }
                 });
-    		}, function() {
-      			$window.location.href = '/logout';
-    		}).catch(function(error) {
-        		//console.error('Error: ' + error);
-    		});
+            },function(){
+            	$window.location.href = '/logout';
+            }).catch(function (err) {});
         };
 
 	    vm.openRightNav = function(){
@@ -123,15 +116,6 @@ app.controller('modalCtrl', function($uibModalInstance, userService, mission, $w
 	$ctrl.updateRole = function(ev){
 		if($ctrl.cRole.callsign === 'MD' && $ctrl.role.currentRole.name !== 'Mission Director') {
 			//$window.alert("No mission without the Mission Director. Your role cannot be updated!");
-			$mdDialog.show(
-      			$mdDialog.alert()
-        			.parent(angular.element(document.querySelector('#popupContainer')))
-        			.clickOutsideToClose(true)
-        			.title('No mission without the Mission Director. Your role cannot be updated!')
-        			.ariaLabel('Alert Dialog Demo')
-        			.ok('Got it!')
-        			.targetEvent(ev)
-    		);
 			$uibModalInstance.close($ctrl.cRole);
 		} else {
 			userService.getRoles()

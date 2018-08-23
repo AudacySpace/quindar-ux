@@ -6,9 +6,7 @@ describe('Testing missionModal controller', function () {
 
     beforeEach(function () {
         // load the module
-        module('app', function ($provide) {
-            $provide.value('$window', windowMock);
-        });
+        module('app');
 
         inject( function($controller, $rootScope){
             scope = $rootScope.$new();
