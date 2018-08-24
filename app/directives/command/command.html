@@ -65,7 +65,7 @@
         </div>
     </md-content>
     <md-content>
-        <div layout="row" ng-repeat = "comm in commandLog | orderBy : '-timestamp'">
+        <div layout="row" ng-repeat = "comm in commandLog | orderBy : '-sent_timestamp'">
             <div flex="15" class="left-cmdlogrow">
                 {{comm.time}}
             </div>
