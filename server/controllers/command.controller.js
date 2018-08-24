@@ -29,7 +29,6 @@ module.exports = {
         newCommand.response = [];
         newCommand.sent_to_satellite = false;
 
-        console.log(newCommand);
         newCommand.save(function(err,result) {
             if (err){
                 console.log(err);
