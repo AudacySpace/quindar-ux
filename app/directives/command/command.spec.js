@@ -212,6 +212,15 @@ describe('Testing command controller', function () {
             time: '070.10:10:50 UTC'
         };
 
+        scope.commandForm = {
+            $setPristine: function(){
+
+            },
+            $setUntouched: function(){
+                
+            }
+        };
+
         dashboardService.getTime.and.callFake(function() {
             return time;
         });

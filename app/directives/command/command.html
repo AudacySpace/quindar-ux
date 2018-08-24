@@ -4,15 +4,15 @@
         <div layout="row" flex="100" id="comm-row">
             <md-input-container flex="25" class="input-container">
                 <label ng-style="labelStyle">Command</label>
-                <input ng-model="cmd" name="cmd" placeholder="Command" type="text" ng-change="changeInput()" ng-disabled="disableInput" ng-class="disableInput ? 'disabled' : 'input-arg'" ng-style="inputStyle" md-no-asterisk required>
-                <div ng-messages="commandForm.cmd.$error" ng-show='false'>
+                <input ng-model="cmd" name="cmd" placeholder="" type="text" ng-change="changeInput()" ng-disabled="disableInput" ng-class="disableInput ? 'disabled' : 'input-arg'" md-no-asterisk required>
+                <div ng-messages="commandForm.cmd.$error" ng-show="false">
                     <div ng-message="required">Required</div>
                 </div>
             </md-input-container>
             <md-input-container flex="50" class="input-container">
                 <label ng-style="labelStyle">Arguments</label>
-                <input ng-model="arguments" name="arguments" placeholder="Value" type="text" ng-change="changeInput()" ng-disabled="disableInput" ng-class="disableInput ? 'disabled' : 'input-arg'" ng-style="inputStyle" md-no-asterisk required>
-                <div ng-messages="commandForm.arguments.$error" ng-show='false'>
+                <input ng-model="arguments" name="arguments" placeholder="" type="text" ng-change="changeInput()" ng-disabled="disableInput" ng-class="disableInput ? 'disabled' : 'input-arg'" md-no-asterisk required>
+                <div ng-messages="commandForm.arguments.$error" ng-show="false">
                     <div ng-message="required">Required</div>
                 </div>
             </md-input-container>
@@ -43,7 +43,6 @@
             </md-input-container>
         </div>
     </form>
-
 </md-content>
 <md-content flex-gt-sm="50" flex-xs="20" flex-sm="30" layout="column" class="command-log" ng-show="widget.settings.commandlog">
     <md-content class="header-log">

@@ -15,8 +15,6 @@ app.controller('CommandCtrl',
     $scope.isLoaded = false;
 	$scope.sent = false;
 
-    // {"$viewValue":"","$modelValue":"","$validators":{},"$asyncValidators":{},"$parsers":[null],"$formatters":[null,null],"$viewChangeListeners":[null],"$untouched":true,"$touched":false,"$pristine":true,"$dirty":false,"$valid":false,"$invalid":true,"$error":{"required":true},"$name":"cmd","$options":{}}
-
 	$scope.initialise = function(){
 		$scope.cmd = "";
 		$scope.arguments = "";
@@ -41,13 +39,6 @@ app.controller('CommandCtrl',
 		   	$scope.entered = true;
 		   	$scope.disableEnter = true;
 	    } 
-     //    else if($scope.cmd.length === 0 && $scope.arguments.length > 0) {
-	    // 	$window.alert("Please enter the command.");
-	    // } else if($scope.cmd.length > 0 && $scope.arguments.length === 0){
-	    // 	$window.alert("Please enter the argument values.");
-	    // } else if($scope.cmd.length === 0 && $scope.arguments.length === 0){
-	    // 	$window.alert("Please enter the command and argument values.");
-	    // }
     }
 
     $scope.lockCommand = function(){
@@ -82,9 +73,8 @@ app.controller('CommandCtrl',
     	.then(function(response) {
 	        if(response.status == 200){
 	        	$scope.initialise();
-                $scope.inputStyle = {'border-color':'#0000001f','border-width':'1px'};
-                $scope.labelStyle = {'color':'black'};
-                // $scope.saved = true;
+                $scope.commandForm.$setPristine();
+                $scope.commandForm.$setUntouched();
 	        }
 	    });
     }
