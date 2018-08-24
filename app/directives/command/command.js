@@ -38,13 +38,7 @@ app.controller('CommandCtrl',
 		    $scope.command.arguments = $scope.arguments;
 		   	$scope.entered = true;
 		   	$scope.disableEnter = true;
-	    } else if($scope.cmd.length === 0 && $scope.arguments.length > 0) {
-	    	$window.alert("Please enter the command.");
-	    } else if($scope.cmd.length > 0 && $scope.arguments.length === 0){
-	    	$window.alert("Please enter the argument values.");
-	    } else if($scope.cmd.length === 0 && $scope.arguments.length === 0){
-	    	$window.alert("Please enter the command and argument values.");
-	    }
+	    } 
     }
 
     $scope.lockCommand = function(){
@@ -73,11 +67,14 @@ app.controller('CommandCtrl',
     	var cmdId = systemTime.getTime();
     	$scope.command.sent_timestamp = cmdId;
     	$scope.command.time = time.utc;
+        // $scope.sent = true;
 
     	commandService.saveCommand($scope.email, $scope.command, $scope.mission.missionName)
     	.then(function(response) {
 	        if(response.status == 200){
 	        	$scope.initialise();
+                $scope.commandForm.$setPristine();
+                $scope.commandForm.$setUntouched();
 	        }
 	    });
     }

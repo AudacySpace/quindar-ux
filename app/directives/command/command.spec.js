@@ -28,17 +28,10 @@ describe('Testing command controller', function () {
                 "value": "Set"
             }]
         }];
-    var windowMock = {
-        alert: function(message) {
-            
-        }
-    };
 
     beforeEach(function () {
         // load the module
-        module('app', function ($provide) {
-            $provide.value('$window', windowMock);
-        });
+        module('app');
 
         inject(function($controller, $rootScope, $interval, _$q_, _commandService_){
             commandService = _commandService_;
@@ -134,14 +127,6 @@ describe('Testing command controller', function () {
         expect(scope.disableEnter).toEqual(true);
     })
 
-    it('should alert the user when command is not selected and scope.enter is called', function(){
-        spyOn(windowMock, 'alert');
-        scope.arguments = "00";
-
-        scope.enter();
-        expect(windowMock.alert).toHaveBeenCalledWith('Please enter the command.');
-    })
-
     it('should define function scope.lockCommand', function(){
         expect(scope.lockCommand).toBeDefined();
     })
@@ -157,24 +142,6 @@ describe('Testing command controller', function () {
         expect(scope.locked).toEqual(true);
         expect(scope.disableLock).toEqual(true);
         expect(scope.disableInput).toEqual(true);
-    })
-
-    it('should alert the user when command is not entered and scope.lockCommand is called', function(){
-        spyOn(windowMock, 'alert');
-        scope.command.name = "Null Command Echo";
-        scope.entered = false;
-
-        scope.lockCommand();
-        expect(windowMock.alert).toHaveBeenCalledWith('Please enter the commands before locking');
-    })
-
-    it('should alert the user when scope.command is null and scope.lockCommand is called', function(){
-        spyOn(windowMock, 'alert');
-        scope.command = {};
-        scope.entered = true;
-
-        scope.lockCommand();
-        expect(windowMock.alert).toHaveBeenCalledWith('Please enter the commands before locking');
     })
 
     it('should define function scope.changeInput', function(){
@@ -243,6 +210,15 @@ describe('Testing command controller', function () {
             arguments: "00",
             sent_timestamp: 1533066264232,
             time: '070.10:10:50 UTC'
+        };
+
+        scope.commandForm = {
+            $setPristine: function(){
+
+            },
+            $setUntouched: function(){
+                
+            }
         };
 
         dashboardService.getTime.and.callFake(function() {

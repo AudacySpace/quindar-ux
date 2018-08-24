@@ -138,6 +138,15 @@ md-switch.comm-switch {
 	margin-bottom:0px
 }
 
+md-input-container.md-input-focused .md-input, md-input-container.md-input-resized .md-input, md-input-container .md-input.ng-invalid.ng-dirty {
+	border-width:1px !important;
+}
+
+div.md-input-message-animation{
+	padding-top:0px !important;
+	font-size: 10px !important;
+}
+
 .command-log div.right-cmdlogheader, .command-log div.left-cmdlogheader,
 .command-log div#center-header, .command-log div#center-row,
 .command-log div.left-cmdlogrow, .command-log div.right-cmdlogrow {
