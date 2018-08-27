@@ -202,15 +202,31 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                         var x,y,z,vx,vy,vz;
 
                         if(vehicles[i].pdata.length > 0){
-                            x = dashboardService.getData(vehicles[i].pdata[0].key).value;
-                            y = dashboardService.getData(vehicles[i].pdata[1].key).value;
-                            z = dashboardService.getData(vehicles[i].pdata[2].key).value;
+                            if(dashboardService.getData(vehicles[i].pdata[0].key).hasOwnProperty("value")){
+                                x = dashboardService.getData(vehicles[i].pdata[0].key).value;
+                            }
+
+                            if(dashboardService.getData(vehicles[i].pdata[1].key).hasOwnProperty("value")){
+                                y = dashboardService.getData(vehicles[i].pdata[1].key).value;
+                            }
+
+                            if(dashboardService.getData(vehicles[i].pdata[2].key).hasOwnProperty("value")){
+                                z = dashboardService.getData(vehicles[i].pdata[2].key).value;
+                            } 
                         }
 
                         if(vehicles[i].vdata.length > 0){
-                            vx = dashboardService.getData(vehicles[i].vdata[0].key).value;
-                            vy = dashboardService.getData(vehicles[i].vdata[1].key).value;
-                            vz = dashboardService.getData(vehicles[i].vdata[2].key).value;
+                            if(dashboardService.getData(vehicles[i].vdata[0].key).hasOwnProperty("value")){
+                                vx = dashboardService.getData(vehicles[i].vdata[0].key).value;
+                            }
+
+                            if(dashboardService.getData(vehicles[i].vdata[1].key).hasOwnProperty("value")){
+                                vy = dashboardService.getData(vehicles[i].vdata[1].key).value;
+                            }
+
+                            if(dashboardService.getData(vehicles[i].vdata[2].key).hasOwnProperty("value")){
+                                vz = dashboardService.getData(vehicles[i].vdata[2].key).value;
+                            }
                         }
 
                         //get current time
@@ -232,15 +248,31 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 						else{
                             var x,y,z,vx,vy,vz;
                             if(vehicles[i].pdata.length > 0){
-                                x = dashboardService.getData(vehicles[i].pdata[0].key).value;
-                                y = dashboardService.getData(vehicles[i].pdata[1].key).value;
-                                z = dashboardService.getData(vehicles[i].pdata[2].key).value;
+                                if(dashboardService.getData(vehicles[i].pdata[0].key).hasOwnProperty("value")){
+                                    x = dashboardService.getData(vehicles[i].pdata[0].key).value;
+                                }
+
+                                if(dashboardService.getData(vehicles[i].pdata[1].key).hasOwnProperty("value")){
+                                    y = dashboardService.getData(vehicles[i].pdata[1].key).value;
+                                }
+
+                                if(dashboardService.getData(vehicles[i].pdata[2].key).hasOwnProperty("value")){
+                                    z = dashboardService.getData(vehicles[i].pdata[2].key).value;
+                                }  
                             }
 
                             if(vehicles[i].vdata.length > 0){
-                                vx = dashboardService.getData(vehicles[i].vdata[0].key).value;
-                                vy = dashboardService.getData(vehicles[i].vdata[1].key).value;
-                                vz = dashboardService.getData(vehicles[i].vdata[2].key).value;
+                                if(dashboardService.getData(vehicles[i].vdata[0].key).hasOwnProperty("value")){
+                                    vx = dashboardService.getData(vehicles[i].vdata[0].key).value;
+                                }
+
+                                if(dashboardService.getData(vehicles[i].vdata[1].key).hasOwnProperty("value")){
+                                    vy = dashboardService.getData(vehicles[i].vdata[1].key).value;
+                                }
+
+                                if(dashboardService.getData(vehicles[i].vdata[2].key).hasOwnProperty("value")){
+                                    vz = dashboardService.getData(vehicles[i].vdata[2].key).value;
+                                }
                             }
 						}
 

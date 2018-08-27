@@ -6,6 +6,7 @@ app
 
         vm.searchID = "";
         vm.previousTree = [];
+        vm.noresultsmsg = "";
 
         init();
 
@@ -85,7 +86,7 @@ app
                         }
 
                         // code to reset data tree if search id is removed
-                        if(vm.searchID.length === 0){
+                        if(vm.searchID.length === 0 && vm.noresultsmsg.includes("No results found")){
                             vm.noresultsmsg = "";
                             vm.previousTree = angular.copy(tree);
                             vm.dataTree = angular.copy(tree);
@@ -96,7 +97,7 @@ app
                         vm.previousTree = angular.copy(vm.dataTree);
                         vm.noresultsmsg = "No Data available";
 
-                        if(vm.searchID.length === 0){
+                        if(vm.searchID.length === 0 && vm.noresultsmsg.includes("No results found")){
                             vm.noresultsmsg = "";
                             vm.dataTree = [];
                             vm.previousTree = angular.copy(vm.dataTree);
