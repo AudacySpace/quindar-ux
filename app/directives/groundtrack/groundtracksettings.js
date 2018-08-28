@@ -104,7 +104,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                     }
                     $scope.widget.settings.vehicles.push(vehicle);
                 }else {
-                    $scope.vehicleMsg = "Please select all parameters for selected vehicles. ";
+                    $scope.vehicleMsg = "Please select all parameters for selected vehicles.";
                     break;
                 }
             }
@@ -437,93 +437,66 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
         //display alerts for conditions that were originally checked in getValue
         if( (!$scope.positionBooleans[3] || !$scope.positionBooleans[0]) && (!$scope.velocityBooleans[3] || !$scope.velocityBooleans[0])){
             $scope.positionparametersErrMsg = "Required: all position values(x,y,z)!";
-            $scope.pselectionfocus = true;
             $scope.velocityparametersErrMsg = "Required: all velocity values(x,y,z)!";
-            $scope.vselectionfocus = true;
         }
         else if(!$scope.positionBooleans[2] && !$scope.velocityBooleans[2]){
             $scope.positionparametersErrMsg = "Select from same vehicle!";
-            $scope.pselectionfocus = true;
             $scope.velocityparametersErrMsg = "Select from same vehicle!";
-            $scope.vselectionfocus = true;
-
         }else if(!$scope.positionBooleans[1] && !$scope.velocityBooleans[1]){
             $scope.positionparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
-            $scope.pselectionfocus = true;
             $scope.velocityparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
-            $scope.vselectionfocus = true;
         }else if(!$scope.positionBooleans[2] && !$scope.velocityBooleans[1]){
             $scope.positionparametersErrMsg = "Select from same vehicle!";
-            $scope.pselectionfocus = true;
             $scope.velocityparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
-            $scope.vselectionfocus = true;
         }else if(!$scope.positionBooleans[1] && !$scope.velocityBooleans[2]){
             $scope.positionparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
-            $scope.pselectionfocus = true;
             $scope.velocityparametersErrMsg = "Select from same vehicle!";
-            $scope.vselectionfocus = true;
         }
         else if((!$scope.positionBooleans[3] || !$scope.positionBooleans[0]) && !$scope.velocityBooleans[2]){
             $scope.positionparametersErrMsg = "Required: all position values(x,y,z)!";
-            $scope.pselectionfocus = true;
             $scope.velocityparametersErrMsg = "Select from same vehicle!";
-            $scope.vselectionfocus = true;
         }else if(!$scope.positionBooleans[2] && (!$scope.velocityBooleans[3] || !$scope.velocityBooleans[0])){
             $scope.positionparametersErrMsg = "Select from same vehicle!";
-            $scope.pselectionfocus = true;
             $scope.velocityparametersErrMsg = "Required: all velocity values(x,y,z)!";
-            $scope.vselectionfocus = true;
         }
         else if((!$scope.positionBooleans[3] || !$scope.positionBooleans[0]) && !$scope.velocityBooleans[1]){
             $scope.positionparametersErrMsg = "Required: all position values(x,y,z)!";
-            $scope.pselectionfocus = true;
             $scope.velocityparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
-            $scope.vselectionfocus = true;
         }else if(!$scope.positionBooleans[1] && (!$scope.velocityBooleans[3] || !$scope.velocityBooleans[0])){
             $scope.positionparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
-            $scope.pselectionfocus = true;
             $scope.velocityparametersErrMsg = "Required: all velocity values(x,y,z)!";
-            $scope.vselectionfocus = true;
         }
         else if(!$scope.positionBooleans[3])
         {
             $scope.positionparametersErrMsg = "Required: all position values(x,y,z)!";
-            $scope.pselectionfocus = true;
         }
         else if(!$scope.positionBooleans[2])
         {
             $scope.positionparametersErrMsg = "Select from same vehicle!";
-            $scope.pselectionfocus = true;
         }
         else if(!$scope.positionBooleans[1])
         {
              $scope.positionparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
-             $scope.pselectionfocus = true;
         }
         else if(!$scope.positionBooleans[0])
         {
              $scope.positionparametersErrMsg = "Required: all position values(x,y,z)!";
-             $scope.pselectionfocus = true;
         }
         else if(!$scope.velocityBooleans[3])
         {
             $scope.velocityparametersErrMsg = "Required: all velocity values(x,y,z)!";
-            $scope.vselectionfocus = true;
         }
         else if(!$scope.velocityBooleans[2])
         {
             $scope.velocityparametersErrMsg = "Select from same vehicle!";
-            $scope.vselectionfocus = true;
         }
         else if(!$scope.velocityBooleans[1])
         {
             $scope.velocityparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
-            $scope.vselectionfocus = true;
         }
         else if(!$scope.velocityBooleans[0])
         {
-             $scope.velocityparametersErrMsg = "Required: all velocity values(x,y,z)!";
-             $scope.vselectionfocus = true;
+            $scope.velocityparametersErrMsg = "Required: all velocity values(x,y,z)!";
         }
         else if($scope.positionData[$scope.currentVehicleId].length === 3 && $scope.velocityData[$scope.currentVehicleId].length === 3){
             $uibModal.open({
