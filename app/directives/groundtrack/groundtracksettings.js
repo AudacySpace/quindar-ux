@@ -280,38 +280,86 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             }else {
                 positionSettings = positionArray;
             }
+
+            // if($scope.totalPositionArray[$scope.currentVehicleId].length > 0){
+            //      $scope.positionparametersErrMsg = "";
+            // }
             
             if(positionSettings.length === 3){
                 var positionSettingsfiltered1 = removeCategories(positionSettings);//to remove selected group or categories while opening the list
-               var positionSettingsfiltered2 = removeDuplicates(positionSettingsfiltered1,"id");// to remove duplicate selection of a single value
-                var isDiffPositionVeh = isAnyDiffVehicles(positionSettingsfiltered2,$scope.currentScreenVehicle);// to check if all the values are of the same vehicle
-                var positionfilteredData = filterSelectedData(positionSettingsfiltered2);// check if there are any different values of a category
-                if(isDiffPositionVeh === false && positionfilteredData.length === positionSettingsfiltered2.length){ // condition to check if the values are of same vehicle and same category
+                //var positionSettingsfiltered2 = removeDuplicates(positionSettingsfiltered1,"id");// to remove duplicate selection of a single value
+                var isDiffPositionVeh = isAnyDiffVehicles(positionSettingsfiltered1,$scope.currentScreenVehicle);// to check if all the values are of the same vehicle
+               // var positionfilteredData = filterSelectedData(positionSettingsfiltered1);// check if there are any different values of a category
+               // if(isDiffPositionVeh === false && positionfilteredData.length === positionSettingsfiltered2.length){ // condition to check if the values are of same vehicle and same category
+                if(isDiffPositionVeh === false && positionSettingsfiltered1.length === 3){    
                     if(positionSettingsfiltered1.length === 3){  
-                        $scope.positionData[$scope.currentVehicleId] = angular.copy(positionSettingsfiltered2);
+                        $scope.positionData[$scope.currentVehicleId] = angular.copy(positionSettingsfiltered1);
                         $scope.vehicle[$scope.currentVehicleId] = positionSettingsfiltered1[0].vehicle;
-                        $scope.totalPositionArray[$scope.currentVehicleId] = angular.copy(positionSettingsfiltered2);
+                        $scope.totalPositionArray[$scope.currentVehicleId] = angular.copy(positionSettingsfiltered1);
                         $scope.positionparametersErrMsg = "";
-                    }else if(positionSettingsfiltered1.length < 3){
+                        $scope.positionBooleans[0] = true;
+                        $scope.positionBooleans[1] = true;
+                        $scope.positionBooleans[2] = true;
+                        $scope.positionBooleans[3] = true;
+                    }
+                    else if(positionSettingsfiltered1.length < 3){
                         $scope.vehicle[$scope.currentVehicleId] = "";
                         $scope.positionData[$scope.currentVehicleId] = [];
                         $scope.positionBooleans[0] = false;
+                        $scope.positionBooleans[1] = true;
+                        $scope.positionBooleans[2] = true;
+                        $scope.positionBooleans[3] = true;
                     }
-                }else if(isDiffPositionVeh === false && positionfilteredData.length !== positionSettingsfiltered2.length){
+                }
+                else if(positionSettingsfiltered1.length < 3){
+                        $scope.vehicle[$scope.currentVehicleId] = "";
+                        $scope.positionData[$scope.currentVehicleId] = [];
+                        $scope.positionBooleans[0] = false;
+                        $scope.positionBooleans[1] = true;
+                        $scope.positionBooleans[2] = true;
+                        $scope.positionBooleans[3] = true;
+                }
+                // else if(isDiffPositionVeh === false ){
+                //     $scope.vehicle[$scope.currentVehicleId] = "";
+                //     $scope.positionData[$scope.currentVehicleId] = [];
+                //     $scope.positionBooleans[1] = false;
+                //     $scope.positionBooleans[0] = true;
+                //     $scope.positionBooleans[2] = true;
+                //     $scope.positionBooleans[3] = true;
+                // }
+                else if(isDiffPositionVeh === true && positionSettingsfiltered1.length === 3){
                     $scope.vehicle[$scope.currentVehicleId] = "";
                     $scope.positionData[$scope.currentVehicleId] = [];
-                    $scope.positionBooleans[1] = false;
+                    $scope.positionparametersErrMsg = "";
+                    $scope.positionBooleans[2] = false;
+                    $scope.positionBooleans[0] = true;
+                    $scope.positionBooleans[1] = true;
+                    $scope.positionBooleans[3] = true;
                 }
-                else if(isDiffPositionVeh === true){
+                else if(isDiffPositionVeh === true && positionSettingsfiltered1.length !== 3){
                     $scope.vehicle[$scope.currentVehicleId] = "";
                     $scope.positionData[$scope.currentVehicleId] = [];
                     $scope.positionBooleans[2] = false;
+                    $scope.positionBooleans[0] = true;
+                    $scope.positionBooleans[1] = true;
+                    $scope.positionBooleans[3] = true;
                 }
-            }else {
+            }else if(positionSettings.length === 0){
                 $scope.vehicle[$scope.currentVehicleId] = "";
                 $scope.positionData[$scope.currentVehicleId] = [];
                 $scope.positionBooleans[3] = false;
-            }   
+                $scope.positionBooleans[0] = true;
+                $scope.positionBooleans[1] = true;
+                $scope.positionBooleans[2] = true;
+            }
+            else if(positionSettings.length < 3){
+                $scope.vehicle[$scope.currentVehicleId] = "";
+                $scope.positionData[$scope.currentVehicleId] = [];
+                $scope.positionBooleans[0] = false;
+                $scope.positionBooleans[1] = true;
+                $scope.positionBooleans[2] = true;
+                $scope.positionBooleans[3] = true;
+            }  
 
             var velocityArray = [];
             var velocitySettings = [];
@@ -325,36 +373,84 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                 velocitySettings = velocityArray;
             }
 
+            // if($scope.totalVelocityArray[$scope.currentVehicleId].length > 0){
+            //     $scope.velocityparametersErrMsg = "";
+            // }
+
             if(velocitySettings.length === 3){
                 var velocitySettingsfiltered1 = removeCategories(velocitySettings); //to remove selected group or categories while opening the list
-                var velocitySettingsfiltered2 = removeDuplicates(velocitySettingsfiltered1,"id");// to remove duplicate selection of a single value
-                var isDiffVelocityVeh = isAnyDiffVehicles(velocitySettingsfiltered2,$scope.currentScreenVehicle);// to check if all the values are of the same vehicle
-                var velocityfilteredData = filterSelectedData(velocitySettingsfiltered2); // check if there are any different values of a category
-                if(isDiffVelocityVeh === false && velocityfilteredData.length === velocitySettingsfiltered2.length){ // condition to check if the values are of same vehicle and same category
+               // var velocitySettingsfiltered2 = removeDuplicates(velocitySettingsfiltered1,"id");// to remove duplicate selection of a single value
+                var isDiffVelocityVeh = isAnyDiffVehicles(velocitySettingsfiltered1,$scope.currentScreenVehicle);// to check if all the values are of the same vehicle
+               // var velocityfilteredData = filterSelectedData(velocitySettingsfiltered2); // check if there are any different values of a category
+               // if(isDiffVelocityVeh === false && velocityfilteredData.length === velocitySettingsfiltered2.length){ // condition to check if the values are of same vehicle and same category
+                if(isDiffVelocityVeh === false && velocitySettingsfiltered1.length === 3){    
                     if(velocitySettingsfiltered1.length === 3){  
-                        $scope.velocityData[$scope.currentVehicleId] = angular.copy(velocitySettingsfiltered2);
+                        $scope.velocityData[$scope.currentVehicleId] = angular.copy(velocitySettingsfiltered1);
                         $scope.vehicle[$scope.currentVehicleId] = velocitySettingsfiltered1[0].vehicle;
-                        $scope.totalVelocityArray[$scope.currentVehicleId] = angular.copy(velocitySettingsfiltered2);
+                        $scope.totalVelocityArray[$scope.currentVehicleId] = angular.copy(velocitySettingsfiltered1);
                         $scope.velocityparametersErrMsg = "";
-                    }else if(velocitySettingsfiltered1.length < 3){
+                        $scope.velocityBooleans[0] = true;
+                        $scope.velocityBooleans[1] = true;
+                        $scope.velocityBooleans[2] = true;
+                        $scope.velocityBooleans[3] = true;
+                    }
+                    else if(velocitySettingsfiltered1.length < 3){
                         $scope.vehicle[$scope.currentVehicleId] = "";
                         $scope.velocityData[$scope.currentVehicleId] = [];
                         $scope.velocityBooleans[0] = false;
+                        $scope.velocityBooleans[1] = true;
+                        $scope.velocityBooleans[2] = true;
+                        $scope.velocityBooleans[3] = true;
                     }
-                }else if(isDiffVelocityVeh === false && velocityfilteredData.length !== velocitySettingsfiltered2.length){
+                }
+                else if(velocitySettingsfiltered1.length < 3){
                     $scope.vehicle[$scope.currentVehicleId] = "";
                     $scope.velocityData[$scope.currentVehicleId] = [];
-                    $scope.velocityBooleans[1] = false;
+                    $scope.velocityBooleans[0] = false;
+                    $scope.velocityBooleans[1] = true;
+                    $scope.velocityBooleans[2] = true;
+                    $scope.velocityBooleans[3] = true;
                 }
-                else if(isDiffVelocityVeh === true){
+                // else if(isDiffVelocityVeh === false){
+                //     $scope.vehicle[$scope.currentVehicleId] = "";
+                //     $scope.velocityData[$scope.currentVehicleId] = [];
+                //     $scope.velocityBooleans[1] = false;
+                //     $scope.velocityBooleans[0] = true;
+                //     $scope.velocityBooleans[2] = true;
+                //     $scope.velocityBooleans[3] = true;
+                // }
+                else if(isDiffVelocityVeh === true && velocitySettingsfiltered1.length === 3){
+                    $scope.vehicle[$scope.currentVehicleId] = "";
+                    $scope.velocityData[$scope.currentVehicleId] = [];
+                    $scope.velocityparametersErrMsg = "";
+                    $scope.velocityBooleans[2] = false;
+                    $scope.velocityBooleans[0] = true;
+                    $scope.velocityBooleans[1] = true;
+                    $scope.velocityBooleans[3] = true;
+                }
+                else if(isDiffVelocityVeh === true && velocitySettingsfiltered1.length !== 3){
                     $scope.vehicle[$scope.currentVehicleId] = "";
                     $scope.velocityData[$scope.currentVehicleId] = [];
                     $scope.velocityBooleans[2] = false;
+                    $scope.velocityBooleans[0] = true;
+                    $scope.velocityBooleans[1] = true;
+                    $scope.velocityBooleans[3] = true;
                 }
-            }else {
+            }else if(velocitySettings.length === 0) {
                 $scope.vehicle[$scope.currentVehicleId] = "";
                 $scope.velocityData[$scope.currentVehicleId] = [];
-                $scope.velocityBooleans[3] = false;                
+                $scope.velocityBooleans[3] = false;
+                $scope.velocityBooleans[0] = true;
+                $scope.velocityBooleans[1] = true;
+                $scope.velocityBooleans[2] = true;                
+            }
+            else if(velocitySettings.length < 3){
+                $scope.vehicle[$scope.currentVehicleId] = "";
+                $scope.velocityData[$scope.currentVehicleId] = [];
+                $scope.velocityBooleans[0] = false;
+                $scope.velocityBooleans[1] = true;
+                $scope.velocityBooleans[2] = true;
+                $scope.velocityBooleans[3] = true;
             }      
         }
         else
@@ -435,62 +531,31 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
     $scope.saveParameters = function(widget){
         $scope.vehicleMsg = "";
         //display alerts for conditions that were originally checked in getValue
-        if( (!$scope.positionBooleans[3] || !$scope.positionBooleans[0]) && (!$scope.velocityBooleans[3] || !$scope.velocityBooleans[0])){
-            $scope.positionparametersErrMsg = "Required: all position values(x,y,z)!";
-            $scope.velocityparametersErrMsg = "Required: all velocity values(x,y,z)!";
-        }
-        else if(!$scope.positionBooleans[2] && !$scope.velocityBooleans[2]){
-            $scope.positionparametersErrMsg = "Select from same vehicle!";
-            $scope.velocityparametersErrMsg = "Select from same vehicle!";
-        }else if(!$scope.positionBooleans[1] && !$scope.velocityBooleans[1]){
-            $scope.positionparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
-            $scope.velocityparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
-        }else if(!$scope.positionBooleans[2] && !$scope.velocityBooleans[1]){
-            $scope.positionparametersErrMsg = "Select from same vehicle!";
-            $scope.velocityparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
-        }else if(!$scope.positionBooleans[1] && !$scope.velocityBooleans[2]){
-            $scope.positionparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
-            $scope.velocityparametersErrMsg = "Select from same vehicle!";
-        }
-        else if((!$scope.positionBooleans[3] || !$scope.positionBooleans[0]) && !$scope.velocityBooleans[2]){
-            $scope.positionparametersErrMsg = "Required: all position values(x,y,z)!";
-            $scope.velocityparametersErrMsg = "Select from same vehicle!";
-        }else if(!$scope.positionBooleans[2] && (!$scope.velocityBooleans[3] || !$scope.velocityBooleans[0])){
-            $scope.positionparametersErrMsg = "Select from same vehicle!";
-            $scope.velocityparametersErrMsg = "Required: all velocity values(x,y,z)!";
-        }
-        else if((!$scope.positionBooleans[3] || !$scope.positionBooleans[0]) && !$scope.velocityBooleans[1]){
-            $scope.positionparametersErrMsg = "Required: all position values(x,y,z)!";
-            $scope.velocityparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
-        }else if(!$scope.positionBooleans[1] && (!$scope.velocityBooleans[3] || !$scope.velocityBooleans[0])){
-            $scope.positionparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
-            $scope.velocityparametersErrMsg = "Required: all velocity values(x,y,z)!";
-        }
-        else if(!$scope.positionBooleans[3])
+        if($scope.totalPositionArray[$scope.currentVehicleId].length === 0)
         {
-            $scope.positionparametersErrMsg = "Required: all position values(x,y,z)!";
-        }
-        else if(!$scope.positionBooleans[2])
-        {
-            $scope.positionparametersErrMsg = "Select from same vehicle!";
-        }
-        else if(!$scope.positionBooleans[1])
-        {
-             $scope.positionparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
+            $scope.positionparametersErrMsg = "Please fill out this field.";
         }
         else if(!$scope.positionBooleans[0])
         {
              $scope.positionparametersErrMsg = "Required: all position values(x,y,z)!";
         }
-        else if(!$scope.velocityBooleans[3])
+        else if(!$scope.positionBooleans[2])
         {
-            $scope.velocityparametersErrMsg = "Required: all velocity values(x,y,z)!";
+            $scope.positionparametersErrMsg = "Select parameters from vehicle: "+$scope.currentScreenVehicle+"!";
+        }
+        else if(!$scope.positionBooleans[1] && $scope.totalPositionArray[$scope.currentVehicleId].length > 0 && $scope.totalPositionArray[$scope.currentVehicleId].length < 3)
+        {
+             $scope.positionparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
+        }
+        else if($scope.totalVelocityArray[$scope.currentVehicleId].length === 0)
+        {
+            $scope.velocityparametersErrMsg = "Please fill out this field.";
         }
         else if(!$scope.velocityBooleans[2])
         {
-            $scope.velocityparametersErrMsg = "Select from same vehicle!";
+            $scope.velocityparametersErrMsg =  "Select parameters from vehicle: "+$scope.currentScreenVehicle+"!";;
         }
-        else if(!$scope.velocityBooleans[1])
+        else if(!$scope.velocityBooleans[1] && $scope.totalVelocityArray[$scope.currentVehicleId].length > 0 && $scope.totalVelocityArray[$scope.currentVehicleId].length < 3)
         {
             $scope.velocityparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
         }
@@ -564,6 +629,10 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             dashboardService.setLeftLock($scope.lock.lockLeft);
         }
         $scope.vehicleMsg = "";
+        $scope.velocityBooleans[0] = true;
+        $scope.velocityBooleans[1] = true;
+        $scope.velocityBooleans[2] = true;
+        $scope.velocityBooleans[3] = true;
     }
 
     $scope.openPositionList = function(vehicleId) {
