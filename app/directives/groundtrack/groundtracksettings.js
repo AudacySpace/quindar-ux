@@ -114,15 +114,17 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             if(count === (vehSelectedCount * 6)){
                 widget.main = true;
                 widget.settings.active = false;
+                $scope.vehicleMsg  = "";
                 previousCheckedValues = angular.copy($scope.checkedValues);
             } else {
                 widget.main = false;
                 widget.settings.active = true;
             }
         } else {
-            widget.main = false;
-            widget.settings.active = true;
-            $scope.vehicleMsg = "Please select atleast one vehicle before you save!";
+            widget.main = true;
+            widget.settings.active = false;
+            $scope.vehicleMsg  = "";
+            //$scope.vehicleMsg = "Please select atleast one vehicle before you save!";
         }
     }
 

@@ -197,10 +197,10 @@ describe('Testing Groundtrack settings controller', function () {
 
         scope.saveWidget(scope.widget);
         
-        expect(scope.widget.main).toEqual(false);
-        expect(scope.widget.settings.active).toEqual(true);
+        expect(scope.widget.main).toEqual(true);
+        expect(scope.widget.settings.active).toEqual(false);
         expect(scope.widget.settings.vehicles).toEqual([]);
-        expect(scope.vehicleMsg ).toEqual("Please select atleast one vehicle before you save!");
+        expect(scope.vehicleMsg ).toEqual("");
     });
 
 
