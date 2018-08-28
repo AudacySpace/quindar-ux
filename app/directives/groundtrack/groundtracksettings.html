@@ -19,7 +19,7 @@
                             </li>
                         </ul>
                     </div>
-                    <span ng-show="vehicleMsg.length > 0" style="font-size:12px;color:#dd2c00"> {{vehicleMsg}} </span> 
+                    <span ng-show="vehicleMsg.length > 0 && vehicleSelected === true" style="font-size:12px;color:#dd2c00"> {{vehicleMsg}} </span> 
                 </div>
             </div>
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
@@ -156,7 +156,7 @@
                 </li>
             </ul>
       <!--       <span ng-hide="vehicleSelected"> Required </span>  -->
-      <span ng-show="vehicleMsg.length > 0" style="font-size:8px;color:#dd2c00" class="req-label"> {{vehicleMsg}} </span> 
+      <span ng-show="vehicleMsg.length > 0 && vehicleSelected === true" style="font-size:8px;color:#dd2c00" class="req-label"> {{vehicleMsg}} </span> 
         </div>
         <hr class="hr-double-col1">
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveWidget(widget)">SAVE</button>
@@ -223,7 +223,7 @@
                     </ul>
                 </div>
              <!--    <span ng-hide="vehicleSelected" class="req-label"> Required </span> -->
-             <span ng-show="vehicleMsg.length > 0" style="font-size:8px;color:#dd2c00" class="req-label"> {{vehicleMsg}} </span> 
+             <span ng-show="vehicleMsg.length > 0 && vehicleSelected === true" style="font-size:8px;color:#dd2c00" class="req-label"> {{vehicleMsg}} </span> 
             </div>
             <div class="col-sm-1 tablecellstyle1"></div> 
         </div>

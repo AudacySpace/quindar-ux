@@ -199,7 +199,7 @@ describe('Testing Groundtrack settings controller', function () {
         
         expect(scope.widget.main).toEqual(true);
         expect(scope.widget.settings.active).toEqual(false);
-        expect(scope.widget.settings.vehicles).toEqual([]);
+        expect(scope.widget.settings.vehicles.length).toEqual(1);
         expect(scope.vehicleMsg ).toEqual("");
     });
 

@@ -107,6 +107,18 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                     $scope.vehicleMsg = "Please select all parameters for selected vehicles.";
                     break;
                 }
+            }else {
+                var vehicle = {
+                    "name" : $scope.settings.vehicles[i].label,
+                    "dataStatus" : $scope.checkedValues[i].status,
+                    "orbitStatus" : $scope.settings.orbitstatus[i],
+                    "iconStatus" : $scope.settings.iconstatus[i],
+                    "color": colors[i],
+                    "pdata":$scope.settings.pdata[i],
+                    "vdata":$scope.settings.vdata[i]
+                }
+                $scope.widget.settings.vehicles.push(vehicle);
+                $scope.vehicleMsg  = "";
             }
         }
 
@@ -119,11 +131,13 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             } else {
                 widget.main = false;
                 widget.settings.active = true;
+               // previousCheckedValues = angular.copy($scope.checkedValues);
             }
         } else {
             widget.main = true;
             widget.settings.active = false;
             $scope.vehicleMsg  = "";
+            previousCheckedValues = angular.copy($scope.checkedValues);
             //$scope.vehicleMsg = "Please select atleast one vehicle before you save!";
         }
     }
