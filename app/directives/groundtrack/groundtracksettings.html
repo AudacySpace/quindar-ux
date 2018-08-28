@@ -6,6 +6,7 @@
                 <div class="row">
                     <label for="SelectSpaceCraft">Select Spacecraft:</label>
                 </div>
+                <div class="row settingsspace" style="display: table"></div>
                 <div class="row">
                     <div class="dropdown">
                         <button type="button" class="btn dropdown-toggle load-widget-styles" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-click="createVehicles()">
@@ -18,13 +19,16 @@
                             </li>
                         </ul>
                     </div>
-                    <span ng-hide="vehicleSelected"> Required </span> 
+                    <span ng-show="vehicleMsg.length > 0 && vehicleSelected === true" style="font-size:12px;color:#dd2c00"> {{vehicleMsg}} </span> 
                 </div>
             </div>
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
         </div>
+
         <!-- Second Screen-->
-        <div class="row settingsrightcol"  ng-show="secondScreen" style="display: table">
+        <form name="groundTrackForm" style="display:inline">
+        <div class="row settingsrightcol"  ng-show="secondScreen" style="display: table; height:23.33%;">
+          
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
             <div class="col-sm-4" style="display: table-cell; float:none">
                 <!-- Multi selection of data from data menu -->
@@ -33,25 +37,25 @@
                 </div>
                 <div class="row settingsspace" style="display: table"></div>
                 <div class="btn-group" style="width:100%" uib-dropdown>
-                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('position', currentVehicleId)" style="width:75%;border-radius:0;color:grey" >{{readValues('position')}}</button>
+                    <input id="split-button" name="positionparameters" type="text" class="btn btn-default gtforminput" ng-click="getTelemetrydata('position', currentVehicleId)" style="width:75%;border-radius:0;color:grey" value="{{readValues('position')}}" placeholder="Click for data" readonly required/>
                     <button type="button" class="btn btn-default" style="width:25%;border-radius:0;padding-left:0px;padding-right:0px" uib-dropdown-toggle>
                         <span class="caret"></span>
                         <span class="sr-only">Split button!</span>
                     </button>
                     <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0" aria-labelledby="split-button">
-                        <!--<li role="menuitem"><a href="#" ng-click="getValue('position',currentVehicleId)">Apply</a></li>-->
                         <li role="menuitem"><a href="#" ng-click="openPositionList(currentVehicleId)">Show Parameters</a></li>
                     </ul>
                 </div>
-                    <span ng-hide="readValues('position') != 'Click for data'"> Required </span>
+                <span ng-show="groundTrackForm.positionparameters.$touched && groundTrackForm.positionparameters.$invalid" style="font-size:12px;color:#dd2c00"> Required </span>
+                <span ng-show="positionparametersErrMsg.length > 0" style="font-size:12px;color:#dd2c00"> {{ positionparametersErrMsg }} </span>
                 <!-- End of Multi Selection of Data from Data menu -->
-                <div class="row" style="margin-top:5%">
+<!--                 <div class="row" style="margin-top:5%">
                     <label for="SatelliteOrbit">Orbit</label>
                    <div class="input-group" style="margin-top:0px;margin-bottom:0px" ng-cloak>
                         <md-switch class="md-primary"  md-theme="blueTheme" aria-label="Switch No Ink" ng-model="orbitstatus[currentVehicleId]" style="margin-top:0px;margin-bottom:0px">
                         </md-switch>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="col-sm-2" style="display: table-cell; float:none"></div>
             <div class="col-sm-4" style="display: table-cell; float:none">
@@ -61,28 +65,57 @@
                 </div>
                 <div class="row settingsspace" style="display: table"></div>
                 <div class="btn-group" style="width:100%" uib-dropdown>
-                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('velocity', currentVehicleId)" style="width:75%;border-radius:0;color:grey" >{{readValues('velocity')}}</button>
+                    <input id="split-button" name="velocityparameters" type="text" class="btn btn-default gtforminput" ng-click="getTelemetrydata('velocity', currentVehicleId)" style="width:75%;border-radius:0;color:grey" value="{{readValues('velocity')}}" placeholder="Click for data" readonly required/>
                     <button type="button" class="btn btn-default" style="width:25%;border-radius:0;padding-left:0px;padding-right:0px" uib-dropdown-toggle>
                         <span class="caret"></span>
                         <span class="sr-only">Split button!</span>
                     </button>
                     <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0" aria-labelledby="split-button">
-                        <!--<li role="menuitem"><a href="#" ng-click="getValue('velocity',currentVehicleId)">Apply</a></li>-->
                         <li role="menuitem"><a href="#" ng-click="openVelocityList(currentVehicleId)">Show Parameters</a></li>
                     </ul>
                 </div>
-                    <span ng-hide="readValues('velocity') != 'Click for data'"> Required </span>
+                <span ng-show="groundTrackForm.velocityparameters.$touched && groundTrackForm.velocityparameters.$invalid" style="font-size:12px;color:#dd2c00"> Required </span>
+                <span ng-show="velocityparametersErrMsg.length > 0" style="font-size:12px;color:#dd2c00"> {{ velocityparametersErrMsg }} </span>
+
                 <!-- End of Multi Selection of Data from Data menu -->
-                <div class="row" style="margin-top:5%">
+<!--                 <div class="row" style="margin-top:5%">
+                    <label for="SatelliteIcon">Icon</label>
+                    <div class="input-group" style="margin-top:0px;margin-bottom:0px" ng-cloak>
+                        <md-switch class="md-primary"  md-theme="blueTheme" aria-label="Switch No Ink" ng-model="iconstatus[currentVehicleId]" style="margin-top:0px;margin-bottom:0px">
+                        </md-switch>
+                    </div>
+                </div> -->
+            </div>
+            <div class="col-sm-1" style="display: table-cell; float:none"></div>
+
+        </div>
+            <div class="row settingsrightcol" ng-show="secondScreen" style="display: table; height:13.33%;"></div>
+         <div class="row settingsrightcol" ng-show="secondScreen" style="display: table; height:23.33%;">
+            <div class="col-sm-1" style="display: table-cell; float:none"></div>
+            <div class="col-sm-4" style="display: table-cell; float:none">               
+            <!--  <div class="row" style="margin-top:5%"> -->
+                    <label for="SatelliteOrbit">Orbit</label>
+                   <div class="input-group" style="margin-top:0px;margin-bottom:0px" ng-cloak>
+                        <md-switch class="md-primary"  md-theme="blueTheme" aria-label="Switch No Ink" ng-model="orbitstatus[currentVehicleId]" style="margin-top:0px;margin-bottom:0px">
+                        </md-switch>
+                    </div>
+       <!--          </div> -->
+                
+            </div>
+            <div class="col-sm-2" style="display: table-cell; float:none"></div>
+            <div class="col-sm-4" style="display: table-cell; float:none">
+                                <!-- <div class="row" style="margin-top:5%"> -->
                     <label for="SatelliteIcon">Icon</label>
                     <div class="input-group" style="margin-top:0px;margin-bottom:0px" ng-cloak>
                         <md-switch class="md-primary"  md-theme="blueTheme" aria-label="Switch No Ink" ng-model="iconstatus[currentVehicleId]" style="margin-top:0px;margin-bottom:0px">
                         </md-switch>
                     </div>
                 </div>
-            </div>
+      <!--       </div> -->
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
         </div>
+        <div class="row settingsrightcol" ng-show="firstScreen" style="display: table; height:3.33%;"></div>
+         <div class="row settingsrightcol" ng-show="secondScreen" style="display: table; height:13.33%;"></div>
         <div class="row settingsbottom" style="display: table">
             <div class="row">
                 <div class="col-sm-1"></div>
@@ -94,16 +127,17 @@
             <div class="row">
                 <div class="col-sm-1"></div>
                 <div class="col-sm-10" ng-show="firstScreen">
-                    <button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="saveWidget(widget)">SAVE</button>
-                    <button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="closeWidget(widget)">CLOSE</button>
+                    <button type="button" class="btn btn-primary col-sm-2 sbtns" ng-click="saveWidget(widget)">SAVE</button>
+                    <button type="button" class="btn btn-primary col-sm-2 sbtns" ng-click="closeWidget(widget)">CLOSE</button>
                 </div>
                 <div class="col-sm-10" ng-show="secondScreen">
                     <button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="saveParameters(widget)">SAVE</button>
-                    <button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="closeParameters(widget)">CLOSE</button>
+                    <button type="button" class="btn btn-primary col-sm-2 sbtns" ng-click="closeParameters(widget)">CLOSE</button>
                 </div>
                 <div class="col-sm-1"></div>
             </div>
-        </div>  
+        </div> 
+        </form> 
     </div>      
 </div>
 
@@ -121,44 +155,47 @@
                     <button ng-show="checkedValues[vehicle.id].status" class="fa fa-cog gtdropdownicons" aria-hidden="true" ng-click="alertUser($event,vehicle.label,vehicle.id,checkedValues[vehicle.id].status)" data-backdrop="static" data-keyboard="false"></button>
                 </li>
             </ul>
-            <span ng-hide="vehicleSelected"> Required </span> 
+      <!--       <span ng-hide="vehicleSelected"> Required </span>  -->
+      <span ng-show="vehicleMsg.length > 0 && vehicleSelected === true" style="font-size:8px;color:#dd2c00" class="req-label"> {{vehicleMsg}} </span> 
         </div>
         <hr class="hr-double-col1">
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveWidget(widget)">SAVE</button>
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeWidget(widget)">CLOSE</button>    
     </form>
-    <form ng-show="secondScreen">
+    <form ng-show="secondScreen" name="groundTrackForm">
        <label for="SelectSpaceCraft" class="mbl-label">Select Parameters for: {{currentScreenVehicle}}</label>
         <div class="row">
             <label for="SelectPosition" class="mbl-label">Select Position:</label>
         </div>
         <div class="btn-group mbl-input-grp" uib-dropdown>
-            <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('position', currentVehicleId)" style="width:88%;border-radius:0;color:grey;min-width:88%;padding-top:3px;padding-bottom:3px;font-size:10px;text-align:left" >{{readValues('position')}}</button>
+            <input id="split-button" type="text" class="btn btn-default gtforminput" ng-click="getTelemetrydata('position', currentVehicleId)" style="width:88%;border-radius:0;color:grey;min-width:88%;padding-top:3px;padding-bottom:3px;font-size:10px;text-align:left" name="positionparameters" value="{{readValues('position')}}" placeholder="Click for data" readonly required/>
             <button type="button" class="btn btn-default" style="width:12%;border-radius:0;min-width:12%;padding-top:3px;padding-bottom:3px;font-size:10px" uib-dropdown-toggle>
                 <span class="caret"></span>
                 <span class="sr-only">Split button!</span>
             </button>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0;font-size:9px" aria-labelledby="split-button">
-                <!--<li role="menuitem"><a href="#" ng-click="getValue('position',currentVehicleId)">Apply</a></li>-->
                 <li role="menuitem"><a href="#" ng-click="openPositionList(currentVehicleId)">Show Parameters</a></li>
             </ul>
         </div>
-        <span ng-hide="readValues('position') != 'Click for data'" class="req-label"> Required </span>
+   <!--      <span ng-hide="readValues('position') != 'Click for data'" class="req-label"> Required </span> -->
+        <span ng-show="groundTrackForm.positionparameters.$touched && groundTrackForm.positionparameters.$invalid" style="font-size:8px;color:#dd2c00" class="req-label"> Required </span>
+        <span ng-show="positionparametersErrMsg.length > 0" style="font-size:8px;color:#dd2c00" class="req-label"> {{ positionparametersErrMsg }} </span>
         <div class="row">
             <label for="SelectVelocity" class="mbl-label">Select Velocity</label>
         </div>
         <div class="btn-group mbl-input-grp" uib-dropdown>
-            <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('velocity', currentVehicleId)" style="width:88%;border-radius:0;color:grey;min-width:88%;padding-top:3px;padding-bottom:3px;font-size:10px;text-align:left" >{{readValues('velocity')}}</button>
+            <input id="split-button" type="text" class="btn btn-default gtforminput" ng-click="getTelemetrydata('velocity', currentVehicleId)" style="width:88%;border-radius:0;color:grey;min-width:88%;padding-top:3px;padding-bottom:3px;font-size:10px;text-align:left" name="velocityparameters" value="{{readValues('velocity')}}" placeholder="Click for data" readonly required/>
             <button type="button" class="btn btn-default" style="width:12%;border-radius:0;min-width:12%;padding-top:3px;padding-bottom:3px;font-size:10px" uib-dropdown-toggle>
                 <span class="caret"></span>
                 <span class="sr-only">Split button!</span>
             </button>
             <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0;font-size:9px" aria-labelledby="split-button">
-                <!--<li role="menuitem"><a href="#" ng-click="getValue('velocity',currentVehicleId)">Apply</a></li>-->
                 <li role="menuitem"><a href="#" ng-click="openVelocityList(currentVehicleId)">Show Parameters</a></li>
             </ul>
         </div>
-        <span ng-hide="readValues('velocity') != 'Click for data'" class="req-label"> Required </span>
+        <!-- <span ng-hide="readValues('velocity') != 'Click for data'" class="req-label"> Required </span> -->
+        <span ng-show="groundTrackForm.velocityparameters.$touched && groundTrackForm.velocityparameters.$invalid" style="font-size:8px;color:#dd2c00" class="req-label"> Required </span>
+        <span ng-show="velocityparametersErrMsg.length > 0" style="font-size:8px;color:#dd2c00" class="req-label"> {{ velocityparametersErrMsg }} </span>
         <hr class="hr-double-col1-2-gt">
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveParameters(widget)">SAVE</button>
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeParameters(widget)">CLOSE</button>     
@@ -185,7 +222,8 @@
                         </li>
                     </ul>
                 </div>
-                <span ng-hide="vehicleSelected" class="req-label"> Required </span>
+             <!--    <span ng-hide="vehicleSelected" class="req-label"> Required </span> -->
+             <span ng-show="vehicleMsg.length > 0 && vehicleSelected === true" style="font-size:8px;color:#dd2c00" class="req-label"> {{vehicleMsg}} </span> 
             </div>
             <div class="col-sm-1 tablecellstyle1"></div> 
         </div>
@@ -208,7 +246,8 @@
                 <div class="col-sm-1 tablecellstyle1"></div>
             </div>  
         </div>
-    </div>  
+    </div> 
+    <form name="groundTrackForm"> 
     <div class="settingstablettop" ng-show="secondScreen">
         <div class="row settingstablet-col1-3el tablestyle">
             <div class="col-sm-1 tablecellstyle1"></div>
@@ -220,17 +259,17 @@
                     <label for="SelectPosition" class="mbl-label">Select Position</label>
                 </div>
                 <div class="btn-group mbl-input-grp" uib-dropdown>
-                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('position', currentVehicleId)" style="width:75%;border-radius:0;color:grey;padding-top:0px;padding-bottom:0px;font-size:9px;text-align:left" >{{readValues('position')}}</button>
+                    <input id="split-button" name="positionparameters" type="text" class="btn btn-default gtforminput" ng-click="getTelemetrydata('position', currentVehicleId)" style="width:75%;border-radius:0;color:grey;padding-top:0px;padding-bottom:0px;font-size:9px;text-align:left" placeholder="Click for data" value="{{readValues('position')}}" readonly required/>
                     <button type="button" class="btn btn-default" style="width:25%;border-radius:0;padding-top:0px;padding-left:0px;padding-right:0px;padding-bottom:0px;font-size:9px" uib-dropdown-toggle>
                         <span class="caret"></span>
                         <span class="sr-only">Split button!</span>
                     </button>
                 <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0;font-size:9px" aria-labelledby="split-button">
-                    <!--<li role="menuitem"><a href="#" ng-click="getValue('position',currentVehicleId)">Apply</a></li>-->
                     <li role="menuitem"><a href="#" ng-click="openPositionList(currentVehicleId)">Show Parameters</a></li>
                 </ul>
                 </div>
-                <span ng-hide="readValues('position') != 'Click for data'" class="pull-right req-label"> Required </span>
+                <span ng-show="groundTrackForm.positionparameters.$touched && groundTrackForm.positionparameters.$invalid" style="font-size:8px;color:#dd2c00" class="req-label"> Required </span>
+                <span ng-show="positionparametersErrMsg.length > 0" style="font-size:8px;color:#dd2c00" class="req-label"> {{ positionparametersErrMsg }} </span>
             </div>
             <div class="col-sm-1 tablecellstyle1"></div> 
         </div>
@@ -241,17 +280,17 @@
                     <label for="SelectVelocity" class="mbl-label">Select Velocity</label>
                 </div>
                 <div class="btn-group mbl-input-grp" uib-dropdown>
-                    <button id="split-button" type="button" class="btn btn-default" ng-click="getTelemetrydata('velocity', currentVehicleId)" style="width:75%;border-radius:0;color:grey;padding-top:0px;padding-bottom:0px;font-size:9px;text-align:left" >{{readValues('velocity')}}</button>
+                    <input id="split-button" name="velocityparameters" type="text" class="btn btn-default gtforminput" ng-click="getTelemetrydata('velocity', currentVehicleId)" style="width:75%;border-radius:0;color:grey;padding-top:0px;padding-bottom:0px;font-size:9px;text-align:left" placeholder="Click for data" value="{{readValues('velocity')}}" readonly required/>
                     <button type="button" class="btn btn-default" style="width:25%;border-radius:0;padding-top:0px;padding-bottom:0px;font-size:9px;padding-left:0px;padding-right:0px" uib-dropdown-toggle>
                         <span class="caret"></span>
                         <span class="sr-only">Split button!</span>
                     </button>
                     <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0;font-size:9px" aria-labelledby="split-button">
-                        <!--<li role="menuitem"><a href="#" ng-click="getValue('velocity',currentVehicleId)">Apply</a></li>-->
                         <li role="menuitem"><a href="#" ng-click="openVelocityList(currentVehicleId)">Show Parameters</a></li>
                     </ul>
                 </div>
-                 <span ng-hide="readValues('velocity') != 'Click for data'" class="pull-right req-label"> Required </span>
+                <span ng-show="groundTrackForm.velocityparameters.$touched && groundTrackForm.velocityparameters.$invalid" style="font-size:8px;color:#dd2c00" class="req-label"> Required </span>
+                <span ng-show="velocityparametersErrMsg.length > 0" style="font-size:8px;color:#dd2c00" class="req-label"> {{ velocityparametersErrMsg }} </span>
             </div>
             <div class="col-sm-1 tablecellstyle1"></div>
         </div>
@@ -273,7 +312,8 @@
                 <div class="col-sm-1 tablecellstyle1"></div>
             </div>  
         </div>
-    </div>            
+    </div>
+    </form>            
 </div>
 
 

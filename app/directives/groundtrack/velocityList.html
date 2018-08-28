@@ -1,9 +1,9 @@
 <div class="modal-header">
-    <h4 class="modal-title" id="myModalLabel">Select Velocity Order</h4>
+    <h4 class="modal-title" id="myModalLabel">Selected Velocity Parameters</h4><small>Drag and drop to reorder</small>
 
 </div>
 <div class="modal-body" style="padding-left:20px; padding-right:20px;">
-    <h5><b>Required Order:</b>vx,vy,vz</h5>
+    <h5><b>Required Order for Velocity:</b>x,y,z</h5>
     <div id="scrollable-containerVelocityValues">
         <div class="sortable-row" as-sortable="sortableOptions" data-ng-model="$ctrl.data.tempVelocities[$ctrl.currentVehicleId]">
             <div ng-repeat="item in $ctrl.data.tempVelocities[$ctrl.currentVehicleId]" as-sortable-item>
