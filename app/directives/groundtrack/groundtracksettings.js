@@ -29,7 +29,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
     $scope.totalPositionArray = []; // temp array to receive velocity data from sidebar service
     $scope.chosenCategory; // variable to store field chosen
    // $scope.vehicleSelected = false; // required tag for vehicle selection
-
+    $scope.vehicleMsg = "";
     $scope.sortableOptionsPosition = {
         containment: '#scrollable-containerPositionValues',
         scrollableContainer: '#scrollable-containerPositionValues',
@@ -65,6 +65,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                 $scope.velocityData[i] = angular.copy(previousSettings.vdata[i]);
             }
         }
+        $scope.vehicleMsg  = "";
     }
 
     $scope.saveWidget = function(widget){
@@ -103,8 +104,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                     }
                     $scope.widget.settings.vehicles.push(vehicle);
                 }else {
-                    $window.alert("Please select all parameters for selected vehicle "
-                        + $scope.settings.vehicles[i].label + " or uncheck it!");
+                    $scope.vehicleMsg = "Please select all parameters for selected vehicles. ";
                     break;
                 }
             }
@@ -122,7 +122,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
         } else {
             widget.main = false;
             widget.settings.active = true;
-            $window.alert("Please select atleast one vehicle before you save!");
+            $scope.vehicleMsg = "Please select atleast one vehicle before you save!";
         }
     }
 
@@ -433,6 +433,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
     }
 
     $scope.saveParameters = function(widget){
+        $scope.vehicleMsg = "";
         //display alerts for conditions that were originally checked in getValue
         if( (!$scope.positionBooleans[3] || !$scope.positionBooleans[0]) && (!$scope.velocityBooleans[3] || !$scope.velocityBooleans[0])){
             $scope.positionparametersErrMsg = "Required: all position values(x,y,z)!";
@@ -461,13 +462,25 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             $scope.pselectionfocus = true;
             $scope.velocityparametersErrMsg = "Select from same vehicle!";
             $scope.vselectionfocus = true;
-        }else if((!$scope.positionBooleans[3] || !$scope.positionBooleans[0]) && !$scope.velocityBooleans[2]){
+        }
+        else if((!$scope.positionBooleans[3] || !$scope.positionBooleans[0]) && !$scope.velocityBooleans[2]){
             $scope.positionparametersErrMsg = "Required: all position values(x,y,z)!";
             $scope.pselectionfocus = true;
             $scope.velocityparametersErrMsg = "Select from same vehicle!";
             $scope.vselectionfocus = true;
         }else if(!$scope.positionBooleans[2] && (!$scope.velocityBooleans[3] || !$scope.velocityBooleans[0])){
             $scope.positionparametersErrMsg = "Select from same vehicle!";
+            $scope.pselectionfocus = true;
+            $scope.velocityparametersErrMsg = "Required: all velocity values(x,y,z)!";
+            $scope.vselectionfocus = true;
+        }
+        else if((!$scope.positionBooleans[3] || !$scope.positionBooleans[0]) && !$scope.velocityBooleans[1]){
+            $scope.positionparametersErrMsg = "Required: all position values(x,y,z)!";
+            $scope.pselectionfocus = true;
+            $scope.velocityparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
+            $scope.vselectionfocus = true;
+        }else if(!$scope.positionBooleans[1] && (!$scope.velocityBooleans[3] || !$scope.velocityBooleans[0])){
+            $scope.positionparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
             $scope.pselectionfocus = true;
             $scope.velocityparametersErrMsg = "Required: all velocity values(x,y,z)!";
             $scope.vselectionfocus = true;
@@ -521,7 +534,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                 scope: $scope,
                 resolve: {
                     dataLabel: function () {
-                        return "If position values(x,y,z) and velocity values(x,y,z) are selected?";
+                        return "Did you select position coordinates(x,y,z) and velocity coordinates(x,y,z)?";
                     },
                     dataItems: function(){
                         return $scope.settings;
@@ -577,6 +590,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             $scope.lock.lockLeft = false;
             dashboardService.setLeftLock($scope.lock.lockLeft);
         }
+        $scope.vehicleMsg = "";
     }
 
     $scope.openPositionList = function(vehicleId) {

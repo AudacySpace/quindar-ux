@@ -19,7 +19,7 @@
                             </li>
                         </ul>
                     </div>
-                    <span ng-hide="vehicleSelected" style="font-size:12px;color:#a94442"> Required </span> 
+                    <span ng-show="vehicleMsg.length > 0" style="font-size:12px;color:#dd2c00"> {{vehicleMsg}} </span> 
                 </div>
             </div>
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
@@ -46,8 +46,8 @@
                         <li role="menuitem"><a href="#" ng-click="openPositionList(currentVehicleId)">Show Parameters</a></li>
                     </ul>
                 </div>
-                <span ng-show="groundTrackForm.positionparameters.$touched && groundTrackForm.positionparameters.$invalid" style="font-size:12px;color:#a94442"> Required </span>
-                <span ng-show="positionparametersErrMsg.length > 0" style="font-size:12px;color:#a94442"> {{ positionparametersErrMsg }} </span>
+                <span ng-show="groundTrackForm.positionparameters.$touched && groundTrackForm.positionparameters.$invalid" style="font-size:12px;color:#dd2c00"> Required </span>
+                <span ng-show="positionparametersErrMsg.length > 0" style="font-size:12px;color:#dd2c00"> {{ positionparametersErrMsg }} </span>
                 <!-- End of Multi Selection of Data from Data menu -->
 <!--                 <div class="row" style="margin-top:5%">
                     <label for="SatelliteOrbit">Orbit</label>
@@ -74,8 +74,8 @@
                         <li role="menuitem"><a href="#" ng-click="openVelocityList(currentVehicleId)">Show Parameters</a></li>
                     </ul>
                 </div>
-                <span ng-show="groundTrackForm.velocityparameters.$touched && groundTrackForm.velocityparameters.$invalid" style="font-size:12px;color:#a94442"> Required </span>
-                <span ng-show="velocityparametersErrMsg.length > 0" style="font-size:12px;color:#a94442"> {{ velocityparametersErrMsg }} </span>
+                <span ng-show="groundTrackForm.velocityparameters.$touched && groundTrackForm.velocityparameters.$invalid" style="font-size:12px;color:#dd2c00"> Required </span>
+                <span ng-show="velocityparametersErrMsg.length > 0" style="font-size:12px;color:#dd2c00"> {{ velocityparametersErrMsg }} </span>
 
                 <!-- End of Multi Selection of Data from Data menu -->
 <!--                 <div class="row" style="margin-top:5%">
@@ -155,7 +155,8 @@
                     <button ng-show="checkedValues[vehicle.id].status" class="fa fa-cog gtdropdownicons" aria-hidden="true" ng-click="alertUser($event,vehicle.label,vehicle.id,checkedValues[vehicle.id].status)" data-backdrop="static" data-keyboard="false"></button>
                 </li>
             </ul>
-            <span ng-hide="vehicleSelected"> Required </span> 
+      <!--       <span ng-hide="vehicleSelected"> Required </span>  -->
+      <span ng-show="vehicleMsg.length > 0" style="font-size:8px;color:#dd2c00" class="req-label"> {{vehicleMsg}} </span> 
         </div>
         <hr class="hr-double-col1">
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveWidget(widget)">SAVE</button>
@@ -177,8 +178,8 @@
             </ul>
         </div>
    <!--      <span ng-hide="readValues('position') != 'Click for data'" class="req-label"> Required </span> -->
-        <span ng-show="groundTrackForm.positionparameters.$touched && groundTrackForm.positionparameters.$invalid" style="font-size:8px;color:#a94442" class="req-label"> Required </span>
-        <span ng-show="positionparametersErrMsg.length > 0" style="font-size:8px;color:#a94442" class="req-label"> {{ positionparametersErrMsg }} </span>
+        <span ng-show="groundTrackForm.positionparameters.$touched && groundTrackForm.positionparameters.$invalid" style="font-size:8px;color:#dd2c00" class="req-label"> Required </span>
+        <span ng-show="positionparametersErrMsg.length > 0" style="font-size:8px;color:#dd2c00" class="req-label"> {{ positionparametersErrMsg }} </span>
         <div class="row">
             <label for="SelectVelocity" class="mbl-label">Select Velocity</label>
         </div>
@@ -193,8 +194,8 @@
             </ul>
         </div>
         <!-- <span ng-hide="readValues('velocity') != 'Click for data'" class="req-label"> Required </span> -->
-        <span ng-show="groundTrackForm.velocityparameters.$touched && groundTrackForm.velocityparameters.$invalid" style="font-size:8px;color:#a94442" class="req-label"> Required </span>
-        <span ng-show="velocityparametersErrMsg.length > 0" style="font-size:8px;color:#a94442" class="req-label"> {{ velocityparametersErrMsg }} </span>
+        <span ng-show="groundTrackForm.velocityparameters.$touched && groundTrackForm.velocityparameters.$invalid" style="font-size:8px;color:#dd2c00" class="req-label"> Required </span>
+        <span ng-show="velocityparametersErrMsg.length > 0" style="font-size:8px;color:#dd2c00" class="req-label"> {{ velocityparametersErrMsg }} </span>
         <hr class="hr-double-col1-2-gt">
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveParameters(widget)">SAVE</button>
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeParameters(widget)">CLOSE</button>     
@@ -221,7 +222,8 @@
                         </li>
                     </ul>
                 </div>
-                <span ng-hide="vehicleSelected" class="req-label"> Required </span>
+             <!--    <span ng-hide="vehicleSelected" class="req-label"> Required </span> -->
+             <span ng-show="vehicleMsg.length > 0" style="font-size:8px;color:#dd2c00" class="req-label"> {{vehicleMsg}} </span> 
             </div>
             <div class="col-sm-1 tablecellstyle1"></div> 
         </div>
@@ -266,8 +268,8 @@
                     <li role="menuitem"><a href="#" ng-click="openPositionList(currentVehicleId)">Show Parameters</a></li>
                 </ul>
                 </div>
-                <span ng-show="groundTrackForm.positionparameters.$touched && groundTrackForm.positionparameters.$invalid" style="font-size:8px;color:#a94442" class="req-label"> Required </span>
-                <span ng-show="positionparametersErrMsg.length > 0" style="font-size:8px;color:#a94442" class="req-label"> {{ positionparametersErrMsg }} </span>
+                <span ng-show="groundTrackForm.positionparameters.$touched && groundTrackForm.positionparameters.$invalid" style="font-size:8px;color:#dd2c00" class="req-label"> Required </span>
+                <span ng-show="positionparametersErrMsg.length > 0" style="font-size:8px;color:#dd2c00" class="req-label"> {{ positionparametersErrMsg }} </span>
             </div>
             <div class="col-sm-1 tablecellstyle1"></div> 
         </div>
@@ -287,8 +289,8 @@
                         <li role="menuitem"><a href="#" ng-click="openVelocityList(currentVehicleId)">Show Parameters</a></li>
                     </ul>
                 </div>
-                <span ng-show="groundTrackForm.velocityparameters.$touched && groundTrackForm.velocityparameters.$invalid" style="font-size:8px;color:#a94442" class="req-label"> Required </span>
-                <span ng-show="velocityparametersErrMsg.length > 0" style="font-size:8px;color:#a94442" class="req-label"> {{ velocityparametersErrMsg }} </span>
+                <span ng-show="groundTrackForm.velocityparameters.$touched && groundTrackForm.velocityparameters.$invalid" style="font-size:8px;color:#dd2c00" class="req-label"> Required </span>
+                <span ng-show="velocityparametersErrMsg.length > 0" style="font-size:8px;color:#dd2c00" class="req-label"> {{ velocityparametersErrMsg }} </span>
             </div>
             <div class="col-sm-1 tablecellstyle1"></div>
         </div>

@@ -102,8 +102,8 @@ describe('Testing Groundtrack settings controller', function () {
         expect(scope.velocityData).toEqual([[], []]);
         expect(scope.settings.pdata).toEqual([[], []]);
         expect(scope.settings.vdata).toEqual([[], []]);
-        expect(scope.widget.settings.totalPositionArray).toEqual([[], []]);
-        expect(scope.widget.settings.totalVelocityArray).toEqual([[], []]);
+        expect(scope.totalPositionArray).toEqual([[], []]);
+        expect(scope.totalVelocityArray).toEqual([[], []]);
         expect(scope.settings.orbitstatus).toEqual([true, true]);
         expect(scope.settings.iconstatus).toEqual([true, true]);
         expect(scope.checkedValues).toEqual([{status:false}, {status:false}])
