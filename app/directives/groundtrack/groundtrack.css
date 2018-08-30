@@ -181,6 +181,19 @@ div#scrollable-containerPositionValues{
     background: #fff;
 }
 
+input.inputBoxStyles {
+    width:75%;
+    border-radius:0;
+    color:grey;
+}
+
+button.buttonDrpDownStyles {
+    width:25%;
+    border-radius:0;
+    padding-left:0px;
+    padding-right:0px;
+}
+
 
 @media only screen and (max-width: 599px) {
     .mbl-gtmain{
@@ -230,6 +243,26 @@ div#scrollable-containerPositionValues{
         padding-top:5px;
         padding-bottom:5px;
     }
+
+    input.inputBoxStyles {
+        width:88%;
+        border-radius:0;
+        color:grey;
+        min-width:88%;
+        padding-top:3px;
+        padding-bottom:3px;
+        font-size:10px;
+        text-align:left;
+    }   
+
+    button.buttonDrpDownStyles {
+        width:12%;
+        border-radius:0;
+        min-width:12%;
+        padding-top:3px;
+        padding-bottom:3px;
+        font-size:10px;
+    }
 }
 
 @media only screen and (min-width: 600px) and (max-width: 768px) {
@@ -267,5 +300,24 @@ div#scrollable-containerPositionValues{
     }
     .tablet-gt .table-responsive{
         margin-bottom:0px;
+    }
+    input.inputBoxStyles {
+        width:75%;
+        border-radius:0;
+        color:grey;
+        padding-top:0px;
+        padding-bottom:0px;
+        font-size:9px;
+        text-align:left;
+    }   
+
+    button.buttonDrpDownStyles {
+        width:25%;
+        border-radius:0;
+        padding-top:0px;
+        padding-left:0px;
+        padding-right:0px;
+        padding-bottom:0px;
+        font-size:9px;
     }
 }

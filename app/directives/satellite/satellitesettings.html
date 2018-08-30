@@ -6,7 +6,7 @@
             <div class="col-sm-4" style="display: table-cell; float:none">
                 <div class="row">
                     <label for="Vehicle">Select Attitude</label>
-                    <span class="fa fa-info-circle" aria-hidden="true" title="Select quaternion coordinates(q1,q2,q3,qc)"></span>
+                    <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px" title="Select quaternion coordinates(q1,q2,q3,qc)"></span>
                 </div>
                 <div class="row settingsspace" style="display: table"></div>
                 <div class="btn-group" style="width:100%" uib-dropdown>
@@ -25,7 +25,7 @@
             <div class="col-sm-4" style="display: table-cell; float:none">
                 <div class="row">
                     <label for="Vehicle">Select Position</label>
-                    <span class="fa fa-info-circle" aria-hidden="true" title="Select position coordinates(x,y,z)"></span>
+                    <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px" title="Select position coordinates(x,y,z)"></span>
                 </div>
                 <div class="row settingsspace" style="display: table"></div>
                 <div class="btn-group" style="width:100%" uib-dropdown>
@@ -67,8 +67,8 @@
         <label for="SelectAttitude" class="mbl-label">Select Attitude</label>
         <span class="fa fa-info-circle" aria-hidden="true" style="font-size:10px" title="Select quaternion coordinates(q1,q2,q3,qc)"></span>
         <div class="btn-group mbl-input-grp" uib-dropdown>
-            <input id="split-button" name="attitudeparameters" type="text" class="btn btn-default inputBoxStyles" ng-click="getTelemetrydata('attitude')" value="{{readValues('attitude')}}" placeholder="Click for data" readonly required/>
-            <button type="button" class="btn btn-default buttonDrpDownStyles" uib-dropdown-toggle>
+            <input id="split-button" name="attitudeparameters" type="text" class="btn btn-default inputBoxStyles" ng-click="getTelemetrydata('attitude')" ng-style="attitudeInputStyles" value="{{readValues('attitude')}}" placeholder="Click for data" readonly required/>
+            <button type="button" class="btn btn-default buttonDrpDownStyles" ng-style="attitudeBtnStyles" uib-dropdown-toggle>
                 <span class="caret"></span>
                 <span class="sr-only">Split button!</span>
             </button>
@@ -80,8 +80,8 @@
         <label for="SelectPosition" class="mbl-label">Select Position</label>
         <span class="fa fa-info-circle" aria-hidden="true" style="font-size:10px" title="Select position coordinates(x,y,z)"></span>
         <div class="btn-group mbl-input-grp" uib-dropdown>
-            <input id="split-button" name="positionparameters" type="text" class="btn btn-default inputBoxStyles" ng-click="getTelemetrydata('position')" value="{{readValues('position')}}" placeholder="Click for data" readonly required/>
-            <button type="button" class="btn btn-default buttonDrpDownStyles" uib-dropdown-toggle>
+            <input id="split-button" name="positionparameters" type="text" class="btn btn-default inputBoxStyles" ng-click="getTelemetrydata('position')" ng-style="positionInputStyles" value="{{readValues('position')}}" placeholder="Click for data" readonly required/>
+            <button type="button" class="btn btn-default buttonDrpDownStyles" ng-style="positionBtnStyles" uib-dropdown-toggle>
                 <span class="caret"></span>
                 <span class="sr-only">Split button!</span>
             </button>
@@ -108,8 +108,8 @@
                         <span class="fa fa-info-circle" aria-hidden="true" style="font-size:10px" title="Select quaternion coordinates(q1,q2,q3,qc)"></span>
                     </div>
                     <div class="btn-group mbl-input-grp" uib-dropdown>
-                        <input id="split-button" name="attitudeparameters" type="text" class="btn btn-default inputBoxStyles" ng-click="getTelemetrydata('attitude')" value="{{readValues('attitude')}}" placeholder="Click for data" readonly required/>
-                        <button type="button" class="btn btn-default buttonDrpDownStyles" uib-dropdown-toggle>
+                        <input id="split-button" name="attitudeparameters" type="text" class="btn btn-default inputBoxStyles" ng-click="getTelemetrydata('attitude')" ng-style="attitudeInputStyles" value="{{readValues('attitude')}}" placeholder="Click for data" readonly required/>
+                        <button type="button" class="btn btn-default buttonDrpDownStyles" ng-style="attitudeBtnStyles" uib-dropdown-toggle>
                             <span class="caret"></span>
                             <span class="sr-only">Split button!</span>
                         </button>
@@ -129,8 +129,8 @@
                         <span class="fa fa-info-circle" aria-hidden="true" style="font-size:10px" title="Select position coordinates(x,y,z)"></span>
                     </div>
                     <div class="btn-group mbl-input-grp" uib-dropdown>
-                        <input id="split-button" type="text" class="btn btn-default inputBoxStyles" ng-click="getTelemetrydata('position')" value="{{readValues('position')}}" placeholder="Click for data" readonly required/>
-                        <button type="button" class="btn btn-default buttonDrpDownStyles" uib-dropdown-toggle>
+                        <input id="split-button" type="text" class="btn btn-default inputBoxStyles" ng-click="getTelemetrydata('position')" ng-style="positionInputStyles" value="{{readValues('position')}}" placeholder="Click for data" readonly required/>
+                        <button type="button" class="btn btn-default buttonDrpDownStyles" ng-style="positionBtnStyles" uib-dropdown-toggle>
                             <span class="caret"></span>
                             <span class="sr-only">Split button!</span>
                         </button>
