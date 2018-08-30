@@ -200,10 +200,11 @@ describe('Testing satellite settings controller', function () {
 
     it('should alert the user if the vehicle and id from the left menu are not available', function() {
         scope.widget.settings.dataArray = [];
-
+        scope.widget.settings.totalAttitudeArray.length = 0;
+        scope.widget.settings.totalPositionArray.length = 0;
         scope.getValue();
         scope.saveSettings(scope.widget);
-        expect(scope.positionparametersErrMsg).toEqual("");
+        expect(scope.positionparametersErrMsg).toEqual("Please fill out this field.");
         expect(scope.attitudeparametersErrMsg).toEqual("Please fill out this field.");
     });
 
@@ -332,7 +333,7 @@ describe('Testing satellite settings controller', function () {
         ]);
         expect(scope.settings.attitudeData).toEqual([]);
         expect(scope.vehicle).toEqual('');
-       // expect(scope.positionparametersErrMsg).toEqual("Required: All position coordinates(x,y,z)!");
+        expect(scope.positionparametersErrMsg).toEqual("");
         expect(scope.attitudeparametersErrMsg).toEqual("Required: All attitude coordinates(q1,q2,q3,qc)!");
     });
 
@@ -484,7 +485,7 @@ describe('Testing satellite settings controller', function () {
 
         scope.saveSettings(scope.widget);
         expect(scope.positionparametersErrMsg).toEqual("Required: All position coordinates(x,y,z)!");
-        //expect(scope.attitudeparametersErrMsg).toEqual("Required: All attitude coordinates(q1,q2,q3,qc)!");
+        expect(scope.attitudeparametersErrMsg).toEqual("");
     });
 
     it('should not close the settings menu on save if both attitude and position selected is of different vehicles', function() {

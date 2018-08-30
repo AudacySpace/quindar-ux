@@ -62,14 +62,8 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
             dashboardService.setLeftLock($scope.lock.lockLeft);
         }
 
-        $scope.attitudeBooleans[0] = true;
-        $scope.attitudeBooleans[1] = true;
-        $scope.attitudeBooleans[2] = true;
-        $scope.attitudeBooleans[3] = true;
-        $scope.positionBooleans[0] = true;
-        $scope.positionBooleans[1] = true;
-        $scope.positionBooleans[2] = true;
-        $scope.positionBooleans[3] = true;
+        $scope.attitudeBooleans = [true, true, true, true];
+        $scope.positionBooleans = [true, true, true, true];
         $scope.attitudeInputStyles={};
         $scope.attitudeBtnStyles={};
         $scope.positionInputStyles={};
@@ -90,287 +84,191 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
             $scope.attitudeparametersErrMsg = "Please fill out this field.";
             $scope.attitudeInputStyles={'border-color':'#dd2c00'};
             $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
-            if($scope.widget.settings.totalPositionArray.length !== 0){
-               if(!$scope.positionBooleans[3]){
-                    $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
-                    $scope.attitudeparametersErrMsg = "";
-                    $scope.positionInputStyles = {'border-color':'#dd2c00'};
-                    $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
-                    $scope.attitudeInputStyles={};
-                    $scope.attitudeBtnStyles = {};
-                }
-                else if(!$scope.positionBooleans[2])
-                {
-                    // $scope.positionparametersErrMsg = "Select parameters from vehicle: "+$scope.currentAttitudeVehicle+"!";
-                    $scope.positionparametersErrMsg = "Coordinates selected from different vehicles.Select from single vehicle!";
-                    $scope.attitudeparametersErrMsg = "";
-                    $scope.positionInputStyles = {'border-color':'#dd2c00'};
-                    $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
-                    $scope.attitudeInputStyles={};
-                    $scope.attitudeBtnStyles = {};
-                }
-                else if(!$scope.positionBooleans[0])
-                {
-                    $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
-                    $scope.attitudeparametersErrMsg = "";
-                    $scope.positionInputStyles = {'border-color':'#dd2c00'};
-                    $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
-                    $scope.attitudeInputStyles={};
-                    $scope.attitudeBtnStyles = {};
-                }
+            if($scope.widget.settings.totalPositionArray.length === 0){ // When select position field is untouched
+                $scope.positionparametersErrMsg = "Please fill out this field.";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.positionBooleans[3]){ 
+                $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.positionBooleans[2]){ 
+                $scope.positionparametersErrMsg = "Coordinates selected from different vehicles.Select from single vehicle!";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
             }
-            else {
-                $scope.positionparametersErrMsg = "";
-            }
+            // else if(!$scope.positionBooleans[0]){
+            //     $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
+            //     $scope.positionInputStyles = {'border-color':'#dd2c00'};
+            //     $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            // }
         }
         else if(!$scope.attitudeBooleans[3])
         {
            $scope.attitudeparametersErrMsg = "Required: All attitude coordinates(q1,q2,q3,qc)!";
             $scope.attitudeInputStyles={'border-color':'#dd2c00'};
             $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
-            if($scope.widget.settings.totalPositionArray.length !== 0){
-               if(!$scope.positionBooleans[3]){
-                    $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
-                    $scope.positionInputStyles = {'border-color':'#dd2c00'};
-                    $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
-                   // $scope.attitudeInputStyles={};
-                   // $scope.attitudeBtnStyles = {};
-                }
-                else if(!$scope.positionBooleans[2])
-                {
-                    // $scope.positionparametersErrMsg = "Select parameters from vehicle: "+$scope.currentAttitudeVehicle+"!";
-                    $scope.positionparametersErrMsg = "Coordinates selected from different vehicles.Select from single vehicle!";
-                    $scope.positionInputStyles = {'border-color':'#dd2c00'};
-                    $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
-                   // $scope.attitudeInputStyles={};
-                   // $scope.attitudeBtnStyles = {};
-                }
-                else if(!$scope.positionBooleans[0])
-                {
-                    $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
-                    $scope.positionInputStyles = {'border-color':'#dd2c00'};
-                    $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
-                   // $scope.attitudeInputStyles={};
-                   // $scope.attitudeBtnStyles = {};
-                }
+            if($scope.widget.settings.totalPositionArray.length === 0){ // When select position field is untouched
+                $scope.positionparametersErrMsg = "Please fill out this field.";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.positionBooleans[3]){ 
+                $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.positionBooleans[2]){ 
+                $scope.positionparametersErrMsg = "Coordinates selected from different vehicles.Select from single vehicle!";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
             }
-            else {
-                $scope.positionparametersErrMsg = "";
-            }
+            // else if(!$scope.positionBooleans[0]){
+            //     $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
+            //     $scope.positionInputStyles = {'border-color':'#dd2c00'};
+            //     $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            // }
         }
         else if(!$scope.attitudeBooleans[2])
         {
-            // $scope.attitudeparametersErrMsg = "Select parameters from vehicle: "+$scope.currentPositionVehicle+"!";
             $scope.attitudeparametersErrMsg = "Coordinates selected from different vehicles.Select from single vehicle!";
             $scope.attitudeInputStyles={'border-color':'#dd2c00'};
             $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
-            if($scope.widget.settings.totalPositionArray.length !== 0){
-               if(!$scope.positionBooleans[3]){
-                    $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
-                    $scope.positionInputStyles = {'border-color':'#dd2c00'};
-                    $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
-                    //$scope.attitudeInputStyles={};
-                    //$scope.attitudeBtnStyles = {};
-                }
-                else if(!$scope.positionBooleans[2])
-                {
-                    // $scope.positionparametersErrMsg = "Select parameters from vehicle: "+$scope.currentAttitudeVehicle+"!";
-                    $scope.positionparametersErrMsg = "Coordinates selected from different vehicles.Select from single vehicle!";
-                    $scope.positionInputStyles = {'border-color':'#dd2c00'};
-                    $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
-                    //$scope.attitudeInputStyles={};
-                    //$scope.attitudeBtnStyles = {};
-                }
-                else if(!$scope.positionBooleans[0])
-                {
-                    $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
-                    $scope.positionInputStyles = {'border-color':'#dd2c00'};
-                    $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
-                    //$scope.attitudeInputStyles={};
-                    //$scope.attitudeBtnStyles = {};
-                }
+            if($scope.widget.settings.totalPositionArray.length === 0){ // When select position field is untouched
+                $scope.positionparametersErrMsg = "Please fill out this field.";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.positionBooleans[3]){ 
+                $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.positionBooleans[2]){ 
+                $scope.positionparametersErrMsg = "Coordinates selected from different vehicles.Select from single vehicle!";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
             }
-            else {
-                $scope.positionparametersErrMsg = "";
-            }
+            // else if(!$scope.positionBooleans[0]){
+            //     $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
+            //     $scope.positionInputStyles = {'border-color':'#dd2c00'};
+            //     $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            // }
         }
         else if(!$scope.attitudeBooleans[0])
         {
             $scope.attitudeparametersErrMsg = "Required: All attitude coordinates(q1,q2,q3,qc)!";
             $scope.attitudeInputStyles={'border-color':'#dd2c00'};
             $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
-            if($scope.widget.settings.totalPositionArray.length !== 0){
-               if(!$scope.positionBooleans[3]){
-                    $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
-                    $scope.positionInputStyles = {'border-color':'#dd2c00'};
-                    $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
-                    //$scope.attitudeInputStyles={};
-                    //$scope.attitudeBtnStyles = {};
-                }
-                else if(!$scope.positionBooleans[2])
-                {
-                    // $scope.positionparametersErrMsg = "Select parameters from vehicle: "+$scope.currentAttitudeVehicle+"!";
-                    $scope.positionparametersErrMsg = "Coordinates selected from different vehicles.Select from single vehicle!";
-                    $scope.positionInputStyles = {'border-color':'#dd2c00'};
-                    $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
-                    //$scope.attitudeInputStyles={};
-                    //$scope.attitudeBtnStyles = {};
-                }
-                else if(!$scope.positionBooleans[0])
-                {
-                    $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
-                    $scope.positionInputStyles = {'border-color':'#dd2c00'};
-                    $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
-                    //$scope.attitudeInputStyles={};
-                    //$scope.attitudeBtnStyles = {};
-                }
+            if($scope.widget.settings.totalPositionArray.length === 0){ // When select position field is untouched
+                $scope.positionparametersErrMsg = "Please fill out this field.";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.positionBooleans[3]){ 
+                $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.positionBooleans[2]){ 
+                $scope.positionparametersErrMsg = "Coordinates selected from different vehicles.Select from single vehicle!";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
             }
-            else {
-                $scope.positionparametersErrMsg = "";
-            }
+            // else if(!$scope.positionBooleans[0]){
+            //     $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
+            //     $scope.positionInputStyles = {'border-color':'#dd2c00'};
+            //     $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            // }
         }
         else if($scope.widget.settings.totalPositionArray.length === 0){
             $scope.positionparametersErrMsg = "Please fill out this field.";
             $scope.positionInputStyles = {'border-color':'#dd2c00'};
             $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
-            if($scope.widget.settings.totalAttitudeArray.length !== 0){
-               if(!$scope.attitudeBooleans[3]){
-                    $scope.attitudeparametersErrMsg = "Required: All position coordinates(x,y,z)!";
-                    $scope.positionparametersErrMsg = "";
-                    $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
-                    $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
-                    $scope.positionInputStyles={};
-                    $scope.positionBtnStyles = {};
-                }
-                else if(!$scope.attitudeBooleans[2])
-                {
-                    // $scope.positionparametersErrMsg = "Select parameters from vehicle: "+$scope.currentAttitudeVehicle+"!";
-                    $scope.attitudeparametersErrMsg = "Coordinates selected from different vehicles.Select from single vehicle!";
-                    $scope.positionparametersErrMsg = "";
-                    $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
-                    $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
-                    $scope.positionInputStyles={};
-                    $scope.positionBtnStyles = {};
-                }
-                else if(!$scope.attitudeBooleans[0])
-                {
-                    $scope.attitudeparametersErrMsg = "Required: All position coordinates(x,y,z)!";
-                    $scope.positionparametersErrMsg = "";
-                    $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
-                    $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
-                    $scope.positionInputStyles={};
-                    $scope.positionBtnStyles = {};
-                }
+            if($scope.widget.settings.totalAttitudeArray.length === 0){
+                $scope.attitudeparametersErrMsg = "Please fill out this field.";
+                $scope.attitudeInputStyles={'border-color':'#dd2c00'};
+                $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.attitudeBooleans[3]){
+                $scope.attitudeparametersErrMsg = "Required: All position coordinates(x,y,z)!";
+                $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
+                $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.attitudeBooleans[2]){
+                $scope.attitudeparametersErrMsg = "Coordinates selected from different vehicles.Select from single vehicle!";
+                $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
+                $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
             }
-            else {
-                $scope.attitudeparametersErrMsg = "";
-            }
+            // else if(!$scope.attitudeBooleans[0]){
+            //     $scope.attitudeparametersErrMsg = "Required: All position coordinates(x,y,z)!";
+            //     $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
+            //     $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
+            // }
         }
         else if(!$scope.positionBooleans[3])
         {
             $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
             $scope.positionInputStyles = {'border-color':'#dd2c00'};
             $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
-            if($scope.widget.settings.totalAttitudeArray.length !== 0){
-               if(!$scope.attitudeBooleans[3]){
-                    $scope.attitudeparametersErrMsg = "Required: All position coordinates(x,y,z)!";
-                    $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
-                    $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
-                    //$scope.positionInputStyles={};
-                    //$scope.positionBtnStyles = {};
-                }
-                else if(!$scope.attitudeBooleans[2])
-                {
-                    // $scope.positionparametersErrMsg = "Select parameters from vehicle: "+$scope.currentAttitudeVehicle+"!";
-                    $scope.attitudeparametersErrMsg = "Coordinates selected from different vehicles.Select from single vehicle!";
-                    $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
-                    $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
-                   // $scope.positionInputStyles={};
-                    //$scope.positionBtnStyles = {};
-                }
-                else if(!$scope.attitudeBooleans[0])
-                {
-                    $scope.attitudeparametersErrMsg = "Required: All position coordinates(x,y,z)!";
-                    $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
-                    $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
-                    //$scope.positionInputStyles={};
-                   // $scope.positionBtnStyles = {};
-                }
+            if($scope.widget.settings.totalAttitudeArray.length === 0){
+                $scope.attitudeparametersErrMsg = "Please fill out this field.";
+                $scope.attitudeInputStyles={'border-color':'#dd2c00'};
+                $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.attitudeBooleans[3]){
+                $scope.attitudeparametersErrMsg = "Required: All position coordinates(x,y,z)!";
+                $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
+                $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.attitudeBooleans[2]){
+                $scope.attitudeparametersErrMsg = "Coordinates selected from different vehicles.Select from single vehicle!";
+                $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
+                $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
             }
-            else {
-                $scope.attitudeparametersErrMsg = "";
-            }
+            // else if(!$scope.attitudeBooleans[0]){
+            //     $scope.attitudeparametersErrMsg = "Required: All position coordinates(x,y,z)!";
+            //     $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
+            //     $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
+            // }
         }
         else if(!$scope.positionBooleans[2])
         {
-             // $scope.positionparametersErrMsg = "Select parameters from vehicle: "+$scope.currentAttitudeVehicle+"!";
             $scope.positionparametersErrMsg = "Coordinates selected from different vehicles.Select from single vehicle!";
             $scope.positionInputStyles = {'border-color':'#dd2c00'};
             $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
-            if($scope.widget.settings.totalAttitudeArray.length !== 0){
-               if(!$scope.attitudeBooleans[3]){
-                    $scope.attitudeparametersErrMsg = "Required: All position coordinates(x,y,z)!";
-                    $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
-                    $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
-                   // $scope.positionInputStyles={};
-                   // $scope.positionBtnStyles = {};
-                }
-                else if(!$scope.attitudeBooleans[2])
-                {
-                    // $scope.positionparametersErrMsg = "Select parameters from vehicle: "+$scope.currentAttitudeVehicle+"!";
-                    $scope.attitudeparametersErrMsg = "Coordinates selected from different vehicles.Select from single vehicle!";
-                    $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
-                    $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
-                   // $scope.positionInputStyles={};
-                   // $scope.positionBtnStyles = {};
-                }
-                else if(!$scope.attitudeBooleans[0])
-                {
-                    $scope.attitudeparametersErrMsg = "Required: All position coordinates(x,y,z)!";
-                    $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
-                    $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
-                   // $scope.positionInputStyles={};
-                   // $scope.positionBtnStyles = {};
-                }
+            if($scope.widget.settings.totalAttitudeArray.length === 0){
+                $scope.attitudeparametersErrMsg = "Please fill out this field.";
+                $scope.attitudeInputStyles={'border-color':'#dd2c00'};
+                $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.attitudeBooleans[3]){
+                $scope.attitudeparametersErrMsg = "Required: All position coordinates(x,y,z)!";
+                $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
+                $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.attitudeBooleans[2]){
+                $scope.attitudeparametersErrMsg = "Coordinates selected from different vehicles.Select from single vehicle!";
+                $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
+                $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
             }
-            else {
-                $scope.attitudeparametersErrMsg = "";
-            }
+            // else if(!$scope.attitudeBooleans[0]){
+            //     $scope.attitudeparametersErrMsg = "Required: All position coordinates(x,y,z)!";
+            //     $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
+            //     $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
+            // }
         }
         else if(!$scope.positionBooleans[0])
         {
             $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
             $scope.positionInputStyles = {'border-color':'#dd2c00'};
             $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
-            if($scope.widget.settings.totalAttitudeArray.length !== 0){
-               if(!$scope.attitudeBooleans[3]){
-                    $scope.attitudeparametersErrMsg = "Required: All position coordinates(x,y,z)!";
-                    $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
-                    $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
-                   // $scope.positionInputStyles={};
-                   // $scope.positionBtnStyles = {};
-                }
-                else if(!$scope.attitudeBooleans[2])
-                {
-                    // $scope.positionparametersErrMsg = "Select parameters from vehicle: "+$scope.currentAttitudeVehicle+"!";
-                    $scope.attitudeparametersErrMsg = "Coordinates selected from different vehicles.Select from single vehicle!";
-                    $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
-                    $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
-                   // $scope.positionInputStyles={};
-                   // $scope.positionBtnStyles = {};
-                }
-                else if(!$scope.attitudeBooleans[0])
-                {
-                    $scope.attitudeparametersErrMsg = "Required: All position coordinates(x,y,z)!";
-                    $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
-                    $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
-                   // $scope.positionInputStyles={};
-                   // $scope.positionBtnStyles = {};
-                }
+            if($scope.widget.settings.totalAttitudeArray.length === 0){
+                $scope.attitudeparametersErrMsg = "Please fill out this field.";
+                $scope.attitudeInputStyles={'border-color':'#dd2c00'};
+                $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.attitudeBooleans[3]){
+                $scope.attitudeparametersErrMsg = "Required: All position coordinates(x,y,z)!";
+                $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
+                $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.attitudeBooleans[2]){
+                $scope.attitudeparametersErrMsg = "Coordinates selected from different vehicles.Select from single vehicle!";
+                $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
+                $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
             }
-            else {
-                $scope.attitudeparametersErrMsg = "";
-            }
+            // else if(!$scope.attitudeBooleans[0]){
+            //     $scope.attitudeparametersErrMsg = "Required: All position coordinates(x,y,z)!";
+            //     $scope.attitudeInputStyles = {'border-color':'#dd2c00'};
+            //     $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
+            // }
         }
         else if($scope.widget.settings.totalAttitudeArray.length === 4 && $scope.widget.settings.totalPositionArray.length === 3 && status === true){
             $uibModal.open({
@@ -408,14 +306,9 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                     $scope.lock.lockLeft = false;
                     dashboardService.setLeftLock($scope.lock.lockLeft);
                 }
-                $scope.attitudeBooleans[0] = true;
-                $scope.attitudeBooleans[1] = true;
-                $scope.attitudeBooleans[2] = true;
-                $scope.attitudeBooleans[3] = true;
-                $scope.positionBooleans[0] = true;
-                $scope.positionBooleans[1] = true;
-                $scope.positionBooleans[2] = true;
-                $scope.positionBooleans[3] = true;
+ 
+                $scope.attitudeBooleans = [true, true, true, true];
+                $scope.positionBooleans = [true, true, true, true];
                 $scope.attitudeInputStyles={};
                 $scope.attitudeBtnStyles={};
                 $scope.positionInputStyles={};
@@ -425,14 +318,8 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
             },
             function () {
             //handle modal dismiss
-                $scope.attitudeBooleans[0] = true;
-                $scope.attitudeBooleans[1] = true;
-                $scope.attitudeBooleans[2] = true;
-                $scope.attitudeBooleans[3] = true;
-                $scope.positionBooleans[0] = true;
-                $scope.positionBooleans[1] = true;
-                $scope.positionBooleans[2] = true;
-                $scope.positionBooleans[3] = true;
+                $scope.attitudeBooleans = [true, true, true, true];
+                $scope.positionBooleans = [true, true, true, true];
                 $scope.attitudeInputStyles={};
                 $scope.attitudeBtnStyles={};
                 $scope.positionInputStyles={};
@@ -440,7 +327,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                 $scope.attitudeparametersErrMsg = "";
                 $scope.positionparametersErrMsg = "";
             });
-		}
+        }
         else if(status === false)
         {
             $scope.attitudeparametersErrMsg = "Vehicles of both fields do not match! Selected from vehicle: "+$scope.currentAttitudeVehicle;
@@ -449,7 +336,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
             $scope.attitudeBtnStyles = {'border-left-color':'#dd2c00'};
             $scope.positionInputStyles = {'border-color':'#dd2c00'};
             $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
-		}
+        }
 	}
 
 	$scope.getTelemetrydata = function(category){
@@ -567,17 +454,11 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
             {
                 //push the last chosen data value into the corresponding attitude array
                 $scope.widget.settings.totalAttitudeArray.push($scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1]);
-               // $scope.attitudeInputStyles={};
-                //$scope.attitudeBtnStyles={};
-                //$scope.attitudeparametersErrMsg = "";
             }
             else if($scope.chosenCategory == 'position') //if the position input box has been chosen
             {
                 //push the last chosen data value into the corresponding position array
                 $scope.widget.settings.totalPositionArray.push($scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1]);
-                //$scope.positionBtnStyles={};
-                //$scope.positionInputStyles={};
-               // $scope.positionparametersErrMsg = "";
             }
             
             var attitudeArray = [];
@@ -597,26 +478,23 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                // var attitudeSettingsfiltered2 = removeDuplicates(attitudeSettingsfiltered1,"id");// to remove duplicate selection of a single value
                 var isDiffAttitudeVeh = isAnyDiffVehicles(attitudeSettingsfiltered1);// to check if all the values are of the same vehicle
                // var attitudefilteredData = filterSelectedData(attitudeSettingsfiltered2); // check if there are any different values of a category
-
                // if(isDiffAttitudeVeh === false && attitudefilteredData.length === attitudeSettingsfiltered2.length){ // condition to check if the values are of same vehicle and same category
                 if(isDiffAttitudeVeh === false && attitudeSettingsfiltered1.length === 4){    
                     if(attitudeSettingsfiltered1.length === 4){  
                         $scope.settings.attitudeData = attitudeSettingsfiltered1;
                         $scope.vehicle = attitudeSettingsfiltered1[0].vehicle;
                         $scope.widget.settings.totalAttitudeArray = angular.copy(attitudeSettingsfiltered1);
-                        //$scope.attitudeparametersErrMsg = "";
                         $scope.attitudeBooleans[0] = true;
                         $scope.attitudeBooleans[1] = true;
                         $scope.attitudeBooleans[2] = true;
                         $scope.attitudeBooleans[3] = true;
-                        // $scope.attitudeInputStyles={};
-                        // $scope.attitudeBtnStyles={};
-                    }else if(attitudeSettingsfiltered1.length < 4){
-                        $scope.attitudeBooleans[0] = false;
-                        $scope.attitudeBooleans[1] = true;
-                        $scope.attitudeBooleans[2] = true;
-                        $scope.attitudeBooleans[3] = true;
                     }
+                    // else if(attitudeSettingsfiltered1.length < 4){
+                    //     $scope.attitudeBooleans[0] = false;
+                    //     $scope.attitudeBooleans[1] = true;
+                    //     $scope.attitudeBooleans[2] = true;
+                    //     $scope.attitudeBooleans[3] = true;
+                    // }
                 }else if(attitudeSettingsfiltered1.length < 4){
                     $scope.attitudeBooleans[0] = false;
                     $scope.attitudeBooleans[1] = true;
@@ -672,19 +550,17 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                         $scope.settings.positionData = positionSettingsfiltered1;
                         $scope.vehicle = positionSettingsfiltered1[0].vehicle;
                         $scope.widget.settings.totalPositionArray = angular.copy(positionSettingsfiltered1);
-                       // $scope.positionparametersErrMsg = "";
                         $scope.positionBooleans[0] = true;
                         $scope.positionBooleans[1] = true;
                         $scope.positionBooleans[2] = true;
                         $scope.positionBooleans[3] = true;
-                        // $scope.positionInputStyles={};
-                        // $scope.positionBtnStyles={};
-                    }else if(positionSettingsfiltered1.length < 3){
-                        $scope.positionBooleans[0] = false;
-                        $scope.positionBooleans[1] = true;
-                        $scope.positionBooleans[2] = true;
-                        $scope.positionBooleans[3] = true;
                     }
+                    // else if(positionSettingsfiltered1.length < 3){
+                    //     $scope.positionBooleans[0] = false;
+                    //     $scope.positionBooleans[1] = true;
+                    //     $scope.positionBooleans[2] = true;
+                    //     $scope.positionBooleans[3] = true;
+                    // }
                 }else if(positionSettingsfiltered1.length < 3){
                     $scope.positionBooleans[0] = false;
                     $scope.positionBooleans[1] = true;
@@ -697,7 +573,6 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                     $scope.positionBooleans[2] = true;
                     $scope.positionBooleans[3] = true;
                 }else if(isDiffPositionVeh === true && positionSettingsfiltered1.length === 3){
-                    //$scope.positionparametersErrMsg = "";
                     $scope.positionBooleans[2] = false;
                     $scope.positionBooleans[0] = true;
                     $scope.positionBooleans[1] = true;
