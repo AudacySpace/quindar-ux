@@ -182,7 +182,7 @@ describe('Testing Groundtrack settings controller', function () {
         expect(scope.widget.main).toEqual(false);
         expect(scope.widget.settings.active).toEqual(true);
         expect(scope.widget.settings.vehicles).toEqual([]);
-        expect(scope.vehicleMsg).toEqual("Please select all parameters for selected vehicles.");
+        expect(scope.vehicleMsg).toEqual("Please select all coordinates for selected vehicles.");
     });
 
     it('should save settings as widget property on save(no vehicles checked or all vehicles unchecked)', function() {
@@ -507,7 +507,7 @@ describe('Testing Groundtrack settings controller', function () {
             {vehicle: "A0", id: "x", key: "A0.GNC.position.x", category: "position"},
             {vehicle: "A0", id: "y", key: "A0.GNC.position.y", category: "position"}
         ]);
-        expect(scope.velocityparametersErrMsg).toEqual("Required: all velocity values(x,y,z)!");
+        expect(scope.velocityparametersErrMsg).toEqual("Required: All velocity values(x,y,z)!");
     });
 
     it('should not store the value of selected velocity parameters when category is velocity and selected parameters are of different vehicle', function() {
@@ -557,7 +557,7 @@ describe('Testing Groundtrack settings controller', function () {
             {vehicle: "Audacy1", id: "x", key: "Audacy1.GNC.position.x", category: "position"},
             {vehicle: "Audacy1", id: "y", key: "Audacy1.GNC.position.y", category: "position"}
         ]);
-        expect(scope.velocityparametersErrMsg).toEqual("Select parameters from vehicle: Audacy1!");
+        expect(scope.velocityparametersErrMsg).toEqual("Select velocity coordinates from vehicle: Audacy1!");
     });
 
     // it('should not store the value of selected velocity parameters when category is velocity and selected parameters are of different category', function() {
@@ -640,7 +640,7 @@ describe('Testing Groundtrack settings controller', function () {
             {vehicle: "Audacy1", id: "x", key: "Audacy2.GNC.velocity.x", category: "position"},
             {vehicle: "Audacy1", id: "y", key: "Audacy2.GNC.velocity.y", category: "position"}
         ]);
-        expect(scope.velocityparametersErrMsg).toEqual("Required: all velocity values(x,y,z)!");
+        expect(scope.velocityparametersErrMsg).toEqual("Required: All velocity values(x,y,z)!");
 
     });
 
@@ -784,7 +784,7 @@ describe('Testing Groundtrack settings controller', function () {
         ]);
         expect(scope.positionData[0]).toEqual([]);
         expect(scope.vehicle[0]).toEqual('');
-        expect(scope.positionparametersErrMsg).toEqual("Required: all position values(x,y,z)!");
+        expect(scope.positionparametersErrMsg).toEqual("Required: All position values(x,y,z)!");
     });
 
     it('should not store the value of selected position parameters when category is position and selected parameters are of different vehicle', function() {
@@ -824,7 +824,7 @@ describe('Testing Groundtrack settings controller', function () {
 
         expect(scope.positionData[0]).toEqual([]);
         expect(scope.vehicle[0]).toEqual('');
-        expect(scope.positionparametersErrMsg).toEqual("Select parameters from vehicle: Audacy1!");
+        expect(scope.positionparametersErrMsg).toEqual("Select position coordinates from vehicle: Audacy1!");
     });
 
     // it('should not store the value of selected position parameters when category is position and selected parameters are of different category', function() {
@@ -895,7 +895,7 @@ describe('Testing Groundtrack settings controller', function () {
 
         expect(scope.positionData[0]).toEqual([]);
         expect(scope.vehicle[0]).toEqual('');
-        expect(scope.positionparametersErrMsg).toEqual("Required: all position values(x,y,z)!");
+        expect(scope.positionparametersErrMsg).toEqual("Required: All position values(x,y,z)!");
     });
 
      it('should save the  parameters settings menu on save if data is selected', function() {

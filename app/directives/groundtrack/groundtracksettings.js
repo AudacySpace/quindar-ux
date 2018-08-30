@@ -48,6 +48,11 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
         }
     };
 
+    $scope.positionInputStyles={};
+    $scope.velocityInputStyles={};
+    $scope.positionBtnStyles={};
+    $scope.velocityBtnStyles={};
+    
     $scope.closeWidget = function(widget){
         widget.main = true;
         widget.settings.active = false;
@@ -104,7 +109,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                     }
                     $scope.widget.settings.vehicles.push(vehicle);
                 }else {
-                    $scope.vehicleMsg = "Please select all parameters for selected vehicles.";
+                    $scope.vehicleMsg = "Please select all coordinates for selected vehicles.";
                     break;
                 }
             }else {
@@ -272,8 +277,8 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
         var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
         if(!isGroup && data && data.id !== "")
         {
-            $scope.velocityBooleans = [true, true, true, true]; //boolean array to keep track of which conditions the velocity data selected doesn't pass
-            $scope.positionBooleans = [true, true, true, true]; //boolean array to keep track of which conditions the position data selected doesn't pass
+           // $scope.velocityBooleans = [true, true, true, true]; //boolean array to keep track of which conditions the velocity data selected doesn't pass
+           // $scope.positionBooleans = [true, true, true, true]; //boolean array to keep track of which conditions the position data selected doesn't pass
             if($scope.chosenCategory == 'velocity') //if the velocity input box has been chosen
             {
                 //push the last chosen data value into the corresponding velocity array
@@ -296,10 +301,6 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             }else {
                 positionSettings = positionArray;
             }
-
-            // if($scope.totalPositionArray[$scope.currentVehicleId].length > 0){
-            //      $scope.positionparametersErrMsg = "";
-            // }
             
             if(positionSettings.length === 3){
                 var positionSettingsfiltered1 = removeCategories(positionSettings);//to remove selected group or categories while opening the list
@@ -312,20 +313,20 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                         $scope.positionData[$scope.currentVehicleId] = angular.copy(positionSettingsfiltered1);
                         $scope.vehicle[$scope.currentVehicleId] = positionSettingsfiltered1[0].vehicle;
                         $scope.totalPositionArray[$scope.currentVehicleId] = angular.copy(positionSettingsfiltered1);
-                        $scope.positionparametersErrMsg = "";
+                        //$scope.positionparametersErrMsg = "";
                         $scope.positionBooleans[0] = true;
                         $scope.positionBooleans[1] = true;
                         $scope.positionBooleans[2] = true;
                         $scope.positionBooleans[3] = true;
                     }
-                    else if(positionSettingsfiltered1.length < 3){
-                        $scope.vehicle[$scope.currentVehicleId] = "";
-                        $scope.positionData[$scope.currentVehicleId] = [];
-                        $scope.positionBooleans[0] = false;
-                        $scope.positionBooleans[1] = true;
-                        $scope.positionBooleans[2] = true;
-                        $scope.positionBooleans[3] = true;
-                    }
+                    // else if(positionSettingsfiltered1.length < 3){
+                    //     $scope.vehicle[$scope.currentVehicleId] = "";
+                    //     $scope.positionData[$scope.currentVehicleId] = [];
+                    //     $scope.positionBooleans[0] = false;
+                    //     $scope.positionBooleans[1] = true;
+                    //     $scope.positionBooleans[2] = true;
+                    //     $scope.positionBooleans[3] = true;
+                    // }
                 }
                 else if(positionSettingsfiltered1.length < 3){
                         $scope.vehicle[$scope.currentVehicleId] = "";
@@ -335,18 +336,18 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                         $scope.positionBooleans[2] = true;
                         $scope.positionBooleans[3] = true;
                 }
-                // else if(isDiffPositionVeh === false ){
-                //     $scope.vehicle[$scope.currentVehicleId] = "";
-                //     $scope.positionData[$scope.currentVehicleId] = [];
-                //     $scope.positionBooleans[1] = false;
-                //     $scope.positionBooleans[0] = true;
-                //     $scope.positionBooleans[2] = true;
-                //     $scope.positionBooleans[3] = true;
-                // }
+                else if(isDiffPositionVeh === false ){
+                    $scope.vehicle[$scope.currentVehicleId] = "";
+                    $scope.positionData[$scope.currentVehicleId] = [];
+                    $scope.positionBooleans[1] = false;
+                    $scope.positionBooleans[0] = true;
+                    $scope.positionBooleans[2] = true;
+                    $scope.positionBooleans[3] = true;
+                }
                 else if(isDiffPositionVeh === true && positionSettingsfiltered1.length === 3){
                     $scope.vehicle[$scope.currentVehicleId] = "";
                     $scope.positionData[$scope.currentVehicleId] = [];
-                    $scope.positionparametersErrMsg = "";
+                    //$scope.positionparametersErrMsg = "";
                     $scope.positionBooleans[2] = false;
                     $scope.positionBooleans[0] = true;
                     $scope.positionBooleans[1] = true;
@@ -360,7 +361,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                     $scope.positionBooleans[1] = true;
                     $scope.positionBooleans[3] = true;
                 }
-            }else if(positionSettings.length === 0){
+            }else {
                 $scope.vehicle[$scope.currentVehicleId] = "";
                 $scope.positionData[$scope.currentVehicleId] = [];
                 $scope.positionBooleans[3] = false;
@@ -368,14 +369,6 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                 $scope.positionBooleans[1] = true;
                 $scope.positionBooleans[2] = true;
             }
-            else if(positionSettings.length < 3){
-                $scope.vehicle[$scope.currentVehicleId] = "";
-                $scope.positionData[$scope.currentVehicleId] = [];
-                $scope.positionBooleans[0] = false;
-                $scope.positionBooleans[1] = true;
-                $scope.positionBooleans[2] = true;
-                $scope.positionBooleans[3] = true;
-            }  
 
             var velocityArray = [];
             var velocitySettings = [];
@@ -389,10 +382,6 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                 velocitySettings = velocityArray;
             }
 
-            // if($scope.totalVelocityArray[$scope.currentVehicleId].length > 0){
-            //     $scope.velocityparametersErrMsg = "";
-            // }
-
             if(velocitySettings.length === 3){
                 var velocitySettingsfiltered1 = removeCategories(velocitySettings); //to remove selected group or categories while opening the list
                // var velocitySettingsfiltered2 = removeDuplicates(velocitySettingsfiltered1,"id");// to remove duplicate selection of a single value
@@ -404,20 +393,20 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                         $scope.velocityData[$scope.currentVehicleId] = angular.copy(velocitySettingsfiltered1);
                         $scope.vehicle[$scope.currentVehicleId] = velocitySettingsfiltered1[0].vehicle;
                         $scope.totalVelocityArray[$scope.currentVehicleId] = angular.copy(velocitySettingsfiltered1);
-                        $scope.velocityparametersErrMsg = "";
+                        //$scope.velocityparametersErrMsg = "";
                         $scope.velocityBooleans[0] = true;
                         $scope.velocityBooleans[1] = true;
                         $scope.velocityBooleans[2] = true;
                         $scope.velocityBooleans[3] = true;
                     }
-                    else if(velocitySettingsfiltered1.length < 3){
-                        $scope.vehicle[$scope.currentVehicleId] = "";
-                        $scope.velocityData[$scope.currentVehicleId] = [];
-                        $scope.velocityBooleans[0] = false;
-                        $scope.velocityBooleans[1] = true;
-                        $scope.velocityBooleans[2] = true;
-                        $scope.velocityBooleans[3] = true;
-                    }
+                    // else if(velocitySettingsfiltered1.length < 3){
+                    //     $scope.vehicle[$scope.currentVehicleId] = "";
+                    //     $scope.velocityData[$scope.currentVehicleId] = [];
+                    //     $scope.velocityBooleans[0] = false;
+                    //     $scope.velocityBooleans[1] = true;
+                    //     $scope.velocityBooleans[2] = true;
+                    //     $scope.velocityBooleans[3] = true;
+                    // }
                 }
                 else if(velocitySettingsfiltered1.length < 3){
                     $scope.vehicle[$scope.currentVehicleId] = "";
@@ -427,18 +416,18 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                     $scope.velocityBooleans[2] = true;
                     $scope.velocityBooleans[3] = true;
                 }
-                // else if(isDiffVelocityVeh === false){
-                //     $scope.vehicle[$scope.currentVehicleId] = "";
-                //     $scope.velocityData[$scope.currentVehicleId] = [];
-                //     $scope.velocityBooleans[1] = false;
-                //     $scope.velocityBooleans[0] = true;
-                //     $scope.velocityBooleans[2] = true;
-                //     $scope.velocityBooleans[3] = true;
-                // }
+                else if(isDiffVelocityVeh === false){
+                    $scope.vehicle[$scope.currentVehicleId] = "";
+                    $scope.velocityData[$scope.currentVehicleId] = [];
+                    $scope.velocityBooleans[1] = false;
+                    $scope.velocityBooleans[0] = true;
+                    $scope.velocityBooleans[2] = true;
+                    $scope.velocityBooleans[3] = true;
+                }
                 else if(isDiffVelocityVeh === true && velocitySettingsfiltered1.length === 3){
                     $scope.vehicle[$scope.currentVehicleId] = "";
                     $scope.velocityData[$scope.currentVehicleId] = [];
-                    $scope.velocityparametersErrMsg = "";
+                    //$scope.velocityparametersErrMsg = "";
                     $scope.velocityBooleans[2] = false;
                     $scope.velocityBooleans[0] = true;
                     $scope.velocityBooleans[1] = true;
@@ -452,24 +441,15 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                     $scope.velocityBooleans[1] = true;
                     $scope.velocityBooleans[3] = true;
                 }
-            }else if(velocitySettings.length === 0) {
+            }else {
                 $scope.vehicle[$scope.currentVehicleId] = "";
                 $scope.velocityData[$scope.currentVehicleId] = [];
                 $scope.velocityBooleans[3] = false;
                 $scope.velocityBooleans[0] = true;
                 $scope.velocityBooleans[1] = true;
                 $scope.velocityBooleans[2] = true;                
-            }
-            else if(velocitySettings.length < 3){
-                $scope.vehicle[$scope.currentVehicleId] = "";
-                $scope.velocityData[$scope.currentVehicleId] = [];
-                $scope.velocityBooleans[0] = false;
-                $scope.velocityBooleans[1] = true;
-                $scope.velocityBooleans[2] = true;
-                $scope.velocityBooleans[3] = true;
-            }      
-        }
-        else
+            }     
+        }else
         {
             $scope.velocityData[$scope.currentVehicleId] = null;
             $scope.positionData[$scope.currentVehicleId] = null;
@@ -546,39 +526,168 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
 
     $scope.saveParameters = function(widget){
         $scope.vehicleMsg = "";
+        $scope.positionparametersErrMsg = "";
+        $scope.velocityparametersErrMsg = "";
+        $scope.positionInputStyles = {};
+        $scope.positionBtnStyles = {};
+        $scope.velocityInputStyles={};
+        $scope.velocityBtnStyles = {};
         //display alerts for conditions that were originally checked in getValue
-        if($scope.totalPositionArray[$scope.currentVehicleId].length === 0)
-        {
+        if($scope.totalPositionArray[$scope.currentVehicleId].length === 0){
             $scope.positionparametersErrMsg = "Please fill out this field.";
+            $scope.positionInputStyles={'border-color':'#dd2c00'};
+            $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            if($scope.totalVelocityArray[$scope.currentVehicleId].length === 0){ // When select position field is untouched
+                $scope.velocityparametersErrMsg = "Please fill out this field.";
+                $scope.velocityInputStyles = {'border-color':'#dd2c00'};
+                $scope.velocityBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.velocityBooleans[3]){ 
+                $scope.velocityparametersErrMsg = "Required: All velocity coordinates(x,y,z)!";
+                $scope.velocityInputStyles = {'border-color':'#dd2c00'};
+                $scope.velocityBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.velocityBooleans[2]){ 
+                $scope.velocityparametersErrMsg = "Select velocity coordinates from vehicle: "+$scope.currentScreenVehicle+"!";
+                $scope.velocityInputStyles = {'border-color':'#dd2c00'};
+                $scope.velocityBtnStyles = {'border-left-color':'#dd2c00'};
+            }
+        }else if(!$scope.positionBooleans[3]){
+            $scope.positionparametersErrMsg = "Required: All position values(x,y,z)!";
+            $scope.positionInputStyles={'border-color':'#dd2c00'};
+            $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            if($scope.totalVelocityArray[$scope.currentVehicleId].length === 0){ // When select position field is untouched
+                $scope.velocityparametersErrMsg = "Please fill out this field.";
+                $scope.velocityInputStyles = {'border-color':'#dd2c00'};
+                $scope.velocityBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.velocityBooleans[3]){ 
+                $scope.velocityparametersErrMsg = "Required: All velocity coordinates(x,y,z)!";
+                $scope.velocityInputStyles = {'border-color':'#dd2c00'};
+                $scope.velocityBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.velocityBooleans[2]){ 
+                $scope.velocityparametersErrMsg = "Select velocity coordinates from vehicle: "+$scope.currentScreenVehicle+"!";
+                $scope.velocityInputStyles = {'border-color':'#dd2c00'};
+                $scope.velocityBtnStyles = {'border-left-color':'#dd2c00'};
+            }
+        }else if(!$scope.positionBooleans[2]){
+            $scope.positionparametersErrMsg = "Select position coordinates from vehicle: "+$scope.currentScreenVehicle+"!";
+            $scope.positionInputStyles={'border-color':'#dd2c00'};
+            $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            if($scope.totalVelocityArray[$scope.currentVehicleId].length === 0){ // When select position field is untouched
+                $scope.velocityparametersErrMsg = "Please fill out this field.";
+                $scope.velocityInputStyles = {'border-color':'#dd2c00'};
+                $scope.velocityBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.velocityBooleans[3]){ 
+                $scope.velocityparametersErrMsg = "Required: All velocity coordinates(x,y,z)!";
+                $scope.velocityInputStyles = {'border-color':'#dd2c00'};
+                $scope.velocityBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.velocityBooleans[2]){ 
+                $scope.velocityparametersErrMsg = "Select velocity coordinates from vehicle: "+$scope.currentScreenVehicle+"!";
+                $scope.velocityInputStyles = {'border-color':'#dd2c00'};
+                $scope.velocityBtnStyles = {'border-left-color':'#dd2c00'};
+            }
+        }else if(!$scope.positionBooleans[0]){
+            $scope.positionparametersErrMsg = "Required: All position values(x,y,z)!";
+            $scope.positionInputStyles={'border-color':'#dd2c00'};
+            $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            if($scope.totalVelocityArray[$scope.currentVehicleId].length === 0){ // When select position field is untouched
+                $scope.velocityparametersErrMsg = "Please fill out this field.";
+                $scope.velocityInputStyles = {'border-color':'#dd2c00'};
+                $scope.velocityBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.velocityBooleans[3]){ 
+                $scope.velocityparametersErrMsg = "Required: All velocity coordinates(x,y,z)!";
+                $scope.velocityInputStyles = {'border-color':'#dd2c00'};
+                $scope.velocityBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.velocityBooleans[2]){ 
+                $scope.velocityparametersErrMsg = "Select velocity coordinates from vehicle: "+$scope.currentScreenVehicle+"!";
+                $scope.velocityInputStyles = {'border-color':'#dd2c00'};
+                $scope.velocityBtnStyles = {'border-left-color':'#dd2c00'};
+            }
         }
-        else if(!$scope.positionBooleans[0])
-        {
-             $scope.positionparametersErrMsg = "Required: all position values(x,y,z)!";
-        }
-        else if(!$scope.positionBooleans[2])
-        {
-            $scope.positionparametersErrMsg = "Select parameters from vehicle: "+$scope.currentScreenVehicle+"!";
-        }
-        else if(!$scope.positionBooleans[1] && $scope.totalPositionArray[$scope.currentVehicleId].length > 0 && $scope.totalPositionArray[$scope.currentVehicleId].length < 3)
-        {
-             $scope.positionparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
-        }
+        // else if(!$scope.positionBooleans[1] && $scope.totalPositionArray[$scope.currentVehicleId].length > 0 && $scope.totalPositionArray[$scope.currentVehicleId].length < 3){
+        //      $scope.positionparametersErrMsg = "Select each coordinate(no duplicates) from same category of vehicle!";
+        // }
         else if($scope.totalVelocityArray[$scope.currentVehicleId].length === 0)
         {
             $scope.velocityparametersErrMsg = "Please fill out this field.";
+            $scope.velocityInputStyles = {'border-color':'#dd2c00'};
+            $scope.velocityBtnStyles = {'border-left-color':'#dd2c00'};
+            if($scope.totalPositionArray[$scope.currentVehicleId].length === 0){ // When select position field is untouched
+                $scope.positionparametersErrMsg = "Please fill out this field.";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.positionBooleans[3]){ 
+                $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.positionBooleans[2]){ 
+                $scope.positionparametersErrMsg = "Select position coordinates from vehicle: "+$scope.currentScreenVehicle+"!";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            }
+        }
+        else if(!$scope.velocityBooleans[3])
+        {
+            $scope.velocityparametersErrMsg = "Required: All velocity values(x,y,z)!";
+            $scope.velocityInputStyles = {'border-color':'#dd2c00'};
+            $scope.velocityBtnStyles = {'border-left-color':'#dd2c00'};
+            if($scope.totalPositionArray[$scope.currentVehicleId].length === 0){ // When select position field is untouched
+                $scope.positionparametersErrMsg = "Please fill out this field.";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.positionBooleans[3]){ 
+                $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.positionBooleans[2]){ 
+                $scope.positionparametersErrMsg = "Select position coordinates from vehicle: "+$scope.currentScreenVehicle+"!";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            }
+
         }
         else if(!$scope.velocityBooleans[2])
         {
-            $scope.velocityparametersErrMsg =  "Select parameters from vehicle: "+$scope.currentScreenVehicle+"!";;
-        }
-        else if(!$scope.velocityBooleans[1] && $scope.totalVelocityArray[$scope.currentVehicleId].length > 0 && $scope.totalVelocityArray[$scope.currentVehicleId].length < 3)
-        {
-            $scope.velocityparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
+            $scope.velocityparametersErrMsg =  "Select velocity coordinates from vehicle: "+$scope.currentScreenVehicle+"!";
+            $scope.velocityInputStyles = {'border-color':'#dd2c00'};
+            $scope.velocityBtnStyles = {'border-left-color':'#dd2c00'};
+            if($scope.totalPositionArray[$scope.currentVehicleId].length === 0){ // When select position field is untouched
+                $scope.positionparametersErrMsg = "Please fill out this field.";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.positionBooleans[3]){ 
+                $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.positionBooleans[2]){ 
+                $scope.positionparametersErrMsg = "Select position coordinates from vehicle: "+$scope.currentScreenVehicle+"!";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            }
+
         }
         else if(!$scope.velocityBooleans[0])
         {
-            $scope.velocityparametersErrMsg = "Required: all velocity values(x,y,z)!";
+            $scope.velocityparametersErrMsg = "Required: All velocity values(x,y,z)!";
+            $scope.velocityInputStyles = {'border-color':'#dd2c00'};
+            $scope.velocityBtnStyles = {'border-left-color':'#dd2c00'};
+            if($scope.totalPositionArray[$scope.currentVehicleId].length === 0){ // When select position field is untouched
+                $scope.positionparametersErrMsg = "Please fill out this field.";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.positionBooleans[3]){ 
+                $scope.positionparametersErrMsg = "Required: All position coordinates(x,y,z)!";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            }else if(!$scope.positionBooleans[2]){ 
+                $scope.positionparametersErrMsg = "Select position coordinates from vehicle: "+$scope.currentScreenVehicle+"!";
+                $scope.positionInputStyles = {'border-color':'#dd2c00'};
+                $scope.positionBtnStyles = {'border-left-color':'#dd2c00'};
+            }
+
         }
+        // else if(!$scope.velocityBooleans[1] && $scope.totalVelocityArray[$scope.currentVehicleId].length > 0 && $scope.totalVelocityArray[$scope.currentVehicleId].length < 3)
+        // {
+        //     $scope.velocityparametersErrMsg = "Select each coordinate(no duplicates) from same category of vehicle!";
+        // }
         else if($scope.positionData[$scope.currentVehicleId].length === 3 && $scope.velocityData[$scope.currentVehicleId].length === 3){
             $uibModal.open({
                 templateUrl: "./directives/groundtrack/confirmParameter.html",
@@ -612,11 +721,30 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                     $scope.lock.lockLeft = false;
                     dashboardService.setLeftLock($scope.lock.lockLeft);
                 }
+
+
+                $scope.velocityBooleans = [true, true, true, true];
+                $scope.positionBooleans = [true, true, true, true];
+                $scope.velocityInputStyles={};
+                $scope.velocityBtnStyles={};
+                $scope.positionInputStyles={};
+                $scope.positionBtnStyles={};
+                $scope.velocityparametersErrMsg = "";
+                $scope.positionparametersErrMsg = "";
             },
             function () {
             //handle modal dismiss
                 $scope.firstScreen = false;
                 $scope.secondScreen = true;
+
+                $scope.velocityBooleans = [true, true, true, true];
+                $scope.positionBooleans = [true, true, true, true];
+                $scope.velocityInputStyles={};
+                $scope.velocityBtnStyles={};
+                $scope.positionInputStyles={};
+                $scope.positionBtnStyles={};
+                $scope.velocityparametersErrMsg = "";
+                $scope.positionparametersErrMsg = "";
             });
         } 
     }
@@ -645,10 +773,14 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             dashboardService.setLeftLock($scope.lock.lockLeft);
         }
         $scope.vehicleMsg = "";
-        $scope.velocityBooleans[0] = true;
-        $scope.velocityBooleans[1] = true;
-        $scope.velocityBooleans[2] = true;
-        $scope.velocityBooleans[3] = true;
+        $scope.velocityBooleans = [true, true, true, true];
+        $scope.positionBooleans = [true, true, true, true];
+        $scope.velocityInputStyles={};
+        $scope.velocityBtnStyles={};
+        $scope.positionInputStyles={};
+        $scope.positionBtnStyles={};
+        $scope.velocityparametersErrMsg = "";
+        $scope.positionparametersErrMsg = "";
     }
 
     $scope.openPositionList = function(vehicleId) {

@@ -18,12 +18,22 @@
 <!--Left Side Nav -->
 <md-toolbar>
     <div class="md-toolbar-tools">
-        <form style="width:100%">
+        <!-- Inline Search icon form -->
+<!--         <form style="width:100%"> 
             <div class="input-group" style="display:block">
                 <input type="text" class="form-control" id="input-search" placeholder="Search Telemetry Id" ng-model="$ctrl.searchID" ng-keypress="$ctrl.filter($event)" >
                 <a href="#" class="search-icon" ng-click="$ctrl.filter($event)">
                     <i class="fa fa-search" id="myimage"></i>
                 </a>
+            </div>
+        </form> -->
+        <!-- Search button form -->
+        <form>
+            <div class="input-group">
+                <input type="text" class="form-control" id="input-search" placeholder="Search Telemetry Id" ng-model="$ctrl.searchID" ng-keypress="$ctrl.filter($event)">
+                <span class="input-group-addon" id="group-search" ng-click="$ctrl.filter($event)">
+                    <img ng-src="/icons/search.svg" class="search-icon"/>
+                </span>
             </div>
         </form>
     </div>
