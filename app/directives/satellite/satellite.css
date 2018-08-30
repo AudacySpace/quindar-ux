@@ -35,7 +35,22 @@
 
 #canvas-box {
 	padding: 5px 5px;
-	width: 120px;
+	/*width: 120px;*/
+ /*   overflow:hidden;*/
+    word-wrap: break-word;
+}
+
+input.inputBoxStyles {
+    width:75%;
+    border-radius:0;
+    color:grey;
+}
+
+button.buttonDrpDownStyles {
+    width:25%;
+    border-radius:0;
+    padding-left:0px;
+    padding-right:0px;
 }
 
 #box {
@@ -52,7 +67,7 @@
     display:none;
 }
 .tablet-3d{
-        display:none;
+    display:none;
 }
 
 div#scrollable-containerAttitude{
@@ -116,6 +131,26 @@ div#scrollable-containerPosition{
         border-radius: 0px;
         font-size: 10px;
     }
+
+    input.inputBoxStyles {
+        width:88%;
+        border-radius:0;
+        color:grey;
+        min-width:88%;
+        padding-top:3px;
+        padding-bottom:3px;
+        font-size:10px;
+        text-align:left;
+    }   
+
+    button.buttonDrpDownStyles {
+        width:12%;
+        border-radius:0;
+        min-width:12%;
+        padding-top:3px;
+        padding-bottom:3px;
+        font-size:10px;
+    }
 }
 
 @media only screen and (min-width: 600px) and (max-width: 768px) {
@@ -174,6 +209,26 @@ div#scrollable-containerPosition{
         outline-width:0px;
         background-color: #242833;
         -webkit-tap-highlight-color:#242833;
+    }
+
+    input.inputBoxStyles {
+        width:75%;
+        border-radius:0;
+        color:grey;
+        padding-top:0px;
+        padding-bottom:0px;
+        font-size:9px;
+        text-align:left;
+    }   
+
+    button.buttonDrpDownStyles {
+        width:25%;
+        border-radius:0;
+        padding-top:0px;
+        padding-left:0px;
+        padding-right:0px;
+        padding-bottom:0px;
+        font-size:9px;
     }
 }
 

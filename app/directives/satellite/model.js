@@ -171,10 +171,40 @@ app
 				$scope.cube.quaternion.w = quaternionDataW.value;
 
 				//set quaternion values for displaying on widget
-				$scope.quaternion[$scope.widget.settings.attitudeData[0].id] = quaternionDataX.value.toFixed(4);
-				$scope.quaternion[$scope.widget.settings.attitudeData[1].id] = quaternionDataY.value.toFixed(4);
-				$scope.quaternion[$scope.widget.settings.attitudeData[2].id] = quaternionDataZ.value.toFixed(4);
-				$scope.quaternion[$scope.widget.settings.attitudeData[3].id] = quaternionDataW.value.toFixed(4);
+				if((typeof quaternionDataX.value) === 'number'){
+					$scope.quaternion[$scope.widget.settings.attitudeData[0].id] = quaternionDataX.value.toFixed(4);
+				}else if((typeof quaternionDataX.value) === 'string'){
+					$scope.quaternion[$scope.widget.settings.attitudeData[0].id] = quaternionDataX.value;
+				}
+
+
+				if((typeof quaternionDataY.value) === 'number'){
+					$scope.quaternion[$scope.widget.settings.attitudeData[1].id] = quaternionDataY.value.toFixed(4);
+				}else if((typeof quaternionDataY.value) === 'string'){
+					$scope.quaternion[$scope.widget.settings.attitudeData[1].id] = quaternionDataY.value;
+				}
+
+
+				if((typeof quaternionDataZ.value) === 'number'){
+					$scope.quaternion[$scope.widget.settings.attitudeData[2].id] = quaternionDataZ.value.toFixed(4);
+				}else if((typeof quaternionDataZ.value) === 'string'){
+					$scope.quaternion[$scope.widget.settings.attitudeData[2].id] = quaternionDataZ.value;
+				}
+
+
+				if((typeof quaternionDataW.value) === 'number'){
+					$scope.quaternion[$scope.widget.settings.attitudeData[3].id] = quaternionDataW.value.toFixed(4);
+				}else if((typeof quaternionDataW.value) === 'string'){
+					$scope.quaternion[$scope.widget.settings.attitudeData[3].id] = quaternionDataW.value;
+				}
+
+
+
+
+				// $scope.quaternion[$scope.widget.settings.attitudeData[0].id] = quaternionDataX.value.toFixed(4);
+				// $scope.quaternion[$scope.widget.settings.attitudeData[1].id] = quaternionDataY.value.toFixed(4);
+				// $scope.quaternion[$scope.widget.settings.attitudeData[2].id] = quaternionDataZ.value.toFixed(4);
+				// $scope.quaternion[$scope.widget.settings.attitudeData[3].id] = quaternionDataW.value.toFixed(4);
 				
 				//set direction to Earth
 				positionDataX = dashboardService.getData($scope.widget.settings.positionData[0].key);

@@ -4,13 +4,13 @@
 		<div id="canvas-box">
 			<ul id="box">
 				<li>
-					<b>Coordinate </b> ECI
+					<b>Coordinate: </b> ECI
 				</li>
 				<li>
-					<b>Vehicle </b> {{ widget.settings.vehicle }}
+					<b>Vehicle: </b> {{ widget.settings.vehicle }}
 				</li>
 				<li ng-repeat = "q in widget.settings.attitudeData track by $index">
-					<b>{{q.id}} </b><span ng-style="quaternion.color[$index]">{{ quaternion[q.id] }}</span>
+					<b>{{q.id}}: </b><span ng-style="quaternion.color[$index]">{{ quaternion[q.id] }}</span>
 				</li>
 			</ul>
 		</div>

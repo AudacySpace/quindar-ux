@@ -104,7 +104,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                     }
                     $scope.widget.settings.vehicles.push(vehicle);
                 }else {
-                    $scope.vehicleMsg = "Please select all parameters for selected vehicles.";
+                    $scope.vehicleMsg = "Please select all coordinates for selected vehicles.";
                     break;
                 }
             }else {
@@ -557,11 +557,11 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
         }
         else if(!$scope.positionBooleans[2])
         {
-            $scope.positionparametersErrMsg = "Select parameters from vehicle: "+$scope.currentScreenVehicle+"!";
+            $scope.positionparametersErrMsg = "Select coordinates from vehicle: "+$scope.currentScreenVehicle+"!";
         }
         else if(!$scope.positionBooleans[1] && $scope.totalPositionArray[$scope.currentVehicleId].length > 0 && $scope.totalPositionArray[$scope.currentVehicleId].length < 3)
         {
-             $scope.positionparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
+             $scope.positionparametersErrMsg = "Select each coordinate(no duplicates) from same category of vehicle!";
         }
         else if($scope.totalVelocityArray[$scope.currentVehicleId].length === 0)
         {
@@ -569,11 +569,11 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
         }
         else if(!$scope.velocityBooleans[2])
         {
-            $scope.velocityparametersErrMsg =  "Select parameters from vehicle: "+$scope.currentScreenVehicle+"!";;
+            $scope.velocityparametersErrMsg =  "Select coordinates from vehicle: "+$scope.currentScreenVehicle+"!";;
         }
         else if(!$scope.velocityBooleans[1] && $scope.totalVelocityArray[$scope.currentVehicleId].length > 0 && $scope.totalVelocityArray[$scope.currentVehicleId].length < 3)
         {
-            $scope.velocityparametersErrMsg = "Select each parameter(no duplicates) from same category of vehicle!";
+            $scope.velocityparametersErrMsg = "Select each coordinate(no duplicates) from same category of vehicle!";
         }
         else if(!$scope.velocityBooleans[0])
         {
@@ -645,6 +645,10 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             dashboardService.setLeftLock($scope.lock.lockLeft);
         }
         $scope.vehicleMsg = "";
+        $scope.positionBooleans[0] = true;
+        $scope.positionBooleans[1] = true;
+        $scope.positionBooleans[2] = true;
+        $scope.positionBooleans[3] = true;
         $scope.velocityBooleans[0] = true;
         $scope.velocityBooleans[1] = true;
         $scope.velocityBooleans[2] = true;

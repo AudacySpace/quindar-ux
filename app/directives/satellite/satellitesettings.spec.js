@@ -2,7 +2,6 @@ describe('Testing satellite settings controller', function () {
     var controller, scope, dashboardService,sidebarService,sideNavOpenMock,$q;
 
     var windowMock = {
-        alert : function(message) {},
         innerWidth: 1000
     };
     var modalInstance = { open: function() {} };
@@ -200,12 +199,12 @@ describe('Testing satellite settings controller', function () {
     });
 
     it('should alert the user if the vehicle and id from the left menu are not available', function() {
-        spyOn(windowMock, "alert");
         scope.widget.settings.dataArray = [];
 
         scope.getValue();
         scope.saveSettings(scope.widget);
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select the parameters before applying!");
+        expect(scope.positionparametersErrMsg).toEqual("");
+        expect(scope.attitudeparametersErrMsg).toEqual("Please fill out this field.");
     });
 
     it('should store the value of selected attitude parameters when category is attitude', function() {
@@ -310,8 +309,6 @@ describe('Testing satellite settings controller', function () {
     });
 
     it('should not store the value of selected attitude parameters when category is attitude and number of parameters is not equal to 4', function() {
-        spyOn(windowMock, "alert");
-
         scope.widget.settings.totalPositionArray = [{vehicle:'A0',id:'x',key:'A0.GNC.position.x',category:'position'},
             {vehicle:'A0',id:'y',key:'A0.GNC.position.y',category:'position'},
             {vehicle:'A0',id:'z',key:'A0.GNC.position.z',category:'position'}];
@@ -335,7 +332,8 @@ describe('Testing satellite settings controller', function () {
         ]);
         expect(scope.settings.attitudeData).toEqual([]);
         expect(scope.vehicle).toEqual('');
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select all attitude values:q1,q2,q3,qc");
+       // expect(scope.positionparametersErrMsg).toEqual("Required: All position coordinates(x,y,z)!");
+        expect(scope.attitudeparametersErrMsg).toEqual("Required: All attitude coordinates(q1,q2,q3,qc)!");
     });
 
     it('should store the value of selected position parameters when category is position', function() {
@@ -434,8 +432,6 @@ describe('Testing satellite settings controller', function () {
 
 
     it('should not store the value of selected position parameters when category is position and number of parameters is not equal to 3', function() {
-        spyOn(windowMock, "alert");
-
         dashboardService.getData.and.callFake(function(){
             return {
                 "value":0.688,
@@ -487,8 +483,8 @@ describe('Testing satellite settings controller', function () {
         expect(scope.vehicle).toEqual('A0');
 
         scope.saveSettings(scope.widget);
-
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select all position values:x,y,z");
+        expect(scope.positionparametersErrMsg).toEqual("Required: All position coordinates(x,y,z)!");
+        //expect(scope.attitudeparametersErrMsg).toEqual("Required: All attitude coordinates(q1,q2,q3,qc)!");
     });
 
     it('should not close the settings menu on save if both attitude and position selected is of different vehicles', function() {
@@ -510,11 +506,11 @@ describe('Testing satellite settings controller', function () {
         scope.positionBooleans = [true, true, true, true];
         scope.widget.main = false;
         scope.widget.settings.active = true;
-        spyOn(windowMock, "alert");
-
         scope.saveSettings(scope.widget);
         
-        expect(windowMock.alert).toHaveBeenCalledWith("Both Attitude and Position Values should be of the same vehicle.");
+        //expect(windowMock.alert).toHaveBeenCalledWith("Both Attitude and Position Values should be of the same vehicle.");
+        expect(scope.positionparametersErrMsg).toEqual("Vehicles of both fields do not match! Selected from vehicle: A1");
+        expect(scope.attitudeparametersErrMsg).toEqual("Vehicles of both fields do not match! Selected from vehicle: A0");
     });
 
     it('should properly give values to arrays when close button is clicked on settings menu given that data has already been saved once before', function() {
