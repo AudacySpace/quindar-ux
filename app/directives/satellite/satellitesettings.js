@@ -17,6 +17,8 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
     $scope.positionInputStyles={};
     $scope.attitudeBtnStyles={};
     $scope.positionBtnStyles={};
+    $scope.attitudeparametersErrMsg = "";
+    $scope.positionparametersErrMsg = "";
 
 	$scope.closeSettings = function(widget){
 		widget.main = true;
@@ -358,7 +360,9 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
     $scope.readValues = function(field)
     {
         var trimmedData = [];
-        var stringData = "";
+        // var stringData = "";
+        $scope.stringPositionData = "";
+        $scope.stringAttitudeData = "";
 
         if(field == 'attitude')
         {
@@ -373,17 +377,17 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                 {
                     if(i == trimmedData.length - 1)
                     {
-                        stringData += trimmedData[i].id
+                        $scope.stringAttitudeData += trimmedData[i].id
                     }
                     else
                     {
-                        stringData += trimmedData[i].id + ", ";
+                        $scope.stringAttitudeData += trimmedData[i].id + ", ";
                     }
                 }
             }
-            if(stringData)
+            if($scope.stringAttitudeData)
             {
-                return stringData;
+                return $scope.stringAttitudeData;
             }
             else
             {
@@ -403,18 +407,18 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                 {
                     if(i == trimmedData.length - 1)
                     {
-                        stringData += trimmedData[i].id
+                         $scope.stringPositionData += trimmedData[i].id
                     }
                     else
                     {
-                        stringData += trimmedData[i].id + ", ";
+                         $scope.stringPositionData += trimmedData[i].id + ", ";
                     }
                 }
             }
 
-            if(stringData)
+            if( $scope.stringPositionData)
             {
-                return stringData;
+                return  $scope.stringPositionData;
             }
             else
             {

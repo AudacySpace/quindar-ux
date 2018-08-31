@@ -24,6 +24,11 @@ app.controller('LineSettingsCtrl',
             }
         }
 
+        $scope.tempParameterSelection = new Object();
+        $scope.inputFieldStyles = {};
+        $scope.parametersErrMsg = "";
+        $scope.vehicleMsg = "";
+
         $scope.getTelemetrydata = function(){
             //open the data menu
             sidebarService.setTempWidget($scope.widget, this); //pass widget and controller functions to sidebarService
@@ -42,13 +47,10 @@ app.controller('LineSettingsCtrl',
         $scope.readValue = function()
         {
             var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
-            if(data && data.id !== "")
-            {
-                return data.id;
-            }
-            else
-            {
-                return "";
+            if(data && data.id !== "" && $scope.tempParameterSelection){
+                return $scope.tempParameterSelection.id;
+            }else{
+               return "";
             }
         }
     
@@ -59,23 +61,25 @@ app.controller('LineSettingsCtrl',
                 for(var i=0; i<$scope.settings.vehicles.length; i++){
                     if($scope.settings.vehicles[i].value === data.vehicle){
                         $scope.settings.vehicles[i].checked = true;
+                        $scope.tempParameterSelection = angular.copy(data);
                     }
                     else{
                         $scope.settings.vehicles[i].checked = false;
                     }
                 }
                 hasValue = true;
-            }
-            else
-            {
+            }else{
                 hasValue = false;
             }
         }
 
         // Save
         $scope.saveWidget = function(widget){
+            $scope.vehicleMsg = "";
+            $scope.parametersErrMsg = "";
             //check conditions originally in getValue over here
-            var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
+           // var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
+            var data = angular.copy($scope.tempParameterSelection);
             if(data && data.key !== "" && hasValue){
                 $scope.settings.data = angular.copy(data);
                 var datavalue = dashboardService.getData(data.key);
@@ -119,20 +123,24 @@ app.controller('LineSettingsCtrl',
                                 $scope.previousSettings = angular.copy($scope.settings);
                                 var lastCell = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
                                 $scope.widget.settings.dataArray = [lastCell];
+                                $scope.inputFieldStyles = {};
                             } else {
-                                $window.alert("Please select atleast one vehicle and save!");
+                                $scope.vehicleMsg = "Please choose the vehicle.";
                             }
                         }
                     } else {
-                        $window.alert("Please select telemetry ID(leaf node) from Data Menu");
+                        $scope.parametersErrMsg = "Selected parameter has no data!";
+                        $scope.inputFieldStyles = {'border-color':'#dd2c00'};
                     }
                 }else {
                     //when no telemetry value available for the telemetry id,set the value in the input but also alert the user.
                     $scope.settings.data = angular.copy(data);
-                    $window.alert("Currently there is no data available for this telemetry id.");
+                    $scope.parametersErrMsg = "Currently there is no data available for this parameter.";
+                    $scope.inputFieldStyles = {'border-color':'#dd2c00'};
                 }
             }else { 
-                $window.alert("Vehicle data not set. Please select from Data Menu");
+                $scope.parametersErrMsg = "Please fill out this field.";
+                $scope.inputFieldStyles = {'border-color':'#dd2c00'};
             }
         }
                 
@@ -145,13 +153,18 @@ app.controller('LineSettingsCtrl',
             widget.main = true;
             widget.settings.active = false;
             $scope.settings = angular.copy($scope.previousSettings);
-            $scope.widget.settings.dataArray = [$scope.settings.data];
+            $scope.widget.settings.dataArray = [angular.copy($scope.settings.data)];
+            $scope.tempParameterSelection = angular.copy($scope.settings.data);
             if ($window.innerWidth >= 1400)
             {
                 $scope.lock = dashboardService.getLock();
                 $scope.lock.lockLeft = false;
                 dashboardService.setLeftLock($scope.lock.lockLeft);
             }
+
+            $scope.parametersErrMsg = "";
+            $scope.vehicleMsg = "";
+            $scope.inputFieldStyles = {};
         }
 
         $scope.createVehicleData = function(callback){
@@ -217,6 +230,7 @@ app.controller('LineSettingsCtrl',
                         }
                     }
                     $scope.previousSettings = angular.copy($scope.settings);
+                    $scope.tempParameterSelection = angular.copy($scope.settings.data);
                     $scope.widget.settings.dataArray = [angular.copy($scope.settings.data)];
                     hasValue = true;
                 }

@@ -105,7 +105,7 @@
                         <button type="button" class="btn btn-primary col-sm-2 sbtns" ng-click="closeWidget(widget)">CLOSE</button>
                     </div>
                     <div class="col-sm-10" ng-show="secondScreen">
-                        <button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="saveParameters(widget)">SAVE</button>
+                        <button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="saveParameters(widget)" ng-disabled="stringPositionData.length === 0 && stringVelocityData.length === 0">SAVE</button>
                         <button type="button" class="btn btn-primary col-sm-2 sbtns" ng-click="closeParameters(widget)">CLOSE</button>
                     </div>
                     <div class="col-sm-1"></div>
@@ -168,7 +168,7 @@
         </div>
         <span ng-show="velocityparametersErrMsg.length > 0" style="font-size:8px;color:#dd2c00" class="req-label"> {{ velocityparametersErrMsg }} </span>
         <hr class="hr-double-col1-2-gt">
-        <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveParameters(widget)">SAVE</button>
+        <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveParameters(widget)" ng-disabled="stringPositionData.length === 0 && stringVelocityData.length === 0">SAVE</button>
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeParameters(widget)">CLOSE</button>     
     </form>
 </div>
@@ -276,7 +276,7 @@
             <div class="row">
                 <div class="col-sm-1 tablecellstyle1"></div>
                 <div class="col-sm-10 btndivider tablecellstyle10">
-                    <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="saveParameters(widget)">SAVE</button>
+                    <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="saveParameters(widget)" ng-disabled="stringPositionData.length === 0 && stringVelocityData.length === 0">SAVE</button>
                     <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="closeParameters(widget)">CLOSE</button> 
                 </div>
                 <div class="col-sm-1 tablecellstyle1"></div>

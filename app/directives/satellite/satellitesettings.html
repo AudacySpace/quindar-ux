@@ -52,7 +52,7 @@
 			<div class="row">
 				<div class="col-sm-1"></div>
 				<div class="col-sm-10 btndivider">
-					<button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="saveSettings(widget)">SAVE</button>
+					<button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="saveSettings(widget)" ng-disabled="stringPositionData.length === 0 && stringAttitudeData.length === 0">SAVE</button>
 					<button type="button" class="btn btn-primary col-sm-2 sbtns" ng-click="closeSettings(widget)">CLOSE</button>
 				</div>
 			</div>	
@@ -91,7 +91,7 @@
         </div>
         <span ng-show="positionparametersErrMsg.length > 0" style="font-size:8px;color:#dd2c00" class="req-label"> {{ positionparametersErrMsg }} </span>
         <hr class="hr-double-col1-1">
-        <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveSettings(widget)">SAVE</button>
+        <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveSettings(widget)" ng-disabled="stringPositionData.length === 0 && stringAttitudeData.length === 0">SAVE</button>
         <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeSettings(widget)">CLOSE</button>  
     </form>
 </div>
@@ -154,7 +154,7 @@
                 <div class="row">
                     <div class="col-sm-1 tablecellstyle1"></div>
                     <div class="col-sm-10 btndivider tablecellstyle10">
-                        <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="saveSettings(widget)">SAVE</button>
+                        <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="saveSettings(widget)" ng-disabled="stringPositionData.length === 0 && stringAttitudeData.length === 0">SAVE</button>
                         <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="closeSettings(widget)">CLOSE</button> 
                     </div>
                     <div class="col-sm-1 tablecellstyle1"></div>

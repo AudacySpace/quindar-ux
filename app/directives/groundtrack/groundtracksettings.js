@@ -52,6 +52,8 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
     $scope.velocityInputStyles={};
     $scope.positionBtnStyles={};
     $scope.velocityBtnStyles={};
+    $scope.positionparametersErrMsg = "";
+    $scope.velocityparametersErrMsg = "";
     
     $scope.closeWidget = function(widget){
         widget.main = true;
@@ -475,7 +477,9 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
     //display telemetry id chosen by the user in the right input box
     $scope.readValues = function(field) {
         var trimmedData = [];
-        var stringData = "";
+        // var stringData = "";
+        $scope.stringPositionData = "";
+        $scope.stringVelocityData = "";
 
         if(field == "velocity") {
             if($scope.totalVelocityArray[$scope.currentVehicleId]) {
@@ -485,15 +489,15 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             for(var i = 0; i < trimmedData.length; i++) {
                 if(trimmedData[i]) {
                     if(i == trimmedData.length - 1) {
-                        stringData += trimmedData[i].id
+                        $scope.stringVelocityData += trimmedData[i].id
                     }
                     else {
-                        stringData += trimmedData[i].id + ", ";
+                        $scope.stringVelocityData += trimmedData[i].id + ", ";
                     }
                 }
             }
-            if(stringData) {
-                return stringData;
+            if($scope.stringVelocityData) {
+                return $scope.stringVelocityData;
             }
             else {
                 return "";
@@ -507,16 +511,16 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             for(var i = 0; i < trimmedData.length; i++) {
                 if(trimmedData[i]) {
                     if(i == trimmedData.length - 1) {
-                        stringData += trimmedData[i].id
+                        $scope.stringPositionData += trimmedData[i].id
                     }
                     else {
-                        stringData += trimmedData[i].id + ", ";
+                        $scope.stringPositionData += trimmedData[i].id + ", ";
                     }
                 }
             }
 
-            if(stringData) {
-                return stringData;
+            if($scope.stringPositionData) {
+                return $scope.stringPositionData;
             }
             else {
                 return "";

@@ -38,6 +38,9 @@
 .tablet-dl{
     display:none;
 }
+input.dataInputField{
+    border-radius:0px;
+}
 
 @media only screen and (max-width: 599px) {
     #datalogtable {

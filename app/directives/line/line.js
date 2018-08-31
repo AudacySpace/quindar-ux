@@ -69,6 +69,7 @@ app.controller("LineCtrl", function($scope, $element, $interval, $window, dashbo
                         } else {
                             $scope.plotData = [];
                         }
+                        $scope.stringDataErrMsg = "";
                     }
 
                     for(var v in vehicles){
@@ -138,8 +139,10 @@ app.controller("LineCtrl", function($scope, $element, $interval, $window, dashbo
                             key: ""
                         };
 
-                        $window.alert(paramY + " is of datatype " + typeof(currentData.value) + 
-                            ". Please select another ID from data menu.");
+                        // $window.alert(paramY + " is of datatype " + typeof(currentData.value) + 
+                        //     ". Please select another ID from data menu.");
+                        $scope.stringDataErrMsg = "'"+paramY +"' has no numeric data"+
+                            ". Please select another ID from data menu.";
                     } else {
                         graph.updateOptions({
                             file: $scope.plotData,
