@@ -7,13 +7,21 @@ app.directive('datalogsettings', function() {
 });
 
 app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebarService,dashboardService){
-    checkForLogData();
+    
 
     var hasValue;
+    $scope.tempParameterSelection = new Object();
+    $scope.inputFieldStyles = {};
+    $scope.parametersErrMsg = "";
+
+    checkForLogData();
 
     $scope.saveDataLogSettings = function(widget){
+        $scope.parametersErrMsg = "";
+        $scope.inputFieldStyles = {};
         //check conditions originally in getValue over here
-        var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
+        //var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
+        var data = angular.copy($scope.tempParameterSelection);
         if(data && data.vehicle !== "" && data.id !== "" && hasValue){
             $scope.data = angular.copy(data);
             var datavalue = dashboardService.getData(data.key);
@@ -32,16 +40,21 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
                     $scope.widget.settings.data = angular.copy($scope.data);
                     var lastCell = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
                     $scope.widget.settings.dataArray = [lastCell];
+                    $scope.parametersErrMsg = "";
+                    $scope.inputFieldStyles = {};
                 }else{
-                   $window.alert("Please select telemetry ID(leaf node) from Data Menu"); 
+                    $scope.parametersErrMsg = "Selected parameter has no data!";
+                    $scope.inputFieldStyles = {'border-color':'#dd2c00'};
                 }
 
             }else{
                 $scope.data = angular.copy(data);
-                $window.alert("Currently there is no data available for this telemetry id.");
+                $scope.parametersErrMsg = "Currently there is no data available for this parameter.";
+                $scope.inputFieldStyles = {'border-color':'#dd2c00'};
             }
         }else {
-            $window.alert("Vehicle data not set. Please select from Data Menu");
+            $scope.parametersErrMsg = "Please fill out this field.";
+            $scope.inputFieldStyles = {'border-color':'#dd2c00'};
         }
 
     };
@@ -57,12 +70,15 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
         widget.delete = false;
         $scope.data = angular.copy($scope.widget.settings.data);
         $scope.widget.settings.dataArray = [$scope.data];
+        $scope.tempParameterSelection = angular.copy($scope.widget.settings.data);
         if ($window.innerWidth >= 1400) //close left sidebar
         {
             $scope.lock = dashboardService.getLock();
             $scope.lock.lockLeft = false;
             dashboardService.setLeftLock($scope.lock.lockLeft);
         }
+        $scope.inputFieldStyles = {};
+        $scope.parametersErrMsg = "";
     }
 
     $scope.getTelemetrydata = function(){
@@ -83,9 +99,9 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
     $scope.readValue = function()
     {
         var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
-        if(data && data.id !== "")
+        if(data && data.id !== "" && $scope.tempParameterSelection)
         {
-            return data.id;
+            return $scope.tempParameterSelection.id;
         }
         else
         {
@@ -113,6 +129,7 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
             if(!isGroup) //confirm that group isn't chosen
             {
                 hasValue = true;
+                $scope.tempParameterSelection = angular.copy(data);
             }
             else
             {
@@ -132,9 +149,11 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
                 vehicle: '',
                 key: ''
             };
+            $scope.tempParameterSelection = angular.copy($scope.data);
         }else {
             $scope.data = angular.copy($scope.widget.settings.data);
             $scope.widget.settings.dataArray = [$scope.widget.settings.data];
+            $scope.tempParameterSelection = angular.copy($scope.widget.settings.data);
             hasValue = true;
         }  
     }

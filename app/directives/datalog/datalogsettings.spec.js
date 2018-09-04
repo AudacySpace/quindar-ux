@@ -2,7 +2,6 @@ describe('Testing datalog settings controller', function () {
     var controller, scope, dashboardService, sidebarService, sideNavOpenMock;
 
     var windowMock = {
-        alert : function() {},
         innerWidth: 1000
     };
 
@@ -149,6 +148,7 @@ describe('Testing datalog settings controller', function () {
         };
 
         scope.widget.settings.dataArray = [vehicleInfo];
+        scope.tempParameterSelection = vehicleInfo;
 
         dashboardService.getData.and.callFake(function() {
             return {
@@ -194,22 +194,20 @@ describe('Testing datalog settings controller', function () {
     });
 
     it('should alert the user if the vehicle and id from the left menu are not available', function() {
-        spyOn(windowMock, "alert");
-
         scope.widget.settings.dataArray = [];
+        scope.tempParameterSelection = {};
         scope.saveDataLogSettings(scope.widget);
-
-        expect(windowMock.alert).toHaveBeenCalledWith("Vehicle data not set. Please select from Data Menu");
+        expect(scope.parametersErrMsg).toEqual("Please fill out this field.");
     });
 
     it('should alert the user if no data is available for selected telemetry id', function() {
-        spyOn(windowMock, "alert");
         var vehicleInfo = { 
             id: 'vx',
             vehicle: 'A0',
             key: 'A0.GNC.velocity.vx',
             category: 'velocity' 
         };
+        scope.tempParameterSelection = vehicleInfo;
 
         dashboardService.getData.and.callFake(function() {
             return null;
@@ -219,8 +217,7 @@ describe('Testing datalog settings controller', function () {
 
         scope.getValue(false);
         scope.saveDataLogSettings(scope.widget);
-
-        expect(windowMock.alert).toHaveBeenCalledWith("Currently there is no data available for this telemetry id.");
+        expect(scope.parametersErrMsg).toEqual("Currently there is no data available for this parameter.");
     });
 
     it('should store the value of selected vehicle and id in scope.data variable', function() {

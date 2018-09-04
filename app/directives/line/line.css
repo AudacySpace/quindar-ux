@@ -83,6 +83,7 @@
     display:none;
 }
 .lpdata-input{
+    border-radius:0px;
     background-color: #fff;
 }
 

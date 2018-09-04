@@ -3,7 +3,6 @@ describe('Testing lineplot settings controller', function () {
         sideNavOpenMock, $interval;
 
     var windowMock = {
-        alert : function() {},
         innerWidth: 1000
     };
 
@@ -146,7 +145,6 @@ describe('Testing lineplot settings controller', function () {
     });
 
     it('should alert and not close the settings menu on save if data is not selected', function() {
-        spyOn(windowMock, "alert");
         scope.settings.data = {
             id: '',
             vehicle: '',
@@ -162,7 +160,7 @@ describe('Testing lineplot settings controller', function () {
         
         expect(scope.widget.main).not.toEqual(true);
         expect(scope.widget.settings.active).not.toEqual(false);
-        expect(windowMock.alert).toHaveBeenCalledWith("Vehicle data not set. Please select from Data Menu");
+        expect(scope.parametersErrMsg).toEqual("Please fill out this field.");
     });
 
     it('should close the settings menu on save if data is selected', function() {
@@ -216,8 +214,6 @@ describe('Testing lineplot settings controller', function () {
     });
 
     it('should alert the user on save if data is selected but none of the vehicles is checked', function() {
-        spyOn(windowMock, "alert");
-
         scope.settings.data = {
             id: 'vx',
             vehicle: 'A0',
@@ -262,7 +258,7 @@ describe('Testing lineplot settings controller', function () {
         expect(scope.widget.settings.data.key).toEqual('A0.GNC.velocity.vx');
         expect(scope.widget.settings.data.value).toEqual('vx');
         expect(scope.widget.settings.data.vehicles).toEqual([]);
-        expect(windowMock.alert).toHaveBeenCalledWith("Please select atleast one vehicle and save!");
+        expect(scope.vehicleMsg).toEqual("Please choose the vehicle.");
     });
 
     it('should define function getTelemetrydata', function() {
@@ -307,6 +303,7 @@ describe('Testing lineplot settings controller', function () {
         };
 
         scope.widget.settings.dataArray = [vehicleInfo];
+        scope.tempParameterSelection = vehicleInfo;
 
         dashboardService.getData.and.callFake(function() {
             return {
@@ -328,16 +325,12 @@ describe('Testing lineplot settings controller', function () {
     });
 
     it('should alert the user if the vehicle and id from the left menu are not available', function() {
-        spyOn(windowMock, "alert");
         scope.widget.settings.dataArray = [];
-
         scope.saveWidget(scope.widget);
-
-        expect(windowMock.alert).toHaveBeenCalledWith("Vehicle data not set. Please select from Data Menu");
+        expect(scope.parametersErrMsg).toEqual("Please fill out this field.");
     });
 
     it('should alert the user if no data is available for selected telemetry id', function() {
-        spyOn(windowMock, "alert");
         var vehicleInfo = { 
             id: 'vx',
             vehicle: 'A0',
@@ -353,8 +346,7 @@ describe('Testing lineplot settings controller', function () {
 
         scope.getValue(false);
         scope.saveWidget(scope.widget);
-
-        expect(windowMock.alert).toHaveBeenCalledWith("Currently there is no data available for this telemetry id.");
+        expect(scope.parametersErrMsg).toEqual("Currently there is no data available for this parameter.");
     });
 
     it('should store the value of selected vehicle and id in scope.settings variable', function() {
@@ -367,6 +359,7 @@ describe('Testing lineplot settings controller', function () {
         };
         
         scope.widget.settings.dataArray = [vehicleInfo];
+        scope.tempParameterSelection = vehicleInfo;
 
         dashboardService.getData.and.callFake(function(){
             return {
@@ -399,6 +392,7 @@ describe('Testing lineplot settings controller', function () {
         };
 
         scope.widget.settings.dataArray = [vehicleInfo];
+        scope.tempParameterSelection = vehicleInfo;
 
         dashboardService.getData.and.callFake(function(){
             return {
