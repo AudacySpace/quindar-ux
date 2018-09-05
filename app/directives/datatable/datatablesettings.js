@@ -7,11 +7,12 @@ app.directive('datatablesettings', function() {
 });
 
 app.controller('DatatableSettingsCtrl', function($scope, $window){
-    $scope.checkedValues = $scope.widget.settings.checkedValues;
+    $scope.checkedValues = angular.copy($scope.widget.settings.checkedValues);
     var values = angular.copy($scope.checkedValues);
+    $scope.columnSelectionErrMsg = "";
 
     $scope.saveDataTableSettings = function(widget){
-        var val = $scope.checkedValues;
+        var val = angular.copy($scope.checkedValues);
         var count = 0;
         for(obj in val){
             if(val[obj]){
@@ -24,8 +25,10 @@ app.controller('DatatableSettingsCtrl', function($scope, $window){
             widget.saveLoad = false;
             widget.delete = false;
             values = angular.copy($scope.checkedValues);
+            $scope.columnSelectionErrMsg = "";
+            setCheckedValues(widget,values);
         } else {
-            $window.alert("Please check at least one category");
+            $scope.columnSelectionErrMsg = "Please select atleast one column.";
         }
     };
 
@@ -35,6 +38,17 @@ app.controller('DatatableSettingsCtrl', function($scope, $window){
         widget.saveLoad = false;
         widget.delete = false;
         setCheckedValues(widget,values);
+        $scope.checkedValues.checkedId = values.checkedId;
+
+        $scope.checkedValues.checkedAlow = values.checkedAlow;
+        $scope.checkedValues.checkedWlow = values.checkedWlow;
+        $scope.checkedValues.checkedValue = values.checkedValue;
+        $scope.checkedValues.checkedWhigh = values.checkedWhigh;
+        $scope.checkedValues.checkedAhigh = values.checkedAhigh;
+        $scope.checkedValues.checkedUnits = values.checkedUnits;
+        $scope.checkedValues.checkedNotes = values.checkedNotes;
+        $scope.checkedValues.checkedChannel = values.checkedChannel;
+        $scope.columnSelectionErrMsg = "";
     }
 
     function setCheckedValues(widget,val){
@@ -47,6 +61,7 @@ app.controller('DatatableSettingsCtrl', function($scope, $window){
         widget.settings.checkedValues.checkedAhigh = val.checkedAhigh;
         widget.settings.checkedValues.checkedUnits = val.checkedUnits;
         widget.settings.checkedValues.checkedNotes = val.checkedNotes;
+        widget.settings.checkedValues.checkedChannel = val.checkedChannel;
     } 
 });
 

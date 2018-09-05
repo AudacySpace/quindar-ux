@@ -39,11 +39,15 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     $scope.$watch('dataStatus',function(newVal,oldVal){
         dServiceObjVal = newVal; 
     },true);
+    $scope.badSelectionErrMsg = "";
+    $scope.errMsgStyles = {};
 
-    var num_of_rows = 39;
-    var rowValues = [];
+    // Default table structure -contains 120 rows to best appear for small and large screens
+    createTableRows();
 
-    var dataObject = {
+    function createTableRows(){
+        var num_of_rows = 120;
+        var dataObject = {
             contents: [
             {   
                 "datavalue":"",
@@ -116,14 +120,41 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                 "active": "false",
                 "datacolor":"",
                 "headervalue":""
-            }],
+            },
+            {   
+                "datavalue":"",
+                "checked":"true",
+                "style":textLeft,
+                "colshow":"checkedValues.checkedChannel",
+                "active": "false",
+                "datacolor":"",
+                "headervalue":""
+            }
+            ],
             disabled: false
         }
-
-    //Default table structure -contains 120 rows to best appear for small and large screens
-    for (var i = 0; i <= num_of_rows; i++) {
-        tableCols.push(angular.copy(dataObject));      
+        //Default table structure -contains 120 rows to best appear for small and large screens
+        if($scope.widget.settings.data.length ===  0){
+            for (var i = 0; i < num_of_rows; i++) {
+                tableCols.push(angular.copy(dataObject));
+                $scope.widget.settings.data[i] = new Object();
+                $scope.widget.settings.previous[i] = new Object();      
+            }
+        }
+        else {
+            for (var i = 0; i < $scope.widget.settings.data.length; i++) {
+                if($scope.widget.settings.data[i].hasOwnProperty("value")){
+                    dataObject.value = $scope.widget.settings.data[i].value;
+                    dataObject.type = $scope.widget.settings.data[i].type;
+                    dataObject.undone = $scope.widget.settings.data[i].undone;
+                    tableCols.push(angular.copy(dataObject));  
+                }else {
+                    tableCols.push(angular.copy(dataObject));
+                }
+            }
+        }
     }
+
     //Function to select telemetry Id
     $scope.getTelemetrydata = function($event, $index, askedForGroup){
         sidebarService.setTempWidget($scope.widget, this); //pass widget and controller functions to sidebarService
@@ -147,16 +178,23 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
         if(isGroup && $scope.askedForGroup) //if the user has asked to see group and chosen a group from left sidebar
         {
             $scope.applyGroup();
+            $scope.arrow.style.color = "#b3b3b3";
+            $scope.errMsgStyles = {};
+            $scope.badSelectionErrMsg = "";
         }
         else if(!isGroup && !$scope.askedForGroup) //if the user has asked to see telemetry id and chosen telemetry id from left sidebar
         {
             $scope.applyValue();
+            $scope.arrow.style.color = "#b3b3b3";
+            $scope.errMsgStyles = {};
+            $scope.badSelectionErrMsg = "";
         }
         else if(!isGroup && $scope.askedForGroup) //if the user has asked to see group and has instead chosen telemetry id from left sidebar
         {
-            $window.alert("Be sure to select a group!");
+            $scope.arrow.style.color = "#07D1EA";
+            $scope.badSelectionErrMsg = "Select a group from the data menu!";
+            $scope.errMsgStyles = {'padding':'5px','margin-bottom':'0px','opacity':'1','border-radius':'0px','position':'absolute','top':'35px','left':'0%','right':'0%','z-index':100};
         }
-        $scope.arrow.style.color = "#b3b3b3";
         $scope.widget.settings.dataArray = []; //once data has been added to table, reset dataArray
     }
     //Function to display selected telemetry Id value and its corresponding data values.
@@ -197,6 +235,14 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                 if(!datavalue.hasOwnProperty("value")){
                     var idList = Object.keys(datavalue);
 
+
+                    if($scope.table.rows[$scope.currentIndex]){
+                        for(var a=1;a<idList.length;a++){
+                            if(!$scope.table.rows[$scope.currentIndex+a]){
+                                $scope.addRowBelow($scope.currentIndex); // add row below if row does not exist
+                            }
+                        }
+                    }
                     for(var i=0; i<idList.length; i++){
 
                         if(savePrevious($scope.currentIndex + i)) //save info (if object not already created for this row, create it)
@@ -222,8 +268,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
 
     //Function to add row above the current row
     $scope.addRowAbove = function($index){
-        if($scope.table.rows.length < 80){
-            $scope.table.rows.splice($index,0,{contents :[
+        $scope.table.rows.splice($index,0,{contents :[
                 {
                     "datavalue":"",
                     "headervalue":"",
@@ -287,20 +332,25 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                     "style":textLeft,
                     "colshow":"checkedValues.checkedNotes",
                     "active": "false"
-                }], 
+                },
+                {   
+                    "datavalue":"",
+                    "checked":"true",
+                    "style":textLeft,
+                    "colshow":"checkedValues.checkedChannel",
+                    "active": "false",
+                    "datacolor":"",
+                    "headervalue":""
+                }
+                ], 
                 disabled:false 
             });
             $scope.widget.settings.data.splice($index, 0, {});
-            $scope.widget.settings.previous.splice($index, 0, {});
-        }else {
-            $window.alert("You have reached the maximum limit for rows!");
-        }
-       
+            $scope.widget.settings.previous.splice($index, 0, {});       
     }
 
     //Function to add below the current row
     $scope.addRowBelow = function($index){
-        if($scope.table.rows.length < 80){
             $scope.table.rows.splice($index+1,0,{contents :[
                 {
                     "datavalue":"",
@@ -365,15 +415,21 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                     "style":textLeft,
                     "colshow":"checkedValues.checkedNotes",
                     "active": "false"
-                }],
+                },
+                {   
+                    "datavalue":"",
+                    "checked":"true",
+                    "style":textLeft,
+                    "colshow":"checkedValues.checkedChannel",
+                    "active": "false",
+                    "datacolor":"",
+                    "headervalue":""
+                }
+                ],
                 disabled:false 
             });
             $scope.widget.settings.data.splice($index+1, 0, {}); 
-            $scope.widget.settings.previous.splice($index+1, 0, {}); 
-       }else {
-            $window.alert("You have reached the maximum limit for rows!");
-       }
-       
+            $scope.widget.settings.previous.splice($index+1, 0, {});        
     }
 
     //Function to delete the current row.
@@ -419,7 +475,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             }, 500);  
         }
         else{
-            $window.alert("This row cannot be moved further down! You have reached the end of the table.");
+            //$window.alert("This row cannot be moved further down! You have reached the end of the table.");
         }
     }
 
@@ -478,6 +534,93 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
         $scope.widget.settings.data[$index].type = tempType;
         $scope.widget.settings.data[$index].value = tempValue;
 
+        var dataObj = {
+            contents: [
+            {   
+                "datavalue":"",
+                "checked":"true",
+                "style":textLeft,
+                "colshow":"checkedValues.checkedId",
+                "active": "false",
+                "datacolor":"",
+                "headervalue":""
+            },
+            {   
+                "datavalue":"",
+                "checked":"true",
+                "style":textRight,
+                "colshow":"checkedValues.checkedAlow",
+                "active": "false",
+                "datacolor":"",
+                "headervalue":""
+            },
+            {   
+                "datavalue":"",
+                "checked":"true",
+                "style":textRight,
+                "colshow":"checkedValues.checkedWlow",
+                "active": "false",
+                "datacolor":"",
+                "headervalue":""
+            },
+            {   
+                "datavalue":"",
+                "checked":"true",
+                "style":textRight,
+                "colshow":"checkedValues.checkedValue",
+                "active": "false",
+                "datacolor":"",
+                "headervalue":""
+            },
+            {   
+                "datavalue":"",
+                "checked":"true",
+                "style":textRight,
+                "colshow":"checkedValues.checkedWhigh",
+                "active": "false",
+                "datacolor":"",
+                "headervalue":""
+            },
+            {   
+                "datavalue":"",
+                "checked":"true",
+                "style":textRight,
+                "colshow":"checkedValues.checkedAhigh",
+                "active": "false",
+                "datacolor":"",
+                "headervalue":""
+            },
+            {   
+                "datavalue":"",
+                "checked":"true",
+                "style":textLeft,
+                "colshow":"checkedValues.checkedUnits",
+                "active": "false",
+                "datacolor":"",
+                "headervalue":""
+            },
+            {   
+                "datavalue":"",
+                "checked":"true",
+                "style":textLeft,
+                "colshow":"checkedValues.checkedNotes",
+                "active": "false",
+                "datacolor":"",
+                "headervalue":""
+            },
+            {   
+                "datavalue":"",
+                "checked":"true",
+                "style":textLeft,
+                "colshow":"checkedValues.checkedChannel",
+                "active": "false",
+                "datacolor":"",
+                "headervalue":""
+            }
+            ],
+            disabled: false
+        }
+
         //create header if new current row in "data" says so
         if(tempType == "header")
         {
@@ -485,7 +628,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
         }
         else //otherwise create a data object in the current row
         {
-            $scope.table.rows[$index] = angular.copy(dataObject);
+            $scope.table.rows[$index] = angular.copy(dataObj);
         }
 
         //now this has been undone, don't allow option to undo again
@@ -497,16 +640,16 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     {
         if($scope.widget.settings.data[index]) //no need to create new object in previous if object already has been made
         {
-            $scope.widget.settings.previous[index].type = $scope.widget.settings.data[index].type;
-            $scope.widget.settings.previous[index].value = $scope.widget.settings.data[index].value;
-            return false;
-        }
-        else
-        {
-            $scope.widget.settings.previous[index] = new Object();
-            $scope.widget.settings.previous[index].type = "";
-            $scope.widget.settings.previous[index].value = "";
-            return true;
+            if($scope.widget.settings.data[index].hasOwnProperty("value")){
+                $scope.widget.settings.previous[index].type = $scope.widget.settings.data[index].type;
+                $scope.widget.settings.previous[index].value = $scope.widget.settings.data[index].value;
+                return false;
+            }else {
+                // $scope.widget.settings.previous[index] = new Object();
+                $scope.widget.settings.previous[index].type = "";
+                $scope.widget.settings.previous[index].value = "";
+                return true;
+            }
         }
     }
 
@@ -533,6 +676,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                 //update values if the row type is data, not header
                 if(data.type == "data"){
                     var key = data.value;
+                    tempRow.contents[8].datavalue = key;
                     try {
                         //id is the last/leaf node of the dot separated key.
                         var id = key.split('.').slice(-1)[0];

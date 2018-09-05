@@ -3,7 +3,6 @@ describe('Testing data table controller', function () {
         datastatesService, $intervalSpy;
 
     var windowMock = {
-        alert : function() {},
         innerWidth: 1000
     };
 
@@ -95,9 +94,9 @@ describe('Testing data table controller', function () {
     });
 
     it('should create 39 table rows in the data table', function() {
-        expect(scope.table.rows.length).toEqual(40);
+        expect(scope.table.rows.length).toEqual(120);
         //each row has nine columns
-        expect(scope.table.rows[0].contents.length).toEqual(8);
+        expect(scope.table.rows[0].contents.length).toEqual(9);
     });
 
     it('should define function getTelemetrydata', function() {
@@ -279,7 +278,6 @@ describe('Testing data table controller', function () {
     });*/
 
     it('should alert the user if an ID(not group) is selected from the left menu', function() {
-        spyOn(windowMock, "alert");
         scope.arrow = arrow;
         
         var data = { 
@@ -293,9 +291,7 @@ describe('Testing data table controller', function () {
         scope.askedForGroup = true;
 
         scope.getValue(false);
-
-        expect(windowMock.alert).toHaveBeenCalledWith("Be sure to select a group!");
-        expect(arrow.style.color).toEqual('#b3b3b3');
+        expect(arrow.style.color).toEqual('#07D1EA');
         expect(scope.widget.settings.dataArray.length).toEqual(0);
     });
 
@@ -314,7 +310,7 @@ describe('Testing data table controller', function () {
 
         scope.getValue(true);
 
-        expect(arrow.style.color).toEqual('#b3b3b3');
+        expect(arrow.style.color).toEqual('#07D1EA');
         expect(scope.widget.settings.dataArray).toEqual([]);
     });
 
@@ -428,18 +424,18 @@ describe('Testing data table controller', function () {
 
         scope.addRowAbove(index);
 
-        expect(scope.table.rows.length).toEqual(41);
+        expect(scope.table.rows.length).toEqual(121);
     });
 
-    it('should alert the user when row limit(80) is reached for the table', function() {
-        spyOn(windowMock, 'alert');
-        scope.table.rows.length = 80;
-        var index = 2;
+    // it('should alert the user when row limit(80) is reached for the table', function() {
+    //     spyOn(windowMock, 'alert');
+    //     scope.table.rows.length = 80;
+    //     var index = 2;
 
-        scope.addRowAbove(index);
+    //     scope.addRowAbove(index);
 
-        expect(windowMock.alert).toHaveBeenCalledWith("You have reached the maximum limit for rows!");
-    });
+    //     expect(windowMock.alert).toHaveBeenCalledWith("You have reached the maximum limit for rows!");
+    // });
 
     it('should define function addRowBelow', function() {
         expect(scope.addRowBelow).toBeDefined();
@@ -450,18 +446,18 @@ describe('Testing data table controller', function () {
 
         scope.addRowBelow(index);
 
-        expect(scope.table.rows.length).toEqual(41);
+        expect(scope.table.rows.length).toEqual(121);
     });
 
-    it('should alert the user when row limit(80) is reached for the table', function() {
-        spyOn(windowMock, 'alert');
-        scope.table.rows.length = 80;
-        var index = 2;
+    // it('should alert the user when row limit(80) is reached for the table', function() {
+    //     spyOn(windowMock, 'alert');
+    //     scope.table.rows.length = 80;
+    //     var index = 2;
 
-        scope.addRowBelow(index);
+    //     scope.addRowBelow(index);
 
-        expect(windowMock.alert).toHaveBeenCalledWith("You have reached the maximum limit for rows!");
-    });
+    //     expect(windowMock.alert).toHaveBeenCalledWith("You have reached the maximum limit for rows!");
+    // });
     
     it('should define function deleteRow', function() {
         expect(scope.deleteRow).toBeDefined();
@@ -472,45 +468,45 @@ describe('Testing data table controller', function () {
 
         scope.deleteRow(index);
 
-        expect(scope.table.rows.length).toEqual(39);
+        expect(scope.table.rows.length).toEqual(119);
     });
 
-    it('should alert the user when there is a single row in the table for deletion', function() {
-        spyOn(windowMock, 'alert');
-        scope.table.rows.length = 1;
-        var index = 0;
+    // it('should alert the user when there is a single row in the table for deletion', function() {
+    //     spyOn(windowMock, 'alert');
+    //     scope.table.rows.length = 1;
+    //     var index = 0;
 
-        scope.deleteRow(index);
+    //     scope.deleteRow(index);
 
-        expect(windowMock.alert).toHaveBeenCalledWith("Please do not delete this row!Add row above to delete this row.");
-    });
+    //     expect(windowMock.alert).toHaveBeenCalledWith("Please do not delete this row!Add row above to delete this row.");
+    // });
 
     it('should define function moveRowUp', function() {
         expect(scope.moveRowUp).toBeDefined();
     });
 
-    it('should alert the user when the index is 0 in the table when moveRowUp is called', function() {
-        spyOn(windowMock, 'alert');
-        var index = 0;
+    // it('should alert the user when the index is 0 in the table when moveRowUp is called', function() {
+    //     spyOn(windowMock, 'alert');
+    //     var index = 0;
 
-        scope.moveRowUp(index);
+    //     scope.moveRowUp(index);
 
-        expect(windowMock.alert).toHaveBeenCalledWith("This row cannot be moved further up!");
-    });
+    //     expect(windowMock.alert).toHaveBeenCalledWith("This row cannot be moved further up!");
+    // });
 
     it('should define function moveRowDown', function() {
         expect(scope.moveRowDown).toBeDefined();
     });
 
-    it('should alert the user when the end of the table is reached when moveRowDown is called', function() {
-        spyOn(windowMock, 'alert');
-        var index = 39;
-        scope.table.rows.length = 40
+    // it('should alert the user when the end of the table is reached when moveRowDown is called', function() {
+    //     spyOn(windowMock, 'alert');
+    //     var index = 39;
+    //     scope.table.rows.length = 40
 
-        scope.moveRowDown(index);
+    //     scope.moveRowDown(index);
 
-        expect(windowMock.alert).toHaveBeenCalledWith("This row cannot be moved further down! You have reached the end of the table.");
-    });
+    //     expect(windowMock.alert).toHaveBeenCalledWith("This row cannot be moved further down! You have reached the end of the table.");
+    // });
 
     it('should define function convertHeader', function() {
         expect(scope.convertHeader).toBeDefined();
@@ -561,7 +557,10 @@ describe('Testing data table controller', function () {
                 "datavalue":"km/s"
             },{ 
                 "datavalue":"N/A"
-            }];
+            },{
+               "datavalue":"A0.GNC.velocity.vx" 
+            }
+            ];
         scope.table.rows = [{
             contents : [{ 
                 "datavalue":""
@@ -579,7 +578,10 @@ describe('Testing data table controller', function () {
                 "datavalue":""
             },{ 
                 "datavalue":""
-            }]
+            },{
+               "datavalue":"" 
+            }
+            ]
         }];
         scope.widget.settings.data = [{
             type: "data",
