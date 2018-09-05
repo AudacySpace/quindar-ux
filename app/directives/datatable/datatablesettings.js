@@ -28,7 +28,6 @@ app.controller('DatatableSettingsCtrl', function($scope, $window){
             $scope.columnSelectionErrMsg = "";
             setCheckedValues(widget,values);
         } else {
-            // $window.alert("Please check at least one category");
             $scope.columnSelectionErrMsg = "Please select atleast one column.";
         }
     };

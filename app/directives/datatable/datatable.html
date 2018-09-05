@@ -15,6 +15,13 @@
         </tr>
     </thead>
     <tbody>
+    <div class="alert alert-warning alert-dismissible" role="alert" ng-show="badSelectionErrMsg.length > 0" ng-style="errMsgStyles">
+        <button type="button" class="close" aria-label="Close" ng-click="badSelectionErrMsg = {}" style="right:0;left:-3px">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <strong style="padding:10px">Be Sure to select a group!</strong>
+    </div>
+</div>
         <tr ng-repeat="row in table.rows track by $index" class="animate-repeat" ng-style="row.colorin">
             <td class="categoryID-arrow" style="padding:2px 4px;text-align: center">
                 <div class="btn-group selectmenu">

@@ -39,6 +39,8 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
     $scope.$watch('dataStatus',function(newVal,oldVal){
         dServiceObjVal = newVal; 
     },true);
+    $scope.badSelectionErrMsg = "";
+    $scope.errMsgStyles = {};
 
     // Default table structure -contains 120 rows to best appear for small and large screens
     createTableRows();
@@ -177,16 +179,21 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
         {
             $scope.applyGroup();
             $scope.arrow.style.color = "#b3b3b3";
+            $scope.errMsgStyles = {};
+            $scope.badSelectionErrMsg = "";
         }
         else if(!isGroup && !$scope.askedForGroup) //if the user has asked to see telemetry id and chosen telemetry id from left sidebar
         {
             $scope.applyValue();
             $scope.arrow.style.color = "#b3b3b3";
+            $scope.errMsgStyles = {};
+            $scope.badSelectionErrMsg = "";
         }
         else if(!isGroup && $scope.askedForGroup) //if the user has asked to see group and has instead chosen telemetry id from left sidebar
         {
             $scope.arrow.style.color = "#07D1EA";
-            //$window.alert("Be sure to select a group!");
+            $scope.badSelectionErrMsg = "Be sure to select a group!";
+            $scope.errMsgStyles = {'padding':'5px','margin-bottom':'0px','opacity':'1','border-radius':'0px','position':'absolute','top':'35px','left':'0%','right':'0%','z-index':100};
         }
         $scope.widget.settings.dataArray = []; //once data has been added to table, reset dataArray
     }
