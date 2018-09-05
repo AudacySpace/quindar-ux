@@ -192,7 +192,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
         else if(!isGroup && $scope.askedForGroup) //if the user has asked to see group and has instead chosen telemetry id from left sidebar
         {
             $scope.arrow.style.color = "#07D1EA";
-            $scope.badSelectionErrMsg = "Be sure to select a group!";
+            $scope.badSelectionErrMsg = "Select a group from the data menu!";
             $scope.errMsgStyles = {'padding':'5px','margin-bottom':'0px','opacity':'1','border-radius':'0px','position':'absolute','top':'35px','left':'0%','right':'0%','z-index':100};
         }
         $scope.widget.settings.dataArray = []; //once data has been added to table, reset dataArray
@@ -475,7 +475,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
             }, 500);  
         }
         else{
-            $window.alert("This row cannot be moved further down! You have reached the end of the table.");
+            //$window.alert("This row cannot be moved further down! You have reached the end of the table.");
         }
     }
 
