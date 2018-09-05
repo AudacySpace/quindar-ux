@@ -2,7 +2,6 @@ describe('Testing data table settings controller', function () {
     var controller, scope;
 
     var windowMock = {
-        alert : function() {}
     };
 
     beforeEach(function () {
@@ -85,13 +84,11 @@ describe('Testing data table settings controller', function () {
         scope.widget.main = false;
         scope.widget.settings.active = true;
 
-        spyOn(windowMock, 'alert');
-
         scope.saveDataTableSettings(scope.widget);
         
         expect(scope.widget.main).not.toEqual(true);
         expect(scope.widget.settings.active).not.toEqual(false);
-        expect(windowMock.alert).toHaveBeenCalledWith("Please check at least one category");
+        expect(scope.columnSelectionErrMsg).toEqual("Please select atleast one column.");
     });
 
     it('should close the settings menu on save if data is selected', function() {
@@ -114,5 +111,6 @@ describe('Testing data table settings controller', function () {
         
         expect(scope.widget.main).toEqual(true);
         expect(scope.widget.settings.active).toEqual(false);
+        expect(scope.columnSelectionErrMsg).toEqual("");
     });
 })

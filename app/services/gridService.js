@@ -61,7 +61,8 @@ function gridService ($http, $sessionStorage, $window, userService) {
                 checkedWhigh: true,
                 checkedAhigh: true,
                 checkedUnits: true,
-                checkedNotes: true
+                checkedNotes: true,
+                checkedChannel: false
             },
             data : [],
             previous : [],
