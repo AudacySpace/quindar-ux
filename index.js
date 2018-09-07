@@ -3,6 +3,8 @@ var app = express();
 
 app.set('port', (process.env.PORT || 5000));
 var mongoose = require('mongoose');
+mongoose.plugin(schema => { schema.options.usePushEach = true });
+
 var passport = require('passport');
 var flash    = require('connect-flash');
 
