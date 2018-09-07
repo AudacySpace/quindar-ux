@@ -75,6 +75,9 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
         }
     };
 
+    $scope.timezoneErrMsg = "";
+    $scope.eventErrMsg = "";
+
     //Function to created unique groups from a list of groups
     function uniqueItems(origArr) {
 	    var newArr = [],
@@ -133,7 +136,9 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
 		widget.settings.active = false;
 		widget.saveLoad = false;
 		widget.delete = false;
-		getPrevSavedEventModel();	
+		getPrevSavedEventModel();
+		$scope.eventErrMsg = "";
+		$scope.timezoneErrMsg = "";	
 	}
 
 	$scope.saveSettings = function(widget){
@@ -143,7 +148,9 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
 				if ($scope.selected.timezone) {
 					tzExistsStatus = tzExists(widget.settings.timezones,$scope.selected.timezone.name);
 						if(tzExistsStatus === true){
-							alert("This time axis already exists in the qwidget.");
+							//alert("This time axis already exists in the qwidget.");
+							$scope.timezoneErrMsg = "This time axis already exists in the qwidget";
+							$scope.eventErrMsg = "";
 							widget.settings.timezones = widget.settings.timezones;
 							$scope.selected.timezone = {};
 						}else {
@@ -153,6 +160,8 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
 							widget.saveLoad = false;
 							widget.delete = false;
 							$scope.selected = {};
+							$scope.eventErrMsg = "";
+							$scope.timezoneErrMsg = "";
 						}
 				} 
 			} else if ($scope.selected.type.value == 'Events') {
@@ -178,8 +187,12 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
 					widget.settings.active = false;
 					widget.saveLoad = false;
 					widget.delete =  false;
+					$scope.eventErrMsg = "";
+					$scope.timezoneErrMsg = "";
 				}else if($scope.selectByGroupModel.length === 0){
-					alert("Select atleast one event");
+					// alert("Select atleast one event");
+					$scope.eventErrMsg = "Select atleast one event";
+					$scope.timezoneErrMsg = "";
 				}
 			} 
 		} 
