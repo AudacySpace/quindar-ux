@@ -28,23 +28,56 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
     $scope.datetime = "";
     $scope.rowOperationErrorMsg = "";
     $scope.errMsgStyles = {};
+    $scope.datetime = $scope.widget.settings.datetime;
+
 
     checkForTimezoneData();
+    checkForEventData();
+
+    function checkForEventData(){
+        gridService.loadTimelineEvents().then(function(response){
+            if(response.data.length === 0){
+                container.setAttribute("style","display:none");
+                $scope.rowOperationErrorMsg = "Please upload timeline data file to view timeline events!";
+                // $scope.errMsgStyles = {'padding':'5px','margin-bottom':'0px','opacity':'1','border-radius':'0px','position':'absolute','top':'35px','left':'0%','right':'0%','z-index':100};
+            }else {
+
+            }
+        });
+    }
+
 
     $scope.$watch("widget.settings.timezones",function(newval,oldval){
         checkForTimezoneData();
+        if($scope.datetime && $scope.datetime.length > 0){
+            $scope.changetime();
+        }else {
+            $scope.realtime();
+        }
     },true);
 
     $scope.$watch("widget.settings.events",function(newval,oldval){
-        if(newval !== undefined){
+        if(newval){
             displayEvents(newval,$scope.widget.settings.grouporder);
-        }          
+        } 
+
+        if($scope.datetime && $scope.datetime.length > 0){
+            $scope.changetime();
+        }else {
+            $scope.realtime();
+        }         
     },true);
 
     $scope.$watch("widget.settings.grouporder",function(newval,oldval){
-        if(newval !== undefined){
+        if(newval){
             displayEvents($scope.widget.settings.events,newval);
-        }          
+        } 
+
+        if($scope.datetime && $scope.datetime.length > 0){
+            $scope.changetime();
+        }else {
+            $scope.realtime();
+        }         
     },true);
 
 
@@ -201,7 +234,7 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
             try{
                 $scope.tztimeline[i].setWindow(properties.start, properties.end);
             }catch(e){
-                console.log(e);
+                //console.log(e);
             }
         }
         $scope.widget.settings.start = properties.start;
@@ -218,7 +251,7 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                     try{
                          $scope.tztimeline[i].setCurrentTime(vis.moment(dashboardService.getTime('UTC').today).utcOffset($scope.timezones[i].utcoffset));
                     }catch(e){
-                        console.log(e);
+                        //console.log(e);
                     }
                 }
             }
@@ -246,18 +279,18 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                     try{
                          $scope.tztimeline[i].setOptions({start: new Date(vis.moment($scope.datetime).utcOffset($scope.timezones[i].utcoffset) - 1000 * 60 * 60),end:new Date(vis.moment($scope.datetime).utcOffset($scope.timezones[i].utcoffset) + 1000 * 60 * 60) });
                     }catch(e){
-                        console.log(e);
+                        //console.log(e);
                     }
                 }
             }
             $scope.realtimebutton.style = {background:'#cccccc52'};
             $scope.widget.settings.datetime = $scope.datetime;
-            //$scope.timeSetErrMsg = "";
-            //$scope.errMsgStyles = {};
+            $scope.dateTimeErrMsg = "";
+            $scope.dateTimeErrMsgStyles = {};
         }else {
             //alert("Select a date and time and then set.");
-           // $scope.timeSetErrMsg = "Select a date and time and then set.";
-            //$scope.errMsgStyles = {'padding':'5px','margin-bottom':'0px','opacity':'1','border-radius':'0px','position':'absolute','top':'35px','left':'0%','right':'0%','z-index':100};
+           $scope.dateTimeErrMsg = "Select a date and time and then set.";
+           $scope.dateTimeErrMsgStyles = {'border-color':'#dd2c00'};
         }
     };
 
@@ -273,7 +306,7 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                 try{
                     $scope.tztimeline[i].setOptions({start: new Date(vis.moment($scope.clock.today).utcOffset($scope.timezones[i].utcoffset) - 1000 * 60 * 60),end:new Date(vis.moment($scope.clock.today).utcOffset($scope.timezones[i].utcoffset) + 1000 * 60 * 60) });
                 }catch(e){
-                    console.log(e);
+                    //console.log(e);
                 }
                        
             }
@@ -287,6 +320,8 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                 'float':'right'
              }
         };
+        $scope.dateTimeErrMsg = "";
+        $scope.dateTimeErrMsgStyles = {};
     }
 
     //Function to create groups with groupname as nested and other
@@ -559,10 +594,11 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                                     if(item1[0] === item2[0]){
                                         content1 = globalgroups._data[i].content;
                                         content2 = globalgroups._data[i-1].content;
+                                        $scope.rowOperationErrorMsg = "";
+                                        $scope.errMsgStyles = {};
                                         break;
                                     }
                                     else {
-                                        // alert("You have reached the top of the list");
                                         $scope.rowOperationErrorMsg = "This row cannot be moved further up!";
                                         $scope.errMsgStyles = {'padding':'5px','margin-bottom':'0px','opacity':'1','border-radius':'0px','position':'absolute','top':'35px','left':'0%','right':'0%','z-index':100};
                                         break;
@@ -574,9 +610,10 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                                 globalgroups.update({id: group.id,content: content2});
                                 globalgroups.update({id: group.id-1,content: content1});
                                 setEvents(content1,content2);
+                                $scope.rowOperationErrorMsg = "";
+                                $scope.errMsgStyles = {};
                             }
                         }else if(group.id === 0){
-                            // alert("You have reached the top of the list");
                             $scope.rowOperationErrorMsg = "This row cannot be moved further up!";
                             $scope.errMsgStyles = {'padding':'5px','margin-bottom':'0px','opacity':'1','border-radius':'0px','position':'absolute','top':'35px','left':'0%','right':'0%','z-index':100};
                         }
@@ -591,31 +628,28 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                             for(var i=0;i<globalgroups.length;i++){
                                 if(group.id === globalgroups._data[i].id){
                                     item2 = globalgroups._data[i+1].content.split("_");
-                                    if(item1[0] === item2[0]){
+                                    if(item1[0] === item2[0] && i !== globalgroups.length - 2){
                                         content1 = globalgroups._data[i].content;
                                         content2 = globalgroups._data[i+1].content;
+                                        $scope.rowOperationErrorMsg = "";
+                                        $scope.errMsgStyles = {};
                                         break;
                                     }else {
-                                        //alert("You have reached the bottom of the list");
                                         $scope.rowOperationErrorMsg = "This row cannot be moved down!";
                                         $scope.errMsgStyles = {'padding':'5px','margin-bottom':'0px','opacity':'1','border-radius':'0px','position':'absolute','top':'35px','left':'0%','right':'0%','z-index':100};
                                         break;
                                     }
-                                }else{
-                                   // alert("You have reached the bottom of the list");
-                                    $scope.rowOperationErrorMsg = "This row cannot be moved further down!";
-                                    $scope.errMsgStyles = {'padding':'5px','margin-bottom':'0px','opacity':'1','border-radius':'0px','position':'absolute','top':'35px','left':'0%','right':'0%','z-index':100};
-                                    break;
                                 }
                             }
                             if(content1 !== undefined && content2 !== undefined){
                                 globalgroups.update({id: group.id,content: content2});
                                 globalgroups.update({id: group.id+1,content: content1});
                                 setEvents(content1,content2);
+                                $scope.rowOperationErrorMsg = "";
+                                $scope.errMsgStyles = {};
                             }
 
                         }else if(group.id === globalgroups.length-1){
-                            //alert("You have reached the bottom of the list");
                             $scope.rowOperationErrorMsg = "This row cannot be moved further down!";
                             $scope.errMsgStyles = {'padding':'5px','margin-bottom':'0px','opacity':'1','border-radius':'0px','position':'absolute','top':'35px','left':'0%','right':'0%','z-index':100};
                         }
@@ -635,8 +669,8 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
             start : start,
             end : end,
             orientation: {axis: "none"}
-    };
-            return options;
+        };
+        return options;
     }
 
     //Function to fetch timeline options and display
@@ -668,6 +702,7 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
         var tempgroup2 = "";
         var tempeventdata2= [];
         var tempeventinfo2 = "";
+
         for(var k=0;k<$scope.widget.settings.events.length;k++){
             if($scope.widget.settings.events[k].label === content1){
                 tempindex1 = k;

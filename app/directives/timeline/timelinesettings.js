@@ -213,28 +213,36 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
 	//Function to load timeline data from the database and create data set for settings
     function loadTimelineEvents(){
         var groups = [];
+        $scope.selectByGroupData = [];
         gridService.loadTimelineEvents().then(function(response){
-			for(var i=0;i<response.data.length;i++){
-        		$scope.selectByGroupData.push({
-        			id:i,
-        			label:response.data[i].eventname,
-        			group:response.data[i].eventgroup,
-        		});
+        	if(response.data.length > 0){
+        		for(var i=0;i<response.data.length;i++){
+	        		$scope.selectByGroupData.push({
+	        			id:i,
+	        			label:response.data[i].eventname,
+	        			group:response.data[i].eventgroup,
+	        		});
 
-        		groups.push({name:response.data[i].eventgroup});
+	        		groups.push({name:response.data[i].eventgroup});
 
-        	}
-        	checkForEvents($scope.selectByGroupData);
-        	var uniquegroups = uniqueItems(groups);
-        	for(var b=0;b<uniquegroups.length;b++){
-        	 	ugrps.push(uniquegroups[b].name);
+        		}
+        		checkForEvents($scope.selectByGroupData);
+        		var uniquegroups = uniqueItems(groups);
+        		for(var b=0;b<uniquegroups.length;b++){
+        	 		ugrps.push(uniquegroups[b].name);
+        		}
+        	}else {
+        		$scope.selectByGroupData = [];
+        		$scope.selectByGroupModel = [];
         	}
         });
 
     }
 
     $scope.$watch("selectByGroupModel",function(newval,oldval){
-    	makeEventOrder($scope.selectByGroupModel,$scope.widget.settings.grouporder,reloaded);
+    	if($scope.selectByGroupModel && $scope.selectByGroupModel.length > 0){
+    		makeEventOrder($scope.selectByGroupModel,$scope.widget.settings.grouporder,reloaded);
+    	}
     },true);
 
     //Function to display previous saved selected events
