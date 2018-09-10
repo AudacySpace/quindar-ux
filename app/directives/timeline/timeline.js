@@ -536,13 +536,14 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                     innerdiv = document.createElement("div");
                     hidep = document.createElement("p");
                     moveupp = document.createElement("p");
-                    // movedowp = document.createElement("p");
                     hidep.className = "listItems";
                     moveupp.className = "listItems";
                     hide = document.createElement("a");
                     moveup = document.createElement("a");
                     movedownp = document.createElement("p");
                     movedownp.className = "listItems";
+                    hide = document.createElement("a");
+                    moveup = document.createElement("a");
                     movedown = document.createElement("a");
 
 

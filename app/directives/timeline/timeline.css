@@ -214,7 +214,6 @@ p.listItems{
     font-size: 12px !important
 }
 
-
 /*Mobile screen styles*/
 @media only screen and (max-width: 599px) {
     .mbl-timeline{
@@ -488,6 +487,7 @@ p.listItems{
     input.date-time-input{
         border:0px !important;
         font-size:12px !important;
+        height:100% !important;
         width:100% !important;
         height:100% !important;
     }
