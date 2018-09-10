@@ -14,7 +14,9 @@ app.controller('ClockSettingsCtrl', function($scope){
 		widget.settings.active = false;
 		widget.saveLoad = false;
 		widget.delete = false;
-		//$scope.selected = {};
+		$scope.selected = {};
+		$scope.reference = "";
+		$scope.name = "";
 	}
 
 	$scope.saveSettings = function(widget){
