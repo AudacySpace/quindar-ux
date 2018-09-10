@@ -5,6 +5,7 @@
             <div class="col-sm-4" style="display: table-cell; float:none">
                 <div class="row">
                     <label for="Image">Select Image</label>
+                    <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px" title="Select an image"></span>
                 </div>
                 <div class="row settingsspace" style="display: table"></div>
                 <div>
@@ -14,7 +15,7 @@
             				<div ng-bind="image.imageid | highlight: $select.search"></div>
         				</ui-select-choices>
         			</ui-select>
-                    <span ng-hide="selected.imageid"> Required </span>
+                    <span ng-hide="selected.imageid" style="font-size:12px;color:#dd2c00">Required</span>
                 </div>          
             </div>
             <div class="col-sm-2" style="display: table-cell; float:none"></div>
@@ -31,7 +32,7 @@
 			<div class="row">
 				<div class="col-sm-1"></div>
 				<div class="col-sm-10 btndivider">
-					<button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="saveSettings(widget)">SAVE</button>
+					<button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="saveSettings(widget)" ng-disabled="!selected.imageid">SAVE</button>
 					<button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="closeSettings(widget)">CLOSE</button>
 				</div>
 			</div>	
@@ -43,6 +44,7 @@
 <div class="container mbl-sm">
     <form>
         <label for="Vehicle" class="mbl-label">Select Image</label>
+        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px" title="Select an image"></span>
         <div class="mbl-input-grp">
             <ui-select tagging ng-model="selected.imageid" theme="bootstrap">
                 <ui-select-match placeholder="Select Image">{{$select.selected.imageid}}</ui-select-match>
@@ -50,9 +52,10 @@
                     <div ng-bind="image.imageid | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>
+            <span ng-hide="selected.imageid" style="font-size:10px;color:#dd2c00" class="req-label">Required</span>
         </div>
       <hr class="hr-double-col1">
-      <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveSettings(widget)">SAVE</button>
+      <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveSettings(widget)" ng-disabled="!selected.imageid">SAVE</button>
     <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeSettings(widget)">CLOSE</button> 
 </form>
 </div>
@@ -65,6 +68,7 @@
             <div class="col-sm-10 tablecellstyle10">
                 <div class="row" style="height:16px;">
                     <label for="Vehicle" class="mbl-label">Select Image</label>
+                    <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px" title="Select an image"></span>
                 </div>
                 <div class="mbl-input-grp">
                     <ui-select tagging ng-model="selected.imageid" theme="bootstrap">
@@ -73,6 +77,7 @@
                             <div ng-bind="image.imageid | highlight: $select.search"></div>
                         </ui-select-choices>
                     </ui-select>
+                    <span ng-hide="selected.imageid" style="font-size:10px;color:#dd2c00" class="req-label">Required</span>
                 </div>
             </div>
             <div class="col-sm-1 tablecellstyle1"></div> 
@@ -90,7 +95,7 @@
             <div class="row">
                 <div class="col-sm-1 tablecellstyle1"></div>
                 <div class="col-sm-10 btndivider tablecellstyle10">
-                    <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="saveSettings(widget)">SAVE</button>
+                    <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="saveSettings(widget)" ng-disabled="!selected.imageid">SAVE</button>
                     <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="closeSettings(widget)">CLOSE</button> 
                 </div>
                 <div class="col-sm-1 tablecellstyle1"></div>
