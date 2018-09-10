@@ -536,10 +536,13 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                     innerdiv = document.createElement("div");
                     hidep = document.createElement("p");
                     moveupp = document.createElement("p");
-                    movedowp = document.createElement("p");
+                    // movedowp = document.createElement("p");
+                    hidep.className = "listItems";
+                    moveupp.className = "listItems";
                     hide = document.createElement("a");
                     moveup = document.createElement("a");
-                    movedownp = document.createElement("a");
+                    movedownp = document.createElement("p");
+                    movedownp.className = "listItems";
                     movedown = document.createElement("a");
 
 
@@ -555,24 +558,24 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                     arrow1.className = "fa fa-chevron-right";
                     innerdiv1 = outerdiv.appendChild(innerdiv);
                     innerdiv1.className = "dropdown-menu";
-                    innerdiv1.setAttribute('style', "min-width:100px !important;border-radius:0px");
+                    innerdiv1.setAttribute('style', "min-width:128px !important;border-radius:0px;background-color:#f1f2f4");
                     hidep1 = innerdiv1.appendChild(hidep);
                     hide1 = hidep1.appendChild(hide);
                     textnodehide = document.createTextNode("Hide"); 
                     hide1.className = "dropdown-item";
-                    hide1.setAttribute('style', "padding-left:10px");
+                    hide1.setAttribute('style', "padding-left:10px;color:#333;text-decoration:none");
                     hide1.appendChild(textnodehide); 
                     moveupp1 = innerdiv1.appendChild(moveupp);
                     moveup1 = moveupp1.appendChild(moveup);
                     textnodemoveup = document.createTextNode("Move Up"); 
                     moveup1.className = "dropdown-item";
-                    moveup1.setAttribute('style', "padding-left:10px");
+                    moveup1.setAttribute('style', "padding-left:10px;color:#333;text-decoration:none");
                     moveup1.appendChild(textnodemoveup); 
                     movedownp1 = innerdiv1.appendChild(movedownp);
                     movedown1 = movedownp1.appendChild(movedown);
                     textnodemovedown = document.createTextNode("Move Down"); 
                     movedown1.className = "dropdown-item";
-                    movedown1.setAttribute('style', "padding-left:10px");
+                    movedown1.setAttribute('style', "padding-left:10px;color:#333;text-decoration:none");
                     movedown1.appendChild(textnodemovedown); 
 
 

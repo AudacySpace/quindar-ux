@@ -131,31 +131,21 @@ div#scrollable-container{
     background: grey !important;
 }
 button.md-raised.real-time-btn{
-/*    width:100% !important;
-    height:100% !important;
-    margin:0px !important;
-    padding:0px !important;*/
     box-shadow:none !important;
     border-radius:0px !important;
     font-size:14px !important;
     text-transform:none !important;
     float: right !important;
-/*    color:#fff;*/
 }
 div.dt-outer{
     background-color: lightgrey !important;
 }
 div.date-time-btn,div.date-time-btn div.input-group{
-/*    width:100% !important;
-    background-color: lightgrey !important;*/
 }
 input.date-time-input{
     border:0px !important;
     font-size:14px !important;
- /*   text-align: center !important;*/
-/*    background-color: lightgrey !important;*/
     width:100% !important;
-/*    height:100% !important;*/
     padding:12px !important;
 }
 div.date-time-btn ul.dropdown-menu{
@@ -163,17 +153,12 @@ div.date-time-btn ul.dropdown-menu{
     left:40% !important;
 }
 button.md-raised.set-btn { 
-/*    width:100% !important;
-    height:100% !important;
-    margin:0px !important;
-    padding:0px !important;*/
     box-shadow:none !important;
     font-size:14px !important;
     border-radius:0px !important;
     text-transform:none !important;
     background-color:#07d1ea;
     margin-left:0px !important;
-/*    color:#fff;*/
 }
 
 button.md-raised.set-btn:hover { 
@@ -181,19 +166,16 @@ button.md-raised.set-btn:hover {
 }
 
 i.fa.fa-chevron-right{
-    font-size: 12px !important;
+    font-size: 10px !important;
 }
 
-    .vis-labelset{
-        height:100% !important;
-        width: 100% !important;
-        overflow: hidden;
-    }
+.vis-labelset{
+    height:100% !important;
+    width: 100% !important;
+    overflow: hidden;
+}
 
 div.innerItem:nth-last-child(1),div.innerItem:nth-last-child(2){
-/*    border-bottom-width: 1px !important;
-    overflow:auto !important; */ 
-
     width: 100%;
     height: 100%;
     overflow-y: scroll;
@@ -217,6 +199,19 @@ div.vis-timeline.vis-bottom{
 .setbtn{
     width:100% !important;
     border:1px solid #cccccc5e;
+}
+
+a.dropdown-item:hover {
+    color: #8B8C94 !important;
+    background: #f1f2f4;
+}
+
+p.listItems{
+    margin-bottom:5px !important;
+}
+
+.dropdown-item{
+    font-size: 12px !important
 }
 
 
@@ -297,10 +292,6 @@ div.vis-timeline.vis-bottom{
     }
 
     button.md-raised.real-time-btn{
-/*        width:100% !important;
-        height:100% !important;
-        margin:0px !important;
-        padding:0px !important;*/
         box-shadow:none !important;
         border-radius:0px !important;
         font-size:10px !important;
@@ -311,13 +302,11 @@ div.vis-timeline.vis-bottom{
     }
     div.date-time-btn,div.date-time-btn div.input-group{
         width:100% !important;
-/*        background-color: lightgrey !important;*/
     }
     input.date-time-input{
         border:0px !important;
         font-size:10px !important;
         text-align: center !important;
-/*        background-color: lightgrey !important;*/
         width:100% !important;
         height:100% !important;
         padding:12px !important;
@@ -329,10 +318,6 @@ div.vis-timeline.vis-bottom{
         left:5% !important;
     }
     button.md-raised.set-btn { 
-/*        width:100% !important;
-        height:100% !important;
-        margin:0px !important;
-        padding:0px !important;*/
         border-radius:0px !important;
         box-shadow:none !important;
         font-size:10px !important;
@@ -489,10 +474,6 @@ div.vis-timeline.vis-bottom{
     }
 
     button.md-raised.real-time-btn{
-/*        width:100% !important;
-        height:100% !important;
-        margin:0px !important;
-        padding:0px !important;*/
         box-shadow:none !important;
         border-radius:0px !important;
         font-size:12px !important;
@@ -503,31 +484,23 @@ div.vis-timeline.vis-bottom{
     }
     div.date-time-btn,div.date-time-btn div.input-group{
         width:100% !important;
-/*        background-color: lightgrey !important;*/
     }
     input.date-time-input{
         border:0px !important;
         font-size:12px !important;
-/*        text-align: center !important;*/
-/*        background-color: lightgrey !important;*/
         width:100% !important;
         height:100% !important;
-    /*    padding:12px !important;*/
     }
     div.date-time-btn ul.dropdown-menu{
         position:absolute !important;
         left:31% !important;
     }
     button.md-raised.set-btn { 
-/*        width:100% !important;
-        height:100% !important;
-        margin:0px !important;
-        padding:0px !important;*/
         box-shadow:none !important;
         border-radius:0px !important;
         font-size:12px !important;
         margin-left:0px !important;
-         min-height:40px;
+        min-height:40px;
     }
 
     .vis-label.vis-nesting-group.collapsed:before {
