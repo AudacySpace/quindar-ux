@@ -16,6 +16,8 @@ module.exports = {
                     allEvents.push(timelinedata.events[i]);
                 }
                 res.send(allEvents);
+            }else {
+                res.send([]);
             }
         });
     }

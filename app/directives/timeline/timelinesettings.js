@@ -75,6 +75,9 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
         }
     };
 
+    $scope.timezoneErrMsg = "";
+    $scope.eventErrMsg = "";
+
     //Function to created unique groups from a list of groups
     function uniqueItems(origArr) {
 	    var newArr = [],
@@ -133,7 +136,9 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
 		widget.settings.active = false;
 		widget.saveLoad = false;
 		widget.delete = false;
-		getPrevSavedEventModel();	
+		getPrevSavedEventModel();
+		$scope.eventErrMsg = "";
+		$scope.timezoneErrMsg = "";	
 	}
 
 	$scope.saveSettings = function(widget){
@@ -143,7 +148,9 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
 				if ($scope.selected.timezone) {
 					tzExistsStatus = tzExists(widget.settings.timezones,$scope.selected.timezone.name);
 						if(tzExistsStatus === true){
-							alert("This time axis already exists in the qwidget.");
+							//alert("This time axis already exists in the qwidget.");
+							$scope.timezoneErrMsg = "This time axis already exists in the qwidget";
+							$scope.eventErrMsg = "";
 							widget.settings.timezones = widget.settings.timezones;
 							$scope.selected.timezone = {};
 						}else {
@@ -153,6 +160,8 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
 							widget.saveLoad = false;
 							widget.delete = false;
 							$scope.selected = {};
+							$scope.eventErrMsg = "";
+							$scope.timezoneErrMsg = "";
 						}
 				} 
 			} else if ($scope.selected.type.value == 'Events') {
@@ -178,8 +187,12 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
 					widget.settings.active = false;
 					widget.saveLoad = false;
 					widget.delete =  false;
+					$scope.eventErrMsg = "";
+					$scope.timezoneErrMsg = "";
 				}else if($scope.selectByGroupModel.length === 0){
-					alert("Select atleast one event");
+					// alert("Select atleast one event");
+					$scope.eventErrMsg = "Select atleast one event";
+					$scope.timezoneErrMsg = "";
 				}
 			} 
 		} 
@@ -200,28 +213,36 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
 	//Function to load timeline data from the database and create data set for settings
     function loadTimelineEvents(){
         var groups = [];
+        $scope.selectByGroupData = [];
         gridService.loadTimelineEvents().then(function(response){
-			for(var i=0;i<response.data.length;i++){
-        		$scope.selectByGroupData.push({
-        			id:i,
-        			label:response.data[i].eventname,
-        			group:response.data[i].eventgroup,
-        		});
+        	if(response.data.length > 0){
+        		for(var i=0;i<response.data.length;i++){
+	        		$scope.selectByGroupData.push({
+	        			id:i,
+	        			label:response.data[i].eventname,
+	        			group:response.data[i].eventgroup,
+	        		});
 
-        		groups.push({name:response.data[i].eventgroup});
+	        		groups.push({name:response.data[i].eventgroup});
 
-        	}
-        	checkForEvents($scope.selectByGroupData);
-        	var uniquegroups = uniqueItems(groups);
-        	for(var b=0;b<uniquegroups.length;b++){
-        	 	ugrps.push(uniquegroups[b].name);
+        		}
+        		checkForEvents($scope.selectByGroupData);
+        		var uniquegroups = uniqueItems(groups);
+        		for(var b=0;b<uniquegroups.length;b++){
+        	 		ugrps.push(uniquegroups[b].name);
+        		}
+        	}else {
+        		$scope.selectByGroupData = [];
+        		$scope.selectByGroupModel = [];
         	}
         });
 
     }
 
     $scope.$watch("selectByGroupModel",function(newval,oldval){
-    	makeEventOrder($scope.selectByGroupModel,$scope.widget.settings.grouporder,reloaded);
+    	if($scope.selectByGroupModel && $scope.selectByGroupModel.length > 0){
+    		makeEventOrder($scope.selectByGroupModel,$scope.widget.settings.grouporder,reloaded);
+    	}
     },true);
 
     //Function to display previous saved selected events

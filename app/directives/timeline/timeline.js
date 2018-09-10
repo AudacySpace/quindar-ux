@@ -26,23 +26,58 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
 
     var outercontainer = $element[0].getElementsByTagName("div")["timeline"];
     $scope.datetime = "";
+    $scope.rowOperationErrorMsg = "";
+    $scope.errMsgStyles = {};
+    $scope.datetime = $scope.widget.settings.datetime;
+
 
     checkForTimezoneData();
+    checkForEventData();
+
+    function checkForEventData(){
+        gridService.loadTimelineEvents().then(function(response){
+            if(response.data.length === 0){
+                container.setAttribute("style","display:none");
+                $scope.rowOperationErrorMsg = "Please upload timeline data file to view timeline events!";
+                // $scope.errMsgStyles = {'padding':'5px','margin-bottom':'0px','opacity':'1','border-radius':'0px','position':'absolute','top':'35px','left':'0%','right':'0%','z-index':100};
+            }else {
+
+            }
+        });
+    }
+
 
     $scope.$watch("widget.settings.timezones",function(newval,oldval){
         checkForTimezoneData();
+        if($scope.datetime && $scope.datetime.length > 0){
+            $scope.changetime();
+        }else {
+            $scope.realtime();
+        }
     },true);
 
     $scope.$watch("widget.settings.events",function(newval,oldval){
-        if(newval !== undefined){
+        if(newval){
             displayEvents(newval,$scope.widget.settings.grouporder);
-        }          
+        } 
+
+        if($scope.datetime && $scope.datetime.length > 0){
+            $scope.changetime();
+        }else {
+            $scope.realtime();
+        }         
     },true);
 
     $scope.$watch("widget.settings.grouporder",function(newval,oldval){
-        if(newval !== undefined){
+        if(newval){
             displayEvents($scope.widget.settings.events,newval);
-        }          
+        } 
+
+        if($scope.datetime && $scope.datetime.length > 0){
+            $scope.changetime();
+        }else {
+            $scope.realtime();
+        }         
     },true);
 
 
@@ -199,7 +234,7 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
             try{
                 $scope.tztimeline[i].setWindow(properties.start, properties.end);
             }catch(e){
-                console.log(e);
+                //console.log(e);
             }
         }
         $scope.widget.settings.start = properties.start;
@@ -216,7 +251,7 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                     try{
                          $scope.tztimeline[i].setCurrentTime(vis.moment(dashboardService.getTime('UTC').today).utcOffset($scope.timezones[i].utcoffset));
                     }catch(e){
-                        console.log(e);
+                        //console.log(e);
                     }
                 }
             }
@@ -244,14 +279,18 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                     try{
                          $scope.tztimeline[i].setOptions({start: new Date(vis.moment($scope.datetime).utcOffset($scope.timezones[i].utcoffset) - 1000 * 60 * 60),end:new Date(vis.moment($scope.datetime).utcOffset($scope.timezones[i].utcoffset) + 1000 * 60 * 60) });
                     }catch(e){
-                        console.log(e);
+                        //console.log(e);
                     }
                 }
             }
-            $scope.realtimebutton.style = {background:'#FFFFFF'};
+            $scope.realtimebutton.style = {background:'#cccccc52'};
             $scope.widget.settings.datetime = $scope.datetime;
+            $scope.dateTimeErrMsg = "";
+            $scope.dateTimeErrMsgStyles = {};
         }else {
-            alert("Select a date and time and then set.");
+            //alert("Select a date and time and then set.");
+           $scope.dateTimeErrMsg = "Select a date and time and then set.";
+           $scope.dateTimeErrMsgStyles = {'border-color':'#dd2c00'};
         }
     };
 
@@ -267,7 +306,7 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                 try{
                     $scope.tztimeline[i].setOptions({start: new Date(vis.moment($scope.clock.today).utcOffset($scope.timezones[i].utcoffset) - 1000 * 60 * 60),end:new Date(vis.moment($scope.clock.today).utcOffset($scope.timezones[i].utcoffset) + 1000 * 60 * 60) });
                 }catch(e){
-                    console.log(e);
+                    //console.log(e);
                 }
                        
             }
@@ -277,9 +316,12 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
         $scope.interval = $interval($scope.updateClock, 1000);
         $scope.realtimebutton = { 
             style : {
-                background:'#12C700'
+                'background':'#12C700',
+                'float':'right'
              }
         };
+        $scope.dateTimeErrMsg = "";
+        $scope.dateTimeErrMsgStyles = {};
     }
 
     //Function to create groups with groupname as nested and other
@@ -383,61 +425,64 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
         var count = 0;
         gridService.loadTimelineEvents().then(function(response){
             $scope.timelinedata = response.data;
-            for(var b=0;b<newgroupContents.length;b++){
-                for(var a=0;a<$scope.timelinedata.length;a++){
-                    if(newgroupContents[b].label === $scope.timelinedata[a].eventname){
-                        newgroupContents[b].eventdata = $scope.timelinedata[a].eventdata;
-                        newgroupContents[b].eventinfo = $scope.timelinedata[a].eventinfo;
+
+            if($scope.timelinedata.length > 0){
+                for(var b=0;b<newgroupContents.length;b++){
+                    for(var a=0;a<$scope.timelinedata.length;a++){
+                        if(newgroupContents[b].label === $scope.timelinedata[a].eventname){
+                            newgroupContents[b].eventdata = $scope.timelinedata[a].eventdata;
+                            newgroupContents[b].eventinfo = $scope.timelinedata[a].eventinfo;
+                        }
                     }
                 }
-            }
 
-            for(var k=0;k<groups.length;k++){
-                for (var i = 0; i < newgroupContents.length; i++) {
-                    if(groups._data[k].content === newgroupContents[i].label){
-                        if(newgroupContents[i].eventdata.length > 0){
-                            for(var j=0;j<newgroupContents[i].eventdata.length;j++){
-                                if(newgroupContents[i].eventdata[j].start !== "" && newgroupContents[i].eventdata[j].end !== ""){
-                                    //var start = vis.moment(vis.moment.utc().format(newgroupContents[i].eventdata[j].start));
-                                    // var end = vis.moment(vis.moment.utc().format(newgroupContents[i].eventdata[j].end));
-                                    var start = vis.moment.utc().format(newgroupContents[i].eventdata[j].start);
-                                    var end = vis.moment.utc().format(newgroupContents[i].eventdata[j].end);
-                                    var content = "";
-                                    if(newgroupContents[i].eventdata[j].content){
-                                        content = newgroupContents[i].eventdata[j].content;
-                                    }
-                                    
-                                    if(content !== ""){
-                                        items.add({
-                                            id: count,
-                                            content : content,
-                                            className : "event",
-                                            group : groups._data[k].id,
-                                            start : start,
-                                            end : end
-                                        });
-                                    }else{
+                for(var k=0;k<groups.length;k++){
+                    for (var i = 0; i < newgroupContents.length; i++) {
+                        if(groups._data[k].content === newgroupContents[i].label){
+                            if(newgroupContents[i].eventdata.length > 0){
+                                for(var j=0;j<newgroupContents[i].eventdata.length;j++){
+                                    if(newgroupContents[i].eventdata[j].start !== "" && newgroupContents[i].eventdata[j].end !== ""){
+                                        //var start = vis.moment(vis.moment.utc().format(newgroupContents[i].eventdata[j].start));
+                                        // var end = vis.moment(vis.moment.utc().format(newgroupContents[i].eventdata[j].end));
+                                        var start = vis.moment.utc().format(newgroupContents[i].eventdata[j].start);
+                                        var end = vis.moment.utc().format(newgroupContents[i].eventdata[j].end);
+                                        var content = "";
+                                        if(newgroupContents[i].eventdata[j].content){
+                                            content = newgroupContents[i].eventdata[j].content;
+                                        }
+                                        
+                                        if(content !== ""){
+                                            items.add({
+                                                id: count,
+                                                content : content,
+                                                className : "event",
+                                                group : groups._data[k].id,
+                                                start : start,
+                                                end : end
+                                            });
+                                        }else{
+                                            items.add({
+                                                id: count,
+                                                content : newgroupContents[i].eventinfo,
+                                                className : "event",
+                                                group : groups._data[k].id,
+                                                start : start,
+                                                end : end
+                                            });
+                                        }
+                                        count++;
+                                    }else if(newgroupContents[i].eventdata[j].start !== "" && !newgroupContents[i].eventdata[j].end){
+                                        //var start = vis.moment(vis.moment.utc().format(newgroupContents[i].eventdata[j].start));
+                                        var start = vis.moment.utc().format(newgroupContents[i].eventdata[j].start);
                                         items.add({
                                             id: count,
                                             content : newgroupContents[i].eventinfo,
                                             className : "event",
                                             group : groups._data[k].id,
-                                            start : start,
-                                            end : end
+                                            start : start
                                         });
+                                        count++;
                                     }
-                                    count++;
-                                }else if(newgroupContents[i].eventdata[j].start !== "" && !newgroupContents[i].eventdata[j].end){
-                                    //var start = vis.moment(vis.moment.utc().format(newgroupContents[i].eventdata[j].start));
-                                    var start = vis.moment.utc().format(newgroupContents[i].eventdata[j].start);
-                                    items.add({
-                                        id: count,
-                                        content : newgroupContents[i].eventinfo,
-                                        className : "event",
-                                        group : groups._data[k].id,
-                                        start : start
-                                    });
-                                    count++;
                                 }
                             }
                         }
@@ -479,52 +524,59 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
             groupTemplate: function(group){
                 var container = document.createElement('div');
                 var label = document.createElement('span');
+                var outerdiv,button,arrow,innerdiv,hidep,moveupp,movedowp,hide,moveup,movedownp,movedown;
+                var button1,arrow1,innerdiv1,hidep1,hide1,textnodehide,moveupp1,moveup1,textnodemoveup,movedownp1,movedown1,textnodemovedown;
+
                 if(group.nestedInGroup){
                     label.innerHTML = group.content ;
                     container.insertAdjacentElement('beforeEnd',label);
-                    var outerdiv = document.createElement('div');
-                    var button = document.createElement("button");
-                    var arrow = document.createElement("i");
-                    var innerdiv = document.createElement("div");
-                    var hidep = document.createElement("p");
-                    var moveupp = document.createElement("p");
-                    var movedowp = document.createElement("p");
-                    var hide = document.createElement("a");
-                    var moveup = document.createElement("a");
-                    var movedownp = document.createElement("a");
-                    var movedown = document.createElement("a");
+                    outerdiv = document.createElement('div');
+                    button = document.createElement("button");
+                    arrow = document.createElement("i");
+                    innerdiv = document.createElement("div");
+                    hidep = document.createElement("p");
+                    moveupp = document.createElement("p");
+                    hidep.className = "listItems";
+                    moveupp.className = "listItems";
+                    hide = document.createElement("a");
+                    moveup = document.createElement("a");
+                    movedownp = document.createElement("p");
+                    movedownp.className = "listItems";
+                    hide = document.createElement("a");
+                    moveup = document.createElement("a");
+                    movedown = document.createElement("a");
 
 
                     outerdiv.className = "dropdown";
                     outerdiv.setAttribute('style', "display:inline");
-                    var button1 = outerdiv.appendChild(button);
+                    button1 = outerdiv.appendChild(button);
                     button1.className = "btn btn-secondary dropdown-toggle";
                     button1.setAttribute('data-toggle', "dropdown");
                     button1.setAttribute('aria-haspopup', "true");
                     button1.setAttribute('aria-expanded', "false");
                     button1.setAttribute('style', "padding:0px;margin-right:2px;margin-bottom:3px;background:none;");
-                    var arrow1 = button1.appendChild(arrow);
+                    arrow1 = button1.appendChild(arrow);
                     arrow1.className = "fa fa-chevron-right";
-                    var innerdiv1 = outerdiv.appendChild(innerdiv);
+                    innerdiv1 = outerdiv.appendChild(innerdiv);
                     innerdiv1.className = "dropdown-menu";
-                    innerdiv1.setAttribute('style', "min-width:100px !important;border-radius:0px");
-                    var hidep1 = innerdiv1.appendChild(hidep);
-                    var hide1 = hidep1.appendChild(hide);
-                    var textnodehide = document.createTextNode("Hide"); 
+                    innerdiv1.setAttribute('style', "min-width:128px !important;border-radius:0px;background-color:#f1f2f4");
+                    hidep1 = innerdiv1.appendChild(hidep);
+                    hide1 = hidep1.appendChild(hide);
+                    textnodehide = document.createTextNode("Hide"); 
                     hide1.className = "dropdown-item";
-                    hide1.setAttribute('style', "padding-left:10px");
+                    hide1.setAttribute('style', "padding-left:10px;color:#333;text-decoration:none");
                     hide1.appendChild(textnodehide); 
-                    var moveupp1 = innerdiv1.appendChild(moveupp);
-                    var moveup1 = moveupp1.appendChild(moveup);
-                    var textnodemoveup = document.createTextNode("Move Up"); 
+                    moveupp1 = innerdiv1.appendChild(moveupp);
+                    moveup1 = moveupp1.appendChild(moveup);
+                    textnodemoveup = document.createTextNode("Move Up"); 
                     moveup1.className = "dropdown-item";
-                    moveup1.setAttribute('style', "padding-left:10px");
+                    moveup1.setAttribute('style', "padding-left:10px;color:#333;text-decoration:none");
                     moveup1.appendChild(textnodemoveup); 
-                    var movedownp1 = innerdiv1.appendChild(movedownp);
-                    var movedown1 = movedownp1.appendChild(movedown);
-                    var textnodemovedown = document.createTextNode("Move Down"); 
+                    movedownp1 = innerdiv1.appendChild(movedownp);
+                    movedown1 = movedownp1.appendChild(movedown);
+                    textnodemovedown = document.createTextNode("Move Down"); 
                     movedown1.className = "dropdown-item";
-                    movedown1.setAttribute('style', "padding-left:10px");
+                    movedown1.setAttribute('style', "padding-left:10px;color:#333;text-decoration:none");
                     movedown1.appendChild(textnodemovedown); 
 
 
@@ -546,10 +598,13 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                                     if(item1[0] === item2[0]){
                                         content1 = globalgroups._data[i].content;
                                         content2 = globalgroups._data[i-1].content;
+                                        $scope.rowOperationErrorMsg = "";
+                                        $scope.errMsgStyles = {};
                                         break;
                                     }
                                     else {
-                                        alert("You have reached the top of the list");
+                                        $scope.rowOperationErrorMsg = "This row cannot be moved further up!";
+                                        $scope.errMsgStyles = {'padding':'5px','margin-bottom':'0px','opacity':'1','border-radius':'0px','position':'absolute','top':'35px','left':'0%','right':'0%','z-index':100};
                                         break;
                                     }
                                 }
@@ -559,9 +614,12 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                                 globalgroups.update({id: group.id,content: content2});
                                 globalgroups.update({id: group.id-1,content: content1});
                                 setEvents(content1,content2);
+                                $scope.rowOperationErrorMsg = "";
+                                $scope.errMsgStyles = {};
                             }
                         }else if(group.id === 0){
-                            alert("You have reached the top of the list");
+                            $scope.rowOperationErrorMsg = "This row cannot be moved further up!";
+                            $scope.errMsgStyles = {'padding':'5px','margin-bottom':'0px','opacity':'1','border-radius':'0px','position':'absolute','top':'35px','left':'0%','right':'0%','z-index':100};
                         }
                     });
 
@@ -574,12 +632,15 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                             for(var i=0;i<globalgroups.length;i++){
                                 if(group.id === globalgroups._data[i].id){
                                     item2 = globalgroups._data[i+1].content.split("_");
-                                    if(item1[0] === item2[0]){
+                                    if(item1[0] === item2[0] && i !== globalgroups.length - 2){
                                         content1 = globalgroups._data[i].content;
                                         content2 = globalgroups._data[i+1].content;
+                                        $scope.rowOperationErrorMsg = "";
+                                        $scope.errMsgStyles = {};
                                         break;
                                     }else {
-                                        alert("You have reached the bottom of the list");
+                                        $scope.rowOperationErrorMsg = "This row cannot be moved down!";
+                                        $scope.errMsgStyles = {'padding':'5px','margin-bottom':'0px','opacity':'1','border-radius':'0px','position':'absolute','top':'35px','left':'0%','right':'0%','z-index':100};
                                         break;
                                     }
                                 }
@@ -588,10 +649,13 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                                 globalgroups.update({id: group.id,content: content2});
                                 globalgroups.update({id: group.id+1,content: content1});
                                 setEvents(content1,content2);
+                                $scope.rowOperationErrorMsg = "";
+                                $scope.errMsgStyles = {};
                             }
 
                         }else if(group.id === globalgroups.length-1){
-                            alert("You have reached the bottom of the list");
+                            $scope.rowOperationErrorMsg = "This row cannot be moved further down!";
+                            $scope.errMsgStyles = {'padding':'5px','margin-bottom':'0px','opacity':'1','border-radius':'0px','position':'absolute','top':'35px','left':'0%','right':'0%','z-index':100};
                         }
                     });
                     container.insertAdjacentElement('afterbegin',outerdiv);
@@ -609,8 +673,8 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
             start : start,
             end : end,
             orientation: {axis: "none"}
-    };
-            return options;
+        };
+        return options;
     }
 
     //Function to fetch timeline options and display
@@ -642,6 +706,7 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
         var tempgroup2 = "";
         var tempeventdata2= [];
         var tempeventinfo2 = "";
+
         for(var k=0;k<$scope.widget.settings.events.length;k++){
             if($scope.widget.settings.events[k].label === content1){
                 tempindex1 = k;
