@@ -3,41 +3,70 @@
     background-color: #020613;
 }
 md-list .md-subheader { 
-    height: 40px !important;
-    min-height: 40px !important;
+    height: 32px !important;
+    min-height: 32px !important;
     background-color: #020613 !important;
 }
 .md-subheader .md-subheader-inner {
-    padding: 12px;
+    padding: 8px;
     color: #ccc;
 }
 md-toolbar {
     background-color: #020613 !important;
-    border-bottom: 3px solid #07D1EA;
-    height: 53px;
+    border-bottom: 1px solid #07D1EA;
+    height: 50px;
     min-height: 50px !important;
 }
 md-content#right {
     color: #ccc;
     background-color: #020613;
+    display: inline !important;
 }
 md-list-item, md-list-item .md-list-item-inner { 
-    height: 40px !important;
-    min-height: 40px !important;
+    height: 32px !important;
+    min-height: 32px !important;
 }
 md-list {
     padding: 0px 0px 0px 0px !important;
 }
 md-list-item.list1 {
-    font-size: 18px !important;
+    font-size: 14px !important;
+}
+
+.list1Icon {
+    font-size: 14px !important;
+    min-width:14px !important;
+    min-height:14px !important;
+    width: 14px !important;
+    height: 14px !important;
+    margin-right: 10px !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
 }
 md-list-item.list2 {
-    font-size: 17px !important;
-    padding-left: 16px;
+/*    font-size: 14px !important;*/
+    padding-left: 14px;
+}
+.list2Icon {
+    font-size: 12px !important;
 }
 md-list-item.list3 {
-    font-size: 16px !important;
-    padding-left: 34px;
+/*    font-size: 14px !important;*/
+    padding-left: 28px;
+}
+.list3Icon {
+    font-size: 12px !important;
+    min-width:12px !important;
+    min-height:12px !important;
+    width: 12px !important;
+    height: 12px !important;
+    margin-right: 10px !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+}
+
+.listItemFonts{
+    font-size: 14px !important;
 }
 md-list-item:hover {
     background-color: #242833 !important;
@@ -54,8 +83,9 @@ md-list-item:hover {
     background-color: transparent; !important;
 }
 md-divider {
-    border-top-width: 2px;
-    background-color: #4d4d4d;
+    border-top-width: 1px;
+/*    background-color: #4d4d4d;*/
+    background-color:#242833;
 }
 .show-hide {
     display: none;
@@ -126,20 +156,28 @@ span#layout-arrow {
 
 span#qwidgets {
     position: relative;
-    top: 2px;
-    right: 8px;
+/*    top: 0px;
+    right: 8px;*/
+  /*  margin-right: 2px;*/
 }
 
 span#user-admin,i#server-admin,i#docs {
     position: relative;
-    top: 0px;
-    right: 8px;
+/*    top: -1px;
+    right: 8px;*/
+/*    margin-right: 2px;*/
 }
 
 span#qwidgetPlus,i#g-track,i#t-table,i#s-table,i#d-table,i#l-plot,i#clock,i#d-log,i#alarm,i#systemmap,i#timeline,span#save-layout,span#load-layout,span#clear-layout {
     position: relative;
-    top: 0px;
-    right: 5px;
+/*    top: -1px;
+    right: 5px;*/
+/*    margin-right: 2px;*/
+}
+
+.md-toolbar-tools{
+    font-size: 18px !important;
+    padding: 0 8px !important;
 }
 
 @media only screen and (max-width: 768px) {
@@ -149,27 +187,28 @@ span#qwidgetPlus,i#g-track,i#t-table,i#s-table,i#d-table,i#l-plot,i#clock,i#d-lo
 
     .show-flex {
         display: flex;
-        font-size:18px;
+        font-size:14px;
     }
-    md-list-item.list1 {
-        font-size: 18px !important;
+/*    md-list-item.list1 {
+        font-size: 14px !important;
     }
     md-list-item.list2 {
-        font-size: 17px !important;
-        padding-left: 16px;
+        font-size: 13px !important;
+        padding-left: 14px;
     }
     md-list-item.list3 {
-        font-size: 16px !important;
-        padding-left: 34px;
+        font-size: 12px !important;
+        padding-left: 28px;
     }
     .md-toolbar-tools{
-        font-size: 20px !important;
+        font-size: 14px !important;
+        padding: 0 8px !important;
     }
     .md-subheader .md-subheader-inner {
         padding: 12px;
         color: #ccc;
-        font-size:18px !important;
-    }
+        font-size:14px !important;
+    }*/
 }
 
 @media only screen and (max-width: 736px) { 
@@ -182,21 +221,22 @@ span#qwidgetPlus,i#g-track,i#t-table,i#s-table,i#d-table,i#l-plot,i#clock,i#d-lo
 
     .show-flex {
         display: flex;
-        font-size:18px;
+        font-size:14px;
     }
-    md-list-item.list1 {
-        font-size: 18px !important;
+/*    md-list-item.list1 {
+        font-size: 14px !important;
     }
     md-list-item.list2 {
-        font-size: 17px !important;
-        padding-left: 16px;
+        font-size: 14px !important;
+        padding-left: 14px;
     }
     md-list-item.list3 {
-        font-size: 16px !important;
-        padding-left: 34px;
+        font-size: 12px !important;
+        padding-left: 28px;
     }
     .md-toolbar-tools{
-        font-size: 20px !important;
+        font-size: 14px !important;
+        padding: 0 8px !important;
     }
     .md-subheader .md-subheader-inner {
         padding: 12px;
@@ -206,5 +246,5 @@ span#qwidgetPlus,i#g-track,i#t-table,i#s-table,i#d-table,i#l-plot,i#clock,i#d-lo
 
     #add-widget{
         padding:5px 10px;
-    }
+    }*/
 }

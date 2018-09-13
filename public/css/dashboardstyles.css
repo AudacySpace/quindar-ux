@@ -16,7 +16,8 @@ body {
 }
 
 md-content.mainContentLayout{
-    background: #F1F1F1;
+/*    background: #F1F1F1;*/
+    background: #9e9e9e36
 }
 
 /* End of CSS for dashboard content*/

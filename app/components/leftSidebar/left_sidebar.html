@@ -2,12 +2,11 @@
 <script type="text/ng-template" id="dataTree.html">
     <md-divider ng-show="data.nodes.length != 0 || $index == 0"></md-divider>
     <md-list-item id="tree" ng-click="$ctrl.selectData(data)"
-        ng-style="{ 'padding-left' : count*18+'px', 'font-size' : (18-count)+'px' }" >
+        ng-style="{ 'padding-left' : count*14+'px', 'font-size' : '14px' }" >
         <md-icon class="md-icon" ng-class="{'large': count==0, 'small': count!=0 }" 
             md-svg-icon="{{ count==0 ? '/icons/aud_sat.svg' : '/icons/aud_target.svg' }}" >
         </md-icon>
-        <p  ng-style="{ 'font-size' : (18-count)+'px' }" class="dataItem">{{ data.name }}</p>
-   <!--           <p >{{ data.name }}</p> -->
+        <p  ng-style="{ 'font-size' : '14px' }" class="dataItem">{{ data.name }}</p>
     </md-list-item>
     <md-list class="md-dense" ng-show="data.active">
         <md-divider ng-show="data.nodes.length == 0"></md-divider>
