@@ -67,6 +67,8 @@ form.searchIDForm{
 div.emptyDataRow{
     padding:10px 20px;
     overflow-wrap: break-word;
+    font-size: 14px;
+    color:#cfcfcf7a;
 }
 input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
     background-color: #242833 !important;

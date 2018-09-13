@@ -41,11 +41,15 @@
             </md-list-item>
             <md-list ng-show="$ctrl.layoutMenu">
             <md-divider></md-divider>
-                <md-list-item ng-repeat="layout in $ctrl.layouts" ng-click="$ctrl.showLayout(layout)" class="list3">
+                <md-list-item ng-repeat="layout in $ctrl.layouts" ng-show="$ctrl.layouts.length > 0" ng-click="$ctrl.showLayout(layout)" class="list3">
                     <md-icon class="md-icon smaller list2 list3Icon" md-svg-icon="/icons/aud_arrow_01-2.svg"></md-icon>
                     <p class=" list3 dataItem listItemFonts">{{ layout.name }}</p>
                 </md-list-item>
+                <md-list-item ng-show="$ctrl.layouts.length === 0">
+                    <div class="emptyDataRow" style="color:#cfcfcf7a;padding:10px 40px;">No Layouts available</div>
+                </md-list-item>
             </md-list>
+
             <md-divider></md-divider>
             <md-list-item ng-click="$ctrl.clear()" class="list2">
                 <span class="glyphicon glyphicon-trash list3Icon" id="clear-layout"></span>

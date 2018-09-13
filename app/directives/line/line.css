@@ -87,9 +87,9 @@
     background-color: #fff;
 }
 
-span.vehicleRows:hover{
+/*label.vehicleRows:hover{
     background: #fff;
-}
+}*/
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {
     input.lineplotchkbox{margin-top:2px !important;}

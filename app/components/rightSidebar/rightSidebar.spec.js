@@ -184,8 +184,7 @@ describe('Testing right sidebar component', function () {
         deferredLoad.resolve({ data : result });
         $controller.load();
 
-        expect($controller.layouts).not.toBeDefined();
-
+        // expect($controller.layouts.length).toEqual(0);
         //to make the deferred resolve work, call digest cycle
         scope.$digest();
 
