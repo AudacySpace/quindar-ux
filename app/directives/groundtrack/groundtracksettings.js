@@ -463,7 +463,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
         $scope.chosenCategory = category; //which input box has been selected (position or velocity)
         $scope.currentVehicleId = vid;
         sidebarService.setTempWidget($scope.widget, this); //pass widget and controller functions to sidebarService
-        if ($window.innerWidth < 1400){
+        if ($window.innerWidth <= 1440){
             $mdSidenav('left').open();
         } else {
             $scope.lock = dashboardService.getLock();
@@ -720,7 +720,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
                 $scope.totalPositionArray[$scope.currentVehicleId] = getRecentSelectedValues($scope.totalPositionArray[$scope.currentVehicleId], 3);
                 $scope.widget.settings.dataArray = [];
                
-                if ($window.innerWidth >= 1400){
+                if ($window.innerWidth > 1440){
                     $scope.lock = dashboardService.getLock();
                     $scope.lock.lockLeft = false;
                     dashboardService.setLeftLock($scope.lock.lockLeft);
@@ -771,7 +771,7 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
             $scope.iconstatus[$scope.currentVehicleId] = true;
         }
 
-        if ($window.innerWidth >= 1400){
+        if ($window.innerWidth > 1440){
             $scope.lock = dashboardService.getLock();
             $scope.lock.lockLeft = false;
             dashboardService.setLeftLock($scope.lock.lockLeft);

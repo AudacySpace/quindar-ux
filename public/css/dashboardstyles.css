@@ -1,14 +1,13 @@
 /*!
  * Custom CSS for dashboard page 
  */
+
+
+/* CSS for dashboard content*/
 body {
     overflow-x: hidden;
     background-color: #F2F3F4;
     font-family: "Open Sans", Sans-serif; 
-}
-
-#QBlack {
-    display:none;
 }
 
 .container {
@@ -16,38 +15,22 @@ body {
     margin-right:0;
 }
 
-
-
-span#layout-arrow {
-    position: relative;
-    top: 0px;
-    right:0px;
+md-content.mainContentLayout{
+    background: #F1F1F1;
 }
 
-span#qwidgets {
-    position: relative;
-    top: 2px;
-    right: 8px;
-}
+/* End of CSS for dashboard content*/
 
-span#user-admin,i#server-admin,i#docs {
-    position: relative;
-    top: 0px;
-    right: 8px;
-}
 
-span#qwidgetPlus,i#g-track,i#t-table,i#s-table,i#d-table,i#l-plot,i#clock,i#d-log,i#alarm,i#systemmap,i#timeline,span#save-layout,span#load-layout,span#clear-layout {
-    position: relative;
-    top: 0px;
-    right: 5px;
+/* CSS for dashboard header*/
+#QBlack {
+    display:none;
 }
 
 .navbar {
     border: 0 none;
-/*    border-bottom: 3px solid #CFCFD5;*/
     text-align: center; 
     height: 50px;
-
     -webkit-box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
     -moz-box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
     box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
@@ -63,7 +46,6 @@ span#qwidgetPlus,i#g-track,i#t-table,i#s-table,i#d-table,i#l-plot,i#clock,i#d-lo
 }
 
 img#main-img {
-/*    height:50px;*/
     height:95%;
     padding-top:4px;
     padding-bottom:2px;
@@ -71,12 +53,12 @@ img#main-img {
 
 a#QRegular.navbar-brand {
     padding:0px;
+    margin-left: 20px;
 }
 
 .navbar-brand>img {
     height: 100%;
     width: auto;
-    padding-left:15px;
 }
 
 .navbar-brand {
@@ -86,6 +68,7 @@ a#QRegular.navbar-brand {
 #add-widget {
     background-color: #07D1EA;
     color: white;
+    padding:10px 20px;
     margin-right:15px;
     height: 50px;
     margin-top: 0px;
@@ -108,18 +91,12 @@ img#main-img:focus {
     outline:auto 0px;
 }
 
-img.search-icon:focus {
-    outline:auto 0px;
-}
-
 .status-bar {
     padding-left:10px;
     padding-right:10px;
-} 
+}
 
 .navbar-nav>li.clock {
-/*   padding-top: 15px;
-   padding-bottom: 15px;*/
     margin-top:5px;
     line-height:20px;
     font-size: 24px;
@@ -128,7 +105,8 @@ img.search-icon:focus {
 .time {
    padding-left: 10px;
    padding-right:10px;
-   color: rgba(0, 0, 0, 0.3);
+/*   color: rgba(0, 0, 0, 0.3);*/
+   color:#8B8C94;
    font-size: 12px;
 }
 
@@ -158,8 +136,9 @@ img.search-icon:focus {
 
 #txt.clock {
    top:10px;
-   right:0px; /*-19px*/
+   right:0px;
    font-size:22px;
+   font-weight:200;
 }
 
 .bars {
@@ -173,8 +152,9 @@ img.search-icon:focus {
 }
 
 a#username.dropdown-toggle {
-    font-size:18px;/*22px*/
-    color:black;
+    font-size:18px;
+    color:#8B8C94;
+    font-weight: 400;
     display:inline-block;
     background-color: white;
     margin-top: 0px;
@@ -183,14 +163,17 @@ a#username.dropdown-toggle {
 
 .logout-bar {
     min-width: 128px;
+    border-radius:0px;
+    background: #f1f2f5;
 }
 
 #callsign {
     display: block;
-    color: black;
+    color:  #07D1EA;
     text-align: right;
     padding-left: 15px;
     padding-right: 15px;
+    font-weight: 400;
 }
 
 #line1 {
@@ -223,13 +206,9 @@ ul.nav.navbar-nav.navbar-right {
 
 #cfgmenu {
     height:50px;
+    margin-right:20px;
 }
 #missionImage {
-/*    position:relative;
-    top:7px;
-    height:35px;
-    left:2px;*/
-
     position:relative;
     top:11px;
     height:28px;
@@ -237,26 +216,35 @@ ul.nav.navbar-nav.navbar-right {
 
 }
 
-/*styles required for md dialog prompt warnings on ok*/
-/*md-input-container .md-auto-hide .md-input-message-animation:not(.ng-animate) {
-    opacity: 0;
-    margin-top: -100px;
+#missionName {
+    color: #125790;
+    position:relative;
+    top:13px;
+    left:6px;
+    font-size:18px;
 }
-md-input-container:not(.md-input-invalid) .md-auto-hide .md-input-message-animation {
-    opacity: 0;
-    margin-top: -100px;
-}*/
+
+a.userSettings:hover {
+    background: #fff !important;
+} 
+
+/* End of CSS for dashboard header*/
+
 
 @media (min-width: 768px) {
+    /* CSS for dashboard header */
     .navbar-nav>li>a {
         margin-top: 5px;
         padding-top: 10px; 
         padding-bottom: 10px; 
     }
+    /* End of CSS for dashboard header */
 }
 
 @media only screen and (max-width: 736px) {
   /* For mobile phones: */
+
+    /* CSS for dashboard content */
     #QRegular {
         display:none;
     }
@@ -265,30 +253,27 @@ md-input-container:not(.md-input-invalid) .md-auto-hide .md-input-message-animat
         padding-left:10px;
         display:inline-block;
     }
+    /* End of CSS for dashboard content*/
+
+
+    /* CSS for dashboard header*/
     #missionName {
       display:none;  
     }
     #missionImage{
         position: relative;
-        top: -58px;/*-57px*/
+        top: -58px;
         height: 15px;
-        left: -108px;/*-130px*/
+        left: -108px;
     }
-
     .container-fluid>.navbar-header {
         margin-left: 0px;
     }
-
     .nav>li>a {
         position: relative;
         display: block;
         padding: 6px 6px;
     }
-
-    a#addwidget, a#save-grid, a#load-grid, a#clear-grid, a#addGround {
-        font-size:12px;
-    }
-
     .navbar-brand>img#main-img {
         height:100%;
         padding-left:0px;
@@ -296,73 +281,61 @@ md-input-container:not(.md-input-invalid) .md-auto-hide .md-input-message-animat
         margin-bottom:0;
         padding-bottom:0;
     }
-
     .status-icon {
         height:40px;
         padding:0;
     }
-
     li.status-icon {
         padding:0;
         margin:0;
     }
-
     ul.nav.navbar-nav {
         padding:0;
         margin:0;
     }
-
     li#txt.clock {
         font-size: 14px;
         position:relative;
         top:0;
         left:0;
     }
-
     ul.nav.navbar-nav.navbar-right {
         position:absolute;
         top:0;
         right:0;
         display:inline;
     }
-
     a#username.dropdown-toggle {
         display:none;
     }
-
     a#add-widget {
         width:100%;
         position:relative;
     }
-
     #icon_1 {
         position: absolute;
         top: -63px;
         right: 80px;
         height:17px;
     }
-
     #icon_2 {
         position: absolute;
         top: -63px;
         right: 53px;
         height:17px;
     }
-
     #icon_3 {
         position:absolute;
         top: -63px;
         right: 26px;
         height:17px;
     }
-
     #icon_4 {
         position: absolute;
         top: -63px;
         right: 10px;
         height:17px;
     }
-
     #line1 {
         width:0px;
         height:10px;
@@ -370,7 +343,6 @@ md-input-container:not(.md-input-invalid) .md-auto-hide .md-input-message-animat
         right:109px;
         position:absolute;
     }
-
     #line2 {
         width:0px;
         height:10px;
@@ -378,7 +350,6 @@ md-input-container:not(.md-input-invalid) .md-auto-hide .md-input-message-animat
         right:82px;
         position:absolute;
     }
-
     #line3 {
         width:0px;
         height:10px;
@@ -386,49 +357,62 @@ md-input-container:not(.md-input-invalid) .md-auto-hide .md-input-message-animat
         right:56px;
         position:absolute;
     } 
-
     li.open {
         width:75%;
     }
-
     li#cfgmenu {
         font-size:16px;  
-            margin-right: 10px; 
+        margin-right: 10px; 
     }
-
     li#txt.clock{
         position: absolute;
         top: -62px;
         right: -82px;
         font-size: 10px;
     }
-
     #callsign {
         display: none;
     }
-
     .bars {
         padding-top: 11px;
         padding-bottom: 11px;
     }
+    /*End of CSS for dashboard header*/
 }
 
 @media only screen and (min-width: 736px) and (max-width: 768px) {
+
+    /*CSS for dashboard header*/
     a#username.dropdown-toggle {
         display:none;
     }
-
     #callsign{
         display: none;
     }
+/*    #txt.clock {
+        top: 12px;
+        right: 0px;
+        font-size: 20px;
+        font-weight: 200;
+    }
+    #missionName {
+        color: #125790;
+        position: relative;
+        top: 13px;
+        left: 6px;
+        font-size: 16px;
+    }*/
+    /*End of CSS for dashboard header*/
 }   
 
 @media only screen and (min-width: 768px){
+    /*CSS for dashboard header*/
     .navbar-right {
         margin-right: 0px !important;
     }
+    /*End of CSS for dashboard header*/
 }
 
-::-webkit-scrollbar { 
+::-webkit-scrollbar { /* To display scroll bars in chrome */
     display: none; 
 }

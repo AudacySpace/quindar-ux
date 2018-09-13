@@ -1,6 +1,6 @@
 
  <div id="datalogtable">
- <div layout="row">
+ <div layout="row" class="datalog-rows">
     <div flex="25" class="dlog-header dlog-center-header">
         Parameter
     </div>
@@ -15,7 +15,7 @@
     </div>
     
 </div>
- <div layout="row">
+ <div layout="row" class="datalog-rows">
     <div flex="25" class="dlog-header dlog-center-header">
          <input type="text" class="d-log-input" ng-model="search.parameter"/> 
     </div>
@@ -29,7 +29,7 @@
       <input type="text" class="d-log-input" ng-model="search.vehicle"/> 
     </div>  
 </div>
-<div layout="row"  ng-repeat="data in logData | filter:search">
+<div layout="row"  ng-repeat="data in logData | filter:search" class="datalog-rows">
     <div flex="25" class="dlog-row dlog-center-row" style="word-wrap: break-word;">
         {{data.parameter}}
     </div>

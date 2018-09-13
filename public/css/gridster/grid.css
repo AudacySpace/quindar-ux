@@ -11,8 +11,10 @@ ul {
 }
 .box {
     height: 100%;
-    border: 1px solid #ccc;
     background-color: #fff;
+    -webkit-box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
+    -moz-box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
+    box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
 }
 .box-header {
     background-color: #000;
@@ -26,7 +28,8 @@ ul {
     display: inline-block;
     text-transform: capitalize;
     color: white;
-    font-size:1.0em;
+/*    font-size:1.0em;*/
+    font-size:16px;
 }
 
 .box-content {
@@ -63,6 +66,10 @@ div.mainWidget{
     height:100%;
 }
 
+.widgetName{
+    top:1.5px;
+    position: relative;
+}
 /*
 
 Settings Menu outer Div styles
@@ -117,8 +124,9 @@ div.settingsMenu,div.deldatatable,div.saveloaddatatable{
     height:100%;
     margin:0px;
     color:#fff;
-    position: relative ;
+    position: relative;
     overflow-y:hidden;
+    overflow-x:hidden;
 }
 
 

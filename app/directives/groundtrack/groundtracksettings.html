@@ -3,9 +3,12 @@
         <!-- First Screen-->
         <div class="row settingsrightcol" ng-show="firstScreen" style="display: table">
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
-            <div class="col-sm-10" ng-show="firstScreen" style="display: table-cell; float:none">
+            <div class="col-sm-4" ng-show="firstScreen" style="display: table-cell; float:none">
                 <div class="row">
-                    <label for="SelectSpaceCraft">Select Spacecraft:</label>
+                    <label for="SelectVehicle">Select Vehicle</label>
+                    <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px">
+                        <md-tooltip md-direction="top">Required atleast one vehicle</md-tooltip> 
+                    </span>
                 </div>
                 <div class="row settingsspace" style="display: table"></div>
                 <div class="row">
@@ -20,19 +23,23 @@
                             </li>
                         </ul>
                     </div>
-                    <span ng-show="vehicleMsg.length > 0 && vehicleSelected === true" style="font-size:12px;color:#dd2c00"> {{vehicleMsg}} </span> 
+                    <span ng-show="vehicleMsg.length > 0 && vehicleSelected === true" style="font-size:14px;color:#dd2c00"> {{vehicleMsg}} </span> 
                 </div>
             </div>
+            <div class="col-sm-1"></div>
+            <div class="col-sm-2" style="display: table-cell; float:none"></div>
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
         </div>
         <!-- Second Screen-->
         <form name="groundTrackForm" style="display:inline">
-            <div class="row settingsrightcol"  ng-show="secondScreen" style="display: table; height:23.33%;">
+            <div class="row settingsrightcol"  ng-show="secondScreen" style="display: table; height:33.33%;">
                 <div class="col-sm-1" style="display: table-cell; float:none"></div>
                 <div class="col-sm-4" style="display: table-cell; float:none">
                     <div class="row">
                         <label for="Position">Select Position for: <b>{{currentScreenVehicle}}</b></label>
-                        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px" title="Select position coordinates(x,y,z)"></span>
+                        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px">
+                            <md-tooltip md-direction="top">Select position coordinates(x,y,z)</md-tooltip> 
+                        </span>
                     </div>
                     <div class="row settingsspace" style="display: table"></div>
                     <div class="btn-group" style="width:100%" uib-dropdown>
@@ -45,13 +52,15 @@
                             <li role="menuitem"><a href="#" ng-click="openPositionList(currentVehicleId)">Show Parameters</a></li>
                         </ul>
                     </div>
-                    <span ng-show="positionparametersErrMsg.length > 0" style="font-size:12px;color:#dd2c00"> {{ positionparametersErrMsg }} </span>
+                    <span ng-show="positionparametersErrMsg.length > 0" style="font-size:14px;color:#dd2c00"> {{ positionparametersErrMsg }} </span>
                 </div>
                 <div class="col-sm-2" style="display: table-cell; float:none"></div>
                 <div class="col-sm-4" style="display: table-cell; float:none">
                     <div class="row">
                         <label for="Velocity">Select Velocity for: <b>{{currentScreenVehicle}}</b></label>
-                        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px" title="Select velocity coordinates(x,y,z)"></span>
+                        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px">
+                            <md-tooltip md-direction="top">Select velocity coordinates(x,y,z)</md-tooltip> 
+                        </span>
                     </div>
                     <div class="row settingsspace" style="display: table"></div>
                     <div class="btn-group" style="width:100%" uib-dropdown>
@@ -64,15 +73,17 @@
                             <li role="menuitem"><a href="#" ng-click="openVelocityList(currentVehicleId)">Show Parameters</a></li>
                         </ul>
                     </div>
-                    <span ng-show="velocityparametersErrMsg.length > 0" style="font-size:12px;color:#dd2c00"> {{ velocityparametersErrMsg }} </span>
+                    <span ng-show="velocityparametersErrMsg.length > 0" style="font-size:14px;color:#dd2c00"> {{ velocityparametersErrMsg }} </span>
                 </div>
                 <div class="col-sm-1" style="display: table-cell; float:none"></div>
             </div>
-            <div class="row settingsrightcol" ng-show="secondScreen" style="display: table; height:13.33%;"></div>
             <div class="row settingsrightcol" ng-show="secondScreen" style="display: table; height:23.33%;">
                 <div class="col-sm-1" style="display: table-cell; float:none"></div>
                 <div class="col-sm-4" style="display: table-cell; float:none">               
                     <label for="SatelliteOrbit">Orbit</label>
+                    <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px">
+                        <md-tooltip md-direction="top">Enable or Disable the vehicle orbit</md-tooltip>
+                    </span>
                     <div class="input-group" style="margin-top:0px;margin-bottom:0px" ng-cloak>
                         <md-switch class="md-primary"  md-theme="blueTheme" aria-label="Switch No Ink" ng-model="orbitstatus[currentVehicleId]" style="margin-top:0px;margin-bottom:0px">
                         </md-switch>
@@ -81,6 +92,9 @@
                 <div class="col-sm-2" style="display: table-cell; float:none"></div>
                 <div class="col-sm-4" style="display: table-cell; float:none">
                     <label for="SatelliteIcon">Icon</label>
+                    <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px">
+                        <md-tooltip md-direction="top">Enable or Disable the vehicle icon</md-tooltip>
+                    </span>
                     <div class="input-group" style="margin-top:0px;margin-bottom:0px" ng-cloak>
                         <md-switch class="md-primary"  md-theme="blueTheme" aria-label="Switch No Ink" ng-model="iconstatus[currentVehicleId]" style="margin-top:0px;margin-bottom:0px">
                         </md-switch>
@@ -88,9 +102,8 @@
                 </div>
                 <div class="col-sm-1" style="display: table-cell; float:none"></div>
             </div>
-            <div class="row settingsrightcol" ng-show="firstScreen" style="display: table; height:3.33%;"></div>
-            <div class="row settingsrightcol" ng-show="secondScreen" style="display: table; height:13.33%;"></div>
-            <div class="row settingsbottom" style="display: table">
+            <div class="row settingsbottom" ng-show="secondScreen" style="display: table; height:13.33%;"></div>
+            <div class="row settingsbottom" style="display:table">
                 <div class="row">
                     <div class="col-sm-1"></div>
                     <div class="col-sm-10">
@@ -118,7 +131,10 @@
 <!-- For Mobile Screens -->
 <div class="container mbl-gt">
     <form ng-show="firstScreen">
-        <label for="SelectSpaceCraft" class="mbl-label">Select Spacecraft:</label>
+        <label for="SelectVehicle" class="mbl-label">Select Vehicle</label>
+        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px">
+            <md-tooltip md-direction="top">Required atleast one vehicle</md-tooltip> 
+        </span>
         <div class="dropdown mbl-label mbl-input-grp mbl-inputitems">
             <button type="button" class="btn dropdown-toggle load-widget-styles mbl-inneritems mbl-inneritems mbl-input-grp mbl-inputitems mbl-label" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-click="createVehicles()">
                 <span class="pull-left drpdwn-name">Vehicles</span> <span class="caret  pull-right drpdwn-caret"></span>
@@ -139,7 +155,9 @@
         <label for="SelectSpaceCraft" class="mbl-label">Select Parameters for: {{currentScreenVehicle}}</label>
         <div class="row">
             <label for="SelectPosition" class="mbl-label">Select Position:</label>
-            <span class="fa fa-info-circle" aria-hidden="true" style="font-size:10px" title="Select position coordinates(x,y,z)"></span>
+            <span class="fa fa-info-circle" aria-hidden="true" style="font-size:10px">
+                <md-tooltip md-direction="top">Select position coordinates(x,y,z)</md-tooltip> 
+            </span>
         </div>
         <div class="btn-group mbl-input-grp" uib-dropdown>
             <input id="split-button" type="text" class="btn btn-default inputBoxStyles" ng-click="getTelemetrydata('position', currentVehicleId)" name="positionparameters" ng-style="positionInputStyles" value="{{readValues('position')}}" placeholder="Click for data" readonly required/>
@@ -154,7 +172,9 @@
         <span ng-show="positionparametersErrMsg.length > 0" style="font-size:8px;color:#dd2c00" class="req-label"> {{ positionparametersErrMsg }} </span>
         <div class="row">
             <label for="SelectVelocity" class="mbl-label">Select Velocity</label>
-             <span class="fa fa-info-circle" aria-hidden="true" style="font-size:10px" title="Select velocity coordinates(x,y,z)"></span>
+             <span class="fa fa-info-circle" aria-hidden="true" style="font-size:10px">
+                <md-tooltip md-direction="top">Select velocity coordinates(x,y,z)</md-tooltip> 
+             </span>
         </div>
         <div class="btn-group mbl-input-grp" uib-dropdown>
             <input id="split-button" type="text" class="btn btn-default inputBoxStyles" ng-click="getTelemetrydata('velocity', currentVehicleId)" name="velocityparameters" ng-style="velocityInputStyles" value="{{readValues('velocity')}}" placeholder="Click for data" readonly required/>
@@ -181,6 +201,9 @@
             <div class="col-sm-10 tablecellstyle10">
                 <div class="row" style="height:19px;">
                     <label for="SelectSpaceCraft" class="mbl-label">Select Spacecraft:</label>
+                    <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px">
+                        <md-tooltip md-direction="top">Required atleast one vehicle</md-tooltip> 
+                    </span>
                 </div>
                 <div class="dropdown mbl-label mbl-input-grp mbl-inputitems">
                     <button type="button" class="btn dropdown-toggle load-widget-styles mbl-inneritems mbl-inneritems mbl-input-grp mbl-inputitems mbl-label" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ng-click="createVehicles()">
@@ -227,7 +250,9 @@
                     </div>
                     <div class="row" style="height:19px;">
                         <label for="SelectPosition" class="mbl-label">Select Position</label>
-                        <span class="fa fa-info-circle" aria-hidden="true" style="font-size:10px" title="Select position coordinates(x,y,z)"></span>
+                        <span class="fa fa-info-circle" aria-hidden="true" style="font-size:10px">
+                            <md-tooltip md-direction="top">Select position coordinates(x,y,z)</md-tooltip> 
+                        </span>
                     </div>
                     <div class="btn-group mbl-input-grp" uib-dropdown>
                         <input id="split-button" name="positionparameters" type="text" class="btn btn-default inputBoxStyles" ng-click="getTelemetrydata('position', currentVehicleId)" ng-style="positionInputStyles" placeholder="Click for data" value="{{readValues('position')}}" readonly required/>
@@ -248,7 +273,9 @@
             <div class="col-sm-10 tablecellstyle10">
                 <div class="row" style="height:16px;margin-bottom:0px">
                     <label for="SelectVelocity" class="mbl-label">Select Velocity</label>
-                    <span class="fa fa-info-circle" aria-hidden="true" style="font-size:10px" title="Select velocity coordinates(x,y,z)"></span>
+                    <span class="fa fa-info-circle" aria-hidden="true" style="font-size:10px">
+                        <md-tooltip md-direction="top">Select velocity coordinates(x,y,z)</md-tooltip> 
+                    </span>
                 </div>
                 <div class="btn-group mbl-input-grp" uib-dropdown>
                     <input id="split-button" name="velocityparameters" type="text" class="btn btn-default inputBoxStyles" ng-click="getTelemetrydata('velocity', currentVehicleId)" ng-style="velocityInputStyles" placeholder="Click for data" value="{{readValues('velocity')}}" readonly required/>

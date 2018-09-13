@@ -59,13 +59,13 @@
             <div flex="30" class="left-cmdlogheader">
                 Status
             </div>
-            <div flex="25" class="right-cmdlogheader">
-                Response Data
+            <div flex="20" class="right-cmdlogheader">
+                Data
             </div>
         </div>
     </md-content>
-    <md-content>
-        <div layout="row" ng-repeat = "comm in commandLog | orderBy : '-sent_timestamp'">
+    <md-content class="commandLogTable">
+        <div layout="row" ng-repeat="comm in commandLog | orderBy:'-sent_timestamp'">
             <div flex="15" class="left-cmdlogrow">
                 {{comm.time}}
             </div>
@@ -78,7 +78,7 @@
             <div flex="30" class="left-cmdlogrow" style="word-wrap: break-word;">
                 {{ comm.responseStatus }}
             </div>
-            <div flex="25" class="right-cmdlogrow" style="word-wrap: break-word;">
+            <div flex="20" class="right-cmdlogrow" style="word-wrap: break-word;">
                 {{ comm.responseData }}
             </div>
         </div>

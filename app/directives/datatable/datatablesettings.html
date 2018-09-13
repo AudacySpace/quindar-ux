@@ -5,7 +5,9 @@
             <div class="col-sm-4" style="display: table-cell; float:none">
                 <div class="row">
                     <label for="CategoryDisplay">Select Table Columns</label>
-                    <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px" title="Required atleast one column"></span>
+                    <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px">
+                        <md-tooltip md-direction="top">Required atleast one column</md-tooltip>  
+                    </span>
                 </div>
                 <div class="row settingsspace" style="display: table"></div>
                 <div>
@@ -25,7 +27,7 @@
                             <li class="checkbox cbox"><input style="margin-top: -2px" type="checkbox" value="" name="notes" ng-model="checkedValues.checkedChannel">Channel</li>
                         </ul>
                     </div>
-                    <span ng-show="columnSelectionErrMsg.length > 0" style="font-size:12px;color:#dd2c00">{{ columnSelectionErrMsg }}</span>
+                    <span ng-show="columnSelectionErrMsg.length > 0" style="font-size:14px;color:#dd2c00">{{ columnSelectionErrMsg }}</span>
                 </div>          
             </div>
             <div class="col-sm-2" style="display: table-cell; float:none"></div>
@@ -54,7 +56,9 @@
 <div class="container mbl-dt">
     <form>
         <label for="CategoryDisplay" class="mbl-label">Select Table Columns</label>
-         <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px"  title="Required atleast one column"></span>
+         <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px">
+            <md-tooltip md-direction="top">Required atleast one column</md-tooltip> 
+         </span>
         <div class="dropdown mbl-label mbl-input-grp mbl-inputitems">
             <button type="button" class="btn dropdown-toggle load-widget-styles mbl-inneritems mbl-inneritems mbl-input-grp mbl-inputitems mbl-label" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="pull-left drpdwn-name">Columns</span> <span class="caret  pull-right drpdwn-caret"></span>
@@ -87,7 +91,9 @@
             <div class="col-sm-10 tablecellstyle10">
                 <div class="row" style="height:19px;">
                     <label for="CategoryDisplay" class="mbl-label">Select Table Columns</label>
-                     <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px"  title="Required atleast one column"></span>
+                     <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px">
+                        <md-tooltip md-direction="top">Required atleast one column</md-tooltip> 
+                     </span>
                 </div>
                 <div class="dropdown mbl-label mbl-input-grp mbl-inputitems">
                     <button type="button" class="btn dropdown-toggle load-widget-styles mbl-inneritems mbl-inneritems mbl-input-grp mbl-inputitems mbl-label" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

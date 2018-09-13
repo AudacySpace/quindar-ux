@@ -1,47 +1,57 @@
-#clock-row {
+.clock-row {
 	margin-top: 2px;
     margin-left: 2px;
     margin-bottom: 2px;
 }
 
-#center-header {
+.center-header {
 	margin-right: 2px;
-    background-color: #ccc;
+    padding: 4px;
+    font-size: 14px;
+    background-color: #CFCFD5;
     text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    overflow: hidden;
 }
-#left-header {
+.left-header {
 	margin-right: 2px;
-    background-color: #ccc;
-    padding-left: 10px;
+    background-color: #CFCFD5;
+    padding: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    overflow: hidden;
 }
 
-#center-row {
+.center-row {
 	margin-right: 2px;
-    background-color: #F2F3F4;
+    background-color: #F1F1F5;
     text-align: center;
     font-weight: 400;
 }
-#left-row {
+.left-row {
 	margin-right: 2px;
-    background-color: #F2F3F4;
+    background-color: #F1F1F5;
     padding-left: 10px;
     font-weight: 400;
 }
 
 md-icon.delta {
-    min-width:16px !important;
-    min-height:16px !important;
-	width: 16px;
-    height: 16px;
+    min-width:14px !important;
+    min-height:14px !important;
+	width: 14px;
+    height: 14px;
     vertical-align: inherit;
     fill: black;
+    margin-right: 2px;
 }
 
 md-icon.trash{
-    min-width:16px !important;
-    min-height:16px !important;
-    width: 16px;
-    height: 16px;
+    min-width:14px !important;
+    min-height:14px !important;
+    width: 14px;
+    height: 14px;
     vertical-align: inherit;
     fill: black;  
 }
@@ -138,7 +148,7 @@ md-icon.trash{
     .center-row,.left-row{
         font-size: 8px;
     }
-    div#left-header,div#center-header{
+    div.left-header,div.center-header{
         font-size: 10px;
     }
     md-icon.md-icon.delta{
@@ -147,7 +157,7 @@ md-icon.trash{
         height:8px;
         width:8px;
     }
-    div#left-row,div#center-row{
+    div#left-row,div.center-row{
         font-size:8px;
     }
     md-icon.trash{
@@ -213,7 +223,7 @@ md-icon.trash{
         background-color: #242833;
         -webkit-tap-highlight-color:#242833;
     }
-    div#left-header,div#center-header{
+    div.left-header,div.center-header{
         font-size: 12px;
     }
     md-icon.md-icon.delta{
@@ -222,7 +232,7 @@ md-icon.trash{
         height:10px;
         width:10px;
     }
-    div#left-row,div#center-row{
+    div.left-row,div.center-row{
         font-size:10px;
     }
     md-icon.trash{

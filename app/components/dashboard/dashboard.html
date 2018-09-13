@@ -6,9 +6,9 @@
         </md-sidenav>
         <!--End Left Sidenav-->
         <!--Main Dashboard Navigation-->
-        <md-content flex class="main">
+        <md-content flex class="main mainContentLayout">
             <div id="main">
-                <nav class="navbar navbar-default">
+                <nav id="statusBar" class="navbar navbar-default">
                     <div class="container-fluid" id="top-header">
                         <div class="navbar-header">
                             <a class="navbar-brand" href="#" id="QRegular" ng-click="$ctrl.openLeftNav()">
@@ -20,8 +20,8 @@
                         </div>
                         <ul class="nav navbar-nav navbar-left">
                             <li>
-                                <img ng-src="{{$ctrl.currentMission.missionImage}}" ng-show="$ctrl.currentMission.missionImage" id="missionImage"/>
-                               <span id="missionName" style="position:relative;top:13px;left:6px;font-size:16px">{{$ctrl.currentMission.missionName}}</span>
+                                <img ng-src="{{$ctrl.currentMission.missionImage}}" ng-show="$ctrl.currentMission.missionImage" id="missionImage" alt="Mission Image"/>
+                               <span id="missionName">{{$ctrl.currentMission.missionName}}</span>
                             </li>
                         </ul>
                         <ul class="nav navbar-nav">
@@ -40,8 +40,8 @@
                                 >{{ $ctrl.name }}</a>
                                 <small id="callsign"> {{ $ctrl.role.cRole.callsign }} </small>
                                 <ul class="dropdown-menu logout-bar">
-                                    <li ><a href="" ng-click="$ctrl.logout($event)" target="_self">Logout</a></li>
-                                    <li ><a href="#" ng-click="$ctrl.showSettings()" ng-show="$ctrl.role.cRole.callsign !== 'MD'">Settings</a></li>
+                                    <li ><a href="" ng-click="$ctrl.logout($event)" class="userSettings" target="_self">Logout</a></li>
+                                    <li ><a href="#" ng-click="$ctrl.showSettings()" class="userSettings" ng-show="$ctrl.role.cRole.callsign !== 'MD'">Settings</a></li>
                                 </ul>
                             </li>
                             <li id="cfgmenu">
@@ -52,12 +52,10 @@
                         </ul>
                     </div>
                 </nav>
-
                 <!--Main Dashboard for Widgets -->
                 <div class="container-fluid">
                     <grid></grid>
                 </div>
-
                 <!-- Dashboard Footer -->
                 <footer class="footer">
                     <div class="container">

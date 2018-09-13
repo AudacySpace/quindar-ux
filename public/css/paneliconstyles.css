@@ -1,18 +1,18 @@
 /*Panel-Icon Styles*/
 .cog-menu {
-    top: 6px;
+    top: 8px;
     right: 18px;
     position: relative;
     width: 15px;
 }
 .save-load-menu {
-    top: 6px;
+    top: 8px;
     right: 12px;
     position: relative;
     width:15px;
 }
 .trash-menu {
-   top:6px;
+   top:8px;
    right:6px;
    position: relative;
    width:15px;

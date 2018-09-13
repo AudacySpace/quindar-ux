@@ -1,17 +1,16 @@
+/* Custom CSS for Data Menu*/
 #input-search {
     background-color: #242833;
     border: #242833;
     border-radius: 0px;
     color: #FFFFFF;
 }
-
 #group-search {
     border-radius:0px;     
     background-color: #464954;
     border: #464954;
     color: #FFFFFF;
 }
-
 /*Styles should be enabled when inline search icon form is used*/
 /*.search-icon {
     position: absolute;
@@ -20,11 +19,9 @@
     margin-top: 3px;
     z-index:100;
 }*/
-
 .md-sidenav-left {
     background-color: #020613;
 }
-
 md-icon.large {
     min-width:16px !important;
     min-height:16px !important;
@@ -33,7 +30,6 @@ md-icon.large {
     margin-right: 16px !important;
     margin-top: 12px !important;
 }
-
 md-icon.small {
     min-width:12px !important;
     min-height:12px !important;
@@ -43,7 +39,6 @@ md-icon.small {
     margin-top: 14px !important;
     margin-bottom: 14px !important;
 }
-
 md-icon.smaller {
     min-width:8px !important;
     min-height:8px !important;
@@ -58,3 +53,20 @@ md-content#left {
     color: #ccc;
     background-color: #020613;
 }
+img.search-icon:focus {
+    outline:auto 0px;
+}
+.md-icon{
+    color:#ccc;
+}
+form.searchIDForm{
+    width:100%;
+}
+div.emptyDataRow{
+    padding:10px 20px;
+    overflow-wrap: break-word;
+}
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+    background-color: #242833 !important;
+}
+

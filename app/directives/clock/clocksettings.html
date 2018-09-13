@@ -1,13 +1,15 @@
 <div class="saveloaddatatable mainclk">
 	<div class="settingstop">
-        <div class="row settingsrightcol" style="display: table; height:23.33%;">
+        <div class="row settingsrightcol" style="display: table; height:33.33%;">
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
             <div class="col-sm-4" style="display: table-cell; float:none">
                 <div class="row">
                     <label for="Type">Select Type</label>
-                    <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px" title="Add a Clock or Timer"></span>
+                    <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px">
+                        <md-tooltip md-direction="top">Add a Clock or Timer</md-tooltip> 
+                    </span>
                 </div>
-                <div class="row settingsspace" style="display: table"></div>
+                <div class="row settingsspace" style="display: table;height:13px"></div>
                 <div>
                 	<ui-select tagging ng-model="selected.type" theme="bootstrap" >
         				<ui-select-match placeholder="Select Type">{{$select.selected.value}}</ui-select-match>
@@ -15,18 +17,22 @@
             				<div ng-bind="type.value | highlight: $select.search"></div>
         				</ui-select-choices>
         			</ui-select>
-                    <span ng-hide="selected.type.value == 'Clock' || selected.type.value == 'Timer'" style="font-size:12px;color:#dd2c00">Required</span>
+              <!--       <span ng-hide="selected.type.value == 'Clock' || selected.type.value == 'Timer'" style="font-size:12px;color:#dd2c00">Required</span> -->
                 </div>          
             </div>
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
             <div class="col-sm-5" style="display: table-cell; float:none">
                 <div class="row">
                     <label for="Timezone" ng-show="selected.type.value == 'Clock'">Select Timezone</label>
-                    <span class="fa fa-info-circle" ng-show="selected.type.value == 'Clock'" aria-hidden="true" style="font-size: 12px" title="Select timezone for clock"></span>
+                    <span class="fa fa-info-circle" ng-show="selected.type.value == 'Clock'" aria-hidden="true" style="font-size: 12px">
+                        <md-tooltip md-direction="top">Select timezone for clock</md-tooltip>
+                    </span>
                     <label for="Name" ng-show="selected.type.value == 'Timer'">Name</label>
-                    <span class="fa fa-info-circle" ng-show="selected.type.value == 'Timer'" aria-hidden="true" style="font-size: 12px" title="Name for the timer"></span>
+                    <span class="fa fa-info-circle" ng-show="selected.type.value == 'Timer'" aria-hidden="true" style="font-size: 12px">
+                        <md-tooltip md-direction="top">Name for the timer</md-tooltip>
+                    </span>
                 </div>
-                <div class="row settingsspace" style="display: table"></div>
+                <div class="row settingsspace" style="display: table;height:13px"></div>
                 <div ng-show="selected.type.value == 'Clock'">
                     <ui-select tagging ng-model="selected.timezone" theme="bootstrap">
                         <ui-select-match placeholder="Select Timezone">{{$select.selected.value}}</ui-select-match>
@@ -34,11 +40,11 @@
                             <div ng-bind="timezone.value | highlight: $select.search"></div>
                         </ui-select-choices>
                     </ui-select>
-                    <span ng-hide="selected.timezone" style="font-size:12px;color:#dd2c00">Required</span>
+                    <!-- <span ng-hide="selected.timezone" style="font-size:12px;color:#dd2c00">Required</span> -->
                 </div>
                 <div ng-show="selected.type.value == 'Timer'">
                     <input type="text" class="form-control save-widget-styles" id="inlineFormInput" placeholder="Enter Name" ng-model="name" maxlength="20">
-                    <span ng-hide="name" style="font-size:12px;color:#dd2c00">Required</span>
+                    <!-- <span ng-hide="name" style="font-size:12px;color:#dd2c00">Required</span> -->
                 </div>
             </div> 
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
@@ -50,9 +56,11 @@
             <div class="col-sm-5" style="display: table-cell; float:none" ng-show="selected.type.value == 'Timer'">
                 <div class="row">
                     <label for="Reference Time">Reference Time</label>
-                    <span class="fa fa-info-circle" ng-show="selected.type.value == 'Timer'" aria-hidden="true" style="font-size: 12px" title="Select timer reference time"></span>
+                    <span class="fa fa-info-circle" ng-show="selected.type.value == 'Timer'" aria-hidden="true" style="font-size: 12px">
+                        <md-tooltip md-direction="top">Select timer reference time</md-tooltip>
+                    </span>
                 </div>
-                <div class="row settingsspace" style="display: table"></div>
+                <div class="row settingsspace" style="display: table;height:13px"></div>
                 <div>
                     <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="#">
                         <div class="input-group setbtn">
@@ -65,12 +73,12 @@
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="calendar">
                         <datetimepicker data-ng-model="reference" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
                     </ul>
-                    <span ng-hide="reference" style="font-size:12px;color:#dd2c00">Required</span>
+                  <!--   <span ng-hide="reference" style="font-size:12px;color:#dd2c00">Required</span> -->
                 </div>
             </div>
             <div class="col-sm-1" style="display: table-cell; float:none"></div>
         </div>
-        <div class="row settingsrightcol" style="display: table; height:23.33%;"></div>
+        <div class="row settingsrightcol" style="display: table; height:13.33%;"></div>
 		<div class="row settingsbottom" style="display:table">
 			<div class="row">
 				<div class="col-sm-1"></div>
@@ -96,7 +104,9 @@
 <div class="container mbl-clk">
     <form>
         <label for="Type" class="mbl-label">Select Type</label>
-        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px" title="Add a Clock or Timer"></span>
+        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px">
+            <md-tooltip md-direction="top">Add a Clock or Timer</md-tooltip>
+        </span>
         <div class="mbl-input-grp">
             <ui-select tagging ng-model="selected.type" theme="bootstrap">
                 <ui-select-match placeholder="Select Type">{{$select.selected.value}}</ui-select-match>
@@ -104,12 +114,16 @@
                     <div ng-bind="type.value | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>
-            <span ng-hide="selected.type.value == 'Clock' || selected.type.value == 'Timer'" style="font-size:10px;color:#dd2c00" class="req-label">Required</span>
+        <!--     <span ng-hide="selected.type.value == 'Clock' || selected.type.value == 'Timer'" style="font-size:10px;color:#dd2c00" class="req-label">Required</span> -->
         </div>
         <label for="Timezone" ng-show="selected.type.value == 'Clock'" class="mbl-label">Select Timezone</label>
-        <span class="fa fa-info-circle" ng-show="selected.type.value == 'Clock'" aria-hidden="true" style="font-size: 10px" title="Select timezone for clock"></span>
+        <span class="fa fa-info-circle" ng-show="selected.type.value == 'Clock'" aria-hidden="true" style="font-size: 10px">
+            <md-tooltip md-direction="top">Select timezone for clock</md-tooltip>
+        </span>
         <label for="Name" ng-show="selected.type.value == 'Timer'" class="mbl-label" >Name</label>
-        <span class="fa fa-info-circle" ng-show="selected.type.value == 'Timer'" aria-hidden="true" style="font-size: 10px" title="Name for the timer"></span>
+        <span class="fa fa-info-circle" ng-show="selected.type.value == 'Timer'" aria-hidden="true" style="font-size: 10px">
+            <md-tooltip md-direction="top">Name for the timer</md-tooltip>
+        </span>
         <div ng-show="selected.type.value == 'Clock'">
             <ui-select tagging ng-model="selected.timezone" theme="bootstrap">
                 <ui-select-match placeholder="Select Timezone">{{$select.selected.value}}</ui-select-match>
@@ -117,15 +131,17 @@
                     <div ng-bind="timezone.value | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>
-            <span ng-hide="selected.timezone" style="font-size:10px;color:#dd2c00" class="req-label">Required</span>
+          <!--   <span ng-hide="selected.timezone" style="font-size:10px;color:#dd2c00" class="req-label">Required</span> -->
             <hr class="hr-double-col1-2-clock">
         </div>
         <div ng-show="selected.type.value == 'Timer'">
             <input type="text" class="form-control save-widget-styles" id="inlineFormInput" placeholder="Enter Name" ng-model="name" maxlength="20" style="padding-left:10px">
-            <span ng-hide="name" style="font-size:10px;color:#dd2c00" class="req-label">Required</span>
+            <!-- <span ng-hide="name" style="font-size:10px;color:#dd2c00" class="req-label">Required</span> -->
         </div>
         <label for="Reference Time" class="mbl-label" ng-show="selected.type.value == 'Timer'">Reference Time</label>
-        <span class="fa fa-info-circle" ng-show="selected.type.value == 'Timer'" aria-hidden="true" style="font-size: 12px" title="Select timer reference time"></span>
+        <span class="fa fa-info-circle" ng-show="selected.type.value == 'Timer'" aria-hidden="true" style="font-size: 12px">
+            <md-tooltip md-direction="top">Select timer reference time</md-tooltip>
+        </span>
         <div ng-show="selected.type.value == 'Timer'">
             <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="#">
                 <div class="input-group setbtn">
@@ -138,7 +154,7 @@
             <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="calendar">
                 <datetimepicker data-ng-model="reference" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
             </ul>
-            <span ng-hide="reference" style="font-size:10px;color:#dd2c00" class="req-label">Required</span>
+   <!--          <span ng-hide="reference" style="font-size:10px;color:#dd2c00" class="req-label">Required</span> -->
             <hr class="hr-double-col1-2-timer">
         </div>
         <hr class="hr-double-col1-2" ng-hide="selected.type.value == 'Clock' || selected.type.value == 'Timer'">
@@ -157,7 +173,9 @@
             <div class="col-sm-10 tablecellstyle10">
                 <div class="row" style="height:16px;">
                     <label for="Type" class="mbl-label">Select Type</label>
-                    <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px" title="Add a Clock or Timer"></span>
+                    <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px">
+                        <md-tooltip md-direction="top">Add a Clock or Timer</md-tooltip>
+                    </span>
                 </div>
                 <div class="mbl-input-grp">
                     <ui-select tagging ng-model="selected.type" theme="bootstrap">
@@ -166,7 +184,7 @@
                             <div ng-bind="type.value | highlight: $select.search"></div>
                         </ui-select-choices>
                     </ui-select>
-                    <span ng-hide="selected.type.value == 'Clock' || selected.type.value == 'Timer'" style="font-size:10px;color:#dd2c00" class="req-label">Required</span>
+                 <!--    <span ng-hide="selected.type.value == 'Clock' || selected.type.value == 'Timer'" style="font-size:10px;color:#dd2c00" class="req-label">Required</span> -->
                 </div>
             </div>
             <div class="col-sm-1 tablecellstyle1"></div> 
@@ -176,9 +194,13 @@
             <div class="col-sm-10 tablecellstyle10">
                 <div class="row" style="height:19px">
                     <label for="Timezone" ng-show="selected.type.value == 'Clock'" class="mbl-label">Select Timezone</label>
-                    <span class="fa fa-info-circle" ng-show="selected.type.value == 'Clock'" aria-hidden="true" style="font-size: 10px" title="Select timezone for clock"></span>
+                    <span class="fa fa-info-circle" ng-show="selected.type.value == 'Clock'" aria-hidden="true" style="font-size: 10px">
+                        <md-tooltip md-direction="top">Select timezone for clock</md-tooltip>
+                    </span>
                     <label for="Name" ng-show="selected.type.value == 'Timer'" class="mbl-label" >Name</label>
-                    <span class="fa fa-info-circle" ng-show="selected.type.value == 'Timer'" aria-hidden="true" style="font-size: 10px" title="Name for the timer"></span>
+                    <span class="fa fa-info-circle" ng-show="selected.type.value == 'Timer'" aria-hidden="true" style="font-size: 10px">
+                        <md-tooltip md-direction="top">Name for the timer</md-tooltip>
+                    </span>
                 </div>
                 <div ng-show="selected.type.value == 'Clock'">
                     <ui-select tagging ng-model="selected.timezone" theme="bootstrap">
@@ -187,11 +209,11 @@
                             <div ng-bind="timezone.value | highlight: $select.search"></div>
                         </ui-select-choices>
                     </ui-select>
-                    <span ng-hide="selected.timezone" style="font-size:10px;color:#dd2c00" class="req-label">Required</span>
+             <!--        <span ng-hide="selected.timezone" style="font-size:10px;color:#dd2c00" class="req-label">Required</span> -->
                 </div>
                 <div ng-show="selected.type.value == 'Timer'">
                     <input type="text" class="form-control save-widget-styles" id="inlineFormInput" placeholder="Enter Name" ng-model="name" maxlength="20" style="padding-left:10px">
-                    <span ng-hide="name" style="font-size:10px;color:#dd2c00" class="req-label">Required</span>
+             <!--        <span ng-hide="name" style="font-size:10px;color:#dd2c00" class="req-label">Required</span> -->
                 </div>
             </div>
             <div class="col-sm-1 tablecellstyle1"></div>
@@ -201,7 +223,9 @@
             <div class="col-sm-10 tablecellstyle10">
                 <div class="row" style="height:19px">
                     <label for="Reference Time" class="mbl-label" ng-show="selected.type.value == 'Timer'">Reference Time</label>
-                    <span class="fa fa-info-circle" ng-show="selected.type.value == 'Timer'" aria-hidden="true" style="font-size: 10px" title="Select timer reference time"></span>
+                    <span class="fa fa-info-circle" ng-show="selected.type.value == 'Timer'" aria-hidden="true" style="font-size: 10px">
+                        <md-tooltip md-direction="top">Select timer reference time</md-tooltip>
+                    </span>
                 </div>
                 <div ng-show="selected.type.value == 'Timer'">
                     <a class="dropdown-toggle" id="dropdown2" role="button" data-toggle="dropdown" data-target="#" href="#">
@@ -215,7 +239,7 @@
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="calendar">
                         <datetimepicker data-ng-model="reference" data-datetimepicker-config="{ dropdownSelector: '#dropdown2' }"/>
                     </ul>
-                    <span ng-hide="reference" style="font-size:10px;color:#dd2c00" class="req-label">Required</span>
+           <!--          <span ng-hide="reference" style="font-size:10px;color:#dd2c00" class="req-label">Required</span> -->
                 </div>
             </div>
             <div class="col-sm-1 tablecellstyle1"></div>

@@ -39,7 +39,7 @@ function gridService ($http, $sessionStorage, $window, userService) {
 		delete: false
     },
     {
-        sizeY: 2,
+        sizeY: 3,
         sizeX: 4,
         maxSizeY:3,
         name: "Data Table",
@@ -210,7 +210,7 @@ function gridService ($http, $sessionStorage, $window, userService) {
     },
     {
         sizeY: 3,
-        sizeX: 4,
+        sizeX: 8,
         name: "Timeline",
         directive: "timeLine",
         directiveSettings: "timelinesettings",

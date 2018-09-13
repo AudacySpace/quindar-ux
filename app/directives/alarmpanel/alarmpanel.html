@@ -16,36 +16,36 @@
     <!-- Status board to track the out of bound telemetry -->
     <div id="statusboard" ng-show="widget.settings.statusboard">
         <div layout="row" class="alarmpanel-row">
-            <div flex="20" id="left-header">
+            <div flex="20" class="left-header">
                 Time
             </div>
-            <div flex="40" id="left-header">
+            <div flex="40" class="left-header">
                 Channel
             </div>
-            <div flex="10" id="center-header">
+            <div flex="10" class="center-header">
                 Alert
             </div>
-            <div flex="10" id="center-header">
+            <div flex="10" class="center-header">
                 Bound
             </div>
-            <div flex="20" id="center-header">
+            <div flex="20" class="center-header">
                 Ack
             </div>
         </div>
         <div layout="row" class="alarmpaneldata-row" ng-repeat = "row in alarmpanel.statustable track by $index">
-            <div flex="20" id="left-row" ng-style="row.rowstyle">
+            <div flex="20" class="left-row" ng-style="row.rowstyle">
                 {{row.time}}
             </div>
-            <div flex="40" id="left-row" style="text-overflow:ellipsis; white-space: nowrap;" ng-style="row.rowstyle">
+            <div flex="40" class="left-row" style="text-overflow:ellipsis; white-space: nowrap;" ng-style="row.rowstyle">
                 {{row.channel}}
             </div>
-            <div flex="10" id="center-row" ng-style="row.rowstyle">
+            <div flex="10" class="center-row" ng-style="row.rowstyle">
                 {{row.alert}}
             </div>
-            <div flex="10" id="center-row" ng-style="row.rowstyle">
+            <div flex="10" class="center-row" ng-style="row.rowstyle">
                 {{row.bound}}
             </div>
-            <div flex="20" id="center-row" ng-style="row.rowstyle">
+            <div flex="20" class="center-row" ng-style="row.rowstyle">
                 {{row.ack}}
             </div>
         </div>
