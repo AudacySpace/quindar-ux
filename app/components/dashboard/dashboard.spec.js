@@ -115,7 +115,7 @@ describe('Testing dashboard component', function () {
         expect($controller.openLeftNav).toBeDefined();
     });
 
-    it('should open the left navigation menu, window width less than 1400', function(){
+    it('should open the left navigation menu, window width less than 1440', function(){
         windowMock.innerWidth = 1078;
         $controller.openLeftNav();
 
@@ -125,8 +125,8 @@ describe('Testing dashboard component', function () {
         expect(sidebarService.setOpenLogo).toHaveBeenCalledWith(true);
     });
 
-    it('should open the left navigation menu, window width 1400 or more', function(){
-        windowMock.innerWidth = 1400;
+    it('should open the left navigation menu, window width more than 1440', function(){
+        windowMock.innerWidth = 1441;
         $controller.openLeftNav();
 
         //expect the left lock to be toggled
@@ -140,7 +140,7 @@ describe('Testing dashboard component', function () {
         expect($controller.openRightNav).toBeDefined();
     });
 
-    it('should open the right navigation menu, window width less than 1400', function(){
+    it('should open the right navigation menu, window width less than 1440', function(){
         windowMock.innerWidth = 1078;
         $controller.openRightNav();
 
@@ -148,8 +148,8 @@ describe('Testing dashboard component', function () {
         expect(sideNavOpenMock).toHaveBeenCalled();
     });
 
-    it('should open the right navigation menu, window width 1400 or more', function(){
-        windowMock.innerWidth = 1400;
+    it('should open the right navigation menu, window width more than 1440', function(){
+        windowMock.innerWidth = 1441;
         $controller.openRightNav();
 
         //expect the right lock to be toggled

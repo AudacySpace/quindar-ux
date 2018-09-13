@@ -54,7 +54,7 @@
 			<div class="row">
 				<div class="col-sm-1"></div>
 				<div class="col-sm-10 btndivider">
-					<button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="saveWidget(widget)" ng-disabled="tempParameterSelection.id === ''">SAVE</button>
+					<button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="saveWidget(widget)" ng-disabled="!tempParameterSelection.id">SAVE</button>
 					<button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="closeWidget(widget)">CLOSE</button>	
 				</div>
 			</div>	
@@ -93,7 +93,7 @@
     	</div>
     	<span ng-show="vehicleMsg.length > 0" class="req-label" style="font-size:10px;color:#dd2c00"> {{vehicleMsg}} </span> 
     	<hr class="hr-double-col1-1">
-    	<button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveWidget(widget)" ng-disabled="tempParameterSelection.id === ''">SAVE</button>
+    	<button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveWidget(widget)" ng-disabled="!tempParameterSelection.id">SAVE</button>
 		<button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeWidget(widget)">CLOSE</button>	
 	</form>
 </div>
@@ -155,7 +155,7 @@
             	<div class="row">
                 	<div class="col-sm-1 tablecellstyle1"></div>
                 	<div class="col-sm-10 btndivider tablecellstyle10">
-                    	<button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="saveWidget(widget)" ng-disabled="tempParameterSelection.id === ''">SAVE</button>
+                    	<button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="saveWidget(widget)" ng-disabled="!tempParameterSelection.id">SAVE</button>
                     	<button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="closeWidget(widget)">CLOSE</button>
                 	</div>
                 	<div class="col-sm-1 tablecellstyle1"></div>
