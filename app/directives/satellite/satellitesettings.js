@@ -57,7 +57,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
 
 		}
 
-        if ($window.innerWidth >= 1400)
+        if ($window.innerWidth > 1440)
         {
             $scope.lock = dashboardService.getLock();
             $scope.lock.lockLeft = false;
@@ -303,7 +303,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
                 $scope.widget.settings.totalPositionArray = getRecentSelectedValues($scope.widget.settings.totalPositionArray, 3);
                 widget.settings.dataArray = [];
 
-                if ($window.innerWidth >= 1400){
+                if ($window.innerWidth > 1440){
                     $scope.lock = dashboardService.getLock();
                     $scope.lock.lockLeft = false;
                     dashboardService.setLeftLock($scope.lock.lockLeft);
@@ -345,7 +345,7 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
         //open the data menu
         $scope.chosenCategory = category; //which input box has been selected (position or velocity)
         sidebarService.setTempWidget($scope.widget, this); //which input box has been selected (position or velocity)
-        if ($window.innerWidth < 1400){
+        if ($window.innerWidth <= 1440){
             $mdSidenav('left').open();
         } else {
             $scope.lock = dashboardService.getLock();

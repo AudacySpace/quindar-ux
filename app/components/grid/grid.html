@@ -4,7 +4,7 @@
 			<div class="box">
 				<div class="box-header">
 					<a><img class="drag-menu" ng-src="../../public/icons/panel-icons/dragIcon.svg"/></a>
-					<h4>{{ widget.name }}</h4>
+					<h4 class="widgetName">{{ widget.name }}</h4>
 					<div class="box-header-btns pull-right">
 						<a title="Settings" ng-click="$ctrl.openSettings(widget)">			
 							<img class="cog-menu" ng-src="../../public/icons/panel-icons/cog.svg"/>
@@ -12,9 +12,9 @@
 						<!--<a title="Save or Load Widget" ng-click="$ctrl.openSaveLoadSettings(widget)">
 							<img class="save-load-menu" ng-src="../../public/icons/panel-icons/save-load.svg"/>
 						</a>-->
-						<a title="Save or Load Widget">
+				<!-- 		<a title="Save or Load Widget">
 							<img class="save-load-menu" ng-src="../../public/icons/panel-icons/save-load.svg"/>
-						</a>
+						</a> -->
 						<a title="Remove widget" ng-click="$ctrl.remove(widget)">
 							<img class="trash-menu" ng-src="../../public/icons/panel-icons/trash.svg"/>
 						</a>

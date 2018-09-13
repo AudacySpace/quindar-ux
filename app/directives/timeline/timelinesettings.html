@@ -1,14 +1,16 @@
 <div class="saveloaddatatable maintimeline">
 	<div class="settingstop">
         <form name="timeZoneEventsForm" style="display:inline">
-            <div class="row settingsrightcol" style="display: table; height:23.33%;">
+            <div class="row settingsrightcol" style="display: table; height:33.33%;">
                 <div class="col-sm-1" style="display: table-cell; float:none"></div>
                 <div class="col-sm-4" style="display: table-cell; float:none">
                     <div class="row">
                         <label for="Type">Select Type</label>
-                        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px" title="Add a Timezone or Select Timeline Events"></span>
+                        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px">
+                            <md-tooltip md-direction="top">Add a Timezone or Select Timeline Events</md-tooltip>
+                        </span>
                     </div>
-                    <div class="row settingsspace" style="display: table"></div>
+                    <div class="row settingsspace" style="display: table;height:13px"></div>
                     <div>
                     	<ui-select tagging ng-model="selected.type" theme="bootstrap" >
             				<ui-select-match placeholder="Select Type">{{$select.selected.value}}</ui-select-match>
@@ -22,11 +24,15 @@
                 <div class="col-sm-5" style="display: table-cell; float:none">
                     <div class="row">
                         <label for="Timezone" ng-show="selected.type.value == 'Timezone'">Select Timezone</label>
-                        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px" title="Select any timezone" ng-show="selected.type.value == 'Timezone'"></span>
+                        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px" ng-show="selected.type.value == 'Timezone'">
+                            <md-tooltip md-direction="top">Select any timezone</md-tooltip>
+                        </span>
                         <label for="Events" ng-show="selected.type.value == 'Events'">Select Events</label>
-                        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px" title="Select timeline events and their order of display" ng-show="selected.type.value == 'Events'"></span>
+                        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px" ng-show="selected.type.value == 'Events'">
+                            <md-tooltip md-direction="top">Select timeline events or event groups</md-tooltip>
+                        </span>
                     </div>
-                    <div class="row settingsspace" style="display: table"></div>
+                    <div class="row settingsspace" style="display: table;height:13px"></div>
                     <div ng-show="selected.type.value == 'Timezone'">
                         <ui-select tagging ng-model="selected.timezone" theme="bootstrap">
                             <ui-select-match placeholder="Select Timezone">{{$select.selected.name}}</ui-select-match>
@@ -34,12 +40,12 @@
                                 <div ng-bind="timezone.name | highlight: $select.search"></div>
                             </ui-select-choices>
                         </ui-select>
-                        <span ng-show="timezoneErrMsg.length > 0" style="font-size:12px;color:#dd2c00">{{ timezoneErrMsg }}</span>
+                        <span ng-show="timezoneErrMsg.length > 0" style="font-size:14px;color:#dd2c00">{{ timezoneErrMsg }}</span>
                     </div>
                     <div ng-show="selected.type.value == 'Events'">
                         <div ng-dropdown-multiselect=""  search-filter="customFilter"  options="selectByGroupData" selected-model="selectByGroupModel" extra-settings="selectByGroupSettings" class="multidrpdown"></div>
-                        <span ng-show="selectByGroupModel.length === 0 && selectByGroupData.length > 0" style="font-size:12px;color:#dd2c00">Select atleast one event</span>
-                        <span ng-show="selectByGroupModel.length === 0 && selectByGroupData.length === 0" style="font-size:12px;color:#dd2c00">No Events Available.Please upload timeline data file</span>
+                        <span ng-show="selectByGroupModel.length === 0 && selectByGroupData.length > 0" style="font-size:14px;color:#dd2c00">Select atleast one event</span>
+                        <span ng-show="selectByGroupModel.length === 0 && selectByGroupData.length === 0" style="font-size:14px;color:#dd2c00">No Events Available.Please upload timeline data file</span>
                     </div>
                 </div> 
                 <div class="col-sm-1" style="display: table-cell; float:none"></div>
@@ -51,8 +57,11 @@
                 <div class="col-sm-5" style="display: table-cell; float:none" ng-show="selected.type.value == 'Events'">
                     <div class="row">
                         <label for="EventOrder">Event Order</label>
+                        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px" ng-show="selected.type.value == 'Events'">
+                            <md-tooltip md-direction="top">Drag and drop to change the event group order</md-tooltip>
+                        </span>
                     </div>
-                    <div class="row settingsspace" style="display: table"></div>
+                    <div class="row settingsspace" style="display: table;height:13px"></div>
                     <div id="scrollable-container">
                         <div class="sortable-row" as-sortable="sortableOptions" data-ng-model="itemsList.items1">
                             <div ng-repeat="item in itemsList.items1" as-sortable-item>
@@ -63,7 +72,7 @@
                 </div>
                 <div class="col-sm-1" style="display: table-cell; float:none"></div>
             </div>
-            <div class="row settingsrightcol" style="display: table; height:23.33%;"></div>
+            <div class="row settingsrightcol" style="display: table; height:13.33%;"></div>
     		<div class="row settingsbottom" style="display:table">
     			<div class="row">
     				<div class="col-sm-1"></div>
@@ -89,7 +98,9 @@
 <div class="container mbl-timeline">
     <form name="timeZoneEventsForm">
         <label for="Type" class="mbl-label">Select Type</label>
-        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px" title="Add a Timezone or Select Timeline Events"></span>
+        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px">
+            <md-tooltip md-direction="top">Add a Timezone or Select Timeline Events</md-tooltip>
+        </span>
         <div class="mbl-input-grp">
             <ui-select tagging ng-model="selected.type" theme="bootstrap">
                 <ui-select-match placeholder="Select Type">{{$select.selected.value}}</ui-select-match>
@@ -99,7 +110,13 @@
             </ui-select>
         </div>
         <label for="Timezone" ng-show="selected.type.value == 'Timezone'" class="mbl-label">Select Timezone</label>
+        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px" ng-show="selected.type.value == 'Timezone'">
+            <md-tooltip md-direction="top">Select any timezone</md-tooltip>
+        </span>               
         <label for="Name" ng-show="selected.type.value == 'Events'" class="mbl-label" >Name</label>
+        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px" ng-show="selected.type.value == 'Events'">
+            <md-tooltip md-direction="top">Select timeline events or event groups</md-tooltip>
+        </span>
         <div ng-show="selected.type.value == 'Timezone'">
             <ui-select tagging ng-model="selected.timezone" theme="bootstrap">
                 <ui-select-match placeholder="Select Timezone">{{$select.selected.name}}</ui-select-match>
@@ -112,10 +129,13 @@
         </div>
         <div ng-show="selected.type.value == 'Events'">
             <div ng-dropdown-multiselect="" options="selectByGroupData" selected-model="selectByGroupModel" extra-settings="selectByGroupSettings" class="multidrpdown"></div>
-            <span ng-show="selectByGroupModel.length === 0 && selectByGroupData.length > 0" style="font-size:12px;color:#dd2c00" class="req-label">Select atleast one event</span>
-            <span ng-show="selectByGroupModel.length === 0 && selectByGroupData.length === 0" style="font-size:12px;color:#dd2c00" class="req-label">No Events Available.Please upload timeline data file</span>
+            <span ng-show="selectByGroupModel.length === 0 && selectByGroupData.length > 0" style="font-size:10px;color:#dd2c00" class="req-label">Select atleast one event</span>
+            <span ng-show="selectByGroupModel.length === 0 && selectByGroupData.length === 0" style="font-size:10px;color:#dd2c00" class="req-label">No Events Available.Please upload timeline data file</span>
         </div>
         <label for="Event Order" class="mbl-label" ng-show="selected.type.value == 'Events'">Event Order</label>
+         <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px" ng-show="selected.type.value == 'Events'">
+             <md-tooltip md-direction="top">Drag and drop to change the event group order</md-tooltip>
+         </span>
         <div ng-show="selected.type.value == 'Events'">
             <div id="scrollable-container">
                 <div class="sortable-row" as-sortable="sortableOptions" data-ng-model="itemsList.items1">
@@ -143,6 +163,9 @@
                 <div class="col-sm-10 tablecellstyle10">
                     <div class="row" style="height:16px;">
                         <label for="Type" class="mbl-label">Select Type</label>
+                        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px">
+                            <md-tooltip md-direction="top">Add a Timezone or Select Timeline Events</md-tooltip>
+                        </span>
                     </div>
                     <div class="mbl-input-grp">
                         <ui-select tagging ng-model="selected.type" theme="bootstrap">
@@ -160,7 +183,13 @@
                 <div class="col-sm-10 tablecellstyle10">
                     <div class="row" style="height:19px">
                         <label for="Timezone" ng-show="selected.type.value == 'Timezone'" class="mbl-label">Select Timezone</label>
+                        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px" ng-show="selected.type.value == 'Timezone'">
+                            <md-tooltip md-direction="top">Select any timezone</md-tooltip>
+                        </span> 
                         <label for="Name" ng-show="selected.type.value == 'Events'" class="mbl-label" >Name</label>
+                        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px"  ng-show="selected.type.value == 'Events'">
+                            <md-tooltip md-direction="top">Select timeline events or event groups</md-tooltip>
+                        </span>
                     </div>
                     <div ng-show="selected.type.value == 'Timezone'">
                         <ui-select tagging ng-model="selected.timezone" theme="bootstrap">
@@ -184,6 +213,9 @@
                 <div class="col-sm-10 tablecellstyle10">
                     <div class="row" style="height:19px">
                         <label for="Events" class="mbl-label" ng-show="selected.type.value == 'Events'">Event Order</label>
+                        <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px" ng-show="selected.type.value == 'Events'">
+                            <md-tooltip md-direction="top">Drag and drop to change the event group order</md-tooltip>
+                        </span>
                     </div>
                     <div ng-show="selected.type.value == 'Events'">
                         <div id="scrollable-container">

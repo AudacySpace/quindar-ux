@@ -134,8 +134,8 @@ describe('Testing satellite settings controller', function () {
         expect(sidebarService.setOpenLogo).toHaveBeenCalledWith(false);
     });
 
-    it('should open the left sidebar/Data Menu when function is called(window width > 1400)', function() {
-        windowMock.innerWidth = 1440;
+    it('should open the left sidebar/Data Menu when function is called(window width > 1440)', function() {
+        windowMock.innerWidth = 1441;
 
         dashboardService.getLock.and.callFake(function(){
             return { lockLeft : false, lockRight : false }
@@ -515,7 +515,7 @@ describe('Testing satellite settings controller', function () {
     });
 
     it('should properly give values to arrays when close button is clicked on settings menu given that data has already been saved once before', function() {
-        windowMock.innerWidth = 1440;
+        windowMock.innerWidth = 1441;
         scope.widget.settings.attitudeData = [
             {vehicle:'A0',id:'q1',key:'A0.GNC.attitude.q1',category:'attitude'},
             {vehicle:'A0',id:'q2',key:'A0.GNC.attitude.q2',category:'attitude'},

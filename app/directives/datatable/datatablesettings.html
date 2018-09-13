@@ -5,7 +5,9 @@
             <div class="col-sm-4" style="display: table-cell; float:none">
                 <div class="row">
                     <label for="CategoryDisplay">Select Table Columns</label>
-                    <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px" title="Required atleast one column"></span>
+                    <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px">
+                        <md-tooltip md-direction="top">Required atleast one column</md-tooltip>  
+                    </span>
                 </div>
                 <div class="row settingsspace" style="display: table"></div>
                 <div>
@@ -13,19 +15,46 @@
                         <button type="button" class="btn dropdown-toggle load-widget-styles" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="pull-left">Columns</span> <span class="caret caretstyles"></span>
                         </button>
-                        <ul class="dropdown-menu categorydrpdown">
-                            <li class="checkbox cbox"><input style="margin-top: -2px" type="checkbox" value="" name="id" ng-model="checkedValues.checkedId">Id</li>
-                            <li class="checkbox cbox"><input style="margin-top: -2px" type="checkbox" value="" name="alarm_low" ng-model="checkedValues.checkedAlow">Alarm Low</li>
-                            <li class="checkbox cbox"><input style="margin-top: -2px" type="checkbox" value="" name="warn_low" ng-model="checkedValues.checkedWlow">Warn Low</li>
-                            <li class="checkbox cbox"><input style="margin-top: -2px" type="checkbox" value="" name="value" ng-model="checkedValues.checkedValue">Value</li>
-                            <li class="checkbox cbox"><input style="margin-top: -2px" type="checkbox" value="" name="warn_high" ng-model="checkedValues.checkedWhigh">Warn High</li>
-                            <li class="checkbox cbox"><input style="margin-top: -2px" type="checkbox" value="" name="alarm_high" ng-model="checkedValues.checkedAhigh">Alarm High</li>
-                            <li class="checkbox cbox"><input style="margin-top: -2px" type="checkbox" value="" name="units" ng-model="checkedValues.checkedUnits">Units</li>
-                            <li class="checkbox cbox"><input style="margin-top: -2px" type="checkbox" value="" name="notes" ng-model="checkedValues.checkedNotes">Notes</li>
-                            <li class="checkbox cbox"><input style="margin-top: -2px" type="checkbox" value="" name="notes" ng-model="checkedValues.checkedChannel">Channel</li>
+                        <ul class="dropdown-menu categorydrpdown" style="padding-top:0px;padding-bottom:0px">
+                            <li class="checkbox cbox" style="font-size:14px">
+                                <input style="margin-top: 0px;height:15px;width:15px" type="checkbox" value="" name="id" ng-model="checkedValues.checkedId" class="lineplotchkbox">
+                                <label style="padding-left:0px" class="vehicleRows">Id</label>
+                            </li>
+                            <li class="checkbox cbox" style="font-size:14px">
+                                <input style="margin-top: 0px;height:15px;width:15px" type="checkbox" value="" name="alarm_low" ng-model="checkedValues.checkedAlow" class="lineplotchkbox">
+                                <label style="padding-left:0px" class="vehicleRows">Alarm Low</label>
+                            </li>
+                            <li class="checkbox cbox" style="font-size:14px">
+                                <input style="margin-top: 0px;height:15px;width:15px" type="checkbox" value="" name="warn_low" ng-model="checkedValues.checkedWlow" class="lineplotchkbox">
+                                <label style="padding-left:0px" class="vehicleRows">Warn Low</label>
+                            </li>
+                            <li class="checkbox cbox" style="font-size:14px">
+                                <input style="margin-top: 0px;height:15px;width:15px" type="checkbox" value="" name="value" ng-model="checkedValues.checkedValue" class="lineplotchkbox">
+                                <label style="padding-left:0px" class="vehicleRows">Value</label>
+                            </li>
+                            <li class="checkbox cbox" style="font-size:14px">
+                                <input style="margin-top: 0px;height:15px;width:15px" type="checkbox" value="" name="warn_high" ng-model="checkedValues.checkedWhigh" class="lineplotchkbox">
+                                <label style="padding-left:0px" class="vehicleRows">Warn High</label>
+                            </li>
+                            <li class="checkbox cbox" style="font-size:14px">
+                                <input style="margin-top: 0px;height:15px;width:15px" type="checkbox" value="" name="alarm_high" ng-model="checkedValues.checkedAhigh" class="lineplotchkbox">
+                                <label style="padding-left:0px" class="vehicleRows">Alarm High</label>
+                            </li>
+                            <li class="checkbox cbox" style="font-size:14px">
+                                <input style="margin-top: 0px;height:15px;width:15px" type="checkbox" value="" name="units" ng-model="checkedValues.checkedUnits" class="lineplotchkbox">
+                                <label style="padding-left:0px" class="vehicleRows">Units</label>
+                            </li>
+                            <li class="checkbox cbox" style="font-size:14px">
+                                <input style="margin-top: 0px;height:15px;width:15px" type="checkbox" value="" name="notes" ng-model="checkedValues.checkedNotes" class="lineplotchkbox">
+                                <label style="padding-left:0px" class="vehicleRows">Notes</label>
+                            </li>
+                            <li class="checkbox cbox" style="font-size:14px">
+                                <input style="margin-top: 0px;height:15px;width:15px" type="checkbox" value="" name="channel" ng-model="checkedValues.checkedChannel" class="lineplotchkbox">
+                                <label style="padding-left:0px" class="vehicleRows">Channel</label>
+                            </li>
                         </ul>
                     </div>
-                    <span ng-show="columnSelectionErrMsg.length > 0" style="font-size:12px;color:#dd2c00">{{ columnSelectionErrMsg }}</span>
+                    <span ng-show="columnSelectionErrMsg.length > 0" style="font-size:14px;color:#dd2c00">{{ columnSelectionErrMsg }}</span>
                 </div>          
             </div>
             <div class="col-sm-2" style="display: table-cell; float:none"></div>
@@ -54,7 +83,9 @@
 <div class="container mbl-dt">
     <form>
         <label for="CategoryDisplay" class="mbl-label">Select Table Columns</label>
-         <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px"  title="Required atleast one column"></span>
+         <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px">
+            <md-tooltip md-direction="top">Required atleast one column</md-tooltip> 
+         </span>
         <div class="dropdown mbl-label mbl-input-grp mbl-inputitems">
             <button type="button" class="btn dropdown-toggle load-widget-styles mbl-inneritems mbl-inneritems mbl-input-grp mbl-inputitems mbl-label" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="pull-left drpdwn-name">Columns</span> <span class="caret  pull-right drpdwn-caret"></span>
@@ -87,7 +118,9 @@
             <div class="col-sm-10 tablecellstyle10">
                 <div class="row" style="height:19px;">
                     <label for="CategoryDisplay" class="mbl-label">Select Table Columns</label>
-                     <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px"  title="Required atleast one column"></span>
+                     <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px">
+                        <md-tooltip md-direction="top">Required atleast one column</md-tooltip> 
+                     </span>
                 </div>
                 <div class="dropdown mbl-label mbl-input-grp mbl-inputitems">
                     <button type="button" class="btn dropdown-toggle load-widget-styles mbl-inneritems mbl-inneritems mbl-input-grp mbl-inputitems mbl-label" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

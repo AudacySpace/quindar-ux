@@ -1,63 +1,63 @@
-<div layout="row" id="clock-row">
-	<div flex="30" class="md-title" id="left-header">
+<div layout="row" class="clock-row">
+	<div flex="30" class="left-header">
 		Name
 	</div>
-  	<div flex="5" class="md-title" id="center-header">
+  	<div flex="5" class="center-header">
 		<md-icon class="md-icon delta" md-svg-icon="/icons/triangle.svg"></md-icon>    
   	</div>
-  	<div flex="10" class="md-title" id="center-header">
+  	<div flex="10" class="center-header">
     	D
   	</div>
-  	<div flex="5" class="md-title" id="center-header">
+  	<div flex="5" class="center-header">
     	.
   	</div>
-  	<div flex="10" class="md-title" id="center-header">
+  	<div flex="10" class="center-header">
     	H
   	</div>
-  	<div flex="5" class="md-title" id="center-header">
+  	<div flex="5" class="center-header">
     	:
   	</div>
-  	<div flex="10" class="md-title" id="center-header">
+  	<div flex="10" class="center-header">
     	M
   	</div>
-  	<div flex="5" class="md-title" id="center-header">
+  	<div flex="5" class="center-header">
     	:
   	</div>
-  	<div flex="10" class="md-title" id="center-header">
+  	<div flex="10" class="center-header">
   		S
   	</div>
-    <div flex class="md-title" id="center-header">
+    <div flex class="center-header">
     </div>
 </div>
-<div layout="row" id="clock-row" ng-repeat="clock in clocks">
-  	<div flex="30" class="md-title" id="left-row">
+<div layout="row" class="clock-row" ng-repeat="clock in clocks">
+  	<div flex="30" class="left-row" >
     	{{clock.name}}
   	</div>
-  	<div flex="5" class="md-title" id="center-row">
+  	<div flex="5" class="center-row" >
     	{{clock.delta}}
   	</div>
-  	<div flex="10" class="md-title" id="center-row" ng-style="clock.style">
+  	<div flex="10" class="center-row" ng-style="clock.style">
     	{{clock.time.days}}
   	</div>
-  	<div flex="5" class="md-title" id="center-row">
+  	<div flex="5" class="center-row" >
     	.
   	</div>
-  	<div flex="10" class="md-title" id="center-row" ng-style="clock.style">
+  	<div flex="10" class="center-row" ng-style="clock.style">
     	{{clock.time.hours}}
   	</div>
-  	<div flex="5" class="md-title" id="center-row">
+  	<div flex="5" class="center-row" >
     	:
   	</div>
-  	<div flex="10" class="md-title" id="center-row" ng-style="clock.style">
+  	<div flex="10" class="center-row" ng-style="clock.style">
     	{{clock.time.minutes}}
   	</div>
-  	<div flex="5" class="md-title" id="center-row">
+  	<div flex="5" class="center-row">
     	:
   	</div>
-  	<div flex="10" class="md-title" id="center-row" ng-style="clock.style">
+  	<div flex="10" class="center-row" ng-style="clock.style">
   		{{clock.time.seconds}}
   	</div>
-    <div flex class="md-title" id="center-row">
+    <div flex class="center-row">
         <md-icon class="md-icon trash" md-svg-icon="/icons/trash_black.svg" ng-click="remove($index)"></md-icon>
     </div>
 </div>

@@ -48,9 +48,10 @@ body {
 /*  margin: 0 0 0 40px;*/
     position: relative;
     top: 0;
-/*  width: 400px;*/
+/*    width: 440px;*/
     z-index: 100;
     padding-top: 160px;
+    max-width:600px;
 }
 #login-page .login-with-google button {
     font-family: "Open Sans", sans-serif;
@@ -131,4 +132,8 @@ body#login-page .btn {
     padding: 9px 12px;
     background: #07d1ea;
     border: 0 none;
+}
+
+a.siginLink {
+    width:100%;
 }

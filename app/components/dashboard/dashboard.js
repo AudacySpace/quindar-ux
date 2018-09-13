@@ -27,7 +27,7 @@ angular.module('app')
   		vm.interval = $interval(vm.updateClock, 500);
 
 	    vm.openLeftNav = function(){
-	    	if ($window.innerWidth < 1400){
+	    	if ($window.innerWidth <= 1440){
 	    		$mdSidenav('left').open();
 	    	} else {
 	    		vm.locks.lockLeft = !vm.locks.lockLeft;
@@ -56,7 +56,7 @@ angular.module('app')
         };
 
 	    vm.openRightNav = function(){
-	    	if ($window.innerWidth < 1400){
+	    	if ($window.innerWidth <= 1440){
 	    		$mdSidenav('right').open();
 	    	} else {
 	    		vm.locks.lockRight = !vm.locks.lockRight;

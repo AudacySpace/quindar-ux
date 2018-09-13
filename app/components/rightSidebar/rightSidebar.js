@@ -7,6 +7,7 @@ app
         vm.email = userService.getUserEmail();
         var dashboard = gridService.getDashboard();
         getUserRole();
+        vm.layouts = [];
 
         vm.addWidget = function() {
             gridService.addWidget();

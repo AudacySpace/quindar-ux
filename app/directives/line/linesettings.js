@@ -32,7 +32,7 @@ app.controller('LineSettingsCtrl',
         $scope.getTelemetrydata = function(){
             //open the data menu
             sidebarService.setTempWidget($scope.widget, this); //pass widget and controller functions to sidebarService
-            if ($window.innerWidth < 1400){
+            if ($window.innerWidth <= 1440){
                 $mdSidenav('left').open();
             } else {
                 $scope.lock = dashboardService.getLock();
@@ -110,7 +110,7 @@ app.controller('LineSettingsCtrl',
                                 }
                             }
 
-                            if ($window.innerWidth >= 1400)
+                            if ($window.innerWidth > 1440)
                             {
                                 $scope.lock = dashboardService.getLock();
                                 $scope.lock.lockLeft = false;
@@ -155,7 +155,7 @@ app.controller('LineSettingsCtrl',
             $scope.settings = angular.copy($scope.previousSettings);
             $scope.widget.settings.dataArray = [angular.copy($scope.settings.data)];
             $scope.tempParameterSelection = angular.copy($scope.settings.data);
-            if ($window.innerWidth >= 1400)
+            if ($window.innerWidth > 1440)
             {
                 $scope.lock = dashboardService.getLock();
                 $scope.lock.lockLeft = false;

@@ -31,7 +31,7 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
                     widget.settings.active = false;
                     widget.saveLoad = false;
                     widget.delete = false;
-                    if ($window.innerWidth >= 1400) //close left sidebar
+                    if ($window.innerWidth > 1440) //close left sidebar
                     {
                         $scope.lock = dashboardService.getLock();
                         $scope.lock.lockLeft = false;
@@ -71,7 +71,7 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
         $scope.data = angular.copy($scope.widget.settings.data);
         $scope.widget.settings.dataArray = [$scope.data];
         $scope.tempParameterSelection = angular.copy($scope.widget.settings.data);
-        if ($window.innerWidth >= 1400) //close left sidebar
+        if ($window.innerWidth > 1440) //close left sidebar
         {
             $scope.lock = dashboardService.getLock();
             $scope.lock.lockLeft = false;
@@ -84,7 +84,7 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
     $scope.getTelemetrydata = function(){
         sidebarService.setTempWidget($scope.widget, this); //pass widget and controller functions to sidebarService
 
-        if ($window.innerWidth < 1400){
+        if ($window.innerWidth <= 1440){
             $mdSidenav('left').open();
         } else {
             $scope.lock = dashboardService.getLock();
@@ -113,7 +113,7 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
     //     var vehicleInfo = sidebarService.getVehicleInfo();
     //     if(vehicleInfo.vehicle !== "" && vehicleInfo.id !== "") {
     //         $scope.data = angular.copy(vehicleInfo);
-    //         if ($window.innerWidth >= 1400){
+    //         if ($window.innerWidth > 1440){
     //             $scope.lock.lockLeft = !$scope.lock.lockLeft;
     //             dashboardService.setLeftLock($scope.lock.lockLeft);
     //         }

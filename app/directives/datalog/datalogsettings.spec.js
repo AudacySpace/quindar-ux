@@ -174,8 +174,8 @@ describe('Testing datalog settings controller', function () {
         expect(sidebarService.setOpenLogo).toHaveBeenCalledWith(false);
     });
 
-    it('should open the left sidebar/Data Menu when function is called(window width > 1400)', function() {
-        windowMock.innerWidth = 1440;
+    it('should open the left sidebar/Data Menu when function is called(window width > 1440)', function() {
+        windowMock.innerWidth = 1441;
 
         dashboardService.getLock.and.callFake(function(){
             return { lockLeft : false, lockRight : false }
@@ -250,8 +250,8 @@ describe('Testing datalog settings controller', function () {
         expect(scope.widget.settings.data).toEqual(vehicleInfo);
     });
 
-    it('should close the left menu after storing data into variable(window width>1400)', function() {
-        windowMock.innerWidth = 1440;
+    it('should close the left menu after storing data into variable(window width>1440)', function() {
+        windowMock.innerWidth = 1441;
         scope.lock = { lockLeft : true, lockRight : false }
         var vehicleInfo = { 
             id: 'vx',

@@ -5,12 +5,18 @@
     padding: 0px;
     margin: 0px;
 }
+.datalog-rows {
+    margin-top: 1px;
+    margin-left: 1px;
+    margin-bottom: 1px;
+    margin-right: 1px
+}
 
 .dlog-center-row,.dlog-center-header {
 	margin-right: 2px;
 }
 .dlog-row {
-    background-color: #F2F3F4;
+    background-color: #F1F1F5;
     text-align: center;
     font-weight: 400;
     margin-top:1px;
@@ -18,11 +24,10 @@
 }
 
 .dlog-header {
-    background-color: #ccc;
+    background-color:  #CFCFD5;
     text-align: center;
     font-size:14px;
     font-weight:bold;
-    background-color: #b5b5b5;
     padding:1px;
     line-height:2em;
     text-transform: uppercase;

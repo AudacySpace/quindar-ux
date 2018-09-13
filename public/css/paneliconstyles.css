@@ -1,26 +1,32 @@
 /*Panel-Icon Styles*/
-.cog-menu {
-    top: 6px;
-    right: 18px;
-    position: relative;
-    width: 15px;
-}
-.save-load-menu {
-    top: 6px;
+/*.cog-menu {
+    top: 8px;
     right: 12px;
     position: relative;
     width:15px;
+}*/
+.cog-menu {
+    top: 6px;
+    right: 8px;
+    position: relative;
+    width: 14px;
 }
+/*.save-load-menu {
+    top: 8px;
+    right: 12px;
+    position: relative;
+    width:15px;
+}*/
 .trash-menu {
    top:6px;
    right:6px;
    position: relative;
-   width:15px;
+   width:14px;
 }
 
 .drag-menu {
    top:-1px;
    left:0px;
    position: relative;
-   width:15px;
+   width:14px;
 }

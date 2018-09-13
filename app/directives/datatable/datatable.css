@@ -41,14 +41,15 @@ a.arrowbtn:visited{
     font-size:14px;
 }
 .table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th{
-    border: 1px solid #999;
+/*    border: 1px solid #999;*/
     vertical-align:middle;
 }
 .datatableheader{
-    border: 1px solid #999;
+/*    border: 1px solid #999;*/
 }
 .datatableheader{
-    background-color: #bfbfbf;
+/*    background-color: #bfbfbf;*/
+    background-color: #CFCFD5;
 }
 .toedit {
     opacity:0;
@@ -100,10 +101,10 @@ span.header-span{
     color:#ffffff;
 }
 .table-bordered>tbody>tr>td{
-    border: 1px solid #ccc;
+/*    border: 1px solid #ccc;*/
     padding:2px 2px;
     white-space: nowrap;
-    font-size:13px;
+    font-size:14px;
 }
 .table.table-bordered{
     margin-bottom:0px;
