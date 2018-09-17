@@ -47,5 +47,8 @@
     <md-list ng-show="$ctrl.dataTree.length === 0">
         <div class="emptyDataRow">{{ $ctrl.noresultsmsg }}</div>
     </md-list>
+    <div layout="row" layout-sm="column" layout-align="space-around" ng-hide="$ctrl.dataTree.length > 0 || $ctrl.dataloading === false" style="margin-top:50%">
+    <md-progress-circular md-mode="indeterminate" md-theme="blueTheme"></md-progress-circular>
+    </div>
 </md-content>
 <!--End of Left Side Nav -->
