@@ -30,7 +30,7 @@ describe('Testing right sidebar component', function () {
             dashboardService = jasmine.createSpyObj('dashboardService', 
                 ['getLock', 'getCurrentMission', 'setRightLock']);
             gridService = jasmine.createSpyObj('gridService', 
-                ['addWidget', 'addWidgets', 'clear', 'getDashboard', 'save', 'load', 'showLayout', 'widgetDefinitions']);
+                ['addWidget', 'addWidgets', 'clear', 'getDashboard', 'save', 'load', 'showLayout', 'widgetDefinitions','setGridLoader']);
             userService = jasmine.createSpyObj('userService', ['userRole', 'getUserName', 'getUserEmail']);
             
             userService.getUserEmail.and.callFake(function() {
