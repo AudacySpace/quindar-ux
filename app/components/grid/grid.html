@@ -1,4 +1,5 @@
-<div gridster="$ctrl.gridsterOptions">
+<md-progress-linear md-mode="indeterminate" ng-show="$ctrl.loadStatus.value === true || $ctrl.loadLayoutloaders.gridLoader === true" md-theme="blueTheme" style="position:fixed;top:0%;left:0%;z-index: 2000;transition: opacity 250ms linear;"></md-progress-linear>
+<div gridster="$ctrl.gridsterOptions" ng-show="$ctrl.loadStatus.value === false && $ctrl.loadLayoutloaders.gridLoader === false">
 	<ul>
 		<li gridster-item="widget" ng-repeat="widget in $ctrl.dashboard.current.widgets">
 			<div class="box">
@@ -30,3 +31,7 @@
 		</li>
 	</ul>
 </div>
+
+
+
+

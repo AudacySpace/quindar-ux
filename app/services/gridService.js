@@ -11,6 +11,10 @@ function gridService ($http, $sessionStorage, $window, userService) {
 
     var email = userService.getUserEmail();
 
+    var loaders = {
+        gridLoader: false
+    };
+
     checkDefaultDashboard();
 
     var widgetDefinitions = [
@@ -290,7 +294,7 @@ function gridService ($http, $sessionStorage, $window, userService) {
                     }]
                 }
             }
-            $sessionStorage.dashboard = {"current" : $sessionStorage.dashboards['Home']};
+            $sessionStorage.dashboard = {"current" : angular.copy($sessionStorage.dashboards['Home'])};
         } 
         $window.document.title = "Quindar - " + $sessionStorage.dashboard.current.name;
     }
@@ -354,9 +358,9 @@ function gridService ($http, $sessionStorage, $window, userService) {
     function showLayout(layouts, layout) {
         for(var i=0; i<layouts.length; i++){
             var name = layouts[i].name;
-            $sessionStorage.dashboards[name] = layouts[i];
+            $sessionStorage.dashboards[name] = angular.copy(layouts[i]);
         }
-        $sessionStorage.dashboard["current"] = $sessionStorage.dashboards[layout.name];
+        $sessionStorage.dashboard["current"] = angular.copy($sessionStorage.dashboards[layout.name]);
         selectedDashboardId = layout.name;
     }
 
@@ -404,6 +408,14 @@ function gridService ($http, $sessionStorage, $window, userService) {
         });
     }
 
+    function setGridLoader(loadStatus){
+        loaders.gridLoader = loadStatus;
+    }
+
+    function getGridLoader(){
+        return loaders;
+    }
+
 	return {
         gridsterOptions : gridsterOptions,
         clear : clear,
@@ -422,7 +434,9 @@ function gridService ($http, $sessionStorage, $window, userService) {
         showLayout : showLayout,
         getMissionImage : getMissionImage,
         loadMaps : loadMaps,
-        loadTimelineEvents : loadTimelineEvents
+        loadTimelineEvents : loadTimelineEvents,
+        setGridLoader : setGridLoader,
+        getGridLoader : getGridLoader
 	}
 }
 

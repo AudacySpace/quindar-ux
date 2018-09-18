@@ -46,6 +46,14 @@ md-content.mainContentLayout{
     background-color: white;
 }
 
+.navbar {
+    margin-bottom:15px !important;
+}
+
+nav#statusBar {
+    overflow: auto !important;
+}
+
 img#main-img {
     height:95%;
     padding-top:4px;

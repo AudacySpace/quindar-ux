@@ -162,7 +162,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
         $scope.arrow.style.color = "#07D1EA";
         $scope.currentIndex = $index;
         $scope.askedForGroup = askedForGroup;
-        if ($window.innerWidth < 1400){
+        if ($window.innerWidth <= 1440){
             $mdSidenav('left').open();
         } else {
             $scope.lock = dashboardService.getLock();
@@ -215,7 +215,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                     $scope.widget.settings.data[$scope.currentIndex].undone = false;
                         
                     $scope.arrow.style.color = "#b3b3b3";
-                    if ($window.innerWidth >= 1400)
+                    if ($window.innerWidth > 1440)
                     {
                         $scope.lock = dashboardService.getLock();
                         $scope.lock.lockLeft = false;
@@ -256,7 +256,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                     }
 
                     $scope.arrow.style.color = "#b3b3b3";
-                    if ($window.innerWidth >= 1400){
+                    if ($window.innerWidth > 1440){
                         $scope.lock = dashboardService.getLock();
                         $scope.lock.lockLeft = false;
                         dashboardService.setLeftLock($scope.lock.lockLeft);
