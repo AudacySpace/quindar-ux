@@ -103,7 +103,7 @@ describe('Testing data table controller', function () {
         expect(scope.getTelemetrydata).toBeDefined();
     });
 
-    it('should open the left sidebar/Data Menu when function is called(window width < 1400)', function() {
+    it('should open the left sidebar/Data Menu when function is called(window width <= 1440)', function() {
         scope.getTelemetrydata(ev);
 
         //expect the mocked mdSidenav open function to be called
@@ -113,8 +113,8 @@ describe('Testing data table controller', function () {
         expect(sidebarService.setOpenLogo).toHaveBeenCalledWith(false);
     });
 
-    it('should open the left sidebar/Data Menu when function is called(window width > 1400)', function() {
-        windowMock.innerWidth = 1440;
+    it('should open the left sidebar/Data Menu when function is called(window width > 1440)', function() {
+        windowMock.innerWidth = 1441;
         dashboardService.getLock.and.callFake(function(){
             return { lockLeft : false, lockRight : false }
         });
@@ -214,8 +214,8 @@ describe('Testing data table controller', function () {
         expect(arrow.style.color).toEqual('#b3b3b3');
     });
 
-    it('should close the left menu after storing data into variable(window width>1400)', function() {
-        windowMock.innerWidth = 1440;
+    it('should close the left menu after storing data into variable(window width>1440)', function() {
+        windowMock.innerWidth = 1441;
         dashboardService.getLock.and.callFake(function(){
             return { lockLeft : true, lockRight : false }
         });
@@ -364,8 +364,8 @@ describe('Testing data table controller', function () {
         expect(arrow.style.color).toEqual('#b3b3b3');
     });
 
-    it('should close the left menu after storing keys of the group into settings variable(window width>1400)', function() {
-        windowMock.innerWidth = 1440;
+    it('should close the left menu after storing keys of the group into settings variable(window width>1440)', function() {
+        windowMock.innerWidth = 1441;
         dashboardService.getLock.and.callFake(function(){
             return { lockLeft : true, lockRight : false }
         });

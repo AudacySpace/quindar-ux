@@ -345,6 +345,10 @@ app
         return loadStatus;
     }
 
+    function setLoadStatus(status){
+        loadStatus.value = status;
+    }
+
 	return {
         locks : locks,
         telemetry : telemetry,
@@ -362,6 +366,7 @@ app
         getCurrentMission : getCurrentMission,
         getConfig : getConfig,
         getTelemetryValues : getTelemetryValues,
-        getLoadStatus : getLoadStatus
+        getLoadStatus : getLoadStatus,
+        setLoadStatus : setLoadStatus
 	}
 }]);

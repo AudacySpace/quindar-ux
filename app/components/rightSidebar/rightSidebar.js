@@ -60,6 +60,7 @@ app
 
         vm.showLayout = function(layout){
             gridService.setGridLoader(true);
+            dashboardService.setLoadStatus(false);
             gridService.showLayout(vm.layouts, layout);
             $window.document.title = "Quindar - " + layout.name;
 			closeSidebar();
