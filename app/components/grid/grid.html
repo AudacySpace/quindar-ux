@@ -1,3 +1,6 @@
+<div id="page-loading" layout="row" layout-sm="column" layout-align="space-around" ng-show="$ctrl.loadStatus.value === true || $ctrl.loadLayoutloaders.gridLoader === true" style="position:fixed;top:0%;left:0%;z-index: 2000;width: 100%">
+ 	<md-progress-linear md-mode="indeterminate" md-theme="blueTheme" style="width: 100%"></md-progress-linear>
+</div>
 <div gridster="$ctrl.gridsterOptions">
 	<ul>
 		<li gridster-item="widget" ng-repeat="widget in $ctrl.dashboard.current.widgets">
@@ -30,9 +33,9 @@
 		</li>
 	</ul>
 </div>
-<div id="page-loading" layout="row" layout-sm="column" layout-align="space-around" ng-show="$ctrl.loadStatus.value === true || $ctrl.loadLayoutloaders.gridLoader === true" style="position:fixed;top:50%;left:50%;z-index: 2000">
+<!-- <div id="page-loading" layout="row" layout-sm="column" layout-align="space-around" ng-show="$ctrl.loadStatus.value === true || $ctrl.loadLayoutloaders.gridLoader === true" style="position:fixed;top:50%;left:50%;z-index: 2000">
  	<md-progress-circular md-mode="indeterminate" md-theme="blueTheme" md-diameter="70"></md-progress-circular>
-</div>
+</div> -->
 
 
 
