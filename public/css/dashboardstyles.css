@@ -50,10 +50,10 @@ md-content.mainContentLayout{
     margin-bottom:15px !important;
 }
 
-nav#statusBar {
+/*nav#statusBar {
     overflow: auto !important;
 }
-
+*/
 img#main-img {
     height:95%;
     padding-top:4px;
