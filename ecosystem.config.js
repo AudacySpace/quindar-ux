@@ -1,6 +1,6 @@
 module.exports = {
     apps : [{
-        name : 'Quindar',
+        name : 'quindar',
         script : './index.js',
         watch : true,
         log_date_format : "YYYY-MM-DD HH:mm:ss Z",
