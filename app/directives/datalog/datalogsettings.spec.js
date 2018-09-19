@@ -165,7 +165,7 @@ describe('Testing datalog settings controller', function () {
         expect(scope.readValue()).toEqual('vx');
     });
 
-    it('should open the left sidebar/Data Menu when function is called(window width < 1400)', function() {
+    it('should open the left sidebar/Data Menu when function is called(window width <= 1440)', function() {
         scope.getTelemetrydata();
 
         //expect the mocked mdSidenav open function to be called

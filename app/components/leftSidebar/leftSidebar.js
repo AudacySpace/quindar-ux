@@ -80,6 +80,7 @@ app
                     if(vm.telemetry.hasOwnProperty('data')){
                         //create data tree from incoming telemetry
                         var tree = getDataTree(vm.telemetry.data);
+                        vm.dataloading = false;
                         if(!angular.equals(tree, vm.previousTree)){
                             vm.previousTree = angular.copy(tree);
                             vm.dataTree = angular.copy(tree);
@@ -90,18 +91,20 @@ app
                             vm.noresultsmsg = "";
                             vm.previousTree = angular.copy(tree);
                             vm.dataTree = angular.copy(tree);
+                            vm.dataloading = false;
                         }
                       
                     } else {
                         vm.dataTree = [];
                         vm.previousTree = angular.copy(vm.dataTree);
                         vm.noresultsmsg = "No Data available";
+                        vm.dataloading = false;
 
                         if(vm.searchID.length === 0 && vm.noresultsmsg.includes("No results found")){
                             vm.noresultsmsg = "";
                             vm.dataTree = [];
                             vm.previousTree = angular.copy(vm.dataTree);
-                            
+                            vm.dataloading = false;
                         }
                     }
                     sidebarService.setMenuStatus(false); //set to false when above has been executed

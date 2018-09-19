@@ -7,7 +7,6 @@ app
         vm.email = userService.getUserEmail();
         var dashboard = gridService.getDashboard();
         getUserRole();
-        vm.layouts = [];
 
         vm.addWidget = function() {
             gridService.addWidget();
@@ -54,10 +53,14 @@ app
             .then(function(response) {
                 vm.layouts = response.data;
                 vm.layoutMenu = !vm.layoutMenu;
-            })
+            },function(err){
+
+            });
         }
 
         vm.showLayout = function(layout){
+            gridService.setGridLoader(true);
+            dashboardService.setLoadStatus(false);
             gridService.showLayout(vm.layouts, layout);
             $window.document.title = "Quindar - " + layout.name;
 			closeSidebar();
@@ -121,7 +124,7 @@ app
         }
 		
 		function closeSidebar(){
-			if ($window.innerWidth < 1400){
+			if ($window.innerWidth <= 1440){
 				$mdSidenav('right').close();
             } else {
                 var locks = dashboardService.getLock();
@@ -142,7 +145,6 @@ app
                 vm.userRole = userService.userRole;
             }
         }
-    
 	}
 })
 

@@ -10,6 +10,12 @@ app
     var selectedMission = {"missionName":"","missionImage":""};
     var icons = {sIcon:"", gIcon:"", pIcon:"",dIcon:""};
 
+    var loadCount = 0;
+    var loadStatus = {
+        value:true
+    };
+    var missionSelection;
+
     getMissionLayout();
     getProxyStatus();
 
@@ -25,6 +31,7 @@ app
     }
 
     function getMissions(missions){
+        loadStatus.value = false;
         $http({
             url: "/getMissions", 
             method: "GET",
@@ -41,9 +48,10 @@ app
                 backdrop: 'static'
             }).result.then(function(response){
                 if(response){
+                    missionSelection = true;
                     gridService.setMissionForLayout(response.missionName);
                     getTelemetry(response.missionName);
-                }
+                }                
             },function close(){
                 alert("No mission selected!Reload the page for options.");
             }); 
@@ -54,6 +62,10 @@ app
 
     function getTelemetry(missionName) {
         var prevId = "";
+        var loaders;
+        if(loadCount === 0 && missionSelection !== true){
+            loadStatus.value = true;
+        }
         $interval(function () { 
             $http({
                 url: "/getTelemetry", 
@@ -67,8 +79,20 @@ app
                     telemetry['data'] = response.data.telemetry;
                     telemetry['time'] = response.data.timestamp;
                     time = response.data.timestamp;
+                    loadCount++;
+                    loadStatus.value = false;
+                    loaders = gridService.getGridLoader();
+                    if(loaders.gridLoader === true){
+                        gridService.setGridLoader(false);
+                    }
                 }else{
                     telemetry = {};
+                    loadCount++;
+                    loadStatus.value = false;
+                    loaders = gridService.getGridLoader();
+                    if(loaders.gridLoader === true){
+                        gridService.setGridLoader(false);
+                    }
                 }
 
                 if(isEmpty(response.data) === false){//if data is not empty
@@ -77,24 +101,48 @@ app
                         icons.gIcon = "red";
                         icons.pIcon = "green";
                         icons.dIcon = "blue";
+                        loadCount++;
+                        loadStatus.value = false;
+                        loaders = gridService.getGridLoader();
+                            if(loaders.gridLoader === true){
+                                gridService.setGridLoader(false);
+                        }
                     } else {
                         icons.sIcon = "green";
                         icons.gIcon = "green";
                         icons.pIcon = "green";
                         icons.dIcon = "green";
                         prevId = response.data._id;
+                        loadCount++;
+                        loadStatus.value = false;
+                        loaders = gridService.getGridLoader();
+                        if(loaders.gridLoader === true){
+                            gridService.setGridLoader(false);
+                        }
                     }
                 } else { // if data received is empty
                     icons.sIcon = "red";
                     icons.gIcon = "green";
                     icons.pIcon = "green";
                     icons.dIcon = "green";
+                    loadCount++;
+                    loadStatus.value = false;
+                    loaders = gridService.getGridLoader();
+                    if(loaders.gridLoader === true){
+                        gridService.setGridLoader(false);
+                    }
                 }
             }, function error(response){
                 icons.sIcon = "grey";
                 icons.gIcon = "grey";
                 icons.pIcon = "grey";
                 icons.dIcon = "red";
+                loadCount++;
+                loadStatus.value = false;
+                loaders = gridService.getGridLoader();
+                if(loaders.gridLoader === true){
+                    gridService.setGridLoader(false);
+                }
             });
         },1000);
     }
@@ -293,6 +341,14 @@ app
         return telemetry;
     }
 
+    function getLoadStatus(){
+        return loadStatus;
+    }
+
+    function setLoadStatus(status){
+        loadStatus.value = status;
+    }
+
 	return {
         locks : locks,
         telemetry : telemetry,
@@ -309,6 +365,8 @@ app
         setCurrentMission : setCurrentMission,
         getCurrentMission : getCurrentMission,
         getConfig : getConfig,
-        getTelemetryValues : getTelemetryValues
+        getTelemetryValues : getTelemetryValues,
+        getLoadStatus : getLoadStatus,
+        setLoadStatus : setLoadStatus
 	}
 }]);

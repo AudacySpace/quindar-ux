@@ -1,13 +1,17 @@
 describe('Testing grid component', function () {
-    var $controller, gridService;
+    var $controller, gridService,dashboardService;
 
     beforeEach(function () {
         // load the module
         module('app');
 
         inject(function($componentController){
-            gridService = jasmine.createSpyObj('gridService', ['getDashboard', 'gridsterOptions']);
-            $controller = $componentController('grid', {gridService: gridService});
+            gridService = jasmine.createSpyObj('gridService', ['getDashboard', 'gridsterOptions','getGridLoader']);
+            dashboardService = jasmine.createSpyObj('dashboardService', ['getLoadStatus']);
+            $controller = $componentController('grid', {
+                gridService: gridService,
+                dashboardService: dashboardService
+            });
         });
 
     });

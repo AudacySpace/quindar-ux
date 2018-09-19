@@ -28,9 +28,9 @@ describe('Testing right sidebar component', function () {
             deferredLoad = _$q_.defer();
 
             dashboardService = jasmine.createSpyObj('dashboardService', 
-                ['getLock', 'getCurrentMission', 'setRightLock']);
+                ['getLock', 'getCurrentMission', 'setRightLock','setLoadStatus']);
             gridService = jasmine.createSpyObj('gridService', 
-                ['addWidget', 'addWidgets', 'clear', 'getDashboard', 'save', 'load', 'showLayout', 'widgetDefinitions']);
+                ['addWidget', 'addWidgets', 'clear', 'getDashboard', 'save', 'load', 'showLayout', 'widgetDefinitions','setGridLoader']);
             userService = jasmine.createSpyObj('userService', ['userRole', 'getUserName', 'getUserEmail']);
             
             userService.getUserEmail.and.callFake(function() {

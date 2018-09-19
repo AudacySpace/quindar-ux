@@ -47,5 +47,10 @@
     <md-list ng-show="$ctrl.dataTree.length === 0">
         <div class="emptyDataRow">{{ $ctrl.noresultsmsg }}</div>
     </md-list>
+    <div id="wave" ng-hide="$ctrl.dataTree.length > 0 || $ctrl.dataloading === false">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+    </div>
 </md-content>
 <!--End of Left Side Nav -->
