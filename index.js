@@ -13,15 +13,16 @@ var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
 
-var configDB = require('./server/config/database.js');
-
 var fs = require('fs-extra');
 
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/app'));
 
+//Get database URL from config and connect
+var config = require('./server/config/config.env.js'),
+    configDB = new config();
 mongoose.Promise = global.Promise;
-mongoose.connect(configDB.url, {useMongoClient : true}); // connect to our database
+mongoose.connect(configDB.databaseURL, {useMongoClient : true}); // connect to our database
 
 // CONNECTION EVENTS
 // When successfully connected
@@ -39,7 +40,7 @@ mongoose.connection.on('disconnected', function () {
     console.log('Mongoose default connection disconnected');
 });
 
-require('./server/config/passport')(passport); // pass passport for configuration
+require('./server/lib/passport')(passport); // pass passport for configuration
 
 // set up our express application
 app.use(morgan('dev')); // log every request to the console
