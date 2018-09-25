@@ -19,8 +19,13 @@ app.use(express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/app'));
 
 //Get database URL from config and connect
-var config = require('./server/config/config.env'),
+var configDB;
+try{
+    config = require('./server/config/config.env'),
     configDB = new config();
+} catch(e) {
+    configDB = {};
+}
 mongoose.Promise = global.Promise;
 mongoose.connect(configDB.databaseURL, {useMongoClient : true}); // connect to our database
 

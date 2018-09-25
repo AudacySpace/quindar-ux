@@ -5,8 +5,13 @@ var GoogleStrategy   = require('passport-google-oauth').OAuth2Strategy;
 var User       = require('../models/user');
 
 // load the auth variables
+var configAuth;
+try{
 var config = require('../config/config.env');
-var configAuth = new config();
+configAuth = new config();
+} catch(e){
+    configAuth = {};
+}
 //load the user roles
 var configRole = require('../config/role');
 
