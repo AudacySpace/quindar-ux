@@ -35,6 +35,7 @@ module.exports = function(passport) {
     // =========================================================================
     // GOOGLE ==================================================================
     // =========================================================================
+    try{
     passport.use(new GoogleStrategy({
 
         clientID        : configAuth.googleAuth.clientID,
@@ -108,6 +109,9 @@ module.exports = function(passport) {
             }
         });
     }));
+} catch(e){
+    console.log("Error creating GoogleStrategy " + e);
+}
 
 };
 
