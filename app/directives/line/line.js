@@ -6,7 +6,7 @@ app.directive('graph', function() {
     }
 });
 
-app.controller("LineCtrl", function($scope, $element, $interval, $window, dashboardService, d3Service) {
+app.controller("LineCtrl",['$scope', '$element', '$interval', '$window', 'dashboardService', 'd3Service', function($scope, $element, $interval, $window, dashboardService, d3Service) {
     var telemetry = dashboardService.telemetry;
     var parseTime = d3Service.timeParse("%Y-%m-%dT%H:%M:%S.%LZ");
     var prevSettings;
@@ -183,4 +183,4 @@ app.controller("LineCtrl", function($scope, $element, $interval, $window, dashbo
             $interval.cancel( $scope.interval );
         }
     );
-});
+}]);

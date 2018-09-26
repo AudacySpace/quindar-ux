@@ -86,7 +86,7 @@ angular.module('app')
 	}
 })
 
-app.controller('modalCtrl', function($uibModalInstance, userService, mission, $window,$mdDialog) {
+app.controller('modalCtrl',['$uibModalInstance', 'userService', 'mission', '$window','$mdDialog', function($uibModalInstance, userService, mission, $window,$mdDialog) {
 	var $ctrl = this;
 
 	$ctrl.cRole = {};
@@ -140,9 +140,9 @@ app.controller('modalCtrl', function($uibModalInstance, userService, mission, $w
     		});
 	    }
     }
-});
+}]);
 
-app.controller('missionModalCtrl', function($uibModalInstance,dashboardService,$scope,$window) {
+app.controller('missionModalCtrl',['$uibModalInstance','dashboardService','$scope','$window', function($uibModalInstance,dashboardService,$scope,$window) {
 	var $ctrl = this;
 	$scope.missions = dashboardService.missions;
 	$ctrl.currentMission = {};
@@ -165,4 +165,4 @@ app.controller('missionModalCtrl', function($uibModalInstance,dashboardService,$
 			}
 		}  
 	}
-});
+}]);

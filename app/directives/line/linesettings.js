@@ -7,7 +7,7 @@ app
     }
 }); 
 
-app.controller('LineSettingsCtrl', 
+app.controller('LineSettingsCtrl',['$scope', '$mdSidenav', '$window', 'dashboardService', 'sidebarService', '$interval',
     function($scope, $mdSidenav, $window, dashboardService, sidebarService, $interval){
 
         var colors = [ "#0AACCF", "#FF9100", "#64DD17", "#07D1EA", "#0D8DB8", "#172168", "#228B22", "#12C700", "#C6FF00" ];
@@ -257,4 +257,4 @@ app.controller('LineSettingsCtrl',
             }
         );
     }
-);
+]);

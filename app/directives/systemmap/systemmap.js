@@ -7,7 +7,7 @@ app
     }
 });
 
-app.controller('SystemMapCtrl', function ($scope, dashboardService, $interval, datastatesService) {
+app.controller('SystemMapCtrl',['$scope', 'dashboardService', '$interval', 'datastatesService', function ($scope, dashboardService, $interval, datastatesService) {
 
 	// data states colors
 	var colorAlarm = datastatesService.colorValues.alarmcolor; //Color red for alarm
@@ -46,5 +46,5 @@ app.controller('SystemMapCtrl', function ($scope, dashboardService, $interval, d
 	// 		$interval.cancel( $scope.interval );
 	// 	}
 	// );  
-});
+}]);
 

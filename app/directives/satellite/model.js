@@ -12,7 +12,7 @@ app
 });
 
 app
-.controller('SatelliteCtrl',function ($scope, $element,$interval, dashboardService, solarService, datastatesService) {
+.controller('SatelliteCtrl',['$scope', '$element','$interval', 'dashboardService', 'solarService', 'datastatesService', function ($scope, $element,$interval, dashboardService, solarService, datastatesService) {
 	var container = $element.parent()[0];
 	var width = $(container).width();
 	var height = $(container).height();
@@ -424,4 +424,4 @@ app
     		q4tempval = '';
         }
     );
-})
+}]);

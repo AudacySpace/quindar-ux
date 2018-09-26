@@ -4,9 +4,9 @@ app.directive('clock', function() {
 	    templateUrl:'./directives/clock/clock.html',
 	    controller: 'ClockCtrl',
   	}; 
-})
+});
 
-app.controller('ClockCtrl', function($scope, dashboardService, datastatesService, $interval){
+app.controller('ClockCtrl',['$scope', 'dashboardService', 'datastatesService', '$interval', function($scope, dashboardService, datastatesService, $interval){
 	var tempTime = "";
 	var dServiceObj = {};
 	var colorAlarm = datastatesService.colorValues.alarmcolor; //Color red for alarm
@@ -119,4 +119,4 @@ app.controller('ClockCtrl', function($scope, dashboardService, datastatesService
 		}
 	);
 
-})
+}]);

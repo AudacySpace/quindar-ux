@@ -6,7 +6,7 @@ app.directive('alarmpanelsettings', function() {
     };
 });
 
-app.controller('AlarmSettingsCtrl', function($scope){
+app.controller('AlarmSettingsCtrl',['$scope', function($scope){
     $scope.statusboard = $scope.widget.settings.statusboard;
 
     $scope.saveAlarmPanelSettings = function(widget){
@@ -24,6 +24,6 @@ app.controller('AlarmSettingsCtrl', function($scope){
         widget.delete = false;
         $scope.statusboard = widget.settings.statusboard;
     }
-});
+}]);
 
 

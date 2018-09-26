@@ -7,7 +7,7 @@ app
     }
 });
 
-app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardService,$element) {
+app.controller('timelineCtrl',['gridService','$scope','$interval','dashboardService','$element', function (gridService,$scope,$interval,dashboardService,$element) {
 
     var globalgroups = [] ;
     var names = [];
@@ -29,6 +29,12 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
     $scope.rowOperationErrorMsg = "";
     $scope.errMsgStyles = {};
     $scope.datetime = $scope.widget.settings.datetime;
+    $scope.realtimebutton = { 
+        style : {
+            'background':'#12C700',
+            'float':'right'
+        }
+    };
 
 
     checkForTimezoneData();
@@ -759,7 +765,7 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
            $interval.cancel( $scope.interval );
         }
     );  
-});
+}]);
 
 
 

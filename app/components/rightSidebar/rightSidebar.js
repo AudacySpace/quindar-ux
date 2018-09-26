@@ -156,7 +156,7 @@ app.controller('docController', ['$scope','$uibModalInstance', function($scope,$
 
 }]);
 
-app.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userService, mission, $window) {
+app.controller('adminCtrl',['$scope', '$filter', '$uibModalInstance', 'userService', 'mission', '$window', function($scope, $filter, $uibModalInstance, userService, mission, $window) {
     var $ctrl = this;
 
     $ctrl.users = [];
@@ -253,4 +253,4 @@ app.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userSer
         $scope.successMessage = "";
     }
 
-});
+}]);

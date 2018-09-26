@@ -6,7 +6,7 @@ app.directive('datatablesettings', function() {
     }
 });
 
-app.controller('DatatableSettingsCtrl', function($scope, $window){
+app.controller('DatatableSettingsCtrl',['$scope', '$window', function($scope, $window){
     $scope.checkedValues = angular.copy($scope.widget.settings.checkedValues);
     var values = angular.copy($scope.checkedValues);
     $scope.columnSelectionErrMsg = "";
@@ -63,6 +63,6 @@ app.controller('DatatableSettingsCtrl', function($scope, $window){
         widget.settings.checkedValues.checkedNotes = val.checkedNotes;
         widget.settings.checkedValues.checkedChannel = val.checkedChannel;
     } 
-});
+}]);
 
 

@@ -48,7 +48,7 @@ md-input-container label {
 
 md-content.comm-widget {
 /*	height: 100%;*/
-	overflow: visible;
+	overflow: hidden;
 }
 
 .select-command {

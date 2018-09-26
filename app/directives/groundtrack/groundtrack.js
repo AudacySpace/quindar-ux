@@ -8,7 +8,7 @@ app.directive('groundtrack',function() {
     }; 
 });
 
-app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,dashboardService,gridService,solarService,odeService) { 
+app.controller('GroundTrackCtrl',['$scope', 'd3Service', '$element', '$interval', 'dashboardService', 'gridService', 'solarService', 'odeService', function ($scope,d3Service,$element,$interval,dashboardService,gridService,solarService,odeService) { 
   
     var telemetry = dashboardService.telemetry;
     var temp = $element[0].getElementsByTagName("div")[0];
@@ -565,5 +565,5 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
         return [position[0] + 180, -position[1]];
     }
  
-});
+}]);
 
