@@ -8,7 +8,7 @@ app.directive('datalog',function() {
     }; 
 });
 
-app.controller('DataLogCtrl',function ($scope,$interval,dashboardService,datastatesService, gridService){  
+app.controller('DataLogCtrl',['$scope','$interval','dashboardService','datastatesService', 'gridService', function ($scope,$interval,dashboardService,datastatesService, gridService){  
     $scope.telemetry = dashboardService.telemetry;
     var colorAlarm = datastatesService.colorValues.alarmcolor; //Color red for alarm
     var colorCaution = datastatesService.colorValues.cautioncolor;// Color orange for caution
@@ -62,7 +62,7 @@ app.controller('DataLogCtrl',function ($scope,$interval,dashboardService,datasta
 	}
 
     //Called every time user scrolls in widget
-    $scope.boxReference.scroll(function() {
+    $scope.boxReference.scroll = function() {
         if($scope.box.scrollHeight == Math.floor($scope.box.scrollTop) + $scope.box.clientHeight) //Check if user is scrolled to bottom of data log
         {
             $scope.scrollToBottom = true;
@@ -72,7 +72,7 @@ app.controller('DataLogCtrl',function ($scope,$interval,dashboardService,datasta
             $scope.scrollToBottom = false;
         }
         $scope.autoScroll();
-    });
+    };
 
     //Check to see if necessary to stay scrolled at the bottom of the data log
     $scope.autoScroll = function()
@@ -136,6 +136,6 @@ app.controller('DataLogCtrl',function ($scope,$interval,dashboardService,datasta
 			$interval.cancel( $scope.interval );
 		}
 	);  
-});
+}]);
 
 

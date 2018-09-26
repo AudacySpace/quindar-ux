@@ -4,9 +4,9 @@ app.directive('timelinesettings', function() {
 	    templateUrl:'./directives/timeline/timelinesettings.html',
 	    controller: 'timelineSettingsCtrl',
   	}; 
-})
+});
 
-app.controller('timelineSettingsCtrl', function($scope,gridService){
+app.controller('timelineSettingsCtrl',['$scope','gridService', function($scope,gridService){
 
 	$scope.selectByGroupData = [];
 	var reloaded = false;
@@ -323,4 +323,4 @@ app.controller('timelineSettingsCtrl', function($scope,gridService){
 		}
 	}
 
-})
+}]);

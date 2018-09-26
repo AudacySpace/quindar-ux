@@ -4,12 +4,10 @@ app.directive('command', function() {
 	    templateUrl:'./directives/command/command.html',
 	    controller: 'CommandCtrl',
   	}; 
-})
+});
 
-app.controller('CommandCtrl', 
-	function($scope, userService, commandService, dashboardService, $interval, $window){
-
-	$scope.email = userService.getUserEmail();
+app.controller('CommandCtrl',['$scope', 'userService', 'commandService', 'dashboardService', '$interval', '$window', function($scope, userService, commandService, dashboardService, $interval, $window){
+    $scope.email = userService.getUserEmail();
 	$scope.mission = dashboardService.getCurrentMission();
 
     $scope.isLoaded = false;
@@ -129,5 +127,5 @@ app.controller('CommandCtrl',
 			$interval.cancel( $scope.interval );
 		}
 	);
-});
+}]);
 

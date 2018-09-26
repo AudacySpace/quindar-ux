@@ -7,7 +7,7 @@ app
     }
 });
 
-app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarService, $window, $mdSidenav,$uibModal){
+app.controller('SatSettingsCtrl',['$scope', 'dashboardService', 'sidebarService', '$window', '$mdSidenav','$uibModal', function($scope, dashboardService, sidebarService, $window, $mdSidenav,$uibModal){
 
     $scope.chosenCategory;
     $scope.attitudeBooleans = [true, true, true, true];
@@ -789,10 +789,10 @@ app.controller('SatSettingsCtrl', function($scope, dashboardService, sidebarServ
             //handle modal dismiss
         });
 	};
-});
+}]);
 
 
-app.controller('positionListCtrl',function($scope,$uibModalInstance,positionItems,$uibModal) {
+app.controller('positionListCtrl',['$scope','$uibModalInstance','positionItems','$uibModal', function($scope,$uibModalInstance,positionItems,$uibModal) {
     var $ctrl = this;
     $ctrl.data = positionItems;
     var values = angular.copy(positionItems);
@@ -823,9 +823,9 @@ app.controller('positionListCtrl',function($scope,$uibModalInstance,positionItem
             //handle modal dismiss
         });
     }
-});
+}]);
 
-app.controller('attitudeListCtrl',function($scope,$uibModalInstance,attitudeItems,$uibModal) {
+app.controller('attitudeListCtrl',['$scope','$uibModalInstance','attitudeItems','$uibModal', function($scope,$uibModalInstance,attitudeItems,$uibModal) {
     var $ctrl = this;
     $ctrl.data = attitudeItems;
     var values = angular.copy(attitudeItems);
@@ -856,9 +856,9 @@ app.controller('attitudeListCtrl',function($scope,$uibModalInstance,attitudeItem
             //handle modal dismiss
         });
     }
-});
+}]);
 
-app.controller('confirmCtrl',function($scope,$uibModalInstance,dataLabel,dataItems) {
+app.controller('confirmCtrl',['$scope','$uibModalInstance','dataLabel','dataItems', function($scope,$uibModalInstance,dataLabel,dataItems) {
     var $ctrl = this;
     $ctrl.modalLabel = dataLabel;
     $ctrl.finalData = dataItems;
@@ -869,5 +869,5 @@ app.controller('confirmCtrl',function($scope,$uibModalInstance,dataLabel,dataIte
     $ctrl.save = function(){
         $uibModalInstance.close($ctrl.finalData);
     }
-});
+}]);
 

@@ -7,7 +7,7 @@ app
     };
 });
 
-app.controller('SystemSettingsCtrl', function($scope, gridService){
+app.controller('SystemSettingsCtrl',['$scope', 'gridService', function($scope, gridService){
 	loadSystemMaps();
 
 	function loadSystemMaps(){
@@ -55,4 +55,4 @@ app.controller('SystemSettingsCtrl', function($scope, gridService){
 			};
 		}
 	}
-});
+}]);

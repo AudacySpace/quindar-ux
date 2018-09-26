@@ -4,11 +4,10 @@ app.directive('clocksettings', function() {
 	    templateUrl:'./directives/clock/clocksettings.html',
 	    controller: 'ClockSettingsCtrl',
   	}; 
-})
+});
 
-app.controller('ClockSettingsCtrl', function($scope){
+app.controller('ClockSettingsCtrl',['$scope', function($scope){
 
-	
 	$scope.closeSettings = function(widget){
 		widget.main = true;
 		widget.settings.active = false;
@@ -90,4 +89,4 @@ app.controller('ClockSettingsCtrl', function($scope){
 		'zone': 'Europe/Luxembourg'
 	}];
 
-})
+}]);

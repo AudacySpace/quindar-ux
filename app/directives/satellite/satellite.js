@@ -7,7 +7,7 @@ app
     }
 });
 
-app.controller('SatCtrl', function($scope){
+app.controller('SatCtrl',['$scope', function($scope){
     checkSettings();
 
     $scope.modelUrl = "./directives/satellite/models/satellite.json";
@@ -32,4 +32,4 @@ app.controller('SatCtrl', function($scope){
     //         $scope.modelUrl = "../directives/satellite/models/jeep1.ms3d.json";
     //     }
     // };
-});
+}]);

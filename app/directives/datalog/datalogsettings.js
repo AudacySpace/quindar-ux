@@ -6,9 +6,8 @@ app.directive('datalogsettings', function() {
     };
 });
 
-app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebarService,dashboardService){
+app.controller('DataLogSettingsCtrl',['$scope','$window','$mdSidenav','sidebarService','dashboardService', function($scope,$window,$mdSidenav,sidebarService,dashboardService){
     
-
     var hasValue;
     $scope.tempParameterSelection = new Object();
     $scope.inputFieldStyles = {};
@@ -109,19 +108,6 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
         }
     }
 
-    // $scope.getValue = function(){
-    //     var vehicleInfo = sidebarService.getVehicleInfo();
-    //     if(vehicleInfo.vehicle !== "" && vehicleInfo.id !== "") {
-    //         $scope.data = angular.copy(vehicleInfo);
-    //         if ($window.innerWidth > 1440){
-    //             $scope.lock.lockLeft = !$scope.lock.lockLeft;
-    //             dashboardService.setLeftLock($scope.lock.lockLeft);
-    //         }
-    //     } else {
-    //         $window.alert("Vehicle data not set. Please select from Data Menu");
-    //     }
-    // }
-
     $scope.getValue = function(isGroup){
         var data = $scope.widget.settings.dataArray[$scope.widget.settings.dataArray.length - 1];
         if(data && data.vehicle !== "" && data.id !== "") //check to see if data is properly chosen
@@ -157,4 +143,4 @@ app.controller('DataLogSettingsCtrl', function($scope,$window,$mdSidenav,sidebar
             hasValue = true;
         }  
     }
-});
+}]);

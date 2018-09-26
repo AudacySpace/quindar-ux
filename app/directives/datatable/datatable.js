@@ -8,7 +8,7 @@ app.directive('datatable',function() {
     }; 
 });
 
-app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$timeout,dashboardService,sidebarService,datastatesService) {  
+app.controller('DataTableCtrl',['$scope','$mdSidenav','$window','$interval','$timeout','dashboardService','sidebarService','datastatesService', function ($scope,$mdSidenav,$window,$interval,$timeout,dashboardService,sidebarService,datastatesService) {  
 
     //Get values of the checkboxes in settings category display
     $scope.checkedValues = $scope.widget.settings.checkedValues;
@@ -773,4 +773,4 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
         }
     );
 
-});
+}]);

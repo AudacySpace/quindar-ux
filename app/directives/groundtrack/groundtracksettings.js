@@ -6,7 +6,7 @@ app.directive('groundtracksettings', function() {
     }
 });
 
-app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interval,$mdSidenav,$window,sidebarService,$uibModal) {
+app.controller('GroundSettingsCtrl',['$scope', 'dashboardService', '$interval','$mdSidenav','$window','sidebarService','$uibModal', function($scope, dashboardService, $interval,$mdSidenav,$window,sidebarService,$uibModal) {
     var colors = [ "#07D1EA", "#0D8DB8", "#172168", "#228B22", "#12C700", "#C6FF00" ];
     var previousCheckedValues;
     $scope.settings = new Object(); // settings object for settings selection
@@ -1003,9 +1003,9 @@ app.controller('GroundSettingsCtrl', function($scope, dashboardService, $interva
         }
     }
 
-});
+}]);
 
-app.controller('positionParametersCtrl',function($scope,$uibModalInstance,positionItems,$uibModal,vehicleId) {
+app.controller('positionParametersCtrl',['$scope','$uibModalInstance','positionItems','$uibModal','vehicleId', function($scope,$uibModalInstance,positionItems,$uibModal,vehicleId) {
     var $ctrl = this;
     $ctrl.data = positionItems;
     $ctrl.currentVehicleId = vehicleId;
@@ -1037,9 +1037,9 @@ app.controller('positionParametersCtrl',function($scope,$uibModalInstance,positi
             //handle modal dismiss
         });
     }
-});
+}]);
 
-app.controller('velocityParametersCtrl',function($scope,$uibModalInstance,velocityItems,$uibModal,vehicleId) {
+app.controller('velocityParametersCtrl',['$scope','$uibModalInstance','velocityItems','$uibModal','vehicleId', function($scope,$uibModalInstance,velocityItems,$uibModal,vehicleId) {
     var $ctrl = this;
     $ctrl.data = velocityItems;
     $ctrl.currentVehicleId = vehicleId;
@@ -1071,9 +1071,9 @@ app.controller('velocityParametersCtrl',function($scope,$uibModalInstance,veloci
             //handle modal dismiss
         });
     }
-});
+}]);
 
-app.controller('confirmParametersCtrl',function($scope,$uibModalInstance,dataLabel,dataItems) {
+app.controller('confirmParametersCtrl',['$scope','$uibModalInstance','dataLabel','dataItems', function($scope,$uibModalInstance,dataLabel,dataItems) {
     var $ctrl = this;
     $ctrl.modalLabel = dataLabel;
     $ctrl.finalData = dataItems;
@@ -1084,5 +1084,5 @@ app.controller('confirmParametersCtrl',function($scope,$uibModalInstance,dataLab
     $ctrl.save = function(){
         $uibModalInstance.close($ctrl.finalData);
     }
-});
+}]);
 

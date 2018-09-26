@@ -8,8 +8,7 @@ app.directive('alarmpanel',function() {
     }; 
 });
 
-app.controller('AlarmPanelCtrl',
-    function ($scope,$interval,dashboardService,datastatesService,userService,statusboardService){ 
+app.controller('AlarmPanelCtrl',['$scope', '$interval', 'dashboardService', 'datastatesService', 'userService','statusboardService', function ($scope,$interval,dashboardService,datastatesService,userService,statusboardService){ 
     
     $scope.telemetry = dashboardService.telemetry;
     var flexprop = 100;
@@ -173,7 +172,7 @@ app.controller('AlarmPanelCtrl',
             $interval.cancel($scope.configInterval);
         }
     );
-});
+}]);
 
 
 

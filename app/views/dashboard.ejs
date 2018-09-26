@@ -9,7 +9,7 @@
     <meta name="author" content="Taruni Gattu">
     <title>Quindar - Home</title>
     <link rel="icon" href="/media/logos/Quindar_Regular_favicon.png" type="image/png" sizes="16x16">
-    <link href="/css/bootstrap-min.css" rel="stylesheet">
+<!--     <link href="/css/bootstrap-min.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
     <link href="/css/dashboardstyles.css" rel="stylesheet">
     <link href="/directives/line/line.css" rel="stylesheet">
@@ -31,7 +31,8 @@
     <link href="/css/dygraph.min.css" rel="stylesheet" type="text/css"/>
     <link href="/css/select.min.css" rel="stylesheet" type="text/css"/>
     <link href="/css/gridster/angular-gridster.min.css" rel="stylesheet"/>
-    <link href="/css/gridster/grid.css" rel="stylesheet" /> 
+    <link href="/css/gridster/grid.css" rel="stylesheet" />  -->
+    <link rel="stylesheet" href="/build/css/dashboard.css">
     <link rel="stylesheet" href="/css/angular-material.min.css">
     <link href="/components/rightSidebar/right_sidebar.css" rel="stylesheet">
     <link href="/components/leftSidebar/left_sidebar.css" rel="stylesheet">
@@ -46,72 +47,74 @@
     <dashboard></dashboard>
 
     <!-- jQuery -->
-    <script src="/scripts/jquery.js"></script>
+<!--     <script src="/scripts/jquery.js"></script> -->
     <!-- Bootstrap Core JavaScript -->
-    <script src="/scripts/bootstrap.min.js"></script>
+<!--     <script src="/scripts/bootstrap.min.js"></script> -->
 
     <!-- scripts for AngularJS and UI Bootstrap -->
     <script src="/scripts/angular.min.js"></script>
-    <script src="/scripts/angular-sanitize.min.js"></script>
-    <script src="/scripts/ui-bootstrap-tpls.js"></script>
+    <script src="/build/js/vendor.js"></script>
+<!--     <script src="/scripts/angular-sanitize.min.js"></script>
+    <script src="/scripts/ui-bootstrap-tpls.js"></script> -->
 
     <!-- Angular UI Select Script -->
-    <script src="/scripts/select.min.js"></script>
+<!--     <script src="/scripts/select.min.js"></script> -->
 
     <!-- Angular Gridster Script and Stylesheet -->
-    <script src="/scripts/gridster/angular-gridster.js"></script>
-    <script src="/scripts/angular-prompt.js"></script>
+<!--     <script src="/scripts/gridster/angular-gridster.js"></script>
+    <script src="/scripts/angular-prompt.js"></script> -->
 
     <!-- AngularJS Material Dependencies -->
-    <script src="/scripts/angular-animate.min.js"></script>
+<!--     <script src="/scripts/angular-animate.min.js"></script>
     <script src="/scripts/angular-aria.min.js"></script>
-    <script src="/scripts/angular-messages.min.js"></script>
+    <script src="/scripts/angular-messages.min.js"></script> -->
 
     <!-- AngularJS Material Javascript -->
-    <script src="/scripts/angular-material.min.js"></script>
+<!--     <script src="/scripts/angular-material.min.js"></script> -->
 
     <script src="/app.js"></script>
 
     <!-- Dygraph script -->
-    <script src="/scripts/dygraph.min.js"></script>
+<!--     <script src="/scripts/dygraph.min.js"></script> -->
 
     <!-- D3 -->
-    <script src="/scripts/d3.min.js"></script>
-    <script src="/scripts/topojson-client.min.js"></script>
+<!--     <script src="/scripts/d3.min.js"></script>
+    <script src="/scripts/topojson-client.min.js"></script> -->
     
     <!-- Calendar datetimepicker -->
-    <script src="/scripts/moment.js"></script>
+ <!--    <script src="/scripts/moment.js"></script>
     <script src="/scripts/moment-timezone-with-data-2012-2022.min.js"></script>
     <script src="/scripts/datetimepicker.js"></script>
-    <script src="/scripts/datetimepicker.templates.js"></script>
+    <script src="/scripts/datetimepicker.templates.js"></script> -->
     <!-- angular web storage-->
-    <script src="/scripts/ngStorage.min.js"></script>
+<!--     <script src="/scripts/ngStorage.min.js"></script> -->
 
     <!-- angular md -->
-    <script src="/scripts/angular-marked.min.js"></script>
-    <script src="/scripts/marked.js"></script>
+ <!--    <script src="/scripts/angular-marked.min.js"></script>
+    <script src="/scripts/marked.js"></script> -->
 
     <!-- THREE.js files -->
-    <script src="/scripts/three.min.js"></script>
+<!--     <script src="/scripts/three.min.js"></script>
     <script src="/scripts/AssimpJSONLoader.js"></script>
-    <script src="/scripts/OrbitControls.js"></script>
+    <script src="/scripts/OrbitControls.js"></script> -->
 
     <!-- Vis Js library and its settings dependencies -->
-    <script type="text/javascript" src="/scripts/vis.min.js"></script>
+<!--     <script type="text/javascript" src="/scripts/vis.min.js"></script>
     <script type="text/javascript" src="/scripts/angularjs-dropdown-multiselect.js"></script>
-    <script type="text/javascript" src="/scripts/ng-sortable.js"></script>
+    <script type="text/javascript" src="/scripts/ng-sortable.js"></script> -->
 
     <!-- components -->
-    <script src="/components/dashboard/dashboard.js"></script>
+<!--     <script src="/components/dashboard/dashboard.js"></script>
     <script src="/components/grid/grid.js"></script>
     <script src="/components/rightSidebar/rightSidebar.js"></script>
     <script src="/components/leftSidebar/leftSidebar.js"></script>
     <script src="/components/deleteMenu/deleteMenu.js"></script>
     <script src="/components/saveMenu/saveMenu.js"></script>
-    <script src="/components/statusIcons/statusIcons.js"></script>  
+    <script src="/components/statusIcons/statusIcons.js"></script>   -->
+<!--       <script src="/build/components/appComponentControllers.js"></script>  -->
 
     <!-- services -->
-    <script src="/services/dashboardService.js"></script>
+<!--     <script src="/services/dashboardService.js"></script>
     <script src="/services/gridService.js"></script>
     <script src="/services/d3Service.js"></script>
     <script src="/services/sidebarService.js"></script>
@@ -120,10 +123,14 @@
     <script src="/services/userService.js"></script>
     <script src="/services/statusboardService.js"></script>
     <script src="/services/commandService.js"></script>
-    <script src="/services/odeService.js"></script>
+    <script src="/services/odeService.js"></script> -->
+
+
+    <!-- services -->
+<!--     <script src="/build/services/appServices.js"></script> -->
     
     <!--directives -->
-    <script src="/directives/widget.js"></script>
+<!--     <script src="/directives/widget.js"></script>
     <script src="/directives/datatable/datatable.js"></script>
     <script src="/directives/groundtrack/groundtrack.js"></script>
     <script src="/directives/line/line.js"></script>
@@ -144,7 +151,14 @@
     <script src="/directives/command/command.js"></script>
     <script src="/directives/command/commandsettings.js"></script>
     <script src="/directives/timeline/timeline.js"></script>
-    <script src="/directives/timeline/timelinesettings.js"></script>
+    <script src="/directives/timeline/timelinesettings.js"></script> -->
+
+    
+    <!--directives -->
+  <!--   <script src="/build/directives/appDirectiveControllers.js"></script> -->
+
+    <script src="/build/js/appresources.js"></script>
+
 
 </body>
 </html>

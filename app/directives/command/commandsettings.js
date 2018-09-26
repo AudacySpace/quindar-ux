@@ -6,7 +6,7 @@ app.directive('commandsettings', function() {
     };
 });
 
-app.controller('CommandSettingsCtrl', function($scope){
+app.controller('CommandSettingsCtrl',['$scope', function($scope){
 
     $scope.commandlog = $scope.widget.settings.commandlog;
 
@@ -25,4 +25,4 @@ app.controller('CommandSettingsCtrl', function($scope){
         widget.delete = false;
         $scope.widget.settings.commandlog = $scope.commandlog;
     }
-});
+}]);
