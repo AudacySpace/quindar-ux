@@ -1,4 +1,9 @@
-var configEnv = require('./config.env');
+var configEnv;
+try{
+	configEnv = require('./config.env');
+} catch(e) {
+	configEnv = {};
+}
 module.exports = function(){
     switch(process.env.NODE_ENV){
         case 'staging':
