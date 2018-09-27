@@ -6,15 +6,17 @@ try{
 }
 module.exports = function(){
 	if(isEmpty(configEnv)){
+		//default values if configuration not present
 		return {
 			'googleAuth' : {
 			    'clientID'         : '',
 			    'clientSecret'     : '',
-			    'callbackURL'      : 'https://localhost/auth/google/callback'
+			    'callbackURL'      : ''
 			},
 			'databaseURL' : 'mongodb://localhost:27017/quindar'
         };
 	} else {
+		//values of NODE_ENV - 'staging', 'production', 'development'
 		if(process.env.NODE_ENV) {
 			return {
             	'googleAuth' : {
@@ -24,7 +26,7 @@ module.exports = function(){
 			    },
 			    'databaseURL' : configEnv[process.env.NODE_ENV].databaseURL
             };
-		} else {
+		} else { //return values for development environment in case NODE_ENV not set
 			return {
             	'googleAuth' : {
 			        'clientID'         : configEnv.development.googleAuth.clientID,
@@ -34,39 +36,7 @@ module.exports = function(){
 			    'databaseURL' : configEnv.development.databaseURL
             };
 		}
-
 	}
-    // switch(process.env.NODE_ENV){
-    //     case 'staging':
-    //         return {
-    //         	'googleAuth' : {
-			 //        'clientID'         : configEnv.staging.googleAuth.clientID || '',
-			 //        'clientSecret'     : configEnv.staging.googleAuth.clientSecret || '',
-			 //        'callbackURL'      : configEnv.staging.googleAuth.callbackURL || ''
-			 //    },
-			 //    'databaseURL' : configEnv.staging.databaseURL || ''
-    //         };
-
-    //     case 'production':
-    //         return {
-    //         	'googleAuth' : {
-			 //        'clientID'         : '',
-			 //        'clientSecret'     : '',
-			 //        'callbackURL'      : ''
-			 //    },
-			 //    'databaseURL' : ''
-    //         };
-
-    //     default:
-    //         return {
-    //         	'googleAuth' : {
-			 //        'clientID'         : configEnv.local.googleAuth.clientID || '',
-			 //        'clientSecret'     : configEnv.local.googleAuth.clientSecret || '',
-			 //        'callbackURL'      : configEnv.local.googleAuth.callbackURL || ''
-			 //    },
-			 //    'databaseURL' : configEnv.local.databaseURL || ''
-    //         };
-    // }
 };
 
 function isEmpty(obj) {
