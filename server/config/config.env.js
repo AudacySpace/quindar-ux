@@ -1,11 +1,14 @@
-var configEnv;
+// Grab the config env file if it's there
+var config;
+
 try{
-	configEnv = require('./config.env');
+	config = require('./config.env');
 } catch(e) {
-	configEnv = {};
+	config = {};
 }
+
 module.exports = function(){
-	if(isEmpty(configEnv)){
+	if(isEmpty(config)){
 		//default values if configuration not present
 		return {
 			'googleAuth' : {
@@ -20,20 +23,20 @@ module.exports = function(){
 		if(process.env.NODE_ENV) {
 			return {
             	'googleAuth' : {
-			        'clientID'         : configEnv[process.env.NODE_ENV].googleAuth.clientID,
-			        'clientSecret'     : configEnv[process.env.NODE_ENV].googleAuth.clientSecret,
-			        'callbackURL'      : configEnv[process.env.NODE_ENV].googleAuth.callbackURL
+			        'clientID'         : config[process.env.NODE_ENV].googleAuth.clientID,
+			        'clientSecret'     : config[process.env.NODE_ENV].googleAuth.clientSecret,
+			        'callbackURL'      : config[process.env.NODE_ENV].googleAuth.callbackURL
 			    },
-			    'databaseURL' : configEnv[process.env.NODE_ENV].databaseURL
+			    'databaseURL' : config[process.env.NODE_ENV].databaseURL
             };
 		} else { //return values for development environment in case NODE_ENV not set
 			return {
             	'googleAuth' : {
-			        'clientID'         : configEnv.development.googleAuth.clientID,
-			        'clientSecret'     : configEnv.development.googleAuth.clientSecret,
-			        'callbackURL'      : configEnv.development.googleAuth.callbackURL
+			        'clientID'         : config.development.googleAuth.clientID,
+			        'clientSecret'     : config.development.googleAuth.clientSecret,
+			        'callbackURL'      : config.development.googleAuth.callbackURL
 			    },
-			    'databaseURL' : configEnv.development.databaseURL
+			    'databaseURL' : config.development.databaseURL
             };
 		}
 	}
