@@ -18756,166 +18756,6 @@ app.controller('ClockSettingsCtrl',['$scope', function($scope){
 	}];
 
 }]);
-app.directive('command', function() { 
-	return { 
-    	restrict: 'E',  
-	    templateUrl:'./directives/command/command.html',
-	    controller: 'CommandCtrl',
-  	}; 
-});
-
-app.controller('CommandCtrl',['$scope', 'userService', 'commandService', 'dashboardService', '$interval', '$window', function($scope, userService, commandService, dashboardService, $interval, $window){
-    $scope.email = userService.getUserEmail();
-	$scope.mission = dashboardService.getCurrentMission();
-
-    $scope.isLoaded = false;
-	$scope.sent = false;
-
-	$scope.initialise = function(){
-		$scope.cmd = "";
-		$scope.arguments = "";
-		$scope.entered =  false;
-		$scope.locked = false;
-		$scope.disableEnter = false;
-		$scope.disableInput = false;
-		$scope.disableLock = true;
-
-		$scope.command = {
-			name : "",
-			arguments : "",
-			sent_timestamp : "",
-			time : ""
-		};
-	}
-
-    $scope.enter = function(){
-    	if($scope.cmd && $scope.arguments) {
-			$scope.command.name = $scope.cmd;
-		    $scope.command.arguments = $scope.arguments;
-		   	$scope.entered = true;
-		   	$scope.disableEnter = true;
-	    } 
-    }
-
-    $scope.lockCommand = function(){
-    	if($scope.command.name && $scope.entered) {
-	    	$scope.locked = true;
-	    	$scope.disableInput = true;
-	    	$scope.disableLock = true;
-	    } else {
-	    	$window.alert("Please enter the commands before locking");
-	    }
-    }
-
-    $scope.changeInput = function(){
-    	if($scope.entered) {
-    		$scope.entered = false;
-    		$scope.disableEnter = false;
-    	} else {
-    		$scope.disableEnter = false;
-    		$scope.disableLock = false;
-    	}
-    }
-
-    $scope.sendCommand = function(){   	
-    	var time = dashboardService.getTime('UTC');
-    	var systemTime = new Date();
-    	var cmdId = systemTime.getTime();
-    	$scope.command.sent_timestamp = cmdId;
-    	$scope.command.time = time.utc;
-        // $scope.sent = true;
-
-    	commandService.saveCommand($scope.email, $scope.command, $scope.mission.missionName)
-    	.then(function(response) {
-	        if(response.status == 200){
-	        	$scope.initialise();
-                $scope.commandForm.$setPristine();
-                $scope.commandForm.$setUntouched();
-	        }
-	    });
-    }
-
-	$scope.updateCommandlog = function(){
-        commandService.getCommandLog($scope.mission.missionName)
-        .then(function(response) {
-            if(response.status == 200) {
-                $scope.commandLog = response.data;
-
-                //get all the responses of a command
-                //find the response with the max timestamp
-                //assign the status and data to a the commandLog variable
-                var commandLen = $scope.commandLog.length;
-
-                for(var i=0;i<commandLen;i++){
-                    //call function to get the max date;
-                    //loop through the responses and find the response which matches that response
-                    //assign to a variable used to display in the command log
-                    var maxTime = getMaxTime($scope.commandLog[i].response,"gwp_timestamp");
-                    var responsesLen = $scope.commandLog[i].response.length;
-                    for(var j=0;j<responsesLen;j++){
-                        var dateformat = moment($scope.commandLog[i].response[j].gwp_timestamp).tz('UTC');
-                        if(dateformat.valueOf() === maxTime){
-                            $scope.commandLog[i].responseStatus = $scope.commandLog[i].response[j].status;
-                            $scope.commandLog[i].responseData = $scope.commandLog[i].response[j].metadata_data;
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    function getMaxTime(responses,filter){
-        var timestampArray = [];
-        var maxTime;
-        var numOfResponses = responses.length;
-        for(var j=0;j<numOfResponses;j++){
-            var dateformat = moment(responses[j][filter]).tz('UTC');
-            timestampArray.push(dateformat.valueOf());
-        }
-        maxTime = Math.max.apply(null,timestampArray);
-        return maxTime;
-    }
-
-	$scope.initialise();
-
-    $scope.interval = $interval($scope.updateCommandlog, 1000);
-
-	$scope.$on("$destroy", 
-		function(event) {
-			$interval.cancel( $scope.interval );
-		}
-	);
-}]);
-
-
-app.directive('commandsettings', function() { 
-  	return { 
-        restrict: 'E',  
-        templateUrl:'./directives/command/commandsettings.html',
-        controller: 'CommandSettingsCtrl',
-    };
-});
-
-app.controller('CommandSettingsCtrl',['$scope', function($scope){
-
-    $scope.commandlog = $scope.widget.settings.commandlog;
-
-    $scope.closeSettings = function(widget){
-        widget.main = true;
-        widget.settings.active = false;
-        widget.saveLoad = false;
-        widget.delete = false;
-        $scope.commandlog = $scope.widget.settings.commandlog;
-    }
-
-    $scope.saveSettings = function(widget){
-        widget.main = true;
-        widget.settings.active = false;
-        widget.saveLoad = false;
-        widget.delete = false;
-        $scope.widget.settings.commandlog = $scope.commandlog;
-    }
-}]);
 app.directive('datalog',function() { 
   return { 
     restrict: 'E', 
@@ -18949,7 +18789,7 @@ app.controller('DataLogCtrl',['$scope','$interval','dashboardService','datastate
     $scope.box = $scope.boxReference[0]; //div that results in scrollbar when many rows pushed
 
     $scope.scrollToBottom = true;
-
+    
     //watch to check the database icon color to know about database status
     $scope.$watch('dataStatus',function(newVal,oldVal){
         dServiceObjVal = newVal; 
@@ -18980,8 +18820,8 @@ app.controller('DataLogCtrl',['$scope','$interval','dashboardService','datastate
 	}
 
     //Called every time user scrolls in widget
-    $scope.boxReference.scroll = function() {
-        if($scope.box.scrollHeight == Math.floor($scope.box.scrollTop) + $scope.box.clientHeight) //Check if user is scrolled to bottom of data log
+    $scope.boxReference.bind('scroll', function(){
+      if($scope.box.scrollHeight == Math.floor($scope.box.scrollTop) + $scope.box.clientHeight) //Check if user is scrolled to bottom of data log
         {
             $scope.scrollToBottom = true;
         }
@@ -18990,7 +18830,7 @@ app.controller('DataLogCtrl',['$scope','$interval','dashboardService','datastate
             $scope.scrollToBottom = false;
         }
         $scope.autoScroll();
-    };
+    })
 
     //Check to see if necessary to stay scrolled at the bottom of the data log
     $scope.autoScroll = function()
@@ -19205,6 +19045,166 @@ app.controller('DataLogSettingsCtrl',['$scope','$window','$mdSidenav','sidebarSe
     }
 }]);
 
+app.directive('command', function() { 
+	return { 
+    	restrict: 'E',  
+	    templateUrl:'./directives/command/command.html',
+	    controller: 'CommandCtrl',
+  	}; 
+});
+
+app.controller('CommandCtrl',['$scope', 'userService', 'commandService', 'dashboardService', '$interval', '$window', function($scope, userService, commandService, dashboardService, $interval, $window){
+    $scope.email = userService.getUserEmail();
+	$scope.mission = dashboardService.getCurrentMission();
+
+    $scope.isLoaded = false;
+	$scope.sent = false;
+
+	$scope.initialise = function(){
+		$scope.cmd = "";
+		$scope.arguments = "";
+		$scope.entered =  false;
+		$scope.locked = false;
+		$scope.disableEnter = false;
+		$scope.disableInput = false;
+		$scope.disableLock = true;
+
+		$scope.command = {
+			name : "",
+			arguments : "",
+			sent_timestamp : "",
+			time : ""
+		};
+	}
+
+    $scope.enter = function(){
+    	if($scope.cmd && $scope.arguments) {
+			$scope.command.name = $scope.cmd;
+		    $scope.command.arguments = $scope.arguments;
+		   	$scope.entered = true;
+		   	$scope.disableEnter = true;
+	    } 
+    }
+
+    $scope.lockCommand = function(){
+    	if($scope.command.name && $scope.entered) {
+	    	$scope.locked = true;
+	    	$scope.disableInput = true;
+	    	$scope.disableLock = true;
+	    } else {
+	    	$window.alert("Please enter the commands before locking");
+	    }
+    }
+
+    $scope.changeInput = function(){
+    	if($scope.entered) {
+    		$scope.entered = false;
+    		$scope.disableEnter = false;
+    	} else {
+    		$scope.disableEnter = false;
+    		$scope.disableLock = false;
+    	}
+    }
+
+    $scope.sendCommand = function(){   	
+    	var time = dashboardService.getTime('UTC');
+    	var systemTime = new Date();
+    	var cmdId = systemTime.getTime();
+    	$scope.command.sent_timestamp = cmdId;
+    	$scope.command.time = time.utc;
+        // $scope.sent = true;
+
+    	commandService.saveCommand($scope.email, $scope.command, $scope.mission.missionName)
+    	.then(function(response) {
+	        if(response.status == 200){
+	        	$scope.initialise();
+                $scope.commandForm.$setPristine();
+                $scope.commandForm.$setUntouched();
+	        }
+	    });
+    }
+
+	$scope.updateCommandlog = function(){
+        commandService.getCommandLog($scope.mission.missionName)
+        .then(function(response) {
+            if(response.status == 200) {
+                $scope.commandLog = response.data;
+
+                //get all the responses of a command
+                //find the response with the max timestamp
+                //assign the status and data to a the commandLog variable
+                var commandLen = $scope.commandLog.length;
+
+                for(var i=0;i<commandLen;i++){
+                    //call function to get the max date;
+                    //loop through the responses and find the response which matches that response
+                    //assign to a variable used to display in the command log
+                    var maxTime = getMaxTime($scope.commandLog[i].response,"gwp_timestamp");
+                    var responsesLen = $scope.commandLog[i].response.length;
+                    for(var j=0;j<responsesLen;j++){
+                        var dateformat = moment($scope.commandLog[i].response[j].gwp_timestamp).tz('UTC');
+                        if(dateformat.valueOf() === maxTime){
+                            $scope.commandLog[i].responseStatus = $scope.commandLog[i].response[j].status;
+                            $scope.commandLog[i].responseData = $scope.commandLog[i].response[j].metadata_data;
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function getMaxTime(responses,filter){
+        var timestampArray = [];
+        var maxTime;
+        var numOfResponses = responses.length;
+        for(var j=0;j<numOfResponses;j++){
+            var dateformat = moment(responses[j][filter]).tz('UTC');
+            timestampArray.push(dateformat.valueOf());
+        }
+        maxTime = Math.max.apply(null,timestampArray);
+        return maxTime;
+    }
+
+	$scope.initialise();
+
+    $scope.interval = $interval($scope.updateCommandlog, 1000);
+
+	$scope.$on("$destroy", 
+		function(event) {
+			$interval.cancel( $scope.interval );
+		}
+	);
+}]);
+
+
+app.directive('commandsettings', function() { 
+  	return { 
+        restrict: 'E',  
+        templateUrl:'./directives/command/commandsettings.html',
+        controller: 'CommandSettingsCtrl',
+    };
+});
+
+app.controller('CommandSettingsCtrl',['$scope', function($scope){
+
+    $scope.commandlog = $scope.widget.settings.commandlog;
+
+    $scope.closeSettings = function(widget){
+        widget.main = true;
+        widget.settings.active = false;
+        widget.saveLoad = false;
+        widget.delete = false;
+        $scope.commandlog = $scope.widget.settings.commandlog;
+    }
+
+    $scope.saveSettings = function(widget){
+        widget.main = true;
+        widget.settings.active = false;
+        widget.saveLoad = false;
+        widget.delete = false;
+        $scope.widget.settings.commandlog = $scope.commandlog;
+    }
+}]);
 app.directive('datatable',function() { 
   return { 
     restrict: 'E', 
@@ -20050,6 +20050,44 @@ app.controller('DatatableSettingsCtrl',['$scope', '$window', function($scope, $w
 
 
 
+app.directive('sample', function() { 
+	return { 
+    	restrict: 'E',  
+    	template: '<p>This is a Sample Widget</p>'
+  	}; 
+})
+app.directive('samplesettings', function() { 
+  	return { 
+    	restrict: 'EA', 
+		template: 	'<div class="savestyles">'+
+   						'<form class="form-inline">'+
+       						'<div class="row">'+
+           						'<div class="col-sm-5">'+
+               						'<label for="SampleSettings">This is a Sample Settings Page.</label>'+
+           						'</div>'+
+       						'</div>'+
+       						'<div class="row">'+
+           						'<div class="col-sm-11">'+
+          						'<hr/>'+
+           						'</div>'+
+       						'</div>'+
+       						'<div class="row">'+
+           						'<div class="col-sm-11">'+
+           							'<button type="submit" class="btn btn-primary sbtns" ng-click="close(widget)">CLOSE</button>'+
+           						'</div>'+
+       						'</div>'+
+   						'</form>'+
+					'</div>',
+		controller: function($scope) {
+			$scope.close = function(widget){
+	            widget.main = true;
+	            widget.settings.active = false;
+	            widget.saveLoad = false;
+	            widget.delete = false;
+	        }
+		}
+	}
+});
 app.directive('graph', function() {
     return {
         restrict: 'EA',
@@ -22156,44 +22194,115 @@ app.controller('confirmParametersCtrl',['$scope','$uibModalInstance','dataLabel'
 }]);
 
 
-app.directive('sample', function() { 
+app
+.directive('systemmap', function() { 
 	return { 
-    	restrict: 'E',  
-    	template: '<p>This is a Sample Widget</p>'
-  	}; 
-})
-app.directive('samplesettings', function() { 
-  	return { 
     	restrict: 'EA', 
-		template: 	'<div class="savestyles">'+
-   						'<form class="form-inline">'+
-       						'<div class="row">'+
-           						'<div class="col-sm-5">'+
-               						'<label for="SampleSettings">This is a Sample Settings Page.</label>'+
-           						'</div>'+
-       						'</div>'+
-       						'<div class="row">'+
-           						'<div class="col-sm-11">'+
-          						'<hr/>'+
-           						'</div>'+
-       						'</div>'+
-       						'<div class="row">'+
-           						'<div class="col-sm-11">'+
-           							'<button type="submit" class="btn btn-primary sbtns" ng-click="close(widget)">CLOSE</button>'+
-           						'</div>'+
-       						'</div>'+
-   						'</form>'+
-					'</div>',
-		controller: function($scope) {
-			$scope.close = function(widget){
-	            widget.main = true;
-	            widget.settings.active = false;
-	            widget.saveLoad = false;
-	            widget.delete = false;
-	        }
+		controller: 'SystemMapCtrl',
+    	templateUrl: './directives/systemmap/systemmap.html'
+    }
+});
+
+app.controller('SystemMapCtrl',['$scope', 'dashboardService', '$interval', 'datastatesService', function ($scope, dashboardService, $interval, datastatesService) {
+
+	// data states colors
+	var colorAlarm = datastatesService.colorValues.alarmcolor; //Color red for alarm
+    var colorCaution = datastatesService.colorValues.cautioncolor;// Color orange for caution
+    var colorHealthy = datastatesService.colorValues.healthycolor;// Color green for healthy data
+    var colorStale = datastatesService.colorValues.stalecolor;// Color staleblue for stale data
+    var colorDisconnected = datastatesService.colorValues.disconnectedcolor;//Color grey for disconnected db
+    var colorDefault = datastatesService.colorValues.defaultcolor;//Color black for default color
+    var prevDatavalue = [];
+    $scope.dataStatus = dashboardService.icons;
+    var dServiceObjVal = {};
+   // $scope.interval = $interval(updateSystemMap, 1000, 0, false);   
+
+    //watch to check the database icon color to know about database status
+    $scope.$watch('dataStatus',function(newVal,oldVal){
+        dServiceObjVal = newVal; 
+    },true);
+
+    //default image on adding qwidget for the first time.
+    $scope.widget.settings.imglocation = "/media/systemmaps/sysmap.jpg";
+    function updateSystemMap(){
+
+        //Implement when data is available.
+            //0.Uncomment interval call to updateSystemMap
+        	//1.GET image data of the selected image from database.
+        	//2.SET mission name,sub system name ,subcategory name and data id from image data
+        	//3.Create a string datavalue to form an argument to dashboardService.getData(datavalue);
+        	//4.The datavalue should be a concatenated string mission.subsystem.subcategory.dataid;
+        	//5.GET data value of each data id from telemetry collection and check the data state color;
+        	//6.SET the value{{tlmdata.value}} and its color{{tlmdata.datacolor}} for display on the selected map at the designated area.
+
+    }
+
+//    $scope.$on("$destroy", 
+	// 	function(event) {
+	// 		$interval.cancel( $scope.interval );
+	// 	}
+	// );  
+}]);
+
+
+app
+.directive('systemmapsettings', function() {
+    return {
+        restrict: 'E',
+        templateUrl:'./directives/systemmap/systemmapsettings.html',
+        controller: 'SystemSettingsCtrl',
+    };
+});
+
+app.controller('SystemSettingsCtrl',['$scope', 'gridService', function($scope, gridService){
+	loadSystemMaps();
+
+	function loadSystemMaps(){
+		gridService.loadMaps().then(function(response){
+			if(response.status == 200) {
+				$scope.images = response.data;
+			}
+		});
+	}
+
+	$scope.isLoaded = false;
+
+	checkForImageModel();
+
+	$scope.closeSettings = function(widget){
+		widget.main = true;
+		widget.settings.active = false;
+		widget.saveLoad = false;
+		widget.delete = false;
+		$scope.selected.imageid = widget.settings.imageid;
+	}
+
+	$scope.saveSettings = function(widget){
+		if($scope.selected.imageid){
+			widget.main = true;
+			widget.settings.active = false;
+			widget.saveLoad = false;
+			widget.delete = false;
+			for(var i=0;i<$scope.images.length;i++){
+				if($scope.images[i].imageid === $scope.selected.imageid){
+					widget.settings.imageid = $scope.images[i].imageid ;
+					widget.settings.imglocation = 'data:image/gif;base64,'+$scope.images[i].image; 
+					widget.settings.contents = $scope.images[i].contents;
+				}
+			}
 		}
 	}
-});
+
+	function checkForImageModel(){
+		if(!$scope.widget.settings.imageid){
+			$scope.selected = {};
+		}else {
+			$scope.selected = {
+				imageid : $scope.widget.settings.imageid
+			};
+		}
+	}
+}]);
 app
 .directive('model', function() {
   	return { 
@@ -23532,115 +23641,6 @@ app.controller('confirmCtrl',['$scope','$uibModalInstance','dataLabel','dataItem
 
 
 app
-.directive('systemmap', function() { 
-	return { 
-    	restrict: 'EA', 
-		controller: 'SystemMapCtrl',
-    	templateUrl: './directives/systemmap/systemmap.html'
-    }
-});
-
-app.controller('SystemMapCtrl',['$scope', 'dashboardService', '$interval', 'datastatesService', function ($scope, dashboardService, $interval, datastatesService) {
-
-	// data states colors
-	var colorAlarm = datastatesService.colorValues.alarmcolor; //Color red for alarm
-    var colorCaution = datastatesService.colorValues.cautioncolor;// Color orange for caution
-    var colorHealthy = datastatesService.colorValues.healthycolor;// Color green for healthy data
-    var colorStale = datastatesService.colorValues.stalecolor;// Color staleblue for stale data
-    var colorDisconnected = datastatesService.colorValues.disconnectedcolor;//Color grey for disconnected db
-    var colorDefault = datastatesService.colorValues.defaultcolor;//Color black for default color
-    var prevDatavalue = [];
-    $scope.dataStatus = dashboardService.icons;
-    var dServiceObjVal = {};
-   // $scope.interval = $interval(updateSystemMap, 1000, 0, false);   
-
-    //watch to check the database icon color to know about database status
-    $scope.$watch('dataStatus',function(newVal,oldVal){
-        dServiceObjVal = newVal; 
-    },true);
-
-    //default image on adding qwidget for the first time.
-    $scope.widget.settings.imglocation = "/media/systemmaps/sysmap.jpg";
-    function updateSystemMap(){
-
-        //Implement when data is available.
-            //0.Uncomment interval call to updateSystemMap
-        	//1.GET image data of the selected image from database.
-        	//2.SET mission name,sub system name ,subcategory name and data id from image data
-        	//3.Create a string datavalue to form an argument to dashboardService.getData(datavalue);
-        	//4.The datavalue should be a concatenated string mission.subsystem.subcategory.dataid;
-        	//5.GET data value of each data id from telemetry collection and check the data state color;
-        	//6.SET the value{{tlmdata.value}} and its color{{tlmdata.datacolor}} for display on the selected map at the designated area.
-
-    }
-
-//    $scope.$on("$destroy", 
-	// 	function(event) {
-	// 		$interval.cancel( $scope.interval );
-	// 	}
-	// );  
-}]);
-
-
-app
-.directive('systemmapsettings', function() {
-    return {
-        restrict: 'E',
-        templateUrl:'./directives/systemmap/systemmapsettings.html',
-        controller: 'SystemSettingsCtrl',
-    };
-});
-
-app.controller('SystemSettingsCtrl',['$scope', 'gridService', function($scope, gridService){
-	loadSystemMaps();
-
-	function loadSystemMaps(){
-		gridService.loadMaps().then(function(response){
-			if(response.status == 200) {
-				$scope.images = response.data;
-			}
-		});
-	}
-
-	$scope.isLoaded = false;
-
-	checkForImageModel();
-
-	$scope.closeSettings = function(widget){
-		widget.main = true;
-		widget.settings.active = false;
-		widget.saveLoad = false;
-		widget.delete = false;
-		$scope.selected.imageid = widget.settings.imageid;
-	}
-
-	$scope.saveSettings = function(widget){
-		if($scope.selected.imageid){
-			widget.main = true;
-			widget.settings.active = false;
-			widget.saveLoad = false;
-			widget.delete = false;
-			for(var i=0;i<$scope.images.length;i++){
-				if($scope.images[i].imageid === $scope.selected.imageid){
-					widget.settings.imageid = $scope.images[i].imageid ;
-					widget.settings.imglocation = 'data:image/gif;base64,'+$scope.images[i].image; 
-					widget.settings.contents = $scope.images[i].contents;
-				}
-			}
-		}
-	}
-
-	function checkForImageModel(){
-		if(!$scope.widget.settings.imageid){
-			$scope.selected = {};
-		}else {
-			$scope.selected = {
-				imageid : $scope.widget.settings.imageid
-			};
-		}
-	}
-}]);
-app
 .directive('timeline', function() { 
 	return { 
     	restrict: 'EA', 
@@ -24928,6 +24928,39 @@ app
 		}
     }
 })
+angular.module('app')
+.component('grid', {
+    templateUrl: "../components/grid/grid.html",
+    controller: function(gridService,dashboardService){
+    	var vm = this;
+		vm.gridsterOptions = gridService.gridsterOptions;
+	   	vm.dashboard = gridService.getDashboard();
+	   	vm.loadStatus = dashboardService.getLoadStatus();
+	   	vm.loadLayoutloaders = gridService.getGridLoader();
+
+		vm.remove = function(widget) {
+			widget.main = false;
+			widget.settings.active = false;
+			widget.saveLoad = false;
+			widget.delete = true;
+		};
+
+		vm.openSettings = function(widget) {
+			widget.main = false;
+			widget.settings.active = true;
+			widget.saveLoad = false;		
+			widget.delete = false;
+		};
+
+		vm.openSaveLoadSettings = function(widget) {
+			widget.main = false;
+			widget.settings.active = false;
+			widget.saveLoad = true;
+			widget.delete = false;			
+		};
+    }
+})
+
 app
 .component('leftSidebar', {
   	templateUrl: "./components/leftSidebar/left_sidebar.html",
@@ -25117,105 +25150,6 @@ app
     }
 });
 
-angular.module('app')
-.component('grid', {
-    templateUrl: "../components/grid/grid.html",
-    controller: function(gridService,dashboardService){
-    	var vm = this;
-		vm.gridsterOptions = gridService.gridsterOptions;
-	   	vm.dashboard = gridService.getDashboard();
-	   	vm.loadStatus = dashboardService.getLoadStatus();
-	   	vm.loadLayoutloaders = gridService.getGridLoader();
-
-		vm.remove = function(widget) {
-			widget.main = false;
-			widget.settings.active = false;
-			widget.saveLoad = false;
-			widget.delete = true;
-		};
-
-		vm.openSettings = function(widget) {
-			widget.main = false;
-			widget.settings.active = true;
-			widget.saveLoad = false;		
-			widget.delete = false;
-		};
-
-		vm.openSaveLoadSettings = function(widget) {
-			widget.main = false;
-			widget.settings.active = false;
-			widget.saveLoad = true;
-			widget.delete = false;			
-		};
-    }
-})
-
-app
-.component('saveMenu', {
-	bindings: {
-    	widget: '='
-    },
-    templateUrl: "../components/saveMenu/save.html",
-    controller: function(){
-    	var vm = this;
-
-		vm.closeSaveLoadSettings = function(widget){
-			widget.main = true;
-			widget.settings.active = false;
-			widget.saveLoad = false;
-			widget.delete = false;
-		}
-    }
-})
-angular.module('app')
-.component('statusIcons', {
-  	templateUrl: "./components/statusIcons/status_icons.html",
-  	controller: function(dashboardService,$scope) {
-  		var vm = this;
-  		vm.satstatusIconColor = "#12C700";//satellite icon default color
-  		vm.gsstatusIconColor = "#12C700";//ground station icon default color
-  		vm.proxystatusIconColor = "#12C700";//proxy icon default color
-  		vm.dbstatusIconColor = "#12C700";//database icon default color
-  		$scope.statusIcons = dashboardService.icons;
-  		var dServiceObj = {};
-
-  		$scope.$watch('statusIcons',function(newVal,oldVal){
-        	dServiceObj = newVal; 
-        	if(dServiceObj.sIcon === "grey" && dServiceObj.gIcon === "grey" && dServiceObj.pIcon === "grey" &&dServiceObj.dIcon === "red"){
-				//if query failed
-				vm.satstatusIconColor = "#CFCFD5";
-				vm.gsstatusIconColor = "#CFCFD5";
-				vm.proxystatusIconColor = "#CFCFD5";
-  				vm.dbstatusIconColor = "#FF0000";
-	    	}else if(dServiceObj.sIcon === "grey" && dServiceObj.gIcon === "red" && dServiceObj.pIcon=== "green" && dServiceObj.dIcon === "blue"){
-	    		// if there is response from database but the data is stale
-	    		// or if proxy application is not receiving any data from ground station
-	    		vm.satstatusIconColor = "#CFCFD5";
-  				vm.gsstatusIconColor = "#FF0000";
-  				vm.proxystatusIconColor = "#12C700";
-  				vm.dbstatusIconColor = "#71A5BC";
-	    	}else if(dServiceObj.sIcon === "red" && dServiceObj.gIcon === "green" && dServiceObj.pIcon=== "green" && dServiceObj.dIcon === "green"){
-	    		//if the streamed data is empty
-	    		vm.satstatusIconColor = "#FF0000";
-  				vm.gsstatusIconColor = "#12C700";
-  				vm.proxystatusIconColor = "#12C700";
-  				vm.dbstatusIconColor = "#12C700";
-	    	}else if(dServiceObj.sIcon === "grey" && dServiceObj.gIcon === "grey" && dServiceObj.pIcon === "red" && dServiceObj.dIcon === "green"){
-	    		//If proxy application is not running
-	    		vm.satstatusIconColor = "#CFCFD5";
-  				vm.gsstatusIconColor = "#CFCFD5";
-  				vm.proxystatusIconColor = "#FF0000";
-  				vm.dbstatusIconColor = "#12C700";
-	    	}else if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green"){
-	    		//If everything works good
-	    		vm.satstatusIconColor = "#12C700";
-  				vm.gsstatusIconColor = "#12C700";
-  				vm.proxystatusIconColor = "#12C700";
-  				vm.dbstatusIconColor = "#12C700";
-	    	}
-    	},true);
-	}
-})
 app
 .component('rightSidebar', {
   	templateUrl: "./components/rightSidebar/right_sidebar.html",
@@ -25472,3 +25406,70 @@ app.controller('adminCtrl',['$scope', '$filter', '$uibModalInstance', 'userServi
     }
 
 }]);
+
+app
+.component('saveMenu', {
+	bindings: {
+    	widget: '='
+    },
+    templateUrl: "../components/saveMenu/save.html",
+    controller: function(){
+    	var vm = this;
+
+		vm.closeSaveLoadSettings = function(widget){
+			widget.main = true;
+			widget.settings.active = false;
+			widget.saveLoad = false;
+			widget.delete = false;
+		}
+    }
+})
+angular.module('app')
+.component('statusIcons', {
+  	templateUrl: "./components/statusIcons/status_icons.html",
+  	controller: function(dashboardService,$scope) {
+  		var vm = this;
+  		vm.satstatusIconColor = "#12C700";//satellite icon default color
+  		vm.gsstatusIconColor = "#12C700";//ground station icon default color
+  		vm.proxystatusIconColor = "#12C700";//proxy icon default color
+  		vm.dbstatusIconColor = "#12C700";//database icon default color
+  		$scope.statusIcons = dashboardService.icons;
+  		var dServiceObj = {};
+
+  		$scope.$watch('statusIcons',function(newVal,oldVal){
+        	dServiceObj = newVal; 
+        	if(dServiceObj.sIcon === "grey" && dServiceObj.gIcon === "grey" && dServiceObj.pIcon === "grey" &&dServiceObj.dIcon === "red"){
+				//if query failed
+				vm.satstatusIconColor = "#CFCFD5";
+				vm.gsstatusIconColor = "#CFCFD5";
+				vm.proxystatusIconColor = "#CFCFD5";
+  				vm.dbstatusIconColor = "#FF0000";
+	    	}else if(dServiceObj.sIcon === "grey" && dServiceObj.gIcon === "red" && dServiceObj.pIcon=== "green" && dServiceObj.dIcon === "blue"){
+	    		// if there is response from database but the data is stale
+	    		// or if proxy application is not receiving any data from ground station
+	    		vm.satstatusIconColor = "#CFCFD5";
+  				vm.gsstatusIconColor = "#FF0000";
+  				vm.proxystatusIconColor = "#12C700";
+  				vm.dbstatusIconColor = "#71A5BC";
+	    	}else if(dServiceObj.sIcon === "red" && dServiceObj.gIcon === "green" && dServiceObj.pIcon=== "green" && dServiceObj.dIcon === "green"){
+	    		//if the streamed data is empty
+	    		vm.satstatusIconColor = "#FF0000";
+  				vm.gsstatusIconColor = "#12C700";
+  				vm.proxystatusIconColor = "#12C700";
+  				vm.dbstatusIconColor = "#12C700";
+	    	}else if(dServiceObj.sIcon === "grey" && dServiceObj.gIcon === "grey" && dServiceObj.pIcon === "red" && dServiceObj.dIcon === "green"){
+	    		//If proxy application is not running
+	    		vm.satstatusIconColor = "#CFCFD5";
+  				vm.gsstatusIconColor = "#CFCFD5";
+  				vm.proxystatusIconColor = "#FF0000";
+  				vm.dbstatusIconColor = "#12C700";
+	    	}else if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green"){
+	    		//If everything works good
+	    		vm.satstatusIconColor = "#12C700";
+  				vm.gsstatusIconColor = "#12C700";
+  				vm.proxystatusIconColor = "#12C700";
+  				vm.dbstatusIconColor = "#12C700";
+	    	}
+    	},true);
+	}
+})

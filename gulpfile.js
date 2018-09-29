@@ -2,12 +2,13 @@ var gulp = require('gulp');
 var concat = require('gulp-concat');
 var cleanCss = require('gulp-clean-css');
 var ttf2woff2 = require('gulp-ttf2woff2');
-
 var rename = require('gulp-rename');
-const minify = require('gulp-minify');
 var uglify = require('gulp-uglify');
+var sourcemaps = require('gulp-sourcemaps');
+var clean = require('gulp-clean');
+var gulpSequence = require('gulp-sequence');
 
-gulp.task('pack-dashboard-css', function () {	
+gulp.task('build-dashboard-css', function () {	
 	return gulp.src([
         'public/css/bootstrap-min.css',
         'public/css/font-awesome.min.css',
@@ -33,54 +34,21 @@ gulp.task('pack-dashboard-css', function () {
         'public/css/gridster/angular-gridster.min.css',
         'public/css/gridster/grid.css'
     ])
+    .pipe(sourcemaps.init({loadMaps: true}))
 	.pipe(concat('dashboard.css'))
 	.pipe(cleanCss())
-	.pipe(gulp.dest('public/build/css'));
+	.pipe(gulp.dest('public/build/css'))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest('public/build/css'));
 });
 
-gulp.task('pack-fonts', function () {	
+gulp.task('build-fonts', function () {	
 	return gulp.src(['public/fonts/fontawesome-webfont.ttf','public/fonts/glyphicons-halflings-regular.ttf'])
 		.pipe(ttf2woff2())
 		.pipe(gulp.dest('public/build/fonts/'));
 });
 
-gulp.task('pack-services', function() {
-    return  gulp.src([
-      	'!app/services/*.spec.js',
-      	'app/services/*.js'
-    ])
-    .pipe(concat('appServices.js'))
-    .pipe(gulp.dest('public/build/services'))
-    .pipe(rename('appServices.min.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest('public/build/services'));
-});
-
-gulp.task('pack-directiveControllers', function() {
-    return  gulp.src([
-      	'!app/directives/**/*.spec.js',
-      	'app/directives/**/*.js'
-    ])
-    .pipe(concat('appDirectiveControllers.js'))
-    .pipe(gulp.dest('public/build/directives'))
-    .pipe(rename('appDirectiveControllers.min.js'))
-   	.pipe(minify())
-    .pipe(gulp.dest('public/build/directives'));
-});
-
-gulp.task('pack-componentControllers', function() {
-    return  gulp.src([
-      	'!app/components/**/*.spec.js',
-      	'app/components/**/*.js'
-    ])
-    .pipe(concat('appComponentControllers.js'))
-    .pipe(gulp.dest('public/build/components'))
-    .pipe(rename('appComponentControllers.min.js'))
-    .pipe(uglify())
-    .pipe(gulp.dest('public/build/components'));
-});
-
-gulp.task('pack-vendorJS', function() {
+gulp.task('build-vendorJS', function() {
     return  gulp.src([
         'public/scripts/jquery.js',
         'public/scripts/bootstrap.min.js',
@@ -110,14 +78,16 @@ gulp.task('pack-vendorJS', function() {
         'public/scripts/angularjs-dropdown-multiselect.js',
         'public/scripts/ng-sortable.js'
     ])
+    .pipe(sourcemaps.init())
     .pipe(concat('vendor.js'))
     .pipe(gulp.dest('public/build/js'))
     .pipe(rename('vendor.min.js'))
     .pipe(uglify())
+    .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('public/build/js'));
 });
 
-gulp.task('pack-appJS', function() {
+gulp.task('build-appJS', function() {
     return  gulp.src([
         '!app/services/*.spec.js',
         'app/services/*.js',
@@ -127,22 +97,12 @@ gulp.task('pack-appJS', function() {
         'app/components/**/*.js',
     ])
     .pipe(concat('appresources.js'))
-    .pipe(gulp.dest('public/build/js'))
-    .pipe(rename('appresources.min.js'))
-    .pipe(minify())
     .pipe(gulp.dest('public/build/js'));
 });
 
-// Watch Files For Changes
-gulp.task('watch', function () {
-    gulp.watch('app/services/*.js', ['pack-services']);
-    gulp.watch('app/directives/**/*.js', ['pack-directiveControllers']);
-    gulp.watch('app/components/**/*.js', ['pack-componentControllers']);
-    gulp.watch(['public/scripts/*.js','public/scripts/*.min.js'], ['pack-vendorJS']);
-    gulp.watch('public/fonts/*.ttf', ['pack-fonts']);
-    gulp.watch(['app/directives/**/*.css','app/components/**/*.css','public/css/*.css'], ['pack-dashboard-css']);
-    gulp.watch(['app/services/*.js','app/directives/**/*.js','app/components/**/*.js'], ['pack-appJS']);
+gulp.task('clean-build', function () {
+  return gulp.src('public/build', {read: false})
+    .pipe(clean());
 });
 
-
-gulp.task('default',['pack-dashboard-css','pack-fonts','pack-services','pack-directiveControllers','pack-componentControllers','pack-vendorJS','pack-appJS','watch']);
+gulp.task('default', gulpSequence('clean-build',['build-fonts','build-dashboard-css','build-vendorJS','build-appJS']));
