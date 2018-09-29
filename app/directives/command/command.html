@@ -66,10 +66,10 @@
     </md-content>
     <md-content class="commandLogTable">
         <div layout="row" ng-repeat="comm in commandLog | orderBy:'-sent_timestamp'">
-            <div flex="15" class="left-cmdlogrow">
+            <div flex="15" class="left-cmdlogrow" style="word-wrap: break-word;">
                 {{comm.time}}
             </div>
-            <div flex="15" class="left-cmdlogrow" style="text-overflow:ellipsis; white-space: nowrap;">
+            <div flex="15" class="left-cmdlogrow" style="word-wrap: break-word;">
                 {{comm.name}}
             </div>
             <div flex="20" class="left-cmdlogrow" style="word-wrap: break-word;">

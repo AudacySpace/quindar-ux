@@ -31,7 +31,7 @@ app.controller('DataLogCtrl',['$scope','$interval','dashboardService','datastate
     $scope.box = $scope.boxReference[0]; //div that results in scrollbar when many rows pushed
 
     $scope.scrollToBottom = true;
-
+    
     //watch to check the database icon color to know about database status
     $scope.$watch('dataStatus',function(newVal,oldVal){
         dServiceObjVal = newVal; 
@@ -62,8 +62,8 @@ app.controller('DataLogCtrl',['$scope','$interval','dashboardService','datastate
 	}
 
     //Called every time user scrolls in widget
-    $scope.boxReference.scroll = function() {
-        if($scope.box.scrollHeight == Math.floor($scope.box.scrollTop) + $scope.box.clientHeight) //Check if user is scrolled to bottom of data log
+    $scope.boxReference.bind('scroll', function(){
+      if($scope.box.scrollHeight == Math.floor($scope.box.scrollTop) + $scope.box.clientHeight) //Check if user is scrolled to bottom of data log
         {
             $scope.scrollToBottom = true;
         }
@@ -72,7 +72,7 @@ app.controller('DataLogCtrl',['$scope','$interval','dashboardService','datastate
             $scope.scrollToBottom = false;
         }
         $scope.autoScroll();
-    };
+    })
 
     //Check to see if necessary to stay scrolled at the bottom of the data log
     $scope.autoScroll = function()
