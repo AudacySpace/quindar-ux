@@ -1,33 +1,51 @@
+// Grab the config env file if it's there
+var config;
+
+try{
+	config = require('./config.env');
+} catch(e) {
+	config = {};
+}
+
 module.exports = function(){
-    switch(process.env.NODE_ENV){
-        case 'staging':
-            return {
+	if(isEmpty(config)){
+		//default values if configuration not present
+		return {
+			'googleAuth' : {
+			    'clientID'         : '',
+			    'clientSecret'     : '',
+			    'callbackURL'      : ''
+			},
+			'databaseURL' : 'mongodb://localhost:27017/quindar'
+        };
+	} else {
+		//values of NODE_ENV - 'staging', 'production', 'development'
+		if(process.env.NODE_ENV) {
+			return {
             	'googleAuth' : {
-			        'clientID'         : '6076920577-0uon1h086qbampdlt3e01dg8v1u1ab2h.apps.googleusercontent.com',
-			        'clientSecret'     : 'VtaXQlwXdZZ3_rj7eS18o-II',
-			        'callbackURL'      : 'https://quindar.space/auth/google/callback'
+			        'clientID'         : config[process.env.NODE_ENV].googleAuth.clientID,
+			        'clientSecret'     : config[process.env.NODE_ENV].googleAuth.clientSecret,
+			        'callbackURL'      : config[process.env.NODE_ENV].googleAuth.callbackURL
 			    },
-			    'databaseURL' : 'mongodb://54.184.232.90:27017/quindar'
+			    'databaseURL' : config[process.env.NODE_ENV].databaseURL
             };
-
-        case 'production':
-            return {
+		} else { //return values for development environment in case NODE_ENV not set
+			return {
             	'googleAuth' : {
-			        'clientID'         : '',
-			        'clientSecret'     : '',
-			        'callbackURL'      : ''
+			        'clientID'         : config.development.googleAuth.clientID,
+			        'clientSecret'     : config.development.googleAuth.clientSecret,
+			        'callbackURL'      : config.development.googleAuth.callbackURL
 			    },
-			    'databaseURL' : ''
+			    'databaseURL' : config.development.databaseURL
             };
-
-        default:
-            return {
-            	'googleAuth' : {
-			        'clientID'         : '6076920577-0uon1h086qbampdlt3e01dg8v1u1ab2h.apps.googleusercontent.com',
-			        'clientSecret'     : 'VtaXQlwXdZZ3_rj7eS18o-II',
-			        'callbackURL'      : 'https://localhost/auth/google/callback'
-			    },
-			    'databaseURL' : 'mongodb://54.184.232.90:27017/quindar'
-            };
-    }
+		}
+	}
 };
+
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
