@@ -225,7 +225,10 @@ function gridService ($http, $sessionStorage, $window, userService) {
         },
         main: true,
         settings: {
-            active: false
+            active: false,
+            grouporder: {
+                items1: []
+            }
         },
         saveLoad: false,
         delete: false

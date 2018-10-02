@@ -15,7 +15,8 @@ module.exports = {
                         console.log(err);
                     };
 
-                    res.send(telemetry);
+                    // res.send(telemetry);
+                    res.json(telemetry);
                 }
             );
         }
