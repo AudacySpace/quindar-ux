@@ -4,7 +4,7 @@ var StatusBoard = mongoose.model('StatusBoard');
 module.exports = {
     getAlerts: function(req, res){
         var mission = req.query.missionname;
-
+        
         //Load the alerts and vehicles from the statusboard collection
         StatusBoard.findOne({ 'mission' : mission }, 
             { statusboard : 1, vehiclecolors : 1, _id : 0}, function(err, status) {
@@ -12,7 +12,7 @@ module.exports = {
                 if(err){
                     console.log(err);
                 }
-                res.send(status);
+                res.json(status);
             });
     },
     postAlerts: function(req,res){
