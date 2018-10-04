@@ -11,8 +11,8 @@ describe('Testing gridService', function () {
             widgets: [{
                 col: 0,
                 row: 0,
-                sizeY: 3,
-                sizeX: 4,
+                sizeY: 10,
+                sizeX: 12,
                 name: "Line Plot",
                 directive: "graph",
                 directiveSettings: "linesettings",
@@ -35,10 +35,10 @@ describe('Testing gridService', function () {
                 delete: false
             },
             {
-                col: 4,
+                col: 12,
                 row: 0,
-                sizeY: 3,
-                sizeX: 4,
+                sizeY: 10,
+                sizeX: 12,
                 name: "3D Model",
                 directive: "satellite",
                 directiveSettings: "satellitesettings",
@@ -61,7 +61,8 @@ describe('Testing gridService', function () {
     };
 
     var windowMock = {
-        document : {}
+        document : {},
+        innerWidth: 1440
     };
     var sessionStorage = {};
 
@@ -119,8 +120,8 @@ describe('Testing gridService', function () {
 
     it('should define the gridster options', function() {
         var gridsterOptions = {
-            margins: [20, 20],
-            columns: 8,
+            margins: [5, 5],
+            columns: 24,
             draggable: {
                 enabled: true,
                 handle: '.box-header'

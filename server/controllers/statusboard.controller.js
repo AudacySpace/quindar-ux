@@ -12,7 +12,8 @@ module.exports = {
                 if(err){
                     console.log(err);
                 }
-                res.send(status);
+                //res.send(status);
+                res.json(status);
             });
     },
     postAlerts: function(req,res){

@@ -29,6 +29,12 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
     $scope.rowOperationErrorMsg = "";
     $scope.errMsgStyles = {};
     $scope.datetime = $scope.widget.settings.datetime;
+    $scope.realtimebutton = { 
+        style : {
+            'background':'#12C700',
+            'float':'right'
+        }
+    };
 
 
     checkForTimezoneData();

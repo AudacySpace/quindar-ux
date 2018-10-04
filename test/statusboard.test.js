@@ -366,7 +366,7 @@ describe('Test Suite for Status Board Route Controller', function() {
             }
         }
         var res = {
-            send: sinon.spy()
+            json: sinon.stub()
         }
 
         var output = {"statusboard": [
@@ -416,8 +416,8 @@ describe('Test Suite for Status Board Route Controller', function() {
         var spy = chai.spy.on(sbmodule, 'getAlerts');
         sbmodule.getAlerts(req, res);
         expect(spy).to.have.been.called();
-        expect(res.send.calledOnce).to.be.true;
-        sinon.assert.calledWith(res.send,output);
+        expect(res.json.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.json,output);
 
     });
 
@@ -428,14 +428,14 @@ describe('Test Suite for Status Board Route Controller', function() {
             }
         }
         var res = {
-            send: sinon.spy()
+            json: sinon.stub()
         }
     
         var spy = chai.spy.on(sbErrmodule, 'getAlerts');
         sbErrmodule.getAlerts(req, res);
         expect(spy).to.have.been.called();
-        expect(res.send.calledOnce).to.be.true;
-        sinon.assert.calledWith(res.send,{status:400});
+        expect(res.json.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.json,{status:400});
 
     });
 
