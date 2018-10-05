@@ -45,11 +45,6 @@
     "angular-mocks": "1.6.1",
     "chai": "^4.1.2",
     "chai-spies": "^1.0.0",
-    "jasmine-core": "^3.2.1",
-    "karma": "^3.0.0",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-jasmine": "^1.1.2",
-    "karma-spec-reporter": "0.0.32",
     "mocha": "^5.0.1",
     "proxyquire": "^2.0.0",
     "sinon": "^4.4.2"
