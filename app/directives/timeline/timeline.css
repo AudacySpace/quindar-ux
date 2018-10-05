@@ -136,6 +136,7 @@ button.md-raised.real-time-btn{
     font-size:14px !important;
     text-transform:none !important;
     float: right !important;
+    color:#ffffff;
 }
 div.dt-outer{
     background-color: lightgrey !important;
@@ -159,6 +160,7 @@ button.md-raised.set-btn {
     text-transform:none !important;
     background-color:#07d1ea;
     margin-left:0px !important;
+    color:#ffffff;
 }
 
 button.md-raised.set-btn:hover { 
@@ -295,6 +297,7 @@ p.listItems{
         border-radius:0px !important;
         font-size:10px !important;
         min-height:38px;
+        color:#ffffff;
     }
     div.dt-outer{
         background-color: lightgrey !important;
@@ -322,6 +325,7 @@ p.listItems{
         font-size:10px !important;
         margin-left:0px !important;
         min-height:38px;
+        color:#ffffff;
     }
     .vis-label.vis-nesting-group.collapsed:before {
         content: "\203A" !important;
@@ -477,6 +481,7 @@ p.listItems{
         border-radius:0px !important;
         font-size:12px !important;
         min-height:40px;
+        color:#ffffff;
     }
     div.dt-outer{
         background-color: lightgrey !important;
@@ -501,6 +506,7 @@ p.listItems{
         font-size:12px !important;
         margin-left:0px !important;
         min-height:40px;
+        color:#ffffff;
     }
 
     .vis-label.vis-nesting-group.collapsed:before {

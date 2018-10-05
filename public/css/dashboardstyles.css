@@ -15,6 +15,13 @@ body {
     margin-right:0;
 }
 
+.dashboard-body{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    padding-bottom: 0px !important;
+  /*  padding: 5px !important;*/
+}
+
 md-content.mainContentLayout{
 /*    background: #F1F1F1;*/
     background: #9e9e9e36
@@ -47,7 +54,8 @@ md-content.mainContentLayout{
 }
 
 .navbar {
-    margin-bottom:15px !important;
+  /*  margin-bottom:15px !important;*/
+  margin-bottom:0px !important;
 }
 
 /*nav#statusBar {
@@ -62,7 +70,8 @@ img#main-img {
 
 a#QRegular.navbar-brand {
     padding:0px;
-    margin-left: 20px;
+    /*margin-left: 20px;*/
+    margin-left: -8px;
 }
 
 .navbar-brand>img {
@@ -78,8 +87,8 @@ a#QRegular.navbar-brand {
     background-color: #07D1EA;
     color: white;
     padding:10px 20px;
-    margin-right:15px;
-    height: 50px;
+   /* margin-right:15px;
+*/  height: 50px;
     margin-top: 0px;
 }
 
@@ -215,7 +224,7 @@ ul.nav.navbar-nav.navbar-right {
 
 #cfgmenu {
     height:50px;
-    margin-right:20px;
+    margin-right:5px;
 }
 #missionImage {
     position:relative;

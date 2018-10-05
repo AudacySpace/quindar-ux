@@ -52,7 +52,7 @@ describe('Test Suite for Telemetry Route Controller', function() {
             }
         }
         var res = {
-            send: sinon.spy()
+            json: sinon.stub()
         }
 
         var result = {
@@ -63,8 +63,8 @@ describe('Test Suite for Telemetry Route Controller', function() {
         var spy = chai.spy.on(telemetrymodule, 'getTelemetry');
         telemetrymodule.getTelemetry(req, res);
         expect(spy).to.have.been.called();
-        expect(res.send.calledOnce).to.be.true;
-        sinon.assert.calledWith(res.send, result);
+        expect(res.json.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.json, result);
     });
 
     it("should not get telemetry data when error", function() {
@@ -74,14 +74,14 @@ describe('Test Suite for Telemetry Route Controller', function() {
             }
         }
         var res = {
-            send: sinon.spy()
+            json: sinon.stub()
         }
     
         var spy = chai.spy.on(telemetryErrmodule, 'getTelemetry');
         telemetryErrmodule.getTelemetry(req, res);
         expect(spy).to.have.been.called();
-        expect(res.send.calledOnce).to.be.true;
-        sinon.assert.calledWith(res.send,null);
+        expect(res.json.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.json,null);
     });
 
 });

@@ -1,36 +1,28 @@
 
 function gridService ($http, $sessionStorage, $window, userService) { 
     var gridsterOptions = {
-        margins: [20, 20],
-        columns: 8,
+        margins: [5, 5],
+        columns: 24,
         draggable: {
             enabled: true,
             handle: '.box-header'
         }
-    }; 
-
-    var email = userService.getUserEmail();
-
-    var loaders = {
-        gridLoader: false
     };
-
-    checkDefaultDashboard();
 
     var widgetDefinitions = [
     {
-        sizeY: 3,
-        sizeX: 4,
+        sizeY: 8,
+        sizeX: 10,
         name: "Line Plot",
         directive: "graph",
-		directiveSettings: "linesettings",
+        directiveSettings: "linesettings",
         id: "addLine",
         icon: {
             id: "l-plot",
             type: "fa-line-chart"
         },
         main: true,
-		settings: {
+        settings: {
             active: false,
             data : {
                 vehicles : [],
@@ -39,23 +31,22 @@ function gridService ($http, $sessionStorage, $window, userService) {
             },
             dataArray: []
         },
-		saveLoad: false,
-		delete: false
+        saveLoad: false,
+        delete: false
     },
     {
-        sizeY: 3,
-        sizeX: 4,
-        maxSizeY:3,
+        sizeY: 8,
+        sizeX: 10,
         name: "Data Table",
         directive: "datatable",
-		directiveSettings: "datatablesettings",
+        directiveSettings: "datatablesettings",
         id: "datatable",
         icon: {
             id: "d-table",
             type: "fa-table"
         },
         main: true,
-		settings: {
+        settings: {
             active: false,
             checkedValues:{
                 checkedId: true,
@@ -72,12 +63,12 @@ function gridService ($http, $sessionStorage, $window, userService) {
             previous : [],
             dataArray: []
         },
-		saveLoad: false,
-		delete: false
+        saveLoad: false,
+        delete: false
     },    
     {
-        sizeY: 3,
-        sizeX: 4,
+        sizeY: 8,
+        sizeX: 10,
         name: "3D Model",
         directive: "satellite",
         directiveSettings: "satellitesettings",
@@ -97,8 +88,8 @@ function gridService ($http, $sessionStorage, $window, userService) {
         delete: false
     },
     {
-        sizeY: 3,
-        sizeX: 4,
+        sizeY: 8,
+        sizeX: 10,
         name: "Ground Track",
         directive: "groundtrack",
         directiveSettings: "groundtracksettings",
@@ -119,8 +110,8 @@ function gridService ($http, $sessionStorage, $window, userService) {
         delete: false
     },
     {
-        sizeY: 3,
-        sizeX: 4,
+        sizeY: 8,
+        sizeX: 10,
         name: "Clock",
         directive: "clock",
         directiveSettings: "clocksettings",
@@ -137,8 +128,8 @@ function gridService ($http, $sessionStorage, $window, userService) {
         delete: false
     },
     {
-        sizeY: 3,
-        sizeX: 4,
+        sizeY: 8,
+        sizeX: 10,
         name: "Data Log",
         directive: "datalog",
         directiveSettings: "datalogsettings",
@@ -156,8 +147,8 @@ function gridService ($http, $sessionStorage, $window, userService) {
         delete: false
     },
     {
-        sizeY: 3,
-        sizeX: 4,
+        sizeY: 8,
+        sizeX: 10,
         name: "Alarm Panel",
         directive: "alarmpanel",
         directiveSettings: "alarmpanelsettings",
@@ -175,8 +166,8 @@ function gridService ($http, $sessionStorage, $window, userService) {
         delete: false
     },   
     {
-        sizeY: 3,
-        sizeX: 8,
+        sizeY: 10,
+        sizeX: 12,
         name: "System Map",
         directive: "systemmap",
         directiveSettings: "systemmapsettings",
@@ -193,8 +184,8 @@ function gridService ($http, $sessionStorage, $window, userService) {
         delete: false
     },
     {
-        sizeY: 3,
-        sizeX: 4,
+        sizeY: 8,
+        sizeX: 10,
         name: "Command",
         directive: "command",
         directiveSettings: "commandsettings",
@@ -213,8 +204,8 @@ function gridService ($http, $sessionStorage, $window, userService) {
         delete: false
     },
     {
-        sizeY: 3,
-        sizeX: 8,
+        sizeY: 10,
+        sizeX: 12,
         name: "Timeline",
         directive: "timeLine",
         directiveSettings: "timelinesettings",
@@ -225,16 +216,45 @@ function gridService ($http, $sessionStorage, $window, userService) {
         },
         main: true,
         settings: {
-            active: false
+            active: false,
+            grouporder: {
+                items1: []
+            }
         },
         saveLoad: false,
         delete: false
+    }];
 
-    }
-    ];
+    var email = userService.getUserEmail();
 
+    var loaders = {
+        gridLoader: false
+    };
+
+    setGridsterOptions();
+
+    checkDefaultDashboard();
+
+
+    function setGridsterOptions(){
+        if($window.innerWidth <= 1440){
+            gridsterOptions.minSizeX = 8;
+            gridsterOptions.minSizeY = 4;
+        }else if($window.innerWidth > 1440){
+            gridsterOptions.minSizeX = 4;
+            gridsterOptions.minSizeY = 2;
+            widgetDefinitions[3].sizeX = 8;
+            widgetDefinitions[3].sizeY = 5;
+            widgetDefinitions[7].sizeX = 8;
+            widgetDefinitions[7].sizeY = 3;
+            widgetDefinitions[9].sizeX = 8;
+            widgetDefinitions[9].sizeY = 6;
+
+        }
+    } 
+
+    
     function checkDefaultDashboard(){
-
         if(!$sessionStorage.dashboard || $sessionStorage.dashboard === null || $sessionStorage.dashboard === ''){
             $sessionStorage.dashboards = {
                 'Home': {
@@ -243,11 +263,12 @@ function gridService ($http, $sessionStorage, $window, userService) {
                         missionName: '',
                         missionImage: ''
                     },
-                    widgets: [{
+                    widgets: [
+                    {
                         col: 0,
                         row: 0,
-                        sizeY: 3,
-                        sizeX: 4,
+                        sizeY: 8,
+                        sizeX: 10,
                         name: "Line Plot",
                         directive: "graph",
                         directiveSettings: "linesettings",
@@ -259,39 +280,40 @@ function gridService ($http, $sessionStorage, $window, userService) {
                         main: true,
                         settings: {
                             active: false,
-                            data : {
-                                vehicles : [],
-                                value : "",
-                                key : ""
+                                data : {
+                                    vehicles : [],
+                                    value : "",
+                                    key : ""
+                                },
+                                dataArray: []
                             },
-                            dataArray: []
+                            saveLoad: false,
+                            delete: false
                         },
-                        saveLoad: false,
-                        delete: false
-                    },
-                    {
-                        col: 4,
-                        row: 0,
-                        sizeY: 3,
-                        sizeX: 4,
-                        name: "3D Model",
-                        directive: "satellite",
-                        directiveSettings: "satellitesettings",
-                        id: "satellite",
-                        icon: {
-                            id: "l-plot",
-                            type: "fa-cube"
-                        },
-                        main: true,
-                        settings: {
-                            active: false,
-                            dataArray: [],
-                            totalAttitudeArray: [],
-                            totalPositionArray: []
-                        },
-                        saveLoad: false,
-                        delete: false
-                    }]
+                        {
+                            col: 10,
+                            row: 0,
+                            sizeY: 8,
+                            sizeX: 10,
+                            name: "3D Model",
+                            directive: "satellite",
+                            directiveSettings: "satellitesettings",
+                            id: "satellite",
+                            icon: {
+                                id: "l-plot",
+                                type: "fa-cube"
+                            },
+                            main: true,
+                            settings: {
+                                active: false,
+                                dataArray: [],
+                                totalAttitudeArray: [],
+                                totalPositionArray: []
+                            },
+                            saveLoad: false,
+                            delete: false
+                        }
+                    ]
                 }
             }
             $sessionStorage.dashboard = {"current" : angular.copy($sessionStorage.dashboards['Home'])};
