@@ -26,7 +26,7 @@ module.exports = {
         });
     },
     getMissions: function(req,res){
-        Config.find({},{"mission":1,"_id": false},function(err,missions){
+        Config.find({},{"mission":1, "simulated": 1, "_id": false},function(err,missions){
             if(err){
                 console.log(err);
             };

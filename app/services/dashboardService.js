@@ -24,7 +24,7 @@ app
         if(currentLayout.current.mission.missionName !== ""){
             gridService.setMissionForUser(currentLayout.current.mission.missionName);
             setCurrentMission(currentLayout.current.mission);
-            getTelemetry(currentLayout.current.mission.missionName);
+            getTelemetry(currentLayout.current.mission);
         }else {
             getMissions(missions);
         }
@@ -39,7 +39,11 @@ app
         }).then(function success(response) {
             for(var i=0;i<response.data.length;i++){
                 var image = gridService.getMissionImage(response.data[i].mission);
-                missions.push({"missionName":response.data[i].mission,"missionImage":image});
+                missions.push({
+                    "missionName":response.data[i].mission,
+                    "missionImage":image,
+                    "simulated":response.data[i].simulated
+                });
             }
             $uibModal.open({
                 templateUrl: './components/dashboard/missionModal.html',
@@ -49,8 +53,8 @@ app
             }).result.then(function(response){
                 if(response){
                     missionSelection = true;
-                    gridService.setMissionForLayout(response.missionName);
-                    getTelemetry(response.missionName);
+                    gridService.setMissionForLayout(response);
+                    getTelemetry(response);
                 }                
             },function close(){
                 alert("No mission selected!Reload the page for options.");
@@ -60,17 +64,18 @@ app
         });
     }
 
-    function getTelemetry(missionName) {
+    function getTelemetry(mission) {
         var prevId = "";
         var loaders;
         if(loadCount === 0 && missionSelection !== true){
             loadStatus.value = true;
         }
+
         $interval(function () { 
             $http({
                 url: "/getTelemetry", 
                 method: "GET",
-                params: {'mission' : missionName}
+                params: {'mission' : mission.missionName}
             }).then(function success(response) {
                 if(response.data){
                     for(var item in response.data.telemetry){
@@ -78,7 +83,7 @@ app
                     }
                     telemetry['data'] = response.data.telemetry;
                     telemetry['time'] = response.data.timestamp;
-                    time = response.data.timestamp;
+                    // time = response.data.timestamp;
                     loadCount++;
                     loadStatus.value = false;
                     loaders = gridService.getGridLoader();
@@ -144,6 +149,16 @@ app
                     gridService.setGridLoader(false);
                 }
             });
+
+            //Set Mission Time
+            //Value from telemetry if simulated mission
+            //Real UTC clock time if real mission
+            if(mission.simulated){
+                time = telemetry['time'];
+            } else {
+                time = new Date();
+            }
+
         },1000);
     }
 
@@ -324,6 +339,7 @@ app
     function setCurrentMission(mName){
         selectedMission.missionName = mName.missionName;
         selectedMission.missionImage = mName.missionImage;
+        selectedMission.simulated = mName.simulated;
     }
     function getCurrentMission(){
         return selectedMission;
