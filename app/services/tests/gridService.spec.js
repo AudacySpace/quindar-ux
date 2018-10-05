@@ -11,8 +11,8 @@ describe('Testing gridService', function () {
             widgets: [{
                 col: 0,
                 row: 0,
-                sizeY: 10,
-                sizeX: 12,
+                sizeY: 8,
+                sizeX: 10,
                 name: "Line Plot",
                 directive: "graph",
                 directiveSettings: "linesettings",
@@ -35,10 +35,10 @@ describe('Testing gridService', function () {
                 delete: false
             },
             {
-                col: 12,
+                col: 10,
                 row: 0,
-                sizeY: 10,
-                sizeX: 12,
+                sizeY: 8,
+                sizeX: 10,
                 name: "3D Model",
                 directive: "satellite",
                 directiveSettings: "satellitesettings",
@@ -122,12 +122,13 @@ describe('Testing gridService', function () {
         var gridsterOptions = {
             margins: [5, 5],
             columns: 24,
+            minSizeX: 8,
+            minSizeY: 4,
             draggable: {
                 enabled: true,
                 handle: '.box-header'
             }
         };
-
         expect(gridService.gridsterOptions).toBeDefined();
         expect(gridService.gridsterOptions).toEqual(gridsterOptions);
     });
