@@ -153,10 +153,12 @@ app
             //Set Mission Time
             //Value from telemetry if simulated mission
             //Real UTC clock time if real mission
-            if(mission.simulated){
-                time = telemetry['time'];
-            } else {
+            if(!mission.simulated){
                 time = new Date();
+            } else {
+                if(telemetry['time']){
+                    time = telemetry['time'];
+                }
             }
 
         },1000);
@@ -183,7 +185,6 @@ app
 
         if(time != "") {
             var missionTime = moment(time).tz(timezone); // moment object of mission time in timezone defined
-
             var today = missionTime.toDate();
             days = checkDays(missionTime.dayOfYear());
             h = checkTime(missionTime.hours());

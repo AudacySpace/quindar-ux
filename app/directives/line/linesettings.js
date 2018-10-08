@@ -11,7 +11,6 @@ app.controller('LineSettingsCtrl',
     function($scope, $mdSidenav, $window, dashboardService, sidebarService, $interval){
 
         var colors = [ "#0AACCF", "#FF9100", "#64DD17", "#07D1EA", "#0D8DB8", "#172168", "#228B22", "#12C700", "#C6FF00" ];
-        $scope.previousSettings;
         $scope.interval;
         var hasValue;
 
@@ -23,6 +22,8 @@ app.controller('LineSettingsCtrl',
                 key: ''
             }
         }
+
+        $scope.previousSettings = angular.copy($scope.settings);
 
         $scope.tempParameterSelection = new Object();
         $scope.inputFieldStyles = {};
