@@ -327,7 +327,7 @@ describe('Testing gridService', function () {
         gridService.setMissionForLayout(mission);
 
         expect(sessionStorage.dashboard["current"].mission.missionName).toEqual(mission.missionName);
-        expect(sessionStorage.dashboard["current"].mission.missionName).toEqual(mission.simulated);
+        expect(sessionStorage.dashboard["current"].mission.simulated).toEqual(mission.simulated);
         expect(sessionStorage.dashboard["current"].mission.missionImage).toEqual("/media/icons/AudacyZero_Logo_White.jpg");
         expect(userService.setMissionForUser).toHaveBeenCalled();
     });
