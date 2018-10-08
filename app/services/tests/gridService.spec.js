@@ -320,12 +320,16 @@ describe('Testing gridService', function () {
     });
 
     it('should set mission name and image for layout when setMissionForLayout is called', function () {
-        var mname = "AZero";
+        var mission = {
+            missionName : "AZero",
+            simulated : false
+        };
 
         deferredMission.resolve({data: {}, status:200})
-        gridService.setMissionForLayout(mname);
+        gridService.setMissionForLayout(mission);
 
-        expect(sessionStorage.dashboard["current"].mission.missionName).toEqual(mname);
+        expect(sessionStorage.dashboard["current"].mission.missionName).toEqual(mission.missionName);
+        expect(sessionStorage.dashboard["current"].mission.simulated).toEqual(mission.simulated);
         expect(sessionStorage.dashboard["current"].mission.missionImage).toEqual("/media/icons/AudacyZero_Logo_White.jpg");
         expect(userService.setMissionForUser).toHaveBeenCalled();
     });

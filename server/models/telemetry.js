@@ -15,6 +15,10 @@ var telemetrySchema = mongoose.Schema({
     	type: Date,
     	required:true
     },
+    createdDate : { //add system time
+        type : Date,
+        required: true
+    },
     telemetry : {
     	type: Object,
     	required: true

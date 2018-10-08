@@ -386,14 +386,15 @@ function gridService ($http, $sessionStorage, $window, userService) {
         selectedDashboardId = layout.name;
     }
 
-    function setMissionForLayout(mname){
-        $sessionStorage.dashboard["current"].mission.missionName = mname;
+    function setMissionForLayout(mission){
+        $sessionStorage.dashboard["current"].mission.missionName = mission.missionName;
+        $sessionStorage.dashboard["current"].mission.simulated = mission.simulated;
         if($sessionStorage.dashboard["current"].mission.missionName !== ""){
             var sessionimage = getMissionImage($sessionStorage.dashboard["current"].mission.missionName);
             $sessionStorage.dashboard["current"].mission.missionImage = sessionimage;
         }
 
-        setMissionForUser(mname);
+        setMissionForUser(mission.missionName);
     }
 
     function setMissionForUser(mname){

@@ -10,7 +10,7 @@ describe('Testing alarm panel controller', function () {
         inject(function($controller, $rootScope, _$interval_){
             $interval = _$interval_;
             dashboardService = jasmine.createSpyObj('dashboardService', 
-                ['sortObject', 'telemetry', 'getTime', 'isEmpty']);
+                ['sortObject', 'telemetry', 'isEmpty']);
             datastatesService = jasmine.createSpyObj('datastatesService', ['getDataColorBound']);
             userService = jasmine.createSpyObj('userService', ['getUserName', 'userRole']);
             statusboardService = jasmine.createSpyObj('statusboardService', 
@@ -21,10 +21,10 @@ describe('Testing alarm panel controller', function () {
                     "alert": "CAUTION",
                     "bound": "LOW",
                     "vehicle": "A0",
-                    "time": "042.10:34:03 UTC",
+                    "time": "2018-02-16T00:26:41.439Z",
                     "channel": "A0.GNC.velocity.vz",
                     "ack": "",
-                    "timestamp": 1518345244,
+                    "timestamp": 1518740801,
                     "rowstyle" : { color: '#CFCFD5' }
                 }];
 
@@ -199,14 +199,6 @@ describe('Testing alarm panel controller', function () {
     });
 
     it('should not call saveAlerts when no alert, but call setAlertsTable when updateColors is called', function(){
-        dashboardService.getTime.and.callFake(function() {
-            return {
-                days : '070',
-                minutes : '10',
-                hours : '10',
-                seconds : '50'
-            };
-        });
         dashboardService.isEmpty.and.callFake(function() {
             return false;
         });
@@ -269,21 +261,12 @@ describe('Testing alarm panel controller', function () {
             alert: 'ALARM', 
             bound: 'HIGH', 
             vehicle: 'A0', 
-            time: '070.10:10:50 UTC', 
+            time: '2018-02-16T00:26:41.439Z',
             channel: 'A0.GNC.Velocity.vx', 
             ack: '', 
-            timestamp: 1518749084 
+            timestamp: 1518740801
         }];
-        dashboardService.getTime.and.callFake(function() {
-            return {
-                days : '070',
-                minutes : '10',
-                hours : '10',
-                seconds : '50',
-                utc : '070.10:10:50 UTC',
-                today : 1518749084000
-            };
-        });
+
         dashboardService.isEmpty.and.callFake(function() {
             return false;
         });
@@ -351,10 +334,10 @@ describe('Testing alarm panel controller', function () {
                 alert: 'ALARM', 
                 bound: 'HIGH', 
                 vehicle: 'A0', 
-                time: '070.10:10:50 UTC', 
+                time: '2018-02-16T00:26:41.439Z',
                 channel: 'A0.GNC.Velocity.vx', 
                 ack: '', 
-                timestamp: 1518749084 
+                timestamp: 1518740801
             }], 
             subCategoryColors: [  ], 
             ackStatus: false 
