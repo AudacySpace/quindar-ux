@@ -193,6 +193,7 @@ describe('Test Suite for Configuration Model ', function() {
             expect(err.errors['source.filename']).to.exist;
             expect(err.errors.contents).to.exist;
             expect(err.errors.mission).to.exist;
+            expect(err.errors.simulated).to.exist;
         });
     });
 
@@ -205,7 +206,9 @@ describe('Test Suite for Configuration Model ', function() {
 
             },
             contents : {},
-            mission: 'Azero'
+            mission: 'Azero',
+            simulated: false,
+            attachments : []
         });
         m.validate(function(err){
             assert.isNull(err);
@@ -221,6 +224,7 @@ describe('Test Suite for Configuration Model ', function() {
 
             },
             contents : {},
+            simulated: false,
             mission: 'Azero'
         });
         m.validate(function(err){
@@ -239,6 +243,7 @@ describe('Test Suite for Configuration Model ', function() {
 
             },
             contents : {},
+            simulated: false,
             mission: 'Azero'
         });
         m.validate(function(err){
@@ -256,6 +261,7 @@ describe('Test Suite for Configuration Model ', function() {
 
             },
             contents : {},
+            simulated: false,
             mission: 'Azero'
         });
         m.validate(function(err){
@@ -272,7 +278,8 @@ describe('Test Suite for Configuration Model ', function() {
                 filename:'SIM.xlsx' ,
 
             },
-            mission: 'Azero'
+            mission: 'Azero',
+            simulated: false
         });
         m.validate(function(err){
             expect(err.errors.contents.name).to.exist;
@@ -288,12 +295,30 @@ describe('Test Suite for Configuration Model ', function() {
                 filename:'SIM.xlsx' ,
 
             },
-            contents : {}
+            contents : {},
+            simulated: false
         });
         m.validate(function(err){
             expect(err.errors.mission.name).to.exist;
             expect(err.errors.mission.name).to.equal('ValidatorError');
         });  
+    });
+
+    it('should invalidate if simulated property is not defined', function() {
+        var m = new CFG({
+            source : {
+                name : 'Julia',
+                ipaddress: '34.209.90.133',
+                filename:'SIM.xlsx' ,
+
+            },
+            contents : {},
+            mission: 'Azero'
+        });
+        m.validate(function(err){
+            expect(err.errors.simulated.name).to.exist;
+            expect(err.errors.simulated.name).to.equal('ValidatorError');
+        });
     });
 
 });

@@ -11,14 +11,34 @@ var configSchema = mongoose.Schema({
     // contents : Object,
     // mission : String
 
-
     source : {
-    	name : {type:String,required:true},
-    	ipaddress : {type:String,required:true},
-    	filename :  {type:String,required:true}
+        name : {
+            type : String,
+            required: true
+        },
+        ipaddress : {
+            type : String,
+            required: true
+        },
+        filename :  {
+            type : String,
+            required: true
+        }
     },
-    contents : {type:Object,required:true},
-    mission : {type:String,required:true}
+    contents : {
+        type : Object
+    },
+    mission : {
+        type : String,
+        required: true
+    },
+    simulated : {
+        type : Boolean,
+        required : true
+    },
+    attachments : {
+        type : Array
+    }
 
 });
 
