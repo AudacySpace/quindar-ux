@@ -83,7 +83,13 @@ describe('Testing dashboardService', function () {
             simulated : false
         }];
 
-        var missions = [{mission : 'ATest'}, {mission : 'AZero'}];
+        var missions = [{
+            mission : 'ATest',
+            simulated : true
+        }, {
+            mission : 'AZero',
+            simulated : false
+        }];
         httpBackend.expectGET('/getMissions').respond(200, missions); 
 
         httpBackend.flush();
