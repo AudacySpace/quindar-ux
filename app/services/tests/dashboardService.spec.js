@@ -75,10 +75,12 @@ describe('Testing dashboardService', function () {
 
         var missionList = [{
             missionName : 'ATest',
-            missionImage : 'ABC.svg'
+            missionImage : 'ABC.svg',
+            simulated : true
         }, {
             missionName : 'AZero',
-            missionImage : 'ABC.svg'
+            missionImage : 'ABC.svg',
+            simulated : false
         }];
 
         var missions = [{mission : 'ATest'}, {mission : 'AZero'}];
