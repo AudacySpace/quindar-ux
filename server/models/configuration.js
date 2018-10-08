@@ -11,6 +11,7 @@ var configSchema = mongoose.Schema({
     // contents : Object,
     // mission : String
 
+
     source : {
         name : {
             type : String,
@@ -26,7 +27,8 @@ var configSchema = mongoose.Schema({
         }
     },
     contents : {
-        type : Object
+        type : Object,
+        required : true
     },
     mission : {
         type : String,
