@@ -71,7 +71,7 @@ app.controller('AlarmPanelCtrl',
         var alowValue,ahighValue,dataValue,wlowValue,whighValue,valueType;
         var newtablearray = [];
 
-        time = dashboardService.getTime('UTC');
+        time = $scope.telemetry['time'];
 
         for(var i=0;i<$scope.contents.length;i++){
             $scope.contents[i].tableArray = [];
@@ -101,7 +101,8 @@ app.controller('AlarmPanelCtrl',
 
                                         var subsystem = categories[j];
                                         var channel = vehicle + "." + subsystem + "." + key + "." + keyval;
-                                        var timestamp = Math.round(time.today/1000);
+
+                                        var timestamp = Math.round(new Date(time).getTime()/1000);
                                         ack = "";
 
                                         if(status.alert === "ALARM" || status.alert === "CAUTION"){
@@ -111,7 +112,7 @@ app.controller('AlarmPanelCtrl',
                                                     "alert" : status.alert,
                                                     "bound" : status.bound,
                                                     "vehicle" : vehicle,
-                                                    "time" : time.utc,
+                                                    "time" : time,
                                                     "channel" : channel,
                                                     "ack" : ack,
                                                     "timestamp" : timestamp
