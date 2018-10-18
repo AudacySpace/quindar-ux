@@ -4,6 +4,7 @@ var config;
 try{
 	config = require('./config.env');
 } catch(e) {
+	console.log("Error opening configuration file: " + e)
 	config = {};
 }
 
