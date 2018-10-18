@@ -16,7 +16,8 @@ module.exports = function(){
 			    'clientSecret'     : '',
 			    'callbackURL'      : ''
 			},
-			'databaseURL' : 'mongodb://localhost:27017/quindar'
+			'databaseURL' : 'mongodb://localhost:27017/quindar',
+			'databaseOpts' : { useMongoClient : true }
         };
 	} else {
 		//values of NODE_ENV - 'staging', 'production', 'development'
@@ -27,7 +28,8 @@ module.exports = function(){
 			        'clientSecret'     : config[process.env.NODE_ENV].googleAuth.clientSecret,
 			        'callbackURL'      : config[process.env.NODE_ENV].googleAuth.callbackURL
 			    },
-			    'databaseURL' : config[process.env.NODE_ENV].databaseURL
+			    'databaseURL' : config[process.env.NODE_ENV].databaseURL,
+			    'databaseOpts' : config[process.env.NODE_ENV].databaseOpts
             };
 		} else { //return values for development environment in case NODE_ENV not set
 			return {
@@ -36,7 +38,8 @@ module.exports = function(){
 			        'clientSecret'     : config.development.googleAuth.clientSecret,
 			        'callbackURL'      : config.development.googleAuth.callbackURL
 			    },
-			    'databaseURL' : config.development.databaseURL
+			    'databaseURL' : config.development.databaseURL,
+			    'databaseOpts' : config.development.databaseOpts
             };
 		}
 	}

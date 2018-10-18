@@ -23,7 +23,7 @@ var config = require('./server/config/config.env.js'),
     configDB = new config();
 mongoose.Promise = global.Promise;
 
-mongoose.connect(configDB.databaseURL, {useMongoClient : true}) // connect to the database
+mongoose.connect(configDB.databaseURL, configDB.databaseOpts) // connect to the database
 .catch(function(err){
     console.log("Error connecting Mongo " + err);
 });
