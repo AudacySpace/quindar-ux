@@ -1,40 +1,51 @@
+/* Custom CSS for Data Menu*/
 #input-search {
     background-color: #242833;
     border: #242833;
     border-radius: 0px;
     color: #FFFFFF;
 }
-
 #group-search {
     border-radius:0px;     
     background-color: #464954;
     border: #464954;
     color: #FFFFFF;
 }
-
+/*Styles should be enabled when inline search icon form is used*/
+/*.search-icon {
+    position: absolute;
+    top: 0%;
+    right: 10px;
+    margin-top: 3px;
+    z-index:100;
+}*/
 .md-sidenav-left {
     background-color: #020613;
 }
-
-md-icon {
-  	width: 16px !important;
-    height: 16px;
-    margin-right: 16px !important;
-    margin-top: 12px !important;
+md-icon.large {
+    min-width:14px !important;
+    min-height:14px !important;
+  	width: 14px !important;
+    height: 14px !important;
+    margin-right: 10px !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
 }
-
 md-icon.small {
+    min-width:12px !important;
+    min-height:12px !important;
   	width: 12px !important;
-    height: 12px;
-    margin-right: 16px !important;
-    margin-top: 14px !important;
-    margin-bottom: 14px !important;
+    height: 12px !important;
+    margin-right: 10px !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
 }
-
 md-icon.smaller {
+    min-width:8px !important;
+    min-height:8px !important;
     width: 8px !important;
-    height: 8px;
-    margin-right: 16px !important;
+    height: 8px !important;
+    margin-right: 10px !important;
     margin-top: 16px !important;
     margin-bottom: 16px !important;
 }
@@ -42,21 +53,64 @@ md-icon.smaller {
 md-content#left {
     color: #ccc;
     background-color: #020613;
+    display: inline !important;
 }
-
-md-list-item#list4 .md-list-item-inner {
+img.search-icon:focus {
+    outline:auto 0px;
+}
+.md-icon{
+    color:#ccc;
+}
+form.searchIDForm{
+    width:100%;
+}
+div.emptyDataRow{
+    padding:10px 20px;
+    overflow-wrap: break-word;
     font-size: 14px;
+    color:#cfcfcf7a;
 }
-
-md-list-item#list4 {
-    font-size: 14px;
-    padding-left: 52px;
-}
-
-md-list-item#list4:hover {
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
     background-color: #242833 !important;
 }
 
-md-list-item#list4 .md-list-item-inner:hover {
-    background-color: #242833 !important;
+
+div#wave {
+    position:relative;
+    margin-top:50%;
+    text-align:center;
+    width:100px;
+    height:100px;
+    margin-left: auto;
+    margin-right: auto;
 }
+.dot {
+    display:inline-block;
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    margin-right:3px;
+    background:#07D1EA;
+    animation: wave 1.3s linear infinite;
+}
+
+.dot:nth-child(2) {
+    animation-delay: -1.1s;
+}
+
+.dot:nth-child(3) {
+    animation-delay: -0.9s;
+}
+
+@keyframes wave {
+    0%, 60%, 100% {
+        transform: initial;
+    }
+
+    30% {
+        transform: translateY(-15px);
+    }
+}
+
+
+

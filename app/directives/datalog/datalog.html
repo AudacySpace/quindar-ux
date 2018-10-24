@@ -1,0 +1,47 @@
+
+ <div id="datalogtable">
+ <div layout="row" class="datalog-rows header-log">
+    <div flex="25" class="dlog-header dlog-center-header">
+        Parameter
+    </div>
+    <div flex="25" class="dlog-header dlog-center-header">
+        Value
+    </div>
+    <div flex="25" class="dlog-header dlog-center-header">
+        Time
+    </div>
+    <div flex="25" class="dlog-header">
+        Vehicle
+    </div>
+    
+</div>
+ <div layout="row" class="datalog-rows">
+    <div flex="25" class="dlog-header dlog-center-header">
+         <input type="text" class="d-log-input" ng-model="search.parameter"/> 
+    </div>
+    <div flex="25" class="dlog-header dlog-center-header">
+        <input type="text" class="d-log-input" ng-model="search.value"/> 
+    </div>
+    <div flex="25" class="dlog-header dlog-center-header">
+      <input type="text" class="d-log-input" ng-model="search.timestamp"/> 
+    </div>  
+    <div flex="25" class="dlog-header">
+      <input type="text" class="d-log-input" ng-model="search.vehicle"/> 
+    </div>  
+</div>
+<div layout="row"  ng-repeat="data in logData | filter:search" class="datalog-rows">
+    <div flex="25" class="dlog-row dlog-center-row" style="word-wrap: break-word;">
+        {{data.parameter}}
+    </div>
+    <div flex="25" class="dlog-row dlog-center-row" ng-style="data.style" style="word-wrap: break-word;">
+        {{data.value}}
+    </div>
+    <div flex="25" class="dlog-row dlog-center-row" style="word-wrap: break-word;">
+        {{data.timestamp}}
+    </div>
+    <div flex="25" class="dlog-row" style="word-wrap: break-word;">
+        {{data.vehicle}}
+    </div>
+    <span id = "invisibleSpan" ng-bind="autoScroll()"></span>
+</div>
+</div>

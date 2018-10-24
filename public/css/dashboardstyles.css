@@ -1,197 +1,299 @@
 /*!
  * Custom CSS for dashboard page 
  */
+
+
+/* CSS for dashboard content*/
 body {
     overflow-x: hidden;
-    background-color: #F2F3F4  ;
+    background-color: #F2F3F4;
+    font-family: "Open Sans", Sans-serif; 
 }
-#QBlack {
-    display:none;
-}
+
 .container {
     margin-left:0;
     margin-right:0;
 }
-#qwidgetMenu {
-    list-style-type: none;
-    padding-left:0px;
-    border-top:1px solid #ccc;
-    border-bottom:1px solid #ccc;
+
+.dashboard-body{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    padding-bottom: 0px !important;
+  /*  padding: 5px !important;*/
 }
-#widgettops {
-    list-style-type: none;
-    padding-left:0px;
-    border-top:1px solid #242833;
-    border-bottom:1px solid #242833;
+
+md-content.mainContentLayout{
+/*    background: #F1F1F1;*/
+    background: #9e9e9e36
 }
-#widgetops ul {
-    list-style-type: none;
-}
-#usermail{
+
+/* End of CSS for dashboard content*/
+
+
+/* CSS for dashboard header*/
+#QBlack {
     display:none;
 }
-span#layout-arrow {
-    position: relative;
-    top: 0px;
-    right:0px;
-}
-span#qwidgets {
-    position: relative;
-    top: 2px;
-    right: 8px;
-}
-span#user-admin,i#server-admin,i#docs {
-    position: relative;
-    top: 0px;
-    right: 8px;
-}
-span#qwidgetPlus,i#g-track,i#t-table,i#s-table,i#d-table,i#l-plot,span#save-layout,span#load-layout,span#clear-layout {
-    position: relative;
-    top: 0px;
-    right: 5px;
-}
+
 .navbar {
-    border: 0 none;  
-    padding-top: 7px;
-    padding-bottom: 0px;
-    border-bottom: 3px solid #CFCFD5;
+    border: 0 none;
     text-align: center; 
-    height: 67px;
+    height: 50px;
+    -webkit-box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
+    -moz-box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
+    box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
 }
+
 .navbar .navbar-nav {
     display:inline-block;
     float: none;
 }
+
 .navbar-default {
     background-color: white;
 }
-.navbar-form {
-    margin-top: 0px;
+
+.navbar {
+  /*  margin-bottom:15px !important;*/
+  margin-bottom:0px !important;
 }
+
+/*nav#statusBar {
+    overflow: auto !important;
+}
+*/
+img#main-img {
+    height:95%;
+    padding-top:4px;
+    padding-bottom:2px;
+}
+
+a#QRegular.navbar-brand {
+    padding:0px;
+    /*margin-left: 20px;*/
+    margin-left: -8px;
+}
+
 .navbar-brand>img {
     height: 100%;
     width: auto;
-    padding-left:5px;
-    padding-right:5px;
 }
+
 .navbar-brand {
-   padding: 5px 5px;
+    padding: 5px 5px;
 }
+
 #add-widget {
-   background-color: #07D1EA;
-   color: white;
+    background-color: #07D1EA;
+    color: white;
+    padding:10px 20px;
+   /* margin-right:15px;
+*/  height: 50px;
+    margin-top: 0px;
 }
+
 .status-icon {
-   float: left;
-   height: 50px;
-   padding: 10px 10px !important;
-   font-size: 18px;
+    float: left;
+    height: 50px;
+    padding: 10px 10px !important;
+    font-size: 18px;
 }
+
 .status-icon>img {
    height: 100%;
    width: auto;
    display: inline-block;
 }
-.status-bar {
-   padding-left:10px;
-   padding-right:10px;
-} 
-.navbar-nav>li.clock {
-   padding-top: 15px;
-   padding-bottom: 15px;
-   line-height:20px;
-   font-size: 24px;
+
+img#main-img:focus {
+    outline:auto 0px;
 }
+
+.status-bar {
+    padding-left:10px;
+    padding-right:10px;
+}
+
+.navbar-nav>li.clock {
+    margin-top:5px;
+    line-height:20px;
+    font-size: 24px;
+}
+
 .time {
    padding-left: 10px;
    padding-right:10px;
-   color: #555;
+/*   color: rgba(0, 0, 0, 0.3);*/
+   color:#8B8C94;
    font-size: 12px;
 }
 
-#i5 {
-   position:absolute;
-   top:10px; /*-45px*/
-   right:40px;/*54px*/
-   height:65%;
+#icon_1 {
+   height:25px;
+   margin-top:13px;
+   margin-right:9px; 
 }
-#i6 {
-   position:absolute;
-   top:10px; /* -85px */
-   right:25px; /* -30px*/
-   height:65%;
+
+#icon_2 {
+    height:25px;
+    margin-top:13px;
+    margin-right:9px;
 }
-#i7{
-   position:absolute;
-   top: 10px; /*-124px*/
-   right: 10px;/*-7px*/
-   height: 65%;
+
+#icon_3 {
+    height:25px;
+    margin-top:13px;
+    margin-right:9px;
 }
-#i8{
-   position:absolute;
-   top: 10px; /* -164px*/
-   right: -5px;/*16px*/
-   height: 65%;
+
+#icon_4 {
+    height:25px;
+    margin-top:13px;
+    margin-right:0px;
 }
-#txt.clock{
-   top:0px;
-   right:-40px;
+
+#txt.clock {
+   top:10px;
+   right:0px;
    font-size:22px;
+   font-weight:200;
 }
+
+.bars {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+#top-header {
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
 a#username.dropdown-toggle {
-   font-size:18px;
-   color:black;
-   display:inline-block;
+    font-size:18px;
+    color:#8B8C94;
+    font-weight: 400;
+    display:inline-block;
+    background-color: white;
+    margin-top: 0px;
+    padding-bottom: 0px;
 }
-#user-name {
-   display:none;
+
+.logout-bar {
+    min-width: 128px;
+    border-radius:0px;
+    background: #f1f2f5;
 }
-#configmenu, #configmenu:hover {
-   font-size: 20px;
-   color: white;
+
+#callsign {
+    display: block;
+    color:  #07D1EA;
+    text-align: right;
+    padding-left: 15px;
+    padding-right: 15px;
+    font-weight: 400;
 }
-.dropdown-menu{
-   min-width: 128px;
+
+#line1 {
+    width:0px;
+    height:10px;
+    top:-75px;
+    right:133px;
+    position:absolute;
 }
-#user-name {
-   display:none;
-   margin:10px 35px;
-   color:#07D1EA;
-   font-size:24px;
+
+#line2 {
+    width:0px;
+    height:10px;
+    top:-75px;
+    right:99px;
+    position:absolute;
 }
-#mini-logout{
-   display:none;
+
+#line3 {
+    width:0px;
+    height:10px;
+    top:-75px;
+    right:64px;
+    position:absolute;
 }
+
+ul.nav.navbar-nav.navbar-right {
+    height: 50px;
+}
+
+#cfgmenu {
+    height:50px;
+    margin-right:5px;
+}
+#missionImage {
+    position:relative;
+    top:11px;
+    height:28px;
+    left:2px;
+
+}
+
+#missionName {
+    color: #125790;
+    position:relative;
+    top:13px;
+    left:6px;
+    font-size:18px;
+}
+
+a.userSettings:hover {
+    background: #fff !important;
+} 
+
+/* End of CSS for dashboard header*/
+
+
+@media (min-width: 768px) {
+    /* CSS for dashboard header */
+    .navbar-nav>li>a {
+        margin-top: 5px;
+        padding-top: 10px; 
+        padding-bottom: 10px; 
+    }
+    /* End of CSS for dashboard header */
+}
+
 @media only screen and (max-width: 736px) {
   /* For mobile phones: */
+
+    /* CSS for dashboard content */
     #QRegular {
         display:none;
     }
+
     #QBlack {
+        padding-left:10px;
         display:inline-block;
     }
-    a#addwidget, a#save-grid, a#load-grid, a#clear-grid, a#addGround{
-        font-size:12px;
+    /* End of CSS for dashboard content*/
+
+
+    /* CSS for dashboard header*/
+    #missionName {
+      display:none;  
     }
-    div.navbar-header {
-        padding:0;
-        margin:0;
-        width:20px;
+    #missionImage{
+        position: relative;
+        top: -58px;
+        height: 15px;
+        left: -108px;
     }
-    #user-name {
-        display:block;
-        margin:10px 35px;
-        color:#07D1EA;
-        font-size:18px;
+    .container-fluid>.navbar-header {
+        margin-left: 0px;
     }
-    #mini-logout{
-        display:block;
+    .nav>li>a {
+        position: relative;
+        display: block;
+        padding: 6px 6px;
     }
-    .navbar {
-        height:60px;
-    }
-    .navbar-brand>img {
-        height:65%;
+    .navbar-brand>img#main-img {
+        height:100%;
         padding-left:0px;
         padding-right:0px;
         margin-bottom:0;
@@ -216,82 +318,119 @@ a#username.dropdown-toggle {
         left:0;
     }
     ul.nav.navbar-nav.navbar-right {
-        position:fixed;
+        position:absolute;
         top:0;
         right:0;
         display:inline;
     }
     a#username.dropdown-toggle {
-        font-size:75%;
-        color:black;
         display:none;
     }
     a#add-widget {
         width:100%;
         position:relative;
-        top:0;
-        right:12px;
-        margin-top: 10px ;
-        margin-bottom:10px;
     }
-    #configmenu {
-        font-size:14px;
-        border-bottom: 1px solid #242833;
+    #icon_1 {
+        position: absolute;
+        top: -63px;
+        right: 80px;
+        height:17px;
     }
-    .rightsidenav a{
-        font-size: 14px;
+    #icon_2 {
+        position: absolute;
+        top: -63px;
+        right: 53px;
+        height:17px;
     }
-    #i5 {
+    #icon_3 {
         position:absolute;
-        top:-43px; /*-45px*/
-        right:74px;/*54px*/
-        height:55%;
+        top: -63px;
+        right: 26px;
+        height:17px;
     }
-    #i6 {
-        position:absolute;
-        top:-83px; /* -85px */
-        right:50px; /* -30px*/
-        height:55%;
+    #icon_4 {
+        position: absolute;
+        top: -63px;
+        right: 10px;
+        height:17px;
     }
-    #i7 {
+    #line1 {
+        width:0px;
+        height:10px;
+        top:-127px;
+        right:109px;
         position:absolute;
-        top: -122px; /*-124px*/
-        right: 26px;/*-7px*/
-        height: 55%;
     }
-    #i8 {
+    #line2 {
+        width:0px;
+        height:10px;
+        top:-127px;
+        right:82px;
         position:absolute;
-        top: -162px; /* -164px*/
-        right: 2px;/*16px*/
-        height: 55%;
+    }
+    #line3 {
+        width:0px;
+        height:10px;
+        top:-127px;
+        right:56px;
+        position:absolute;
     } 
     li.open {
         width:75%;
     }
     li#cfgmenu {
-        font-size:16px;   
+        font-size:16px;  
+        margin-right: 10px; 
     }
     li#txt.clock{
-        position:absolute;
-        top:-222px;
-        right:-100px;
-        font-size:8px;
+        position: absolute;
+        top: -62px;
+        right: -82px;
+        font-size: 10px;
     }
-    .container-fluid{
-        width:100%;
-        margin:0;
+    #callsign {
+        display: none;
     }
-    div.navbar-header{
-        margin:0;
+    .bars {
+        padding-top: 11px;
+        padding-bottom: 11px;
     }
+    /*End of CSS for dashboard header*/
+}
+
+@media only screen and (min-width: 736px) and (max-width: 768px) {
+
+    /*CSS for dashboard header*/
+    a#username.dropdown-toggle {
+        display:none;
+    }
+    #callsign{
+        display: none;
+    }
+/*    #txt.clock {
+        top: 12px;
+        right: 0px;
+        font-size: 20px;
+        font-weight: 200;
+    }
+    #missionName {
+        color: #125790;
+        position: relative;
+        top: 13px;
+        left: 6px;
+        font-size: 16px;
+    }*/
+    /*End of CSS for dashboard header*/
 }   
 
 @media only screen and (min-width: 768px){
+    /*CSS for dashboard header*/
     .navbar-right {
         margin-right: 0px !important;
     }
+    /*End of CSS for dashboard header*/
 }
 
-::-webkit-scrollbar { 
+::-webkit-scrollbar { /* To display scroll bars in chrome */
     display: none; 
 }

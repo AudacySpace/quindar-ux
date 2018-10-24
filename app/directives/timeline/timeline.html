@@ -1,0 +1,35 @@
+<div class="timelineqwidget">
+	<form name="timeSelectionForm" style="width:100%">
+		<div layout="row" layout-wrap>
+			<div flex="33">
+				<md-button class="md-raised real-time-btn" ng-click="realtime()" ng-style="realtimebutton.style" title="Click to view events at current time">Real Time</md-button>
+			</div>
+			<div flex="33">
+				<div class="date-time-btn">
+		            <a class="dropdown-toggle" id="dropdowndatetime" role="button" data-toggle="dropdown" data-target="#" href="#">
+			            <div class="input-group setbtn" ng-style="dateTimeErrMsgStyles">
+			                <input type="text" name="dateTimeField" class="form-control reftime-input date-time-input" ng-model="datetime" placeholder="Select Date and Time" readonly required>
+			            </div>
+		            </a>
+		            <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" id="calendar">
+		                <datetimepicker ng-model="datetime" data-datetimepicker-config="{ dropdownSelector: '#dropdowndatetime' }"/>
+		            </ul>
+		        </div>
+		         <span ng-show="dateTimeErrMsg.length > 0" style="font-size:12px;color:#dd2c00">{{ dateTimeErrMsg }}</span>
+			</div>
+			<div flex="33">
+				<md-button type="submit" class="md-raised set-btn" ng-click="changetime()" title="Click to view events at a time">Set Time</md-button>
+			</div>
+		</div>
+		<div id="timeline">
+		</div>
+		<div id="visualization">
+		</div>
+		<div class="alert alert-warning alert-dismissible" role="alert" ng-show="rowOperationErrorMsg.length > 0" ng-style="errMsgStyles">
+        	<button type="button" class="close" aria-label="Close" ng-click="rowOperationErrorMsg = ''" style="right:0;left:-3px">
+            	<span aria-hidden="true">&times;</span>
+        	</button>
+        	<strong style="padding:10px">{{ rowOperationErrorMsg }}</strong>
+    	</div>
+	</form>
+</div>

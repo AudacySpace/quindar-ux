@@ -1,198 +1,32 @@
 // load the things we need
 var mongoose = require('mongoose');
 
-// define the schema for our position model
+// define the schema for our telemetry model
 var telemetrySchema = mongoose.Schema({
-
+    mission : {
+    	type: String,
+    	required: true
+    },
+    source : {
+    	type: String,
+    	required: true
+    },
     timestamp : {
-    	notes: String,
-        category: String,
-        name: String,
-        alarm_low: Date,
-        warn_low: Date,
-        value: Date,
-        warn_high: Date,
-        alarm_high: Date,
-        units: String
+    	type: Date,
+    	required:true
     },
-    vehicleId : {
-    	notes: String,
-        category: String,
-        name: String,
-        alarm_low: String,
-        warn_low: String,
-        value: String,
-        warn_high: String,
-        alarm_high: String,
-        units: String
-    }, 
-    vx : {
-    	notes: String,
-        category: String,
-        name: String,
-        alarm_low: Number,
-        warn_low: Number,
-        value: Number,
-        warn_high: Number,
-        alarm_high: Number,
-        units: String
-    }, 
-    vy : {
-    	notes: String,
-        category: String,
-        name: String,
-        alarm_low: Number,
-        warn_low: Number,
-        value: Number,
-        warn_high: Number,
-        alarm_high: Number,
-        units: String
-    }, 
-    vz : {
-    	notes: String,
-        category: String,
-        name: String,
-        alarm_low: Number,
-        warn_low: Number,
-        value: Number,
-        warn_high: Number,
-        alarm_high: Number,
-        units: String
-    }, 
-    x : {
-    	notes: String,
-        category: String,
-        name: String,
-        alarm_low: Number,
-        warn_low: Number,
-        value: Number,
-        warn_high: Number,
-        alarm_high: Number,
-        units: String
-    }, 
-    y : {
-    	notes: String,
-        category: String,
-        name: String,
-        alarm_low: Number,
-        warn_low: Number,
-        value: Number,
-        warn_high: Number,
-        alarm_high: Number,
-        units: String
-    }, 
-    z : {
-    	notes: String,
-        category: String,
-        name: String,
-        alarm_low: Number,
-        warn_low: Number,
-        value: Number,
-        warn_high: Number,
-        alarm_high: Number,
-        units: String
+    createdDate : { //add system time
+        type : Date,
+        required: true
     },
-    r : {
-    	notes: String,
-        category: String,
-        name: String,
-        alarm_low: Number,
-        warn_low: Number,
-        value: Number,
-        warn_high: Number,
-        alarm_high: Number,
-        units: String
-    },
-    v : {
-    	notes: String,
-        category: String,
-        name: String,
-        alarm_low: Number,
-        warn_low: Number,
-        value: Number,
-        warn_high: Number,
-        alarm_high: Number,
-        units: String
-    },
-    longitude : {
-        notes: String,
-        category: String,
-        name: String,
-        alarm_low: Number,
-        warn_low: Number,
-        value: Number,
-        warn_high: Number,
-        alarm_high: Number,
-        units: String
-    },
-    latitude : {
-        notes: String,
-        category: String,
-        name: String,
-        alarm_low: Number,
-        warn_low: Number,
-        value: Number,
-        warn_high: Number,
-        alarm_high: Number,
-        units: String
-    },
-    stationId : {
-        notes: String,
-        category: String,
-        name: String,
-        alarm_low: String,
-        warn_low: String,
-        value: String,
-        warn_high: String,
-        alarm_high: String,
-        units: String
-    },
-    q1 : {
-        notes: String,
-        category: String,
-        name: String,
-        alarm_low: Number,
-        warn_low: Number,
-        value: Number,
-        warn_high: Number,
-        alarm_high: Number,
-        units: String
-    },
-    q2 : {
-        notes: String,
-        category: String,
-        name: String,
-        alarm_low: Number,
-        warn_low: Number,
-        value: Number,
-        warn_high: Number,
-        alarm_high: Number,
-        units: String
-    },
-    q3 : {
-        notes: String,
-        category: String,
-        name: String,
-        alarm_low: Number,
-        warn_low: Number,
-        value: Number,
-        warn_high: Number,
-        alarm_high: Number,
-        units: String
-    },
-    qc : {
-        notes: String,
-        category: String,
-        name: String,
-        alarm_low: Number,
-        warn_low: Number,
-        value: Number,
-        warn_high: Number,
-        alarm_high: Number,
-        units: String
+    telemetry : {
+    	type: Object,
+    	required: true
     }
-
 }, { collection: 'telemetry' });
+
+// define index on telemetry collection for fast retrieval of data
+telemetrySchema.index({ mission: 1 , timestamp: -1 });
 
 // create the model for users and expose it to our app
 module.exports = mongoose.model('Telemetry', telemetrySchema);

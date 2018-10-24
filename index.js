@@ -3,6 +3,8 @@ var app = express();
 
 app.set('port', (process.env.PORT || 5000));
 var mongoose = require('mongoose');
+mongoose.plugin(schema => { schema.options.usePushEach = true });
+
 var passport = require('passport');
 var flash    = require('connect-flash');
 
@@ -11,16 +13,38 @@ var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
 
-var configDB = require('./server/config/database.js');
-
 var fs = require('fs-extra');
 
 app.use(express.static(__dirname + '/public'));
 app.use(express.static(__dirname + '/app'));
 
-mongoose.connect(configDB.url); // connect to our database
+//Get database URL from config and connect
+var config = require('./server/config/config.env.js'),
+    configDB = new config();
+mongoose.Promise = global.Promise;
 
-require('./server/config/passport')(passport); // pass passport for configuration
+mongoose.connect(configDB.databaseURL, configDB.databaseOpts) // connect to the database
+.catch(function(err){
+    console.log("Error connecting Mongo " + err);
+});
+
+// CONNECTION EVENTS
+// When successfully connected
+mongoose.connection.on('connected', function () {
+    console.log('Mongoose default connection open\n');
+});
+
+// If the connection throws an error
+mongoose.connection.on('error',function (err) {
+    console.log('Mongoose default connection error: ' + err + '\n');
+});
+
+// When the connection is disconnected
+mongoose.connection.on('disconnected', function () {
+    console.log('Mongoose default connection disconnected');
+});
+
+require('./server/lib/passport')(passport); // pass passport for configuration
 
 // set up our express application
 app.use(morgan('dev')); // log every request to the console

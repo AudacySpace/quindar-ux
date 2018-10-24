@@ -1,8 +1,8 @@
-app
-.factory('gridService', ['$http', function($http) { 
+
+function gridService ($http, $sessionStorage, $window, userService) { 
     var gridsterOptions = {
-        margins: [20, 20],
-        columns: 8,
+        margins: [5, 5],
+        columns: 24,
         draggable: {
             enabled: true,
             handle: '.box-header'
@@ -11,121 +11,324 @@ app
 
     var widgetDefinitions = [
     {
-        sizeY: 3,
-        sizeX: 4,
+        sizeY: 8,
+        sizeX: 10,
         name: "Line Plot",
-        directive: "lineplot",
-		directiveSettings: "linesettings",
+        directive: "graph",
+        directiveSettings: "linesettings",
         id: "addLine",
         icon: {
             id: "l-plot",
             type: "fa-line-chart"
         },
         main: true,
-		settings: {
-            active: false
+        settings: {
+            active: false,
+            data : {
+                vehicles : [],
+                value : "", 
+                key: ""
+            },
+            dataArray: []
         },
-		saveLoad: false,
-		delete: false
+        saveLoad: false,
+        delete: false
     },
     {
-        sizeY: 2,
-        sizeX: 4,
+        sizeY: 8,
+        sizeX: 10,
         name: "Data Table",
         directive: "datatable",
-		directiveSettings: "datatablesettings",
+        directiveSettings: "datatablesettings",
         id: "datatable",
         icon: {
             id: "d-table",
             type: "fa-table"
         },
         main: true,
-		settings: {
+        settings: {
             active: false,
             checkedValues:{
                 checkedId: true,
-                checkedName: true,
                 checkedAlow: true,
                 checkedWlow: true,
                 checkedValue: true,
                 checkedWhigh: true,
                 checkedAhigh: true,
                 checkedUnits: true,
-                checkedNotes: true
+                checkedNotes: true,
+                checkedChannel: false
+            },
+            data : [],
+            previous : [],
+            dataArray: []
+        },
+        saveLoad: false,
+        delete: false
+    },    
+    {
+        sizeY: 8,
+        sizeX: 10,
+        name: "3D Model",
+        directive: "satellite",
+        directiveSettings: "satellitesettings",
+        id: "satellite",
+        icon: {
+            id: "l-plot",
+            type: "fa-cube"
+        },
+        main: true,
+        settings: {
+            active: false,
+            dataArray: [],
+            totalAttitudeArray: [],
+            totalPositionArray: []
+        },
+        saveLoad: false,
+        delete: false
+    },
+    {
+        sizeY: 8,
+        sizeX: 10,
+        name: "Ground Track",
+        directive: "groundtrack",
+        directiveSettings: "groundtracksettings",
+        id: "groundtrack",
+        icon: {
+            id: "g-track",
+            type: "fa-globe"
+        },
+        main: true,
+        settings: {
+            active: false,
+            vehicles : [],
+            dataArray: [],
+            totalPositionArray: [],
+            totalVelocityArray: []
+        },
+        saveLoad: false,
+        delete: false
+    },
+    {
+        sizeY: 8,
+        sizeX: 10,
+        name: "Clock",
+        directive: "clock",
+        directiveSettings: "clocksettings",
+        id: "clock",
+        icon: {
+            id: "clock",
+            type: "fa-clock-o"
+        },
+        main: true,
+        settings: {
+            active: false
+        },
+        saveLoad: false,
+        delete: false
+    },
+    {
+        sizeY: 8,
+        sizeX: 10,
+        name: "Data Log",
+        directive: "datalog",
+        directiveSettings: "datalogsettings",
+        id: "datalog",
+        icon: {
+            id: "d-log",
+            type: "fa-list-alt"
+        },
+        main: true,
+        settings: {
+            active: false,
+            dataArray: []
+        },
+        saveLoad: false,
+        delete: false
+    },
+    {
+        sizeY: 8,
+        sizeX: 10,
+        name: "Alarm Panel",
+        directive: "alarmpanel",
+        directiveSettings: "alarmpanelsettings",
+        id: "alarmpanel",
+        icon: {
+            id: "alarm",
+            type: "fa-tachometer"
+        },
+        main: true,
+        settings: {
+            active: false,
+            statusboard: true
+        },
+        saveLoad: false,
+        delete: false
+    },   
+    {
+        sizeY: 10,
+        sizeX: 12,
+        name: "System Map",
+        directive: "systemmap",
+        directiveSettings: "systemmapsettings",
+        id: "systemmap",
+        icon: {
+            id: "systemmap",
+            type: "fa-map-o"
+        },
+        main: true,
+        settings: {
+            active: false,
+        },
+        saveLoad: false,
+        delete: false
+    },
+    {
+        sizeY: 8,
+        sizeX: 10,
+        name: "Command",
+        directive: "command",
+        directiveSettings: "commandsettings",
+        id: "command",
+        icon: {
+            id: "alarm",
+            type: "fa-window-maximize"
+        },
+        main: true,
+        settings: {
+            active: false,
+            commandlog: true,
+            dataArray: []
+        },
+        saveLoad: false,
+        delete: false
+    },
+    {
+        sizeY: 10,
+        sizeX: 12,
+        name: "Timeline",
+        directive: "timeLine",
+        directiveSettings: "timelinesettings",
+        id: "timeline",
+        icon: {
+            id: "timeline",
+            type: "fa-tasks"
+        },
+        main: true,
+        settings: {
+            active: false,
+            grouporder: {
+                items1: []
             }
         },
-		saveLoad: false,
-		delete: false
-
+        saveLoad: false,
+        delete: false
     }];
 
-    var dashboards = {
-        'Home': {
-            name: 'Home',
-            widgets: [{
-                col: 0,
-                row: 0,
-                sizeY: 2,
-                sizeX: 4,
-                name: "Data Table",
-                directive: "datatable",
-				directiveSettings: "datatablesettings",
-                id: "datatable",
-                icon: {
-                    id: "d-table",
-                    type: "fa-table"
-                }, 
-                main: true,
-				settings: {
-                    active: false,
-                    checkedValues:{
-                        checkedId: true,
-                        checkedName: true,
-                        checkedAlow: true,
-                        checkedWlow: true,
-                        checkedValue: true,
-                        checkedWhigh: true,
-                        checkedAhigh: true,
-                        checkedUnits: true,
-                        checkedNotes: true
-                    }
-                },
-				saveLoad: false,
-				delete: false,
-            },
-			{
-				col: 0,
-                row: 3,
-				sizeY: 3,
-				sizeX: 4,
-				name: "Line Plot",
-				directive: "lineplot",
-				directiveSettings: "linesettings",
-				id: "addLine",
-				icon: {
-					id: "l-plot",
-					type: "fa-line-chart"
-				},
-				main: true,
-				settings: {
-					active: false
-				},
-				saveLoad: false,
-				delete: false
-            }]
-        }
+    var email = userService.getUserEmail();
+
+    var loaders = {
+        gridLoader: false
     };
 
-    var dashboard = {"current" : dashboards['Home']};
+    setGridsterOptions();
+
+    checkDefaultDashboard();
+
+
+    function setGridsterOptions(){
+        if($window.innerWidth <= 1440){
+            gridsterOptions.minSizeX = 8;
+            gridsterOptions.minSizeY = 4;
+        }else if($window.innerWidth > 1440){
+            gridsterOptions.minSizeX = 4;
+            gridsterOptions.minSizeY = 2;
+            widgetDefinitions[3].sizeX = 8;
+            widgetDefinitions[3].sizeY = 5;
+            widgetDefinitions[7].sizeX = 8;
+            widgetDefinitions[7].sizeY = 3;
+            widgetDefinitions[9].sizeX = 8;
+            widgetDefinitions[9].sizeY = 6;
+
+        }
+    } 
+
+    
+    function checkDefaultDashboard(){
+        if(!$sessionStorage.dashboard || $sessionStorage.dashboard === null || $sessionStorage.dashboard === ''){
+            $sessionStorage.dashboards = {
+                'Home': {
+                    name: 'Home',
+                    mission:{
+                        missionName: '',
+                        missionImage: ''
+                    },
+                    widgets: [
+                    {
+                        col: 0,
+                        row: 0,
+                        sizeY: 8,
+                        sizeX: 10,
+                        name: "Line Plot",
+                        directive: "graph",
+                        directiveSettings: "linesettings",
+                        id: "addLine",
+                        icon: {
+                            id: "l-plot",
+                            type: "fa-line-chart"
+                        },
+                        main: true,
+                        settings: {
+                            active: false,
+                                data : {
+                                    vehicles : [],
+                                    value : "",
+                                    key : ""
+                                },
+                                dataArray: []
+                            },
+                            saveLoad: false,
+                            delete: false
+                        },
+                        {
+                            col: 10,
+                            row: 0,
+                            sizeY: 8,
+                            sizeX: 10,
+                            name: "3D Model",
+                            directive: "satellite",
+                            directiveSettings: "satellitesettings",
+                            id: "satellite",
+                            icon: {
+                                id: "l-plot",
+                                type: "fa-cube"
+                            },
+                            main: true,
+                            settings: {
+                                active: false,
+                                dataArray: [],
+                                totalAttitudeArray: [],
+                                totalPositionArray: []
+                            },
+                            saveLoad: false,
+                            delete: false
+                        }
+                    ]
+                }
+            }
+            $sessionStorage.dashboard = {"current" : angular.copy($sessionStorage.dashboards['Home'])};
+        } 
+        $window.document.title = "Quindar - " + $sessionStorage.dashboard.current.name;
+    }
 
     var selectedDashboardId = 'Home';
 
     function getDashboard() {
-        return dashboard;
+        return $sessionStorage.dashboard;
     }
 
     function setDashboard(d1) {
-        dashboard["current"] = d1;
+        $sessionStorage.dashboard["current"] = d1;
     }
 
     function getDashboardId() {
@@ -137,7 +340,7 @@ app
     }
 
     function clear() {
-        dashboards[selectedDashboardId].widgets = [];
+        $sessionStorage.dashboard["current"].widgets = [];
     };
 
     function addWidget() {
@@ -150,19 +353,19 @@ app
 
     function addWidgets(widget) {
         var widgetdef = angular.copy(widget);
-        dashboards[selectedDashboardId].widgets.push(widgetdef);
+        $sessionStorage.dashboard["current"].widgets.push(widgetdef);
     }
 
-    function remove(widget) {
-        dashboard["current"].widgets.splice(dashboard["current"].widgets.indexOf(widget), 1);
+    function remove(widget) {      
+        $sessionStorage.dashboard["current"].widgets.splice($sessionStorage.dashboard["current"].widgets.indexOf(widget), 1);
     }
 
     function save(email, dName) {
-        dashboard["current"].name = dName;
+        $sessionStorage.dashboard["current"].name = dName;
         return $http({
             url: "/saveLayout", 
             method: "POST",
-            data: {"email" : email, "dashboard" : dashboard["current"]}
+            data: {"email" : email, "dashboard" : $sessionStorage.dashboard["current"]}
         });
     }
 
@@ -170,23 +373,74 @@ app
         return $http({
             url: "/loadLayout", 
             method: "GET",
-            params: {"email" : email}
+            params: {"email" : email,"missionname" : $sessionStorage.dashboard["current"].mission.missionName}
         });
     }
 
     function showLayout(layouts, layout) {
         for(var i=0; i<layouts.length; i++){
             var name = layouts[i].name;
-            dashboards[name] = layouts[i];
+            $sessionStorage.dashboards[name] = angular.copy(layouts[i]);
         }
-        
-        dashboard["current"] = dashboards[layout.name];
+        $sessionStorage.dashboard["current"] = angular.copy($sessionStorage.dashboards[layout.name]);
         selectedDashboardId = layout.name;
+    }
+
+    function setMissionForLayout(mission){
+        $sessionStorage.dashboard["current"].mission.missionName = mission.missionName;
+        $sessionStorage.dashboard["current"].mission.simulated = mission.simulated;
+        if($sessionStorage.dashboard["current"].mission.missionName !== ""){
+            var sessionimage = getMissionImage($sessionStorage.dashboard["current"].mission.missionName);
+            $sessionStorage.dashboard["current"].mission.missionImage = sessionimage;
+        }
+
+        setMissionForUser(mission.missionName);
+    }
+
+    function setMissionForUser(mname){
+        userService.setMissionForUser(email, mname)
+        .then(function(response){
+            userService.userRole.cRole = response.data.currentRole;
+        });
+    }
+
+    function getMissionImage(mname){
+        var image = "";
+        if(mname === "AZero" || mname === "AudacyZero" || mname === "Audacy Zero" || mname === "A Zero" || mname === "A0"){
+            image = "/media/icons/AudacyZero_Logo_White.jpg";
+            return image;
+        }else {
+            image = "/media/icons/Audacy_Icon_White.svg";
+            return image;
+        }
+    }
+
+    function loadMaps(){
+        return $http({
+            url: "/loadSystemMaps", 
+            method: "GET",
+            params: {"mission" :$sessionStorage.dashboard["current"].mission.missionName}
+        });
+    }
+
+    function loadTimelineEvents(){
+        return $http({
+            url: "/loadTimelineEvents", 
+            method: "GET",
+            params: {"mission" :$sessionStorage.dashboard["current"].mission.missionName}
+        });
+    }
+
+    function setGridLoader(loadStatus){
+        loaders.gridLoader = loadStatus;
+    }
+
+    function getGridLoader(){
+        return loaders;
     }
 
 	return {
         gridsterOptions : gridsterOptions,
-        dashboards : dashboards,
         clear : clear,
         addWidget : addWidget,
         getDashboard : getDashboard,
@@ -195,9 +449,19 @@ app
         setDashboardId : setDashboardId,
         addWidgets : addWidgets,
         widgetDefinitions : widgetDefinitions,
+        setMissionForLayout : setMissionForLayout,
+        setMissionForUser : setMissionForUser,
         remove : remove, 
         save : save,
         load : load,
-        showLayout : showLayout
+        showLayout : showLayout,
+        getMissionImage : getMissionImage,
+        loadMaps : loadMaps,
+        loadTimelineEvents : loadTimelineEvents,
+        setGridLoader : setGridLoader,
+        getGridLoader : getGridLoader
 	}
-}]);
+}
+
+app
+.factory('gridService', gridService); 

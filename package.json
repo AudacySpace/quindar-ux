@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "stop": "pkill --signal SIGINT node"
+    "stop": "pkill --signal SIGINT node",
+    "test": "karma start karma.conf.js && mocha"
   },
   "dependencies": {
     "body-parser": "~1.15.2",
@@ -24,11 +25,11 @@
     "passport-google-oauth2": "^0.1.6"
   },
   "engines": {
-    "node": "4.0.0"
+    "node": ">=8.0.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/quindar/quindar-ux"
+    "url": "https://github.com/AudacySpace/quindar-ux"
   },
   "keywords": [
     "node",
@@ -39,5 +40,13 @@
   "contributors": [
     "Audacy <quindar@audacy.space> (http://audacy.space)"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "angular-mocks": "1.6.1",
+    "chai": "^4.1.2",
+    "chai-spies": "^1.0.0",
+    "mocha": "^5.0.1",
+    "proxyquire": "^2.0.0",
+    "sinon": "^4.4.2"
+  }
 }

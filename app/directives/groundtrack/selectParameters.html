@@ -1,0 +1,67 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="myModalLabel">Select Parameters for Vehicle:{{$ctrl.vehicleName}}</h4>
+</div>
+<div class="modal-body" style="padding-left:20px; padding-right:20px; max-height:40%; ">
+    <div class="row settingsrightcol" style="display: table">
+        <div class="col-sm-1" style="display: table-cell; float:none"></div>
+        <div class="col-sm-4" style="display: table-cell; float:none">
+        <!-- Multi selection of data from data menu -->
+            <div class="row">
+                <label for="Position">Select Position</label>
+            </div>
+            <div class="row settingsspace" style="display: table"></div>
+                <div class="btn-group" style="width:100%" uib-dropdown>
+                    <button id="split-button" type="button" class="btn btn-default" ng-click="$ctrl.getTelemetrydata()" style="width:75%;border-radius:0;color:grey" >{{$ctrl.positionDisplay}}</button>
+                    <button type="button" class="btn btn-default" style="width:25%;border-radius:0;padding-left:0px;padding-right:0px" uib-dropdown-toggle>
+                        <span class="caret"></span>
+                        <span class="sr-only">Split button!</span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0" aria-labelledby="split-button">
+                        <li role="menuitem"><a href="#" ng-click="getValue('attitude')">Apply</a></li>
+                    </ul>
+                </div>
+                <span ng-hide="positionDisplay"> Required </span>
+            <div id="scrollable-containerPositionValues">
+                <div class="sortable-row" as-sortable="sortableOptions" data-ng-model="$ctrl.data.positionData">
+                    <div ng-repeat="item in $ctrl.data.positionData" as-sortable-item>
+                        <div as-sortable-item-handle style="color:#000000">{{item.key}}</div>
+                    </div>
+                </div>
+            </div> 
+            <!-- End of Multi Selection of Data from Data menu -->
+        </div>
+        <div class="col-sm-2" style="display: table-cell; float:none"></div>
+        <div class="col-sm-4" style="display: table-cell; float:none">
+        <!-- Multi selection of data from data menu -->
+            <div class="row">
+                <label for="Velocity">Select Velocity</label>
+            </div>
+            <div class="row settingsspace" style="display: table"></div>
+                <div class="btn-group" style="width:100%" uib-dropdown>
+                    <button id="split-button" type="button" class="btn btn-default" ng-click="$ctrl.getTelemetrydata()" style="width:75%;border-radius:0;color:grey" >{{$ctrl.velocityDisplay}}</button>
+                    <button type="button" class="btn btn-default" style="width:25%;border-radius:0;padding-left:0px;padding-right:0px" uib-dropdown-toggle>
+                        <span class="caret"></span>
+                        <span class="sr-only">Split button!</span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu" style="width:100%;border-radius:0" aria-labelledby="split-button">
+                        <li role="menuitem"><a href="#" ng-click="getValue('position')">Apply</a></li>
+                    </ul>
+                </div>
+                <span ng-hide="positionDisplay"> Required </span>
+            <div id="scrollable-containerVelocityValues">
+                <div class="sortable-row" as-sortable="sortableOptions" data-ng-model="$ctrl.data.velocityData">
+                    <div ng-repeat="item in $ctrl.data.velocityData" as-sortable-item>
+                        <div as-sortable-item-handle style="color:#000000">{{item.key}}</div>
+                    </div>
+                </div>
+            </div> 
+                <!-- End of Multi Selection of Data from Data menu -->
+        </div>
+        <div class="col-sm-1" style="display: table-cell; float:none"></div>
+    </div>     
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="$ctrl.close()">Close</button>
+    <button type="button" class="btn btn-primary" ng-click="$ctrl.save()">Save</button>
+</div>
+

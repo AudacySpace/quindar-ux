@@ -1,0 +1,17 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="myModalLabel">Select Mission</h4>
+</div>
+<div class="modal-body" style="padding-left:20px; padding-right:20px;">
+    <div  ng-repeat="mission in $ctrl.missions">
+        <div class="row">
+            <div class="col-xs-6">
+                <label class="radio">
+                    <input type="radio" ng-model="$ctrl.missionName" value="{{mission.missionName}}"> {{ mission.missionName }} <img ng-src="{{mission.missionImage}}" style="height:15px;width:15px"/>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="submit" class="btn btn-primary" ng-disabled="!$ctrl.missionName" ng-click="$ctrl.setMission()">Save</button>
+</div>

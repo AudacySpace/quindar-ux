@@ -1,0 +1,55 @@
+ <div id="alarmpanel">
+    <div layout="row">
+        <div flex="malarm.flexprop" ng-repeat="masteralarm in contents">
+            <!-- ngrepeat for Master alarm vehicles -->
+            <div class="masteralarm">
+                <button href="#accessibility" role="button" tabindex="1" class="button alarm-vehicle" ng-style="masteralarm.vehicleColor" ng-class="masteralarmstatus.colorclasses[$index]" ng-click="addtablerow(masteralarm.vehicle,$index,masteralarm.vehicleColor);" ng-disabled="masteralarmstatus.checkedstatus[$index]">{{masteralarm.vehicle}}
+                </button>
+            </div>
+            <!-- ngrepeat for sub systems for each vehicle -->
+            <div flex="masteralarm.flexprop" ng-repeat="system in masteralarm.categories">
+                <button href="#accessibility" role="button" tabindex="1" class="button alarm-subsys" ng-style = "masteralarm.categoryColors[$index]" ng-disabled="true" >{{system}}
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Status board to track the out of bound telemetry -->
+    <div id="statusboard" ng-show="widget.settings.statusboard">
+        <div layout="row" class="alarmpanel-row header-log">
+            <div flex="25" class="left-header">
+                Time
+            </div>
+            <div flex="35" class="left-header">
+                Channel
+            </div>
+            <div flex="10" class="center-header">
+                Alert
+            </div>
+            <div flex="10" class="center-header">
+                Bound
+            </div>
+            <div flex="20" class="center-header">
+                Ack
+            </div>
+        </div>
+        <div layout="row" class="alarmpaneldata-row" ng-repeat = "row in alarmpanel.statustable track by $index">
+            <div flex="25" class="left-row" ng-style="row.rowstyle">
+                {{row.time}}
+            </div>
+            <div flex="35" class="left-row" style="text-overflow:ellipsis; white-space: nowrap;" ng-style="row.rowstyle">
+                {{row.channel}}
+            </div>
+            <div flex="10" class="center-row" ng-style="row.rowstyle">
+                {{row.alert}}
+            </div>
+            <div flex="10" class="center-row" ng-style="row.rowstyle">
+                {{row.bound}}
+            </div>
+            <div flex="20" class="center-row" ng-style="row.rowstyle">
+                {{row.ack}}
+            </div>
+        </div>
+    </div>
+</div>
+
+

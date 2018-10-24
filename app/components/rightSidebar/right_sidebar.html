@@ -1,85 +1,98 @@
-<!--Right Side Nav -->
+<!-- Right Side Nav  -->
 <md-toolbar>
     <h1 class="md-toolbar-tools">Configuration Menu</h1>
 </md-toolbar>
 <md-content flex role="navigation" id="right">
     <md-list>
-        <md-subheader class="md-no-sticky show-hide">Hi {{ $ctrl.name }}</md-subheader>
+        <md-subheader class="md-no-sticky show-hide">Hi {{ $ctrl.name }} ({{$ctrl.userRole.cRole.callsign}})</md-subheader>
         <md-divider class="show-hide"></md-divider>
-        <md-list-item ng-click="$ctrl.showQwidgetMenu()">
-            <span class="glyphicon glyphicon-modal-window" id="qwidgets"></span>Qwidgets
+        <md-list-item ng-click="$ctrl.showQwidgetMenu()" class="list1">
+            <span class="glyphicon glyphicon-modal-window list1Icon" id="qwidgets"></span>
+             <p class=" list1 dataItem listItemFonts">Qwidgets</p>
             <span flex></span>
-            <span class="glyphicon glyphicon-menu-down"></span>
+            <span class="glyphicon glyphicon-menu-down listItemFonts"></span>
         </md-list-item>
         <md-divider></md-divider>
-        <md-list class="md-dense" flex ng-show="$ctrl.QwidgetMenu">
-            <md-list-item ng-click="$ctrl.showAddMenu()" id="list2">
-                <span class="glyphicon glyphicon-plus" id="qwidgetPlus"></span>Add Qwidget
+        <md-list flex ng-show="$ctrl.QwidgetMenu">
+            <md-list-item ng-click="$ctrl.showAddMenu()" class="list2">
+                <span class="glyphicon glyphicon-plus list3Icon" id="qwidgetPlus"></span>
+                <p class=" list2 dataItem listItemFonts">Add Qwidget</p>
                 <span flex></span>
-                <span class="glyphicon glyphicon-menu-down pull-right" id="qwidget-add">
+                <span class="glyphicon glyphicon-menu-down pull-right listItemFonts" id="qwidget-add">
             </md-list-item>
             <md-list ng-show="$ctrl.addMenu">
             <md-divider></md-divider>
-                <md-list-item ng-repeat="widget in $ctrl.widgetDefinitions" ng-click="$ctrl.addWidgets(widget)" id="list3">
-                    <i class="fa {{widget.icon.type}}" aria-hidden="true" id="{{widget.icon.id}}" ></i>{{widget.name}}
+                <md-list-item ng-repeat="widget in $ctrl.widgetDefinitions" ng-click="$ctrl.addWidgets(widget)" class="list3">
+                    <i class="fa {{widget.icon.type}} list3Icon" aria-hidden="true" id="{{widget.icon.id}}" ></i>
+                    <p class=" list3 dataItem listItemFonts">{{widget.name}}</p>
                 </md-list-item>
             </md-list>
             <md-divider></md-divider>
-            <md-list-item ng-click="$ctrl.save()" id="list2">
-                <span class="glyphicon glyphicon-save-file" id="save-layout"></span>Save Layout
+            <md-list-item ng-click="$ctrl.save($event)" class="list2">
+                <span class="glyphicon glyphicon-save-file list3Icon" id="save-layout"></span>
+                <p class=" list2 dataItem listItemFonts">Save Layout</p>
             </md-list-item>
             <md-divider></md-divider>
-            <md-list-item ng-click="$ctrl.load()" id="list2">
-                <span class="glyphicon glyphicon-open-file" id="load-layout"></span>Load Layout
+            <md-list-item ng-click="$ctrl.load()" class="list2">
+                <span class="glyphicon glyphicon-open-file list3Icon" id="load-layout"></span>
+                <p class=" list2 dataItem listItemFonts">Load Layout</p>
                 <span flex></span>
                 <span class="glyphicon glyphicon-menu-down pull-right" id="layout-arrow"></span>
             </md-list-item>
             <md-list ng-show="$ctrl.layoutMenu">
             <md-divider></md-divider>
-                <md-list-item ng-repeat="layout in $ctrl.layouts" ng-click="$ctrl.showLayout(layout)" id="list3">
-                    <md-icon class="md-icon smaller" md-svg-icon="/icons/aud_arrow_01-2.svg"></md-icon>
-                    <p>{{ layout.name }}</p>
+                <md-list-item ng-repeat="layout in $ctrl.layouts" ng-show="$ctrl.layouts.length > 0" ng-click="$ctrl.showLayout(layout)" class="list3">
+                    <md-icon class="md-icon smaller list2 list3Icon" md-svg-icon="/icons/aud_arrow_01-2.svg"></md-icon>
+                    <p class=" list3 dataItem listItemFonts">{{ layout.name }}</p>
+                </md-list-item>
+                <md-list-item ng-show="$ctrl.layouts.length === 0">
+                    <div class="emptyDataRow" style="color:#cfcfcf7a;padding:10px 40px;">No Layouts available</div>
                 </md-list-item>
             </md-list>
+
             <md-divider></md-divider>
-            <md-list-item ng-click="$ctrl.clear()" id="list2">
-                <span class="glyphicon glyphicon-trash" id="clear-layout"></span>Clear
+            <md-list-item ng-click="$ctrl.clear()" class="list2">
+                <span class="glyphicon glyphicon-trash list3Icon" id="clear-layout"></span>
+                <p class=" list2 dataItem listItemFonts">Clear</p>
             </md-list-item>
             <md-divider></md-divider>
         </md-list>
-        <!-- <md-list-item ng-click="$ctrl.user()">
-            <span class="glyphicon glyphicon-user" id="user-admin"></span>User Administration
+        <md-list-item ng-click="$ctrl.showAdminModal()" ng-show="$ctrl.userRole.cRole.callsign == 'MD'" class="list1">
+            <span class="glyphicon glyphicon-user list1Icon" id="user-admin"></span>
+            <p class=" list1 dataItem listItemFonts">User Administration</p>
             <span flex></span>
-            <span class="glyphicon glyphicon-menu-down"></span>
         </md-list-item>
-        <md-divider></md-divider>
-        <md-list-item ng-click="$ctrl.server()">
+        <md-divider ng-show="$ctrl.userRole.cRole.callsign == 'MD'"></md-divider>
+<!--         <md-list-item ng-click="$ctrl.server()">
             <i class="fa fa-server" aria-hidden="true" id="server-admin"></i></span>Server Administration
             <span flex></span>
             <span class="glyphicon glyphicon-menu-down"></span>
         </md-list-item>
         <md-divider></md-divider> -->
-        <md-list-item ng-click="$ctrl.showDoc()">
-            <i class="fa fa-file-text-o" aria-hidden="true" id="docs"></i>Documentation
+        <md-list-item ng-click="$ctrl.showDoc()" class="list1">
+            <i class="fa fa-file-text-o list1Icon" aria-hidden="true" id="docs" ></i>
+            <p class=" list1 dataItem listItemFonts">Documentation</p>
             <span flex></span>
-            <span class="glyphicon glyphicon-menu-down"></span>
+            <span class="glyphicon glyphicon-menu-down listItemFonts"></span>
         </md-list-item>
         <md-divider></md-divider>
-		<md-list class="md-dense" flex ng-show="$ctrl.Doc">
-			<md-list-item ng-click="$ctrl.showReadme()" id="list2">
-                <span class="fa fa-file-text-o" id="qwidgetPlus"></span>README
+		<md-list flex ng-show="$ctrl.Doc">
+			<md-list-item ng-click="$ctrl.showReadme()" class="list2">
+                <span class="fa fa-file-text-o list3Icon" id="qwidgetPlus"></span>
+                <p class=" list2 dataItem listItemFonts">README</p>
                 <span flex></span>
             </md-list-item>
-			<md-list-item ng-click="$ctrl.showContributing()" id="list2">
-                <span class="fa fa-file-text-o" id="qwidgetPlus"></span>CONTRIBUTING
+			<md-list-item ng-click="$ctrl.showContributing()" class="list2">
+                <span class="fa fa-file-text-o list3Icon" id="qwidgetPlus"></span>
+                <p class=" list2 dataItem listItemFonts">CONTRIBUTING</p>
                 <span flex></span>
             </md-list-item>	
 			<md-divider></md-divider>			
 		</md-list>
-        <md-list-item ng-href="/logout" class="show-flex">
-            <p>Logout</p>
+        <md-list-item ng-href="/logout" class="show-flex list1Icon" class="list1">
+            <p class=" list1 dataItem listItemFonts">Logout</p>
         </md-list-item>
         <md-divider class="show-hide"></md-divider>
     </md-list>
 </md-content>
-<!--End of Right Side Nav -->
+<!-- End of Right Side Nav  -->

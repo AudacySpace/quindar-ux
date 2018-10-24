@@ -1,13 +1,12 @@
 angular.module('app')
 .component('grid', {
     templateUrl: "../components/grid/grid.html",
-    controller: function(gridService){
+    controller: function(gridService,dashboardService){
     	var vm = this;
 		vm.gridsterOptions = gridService.gridsterOptions;
-		vm.dashboards = gridService.dashboards;
-	    vm.selectedDashboardId = gridService.getDashboardId();
 	   	vm.dashboard = gridService.getDashboard();
-		vm.widgetDefinitions = gridService.widgetDefinitions;
+	   	vm.loadStatus = dashboardService.getLoadStatus();
+	   	vm.loadLayoutloaders = gridService.getGridLoader();
 
 		vm.remove = function(widget) {
 			widget.main = false;

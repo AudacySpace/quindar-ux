@@ -1,0 +1,97 @@
+<div class="saveloaddatatable mainalarm">
+	<div class="settingstop">
+		<div class="row settingsrightcol" style="display: table">
+			<div class="col-sm-1" style="display: table-cell; float:none"></div>
+			<div class="col-sm-5" style="display: table-cell; float:none">
+				<div class="row">
+					<label for="SelectData">Status Board</label>
+                    <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 12px">
+                        <md-tooltip md-direction="top">Enable or Disable the alerts log table</md-tooltip> 
+                    </span>
+  				</div>
+				<div class="row settingsspace" style="display: table"></div>
+				<div class="input-group" style="margin-top:0px;margin-bottom:0px" ng-cloak>
+                    <md-switch class="md-primary"  md-theme="blueTheme" aria-label="Switch No Ink" ng-model="statusboard" style="margin-top:0px;margin-bottom:0px">
+                    </md-switch>
+    			</div>
+  			</div>
+  			<div class="col-sm-1"></div>
+			<div class="col-sm-2" style="display: table-cell; float:none"></div>
+			<div class="col-sm-1" style="display: table-cell; float:none"></div>
+		</div>
+		<div class="row settingsbottom" style="display: table">
+			<div class="row">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-10">
+					<hr>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-1"></div>
+				<div class="col-sm-10 btndivider">
+					<button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="saveAlarmPanelSettings(widget)">SAVE</button>
+					<button type="submit" class="btn btn-primary col-sm-2 sbtns" ng-click="closeAlarmPanelSettings(widget)">CLOSE</button>	
+				</div>
+			</div>	
+		</div>		
+	</div>
+</div>
+
+<!-- For Mobile Screens -->
+<div class="container mbl-alarm">
+  <form>
+    <label for="SelectData" class="mbl-label" style="margin-bottom:0px">Status Board</label>
+    <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px">
+        <md-tooltip md-direction="top">Enable or Disable the alerts log table</md-tooltip> 
+    </span>
+    <div class="input-group mbl-input-grp" style="margin-top:0px;margin-bottom:0px" ng-cloak>
+        <md-switch class="md-primary"  md-theme="blueTheme" aria-label="Switch No Ink" ng-model="statusboard" style="margin-top:0px;margin-bottom:0px">
+        </md-switch>
+    </div>
+    <hr class="hr-double-col1">
+    <button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="saveAlarmPanelSettings(widget)">SAVE</button>
+	<button type="submit" class="btn btn-primary col-sm-2 mbl-sbtns mbl-label" ng-click="closeAlarmPanelSettings(widget)">CLOSE</button>	
+</form>
+</div>
+
+<!-- For Tablet Screens -->
+<div class="saveloaddatatable tablet-alarm">
+    <div class="settingstablettop">
+        <div class="row settingstablet-col1-3el tablestyle">
+            <div class="col-sm-1 tablecellstyle1"></div>
+            <div class="col-sm-10 tablecellstyle10">
+                <div class="row" style="height:19px;">
+                    <label for="SelectData" class="mbl-label" style="margin-bottom:0px">Status Board</label>
+                    <span class="fa fa-info-circle" aria-hidden="true" style="font-size: 10px">
+                        <md-tooltip md-direction="top">Enable or Disable the alerts log table</md-tooltip> 
+                    </span>
+                </div>
+    			<div class="input-group mbl-input-grp" style="margin-top:0px;margin-bottom:0px" ng-cloak>
+                    <md-switch class="md-primary"  md-theme="blueTheme" aria-label="Switch No Ink" ng-model="statusboard" style="margin-top:0px;margin-bottom:0px">
+                    </md-switch>
+    			</div>
+            </div>
+            <div class="col-sm-1 tablecellstyle1"></div> 
+        </div>
+        <div class="row settingstablet-col1-3el tablestyle"></div>
+        <div class="row settingstablet-col1-3el tablestyle"></div>
+        <div class="row settingstabletbottom-col1-3el tablestyle">
+            <div class="row">
+                <div class="col-sm-1 tablecellstyle1"></div>
+                <div class="col-sm-10 tablecellstyle10">
+                    <hr class="col1-2-hr">
+                </div>
+                <div class="col-sm-1 tablecellstyle1"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1 tablecellstyle1"></div>
+                <div class="col-sm-10 btndivider tablecellstyle10">
+                    <button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="saveAlarmPanelSettings(widget)">SAVE</button>
+					<button type="submit" class="btn btn-primary col-md-2 tablet-sbtns mbl-label" ng-click="closeAlarmPanelSettings(widget)">CLOSE</button>	
+                </div>
+                <div class="col-sm-1 tablecellstyle1"></div>
+            </div>  
+        </div>
+    </div>      
+</div>
+

@@ -1,4 +1,5 @@
 /*Widget box styles*/
+
 .controls {
     margin-bottom: 20px;
 }
@@ -10,13 +11,14 @@ ul {
 }
 .box {
     height: 100%;
-    border: 1px solid #ccc;
     background-color: #fff;
+    -webkit-box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
+    -moz-box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
+    box-shadow: 0 3px 5px rgba(57, 63, 72, 0.3);
 }
 .box-header {
     background-color: #000;
     padding: 0px 10px 0px 10px; /*0 30px 0 30px*/
-    /*border-bottom: 1px solid #000;*/
     cursor: move;
     position: relative;
    
@@ -26,7 +28,8 @@ ul {
     display: inline-block;
     text-transform: capitalize;
     color: white;
-    font-size:1.0em;
+/*    font-size:1.0em;*/
+    font-size:14px;
 }
 
 .box-content {
@@ -63,6 +66,10 @@ div.mainWidget{
     height:100%;
 }
 
+.widgetName{
+/*    top:1.5px;
+    position: relative;*/
+}
 /*
 
 Settings Menu outer Div styles
@@ -71,29 +78,10 @@ Delete Menu Styles
 
 */
 
-.savestyles{
-    width: 80%;
-    height: 50%;
-    margin: auto;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    position: absolute;
-}
 label{
     font-weight: 200;
 }
-
-@media only screen and (min-width: 768px){
-    .form-inline .form-control {
-        display: inline-block;
-        width: 100%;
-        vertical-align: middle;
-    }
-}
-
-.row{
+.row {
     margin-left:0px;
     margin-right:0px;
 }
@@ -113,6 +101,7 @@ label{
 }
 
 .save-widget-styles{
+    width:100%;
     overflow:hidden;
     background-color: #fff;
     color:#000;
@@ -120,44 +109,236 @@ label{
 }
 
 .sbtns{
+    position: relative;
     border-radius:0px;
     overflow:hidden;
     background-color:#07D1EA;
     color:#fff;
-}
-
-.savebtns{
-    position: relative;
-    border-radius:0px;
-    background-color:#07D1EA;
-    color:#fff;
-    margin-right: 10 px;
-
-}
-
-div.settingsMenu{
-    background-color:#242833;
-    height:100%;
-    margin:0px;
-    color:#fff;
-    position: relative ;
-}
-
-div.deldatatable{
-    background-color:#242833;
-    height:100%;
-    margin:0px;
-    color:#fff;
-    position: relative ;
-}
-div.saveloaddatatable{
-    background-color:#242833;
-    height:100%;
-    margin:0px;
-    color:#fff;
-    position:relative;
-}
-
-.btndivider button{
     margin-right: 10px;
-} 
+    padding-left: 6px;
+    padding-right: 6px;
+}
+
+div.settingsMenu,div.deldatatable,div.saveloaddatatable{
+    background-color:#242833;
+    height:100%;
+    margin:0px;
+    color:#fff;
+    position: relative;
+    overflow-y:hidden;
+    overflow-x:hidden;
+}
+
+
+/*widget styles for mobile screens*/
+@media only screen and (max-width: 599px) {
+    div.box-content {
+        height: 200px;
+    }
+    .mbl-label{
+        font-size: 10px;
+    }
+    .mbl-inputitems{
+        border-radius:0px;
+        height:25px;
+    }
+    .mbl-inneritems{
+        padding:0px 10px;
+    }
+    .hr-double-col1-1{
+        margin-top:62px;margin-bottom:5px;
+    }
+    .mbl-input-grp{
+        width:100%;
+        border-radius:0px;
+    }
+    .drpdwn-name{
+        line-height: 1.2em;
+    }
+    .drpdwn-caret{
+        margin-top:4px;
+    }
+    .drpdown-list-item{
+        font-size:9px;
+        padding:1px;
+        margin-top:3px;
+        margin-bottom:3px;
+    }
+    .drpdwn-input-item{
+        margin-top: 2px;
+        height:12px;
+        width:12px;
+    }
+    .sbtns{
+        margin-right:5px;
+    }
+    .req-label{
+        font-size:8px;
+        float:right;
+    }
+    .applybtn {
+        border-radius:0px;
+        color:black;
+        line-height:1.45em;
+        height:25px;
+        font-size:10px;
+        padding:3px 15px;
+    }
+    .hr-double-col1{
+        margin-top:110px;
+        margin-bottom:5px;
+    }
+    .hr-double-col1-2-clock{
+        margin-top:62px;
+        margin-bottom:5px;
+    }
+    .hr-double-col1-2-timer{
+        margin-top:14px;
+        margin-bottom:5px;
+    }
+    .hr-double-col1-2{
+        margin-top:110px;
+        margin-bottom:5px;
+    }  
+    .mbl-sbtns{
+        position: relative;
+        border-radius: 0px;
+        overflow: hidden;
+        background-color: #07D1EA;
+        color: #fff;
+        margin-right: 5px;
+    }
+    .hr-double-col1-2-timezone{
+        margin-top:62px;
+        margin-bottom:5px;
+    }
+    .hr-double-col1-2-events{
+        margin-top:14px;
+        margin-bottom:5px;
+    }
+}
+
+/*widget styles for tablet screens*/
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+    /* Column 1 - Elements 3 styles*/
+    .settingstablettop {
+        width: 100%;
+        height: 100%;
+        margin: auto;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        position: absolute;
+        font-family: "Open Sans", Sans-serif;   
+    }
+    .mbl-input-grp{
+        width:100%;
+        border-radius:0px;
+    } 
+    .drpdwn-caret{
+        margin-top:4px;
+    }
+    .tablet-sbtns{
+        position: relative;
+        border-radius: 0px;
+        overflow: hidden;
+        background-color: #07D1EA;
+        color: #fff;
+        margin-right: 5px;
+        padding: 3px 6px;
+    }
+    .mbl-label{
+        font-size: 10px;
+    }
+    .tablestyle{
+        display:table;
+    }
+    .tablecellstyle10{
+        display: table-cell;
+        float:none;
+        width:100%;
+    }
+    .tablecellstyle1{
+        display: table-cell;
+        float:none;
+    }
+    .req-label{
+        font-size:8px;
+        float:right;
+    }
+    .col1-2-data{
+        border-radius:0px;
+        font-size:9px;
+        height:15px;
+        background-color: #fff;
+    }
+    .applybtn {
+        font-size:9px;
+        padding:0px 2px;
+        height:15px
+    }
+    .cbox{
+        font-size:9px;
+        margin-top:5px;
+        margin-bottom:5px;
+    }
+    .input-cbox{
+        margin-top: 0px;
+        margin-bottom:5px;
+        height:12px;
+        width:12px
+    }
+    .colorpicker{
+        margin-left:10px;
+        height:17px;
+        width:15px
+    }
+    .col1-2-hr{
+        margin-bottom:5px;
+    }
+    .mbl-inputitems{
+        border-radius:0px;
+        height:15px;
+    }
+    .mbl-inneritems{
+        font-size:9px;
+        padding:0px 12px;
+        height:15px;
+    }
+    .mbl-input-grp{
+        width:100%;
+        border-radius:0px;
+    }
+    .drpdown-list-item{
+        font-size:9px;
+        padding:1px;
+        margin-top:3px;
+        margin-bottom:3px;
+    }
+    .drpdwn-input-item{
+        margin-top: 2px;
+        height:12px;
+        width:12px;
+    }
+    .categorydrpdown{
+        margin-top: -2px !important;
+    }
+    .settingstablet-col1-3el {
+        width: 100%;
+        height: 5%;
+        height:45px;
+        margin: 0;
+        top: 0;
+        bottom: 0;
+        left:0;
+        right:0;
+        font-family: "Open Sans", Sans-serif;   
+    }
+    .settingstabletbottom-col1-3el {
+        width: 100%;
+        height:5%;
+        font-family: "Open Sans", Sans-serif;   
+    } 
+}
+

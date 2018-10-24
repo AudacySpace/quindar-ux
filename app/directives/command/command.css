@@ -1,0 +1,208 @@
+md-input-container .md-input.enter-button {
+	background-color: #07D1EA;
+    color: #fff;
+    border-width: 1px;
+}
+
+md-input-container .md-input.enter-button:focus {
+	border-bottom-width: 0px !important;
+}
+
+md-input-container .md-input.enter-clicked {
+	background-color: #12C700;
+    color: #fff;
+    border-width: 1px;
+}
+
+md-input-container .md-input.enter-clicked:focus {
+	border-bottom-width: 0px !important;
+}
+
+md-input-container .md-input.send-clicked {
+	background-color: #FFEA00;
+    color: #fff;
+    border-width: 1px;
+}
+
+md-input-container .md-input.send-clicked:focus {
+	border-bottom-width: 0px !important;
+}
+
+md-input-container:not(.md-input-invalid).md-input-focused label,
+md-input-container:not(.md-input-invalid).md-input-has-value label{
+	color:black;
+} 
+
+
+md-input-container:not(.md-input-invalid).md-input-focused .md-input {
+	border-color : #eee;
+}
+
+md-input-container label {
+	color: black;
+}
+
+.selected-command>span.btn.btn-default.form-control.ui-select-toggle {
+	height : 30px;
+}
+
+md-content.comm-widget {
+/*	height: 100%;*/
+	overflow: hidden;
+}
+
+.select-command {
+	height: 30px;
+}
+
+.ui-select-bootstrap.select-command>.ui-select-choices, .ui-select-bootstrap>.ui-select-no-choice {
+	border-bottom: 0px;
+}
+
+md-input-container .md-input.disabled {
+	border:1px solid #CFCFD5;
+	background-color: #F1F1F5;
+}
+
+.header-log {
+	min-height: 30px;
+	height: 30px;
+	/*padding-bottom: 10px;*/
+}
+
+md-input-container.input-container {
+	margin-bottom:0px;
+}
+
+md-input-container.lock-container {
+	margin:0px;
+}
+
+div#comm-row {
+    max-height: 65px;
+    min-height: 50px;
+}
+
+div#lock-row {
+    max-height: 46px;
+/*    min-height: 50px;
+*/}
+
+div.right-cmdlogrow {
+	padding-left: 10px;
+	background-color: #F1F1F5;
+    font-weight: 400;
+}
+
+div.right-cmdlogheader {
+	padding:4px;
+	font-weight: bold;
+	text-transform: uppercase;
+	background-color: #CFCFD5;
+}
+
+div.left-cmdlogrow {
+	padding-left: 10px;
+	background-color: #F1F1F5;
+    font-weight: 400;
+}
+
+div.left-cmdlogheader {
+	padding:4px;
+	font-weight: bold;
+	text-transform: uppercase;
+    background-color: #CFCFD5;
+}
+
+.command-log{
+	margin:20px; 
+	border:none;
+}
+
+.gateway {
+/*	background-color: white;*/
+    border: 0px !important;
+    color: black !important;
+    text-align: right;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    margin-bottom: 0px !important;
+}
+
+md-input-container .md-input.greentext {
+	color: #12C700 !important;
+}
+
+md-input-container .md-input.input-arg {
+	border-width: 1px;
+}
+
+md-input-container:not(.md-input-invalid).md-input-focused .md-input.input-arg {
+	border : 1px solid #CFCFD5;
+}
+
+md-switch.comm-switch {
+	margin-top:0px;
+	margin-bottom:0px
+}
+
+md-input-container.md-input-focused .md-input, md-input-container.md-input-resized .md-input, md-input-container .md-input.ng-invalid.ng-dirty {
+	border-width:1px !important;
+}
+
+div.md-input-message-animation{
+	padding-top:0px !important;
+	font-size: 10px !important;
+}
+
+.command-log div#center-row,
+.command-log div.left-cmdlogrow, .command-log div.right-cmdlogrow {
+		padding-left: 10px;
+		padding-right:10px;
+		margin:0 !important;
+		border-right:2px solid #fff;
+		border-bottom:2px solid #fff;
+}
+
+.command-log div.right-cmdlogheader, .command-log div.left-cmdlogheader,.command-log div#center-header{
+	padding: 4px
+	margin:0 !important;
+	border-right:2px solid #fff;
+	border-bottom:2px solid #fff;
+	overflow: hidden;
+}
+
+md-content.commandLogTable{
+	border:none !important;
+}
+
+@media only screen and (max-width: 599px) {
+	div.right-cmdlogrow,div.left-cmdlogrow {
+	    font-size: 8px;
+	}
+	div.right-cmdlogheader,div.left-cmdlogheader,input#input_0,input#input_1,input#input_2,input#input_3,input#input_4,input#input_5,input#input_6,
+	input#input_7,input#input_8 {
+		font-size: 10px;
+	}
+	div.right-cmdlogheader, div.left-cmdlogheader,
+	div#center-header, div#center-row,
+	div.left-cmdlogrow, div.right-cmdlogrow {
+		padding-left: 0px;
+	}
+}
+
+@media only screen and (max-width: 768px) and (min-width: 600px) {
+	div.right-cmdlogrow,div.left-cmdlogrow{
+	    font-size: 10px;
+	}
+	div.right-cmdlogheader,div.left-cmdlogheader,input#input_0,input#input_1,input#input_2,input#input_3,input#input_4,input#input_5,input#input_6,
+	input#input_7,input#input_8 {
+		font-size: 12px;
+	}
+	div.right-cmdlogheader, div.left-cmdlogheader,
+	div#center-header, div#center-row,
+	div.left-cmdlogrow, div.right-cmdlogrow {
+		padding-left: 0px;
+	}
+}
+

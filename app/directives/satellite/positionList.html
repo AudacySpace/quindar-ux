@@ -1,0 +1,16 @@
+<div class="modal-header">
+    <h4 class="modal-title" id="myModalLabel">Selected Position Coordinates</h4><small>Drag and drop to reorder</small>
+</div>
+<div class="modal-body" style="padding-left:20px; padding-right:20px;">
+    <h5><b>Required Order:</b>x,y,z</h5>
+    <div id="scrollable-containerPosition">
+        <div class="sortable-row" as-sortable="sortableOptions" data-ng-model="$ctrl.data.tempPositions">
+            <div ng-repeat="item in $ctrl.data.tempPositions" as-sortable-item>
+                <div as-sortable-item-handle style="color:#000000">{{item.key}}</div>
+            </div>
+        </div>
+    </div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="$ctrl.close()">Close</button>
+    <button type="button" class="btn btn-primary" ng-click="$ctrl.save()">Save</button>
+</div>

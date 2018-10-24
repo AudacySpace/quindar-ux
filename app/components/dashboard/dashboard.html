@@ -6,9 +6,9 @@
         </md-sidenav>
         <!--End Left Sidenav-->
         <!--Main Dashboard Navigation-->
-        <md-content flex class="main">
+        <md-content flex class="main mainContentLayout">
             <div id="main">
-                <nav class="navbar navbar-default" id="navbar">
+                <nav id="statusBar" class="navbar navbar-default">
                     <div class="container-fluid" id="top-header">
                         <div class="navbar-header">
                             <a class="navbar-brand" href="#" id="QRegular" ng-click="$ctrl.openLeftNav()">
@@ -18,49 +18,50 @@
                                 <img id="main-img" src="/media/logos/Quindar_Icon_Black.svg" alt="Quindar"/>
                             </a>
                         </div>
+                        <ul class="nav navbar-nav navbar-left">
+                            <li>
+                                <img ng-src="{{$ctrl.currentMission.missionImage}}" ng-show="$ctrl.currentMission.missionImage" id="missionImage" alt="Mission Image"/>
+                               <span id="missionName">{{$ctrl.currentMission.missionName}}</span>
+                            </li>
+                        </ul>
                         <ul class="nav navbar-nav">
                             <li class="statusicons">
-                                <ul class="nav navbar-nav status-bar" id="s-icons">
-                                    <li ng-repeat="icon in $ctrl.icons">
-                                        <a href="#" class="status-icon">
-                                            <img id="{{icon.id}}" ng-src="{{icon.image}}" alt="Quindar"/>
-                                        </a>
-                                    </li>
-                                </ul>
+                                <status-icons></status-icons> 
                             </li>
                             <li>
                                 <ul class="nav navbar-nav time">
-                                    <li class="clock" id="txt">{{ $ctrl.clock.timestamp }}</li>
+                                    <li class="clock" id="txt">{{ $ctrl.clock.utc }}</li>
                                 </ul>
                             </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
                             <li>
-                                <a class="dropdown-toggle"  id="username" data-toggle="dropdown" href="#">{{ $ctrl.name }}</a>
+                                <a class="dropdown-toggle" id="username" data-toggle="dropdown" href="#"
+                                >{{ $ctrl.name }}</a>
+                                <small id="callsign"> {{ $ctrl.role.cRole.callsign }} </small>
                                 <ul class="dropdown-menu logout-bar">
-                                    <li ><a href="/logout">Logout</a></li>
+                                    <li ><a href="" ng-click="$ctrl.logout($event)" class="userSettings" target="_self">Logout</a></li>
+                                    <li ><a href="#" ng-click="$ctrl.showSettings()" class="userSettings" ng-show="$ctrl.role.cRole.callsign !== 'MD'">Settings</a></li>
                                 </ul>
                             </li>
                             <li id="cfgmenu">
                                 <a href="#" id="add-widget" ng-click="$ctrl.openRightNav()"> 
-                                    <span class="fa fa-bars" aria-hidden="true"> </span>
+                                    <span class="fa fa-bars bars" aria-hidden="true"> </span>
                                 </a>
                             </li>
                         </ul>
                     </div>
                 </nav>
-
                 <!--Main Dashboard for Widgets -->
-                <div class="container-fluid">
+                <div class="container-fluid dashboard-body">
                     <grid></grid>
                 </div>
-
                 <!-- Dashboard Footer -->
-                <footer class="footer">
+<!--                 <footer class="footer">
                     <div class="container">
                         <p class="text-muted"></p>
                     </div>
-                </footer>
+                </footer> -->
             </div>
         </md-content>
         <!--End Main Dashboard Navigation-->

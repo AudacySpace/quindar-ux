@@ -1,108 +1,101 @@
+/* Custom CSS for Configuration Menu*/
 .md-sidenav-right {
     background-color: #020613;
 }
-
 md-list .md-subheader { 
-    height: 40px !important;
-    min-height: 40px !important;
+    height: 32px !important;
+    min-height: 32px !important;
     background-color: #020613 !important;
 }
-
 .md-subheader .md-subheader-inner {
-    padding: 12px;
+    padding: 8px;
     color: #ccc;
 }
-
 md-toolbar {
     background-color: #020613 !important;
-    border-bottom: 3px solid #07D1EA;
+    border-bottom: 1px solid #07D1EA;
+    height: 50px;
+    min-height: 50px !important;
 }
-
 md-content#right {
     color: #ccc;
     background-color: #020613;
+    display: inline !important;
 }
-
 md-list-item, md-list-item .md-list-item-inner { 
-    font-size: 16px;
-    height: 40px !important;
-    min-height: 40px !important;
+    height: 32px !important;
+    min-height: 32px !important;
 }
-
 md-list {
     padding: 0px 0px 0px 0px !important;
 }
-
-md-list-item#list2 {
-    font-size: 15px;
-    padding-left: 16px;
+md-list-item.list1 {
+    font-size: 14px !important;
 }
 
-md-list-item#list2 .md-list-item-inner {
-    font-size: 15px;
+.list1Icon {
+    font-size: 14px !important;
+    min-width:14px !important;
+    min-height:14px !important;
+    width: 14px !important;
+    height: 14px !important;
+    margin-right: 10px !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+}
+md-list-item.list2 {
+/*    font-size: 14px !important;*/
+    padding-left: 14px;
+}
+.list2Icon {
+    font-size: 12px !important;
+}
+md-list-item.list3 {
+/*    font-size: 14px !important;*/
+    padding-left: 28px;
+}
+.list3Icon {
+    font-size: 12px !important;
+    min-width:12px !important;
+    min-height:12px !important;
+    width: 12px !important;
+    height: 12px !important;
+    margin-right: 10px !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
 }
 
-md-list-item#list3 .md-list-item-inner {
-    font-size: 14px;
+.listItemFonts{
+    font-size: 14px !important;
 }
-
-md-list-item#list3 {
-    font-size: 14px;
-    padding-left: 34px;
-}
-
-md-list-item#list3:hover {
+md-list-item:hover {
     background-color: #242833 !important;
 }
-
-md-list-item#list3 .md-list-item-inner:hover {
+md-list-item .md-list-item-inner:hover {
     background-color: #242833 !important;
 }
-
-md-list-item#list2:hover {
-    background-color: #242833 !important;
-}
-
-md-list-item#list2 .md-list-item-inner:hover {
-    background-color: #242833 !important;
-}
-
 md-list-item:hover {
     color: #fff;
     border-left: 4px solid #07D1EA;
 }
-
 .md-button:not([disabled]):hover {
-    background-color: #242833;
+   /* background-color: #242833;*/
+    background-color: transparent; !important;
 }
-
 md-divider {
-    border-top-width: 2px;
-    background-color: #4d4d4d;
+    border-top-width: 1px;
+/*    background-color: #4d4d4d;*/
+    background-color:#242833;
 }
-
 .show-hide {
     display: none;
 }
-
 .show-flex {
     display: none;
 }
-
 md-content.main {
     overflow-x: hidden; 
 }
-
-@media only screen and (max-width: 736px) {
-  .show-hide {
-        display: block;
-  }
-
-  .show-flex {
-        display: flex;
-  }
-}
-
 #overlay {
     position: fixed;
     left: 15%;
@@ -149,8 +142,109 @@ body.custom-modal-open #fade {
 #custom-modal.ng-leave.ng-leave-active {
 	opacity: 0;
 }
-md {
+md{
 	background-color: #eee;
 	display: block;
 	padding: 1em;
+}
+
+span#layout-arrow {
+    position: relative;
+    top: 0px;
+    right:0px;
+}
+
+span#qwidgets {
+    position: relative;
+/*    top: 0px;
+    right: 8px;*/
+  /*  margin-right: 2px;*/
+}
+
+span#user-admin,i#server-admin,i#docs {
+    position: relative;
+/*    top: -1px;
+    right: 8px;*/
+/*    margin-right: 2px;*/
+}
+
+span#qwidgetPlus,i#g-track,i#t-table,i#s-table,i#d-table,i#l-plot,i#clock,i#d-log,i#alarm,i#systemmap,i#timeline,span#save-layout,span#load-layout,span#clear-layout {
+    position: relative;
+/*    top: -1px;
+    right: 5px;*/
+/*    margin-right: 2px;*/
+}
+
+.md-toolbar-tools{
+    font-size: 18px !important;
+    padding: 0 8px !important;
+}
+
+@media only screen and (max-width: 768px) {
+    .show-hide {
+        display: block;
+    }
+
+    .show-flex {
+        display: flex;
+        font-size:14px;
+    }
+/*    md-list-item.list1 {
+        font-size: 14px !important;
+    }
+    md-list-item.list2 {
+        font-size: 13px !important;
+        padding-left: 14px;
+    }
+    md-list-item.list3 {
+        font-size: 12px !important;
+        padding-left: 28px;
+    }
+    .md-toolbar-tools{
+        font-size: 14px !important;
+        padding: 0 8px !important;
+    }
+    .md-subheader .md-subheader-inner {
+        padding: 12px;
+        color: #ccc;
+        font-size:14px !important;
+    }*/
+}
+
+@media only screen and (max-width: 736px) { 
+    a#addwidget, a#save-grid, a#load-grid, a#clear-grid, a#addGround {
+        font-size:12px;
+    }
+    .show-hide {
+        display: block;
+    }
+
+    .show-flex {
+        display: flex;
+        font-size:14px;
+    }
+/*    md-list-item.list1 {
+        font-size: 14px !important;
+    }
+    md-list-item.list2 {
+        font-size: 14px !important;
+        padding-left: 14px;
+    }
+    md-list-item.list3 {
+        font-size: 12px !important;
+        padding-left: 28px;
+    }
+    .md-toolbar-tools{
+        font-size: 14px !important;
+        padding: 0 8px !important;
+    }
+    .md-subheader .md-subheader-inner {
+        padding: 12px;
+        color: #ccc;
+        font-size:18px !important;
+    }
+
+    #add-widget{
+        padding:5px 10px;
+    }*/
 }

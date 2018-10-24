@@ -1,0 +1,211 @@
+.graph-container {
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    top: 50px;
+    bottom: 50px;
+    width:auto !important;
+    height:auto !important;
+}
+
+#dygraph {
+    width:auto !important;
+    height:auto !important;
+}
+
+.labels {
+    position: absolute;
+    height: 30px;
+    width: 100%;
+    bottom: 10px;
+    text-align: center;
+    overflow:hidden;
+}
+
+.settingstop {
+    width: 100%;
+    height: 70%;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    font-family: "Open Sans", Sans-serif;
+    font-size:14px;
+}
+
+.settingsbottom {
+    width: 100%;
+    height: 20%;
+    font-family: "Open Sans", Sans-serif;
+    font-size:14px;
+}
+
+.settingsrightcol {
+    width: 100%;
+    height: 70%;
+    margin: 0;
+    top: 0;
+    bottom: 0;
+    font-family: "Open Sans", Sans-serif;
+    font-size:14px;
+}
+
+.settingsspace {
+    width: 100%;
+    height: 5%;
+    font-family: "Open Sans", Sans-serif;
+}
+
+.colorpicker {
+    background-color: #ccc;
+    border:0;
+    padding:0;
+    width:18px;
+    height:13px;
+}
+
+.colorpicker:focus {
+    outline:none;
+}
+
+.applybtn {
+    border-radius:0px;
+    color:black;
+    line-height:1.45em;
+}
+
+.mbl-lp {
+    display:none;
+}
+.tablet-lp{
+    display:none;
+}
+.lpdata-input{
+    border-radius:0px;
+    background-color: #fff;
+}
+
+/*label.vehicleRows:hover{
+    background: #fff;
+}*/
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    input.lineplotchkbox{margin-top:2px !important;}
+    .colorpicker{
+        height:20px !important;
+        width:20px !important;
+    }
+}
+
+/* Safari 11+ */
+
+@media not all and (min-resolution:.001dpcm)
+{ @supports (-webkit-appearance:none) and (stroke-color:transparent) {
+
+    .colorpicker{
+        display:none;
+    }
+}}
+
+@media only screen and (max-width: 599px) {
+    .graph-container {
+        position: relative;
+        top: 5px;
+        bottom: 30px;
+        left: 0px;
+        min-height: 165px;
+    }
+
+    .labels {
+        position: relative;
+        bottom: 0px;
+        top: 5px;
+        text-align: center;
+        font-size: 8px;
+    }
+
+    div.dygraph-label.dygraph-ylabel {
+        font-size: 8px;
+    }
+
+    div.dygraph-axis-label.dygraph-axis-label-y {
+        font-size: 8px;
+    }
+
+    div.dygraph-label.dygraph-xlabel {
+        font-size: 8px;
+    }
+
+    div.dygraph-axis-label.dygraph-axis-label-x {
+        font-size: 8px;
+    }
+
+    .mbl-lp {
+       display:block;
+    }
+    .mainlp{
+        display:none;
+    }
+    .tablet-lp{
+        display:none;
+    }
+
+    .colorpicker {
+        background-color: #ccc;
+        border: 0;
+        padding: 0;
+        width: 15px;
+        height: 17px;
+    }
+     input.lineplotchkbox{margin-top:0px !important;}
+}
+
+@media only screen and (min-width: 600px) and (max-width: 768px) {
+    .labels {
+        font-size: 10px;
+    }
+
+    div.dygraph-label.dygraph-ylabel {
+        font-size: 10px;
+    }
+
+    div.dygraph-axis-label.dygraph-axis-label-y {
+        font-size: 10px;
+    }
+
+    div.dygraph-label.dygraph-xlabel {
+        font-size: 10px;
+    }
+
+    div.dygraph-axis-label.dygraph-axis-label-x {
+        font-size: 10px;
+    }
+
+    .graph-container {
+        position: relative;
+        top: 5px;
+        bottom: 30px;
+        left: 0px;
+        min-height: 180px;
+    }
+
+    .labels {
+        position: relative;
+        bottom: 0px;
+        top: 5px;
+        font-size: 10px;
+    }
+
+    .tablet-lp{
+        display:block;
+    }
+    .mainlp{
+        display:none;
+    }
+    .mbl-lp {
+        display:none;
+    }
+    input.lineplotchkbox{margin-top:0px !important;}
+}
