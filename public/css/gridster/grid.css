@@ -70,6 +70,12 @@ div.mainWidget{
 /*    top:1.5px;
     position: relative;*/
 }
+
+.fullscreen {
+    width: 100%;
+    height: 100%;
+}
+
 /*
 
 Settings Menu outer Div styles
