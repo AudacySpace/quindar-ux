@@ -76,6 +76,18 @@ div.mainWidget{
     height: 100%;
 }
 
+/* Safari 11+ */
+@media not all and (min-resolution:.001dpcm)
+{ @supports (-webkit-appearance:none) and (stroke-color:transparent) {
+
+    .fullscreen { 
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
+}}
+
 /*
 
 Settings Menu outer Div styles
