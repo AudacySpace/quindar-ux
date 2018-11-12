@@ -8,6 +8,9 @@ angular.module('app')
 	   	vm.loadStatus = dashboardService.getLoadStatus();
 	   	vm.loadLayoutloaders = gridService.getGridLoader();
 	   	vm.prevDashboard = new Object();
+	   	vm.fullscreen = {
+	   		styles: {}
+	   	}
 
 		vm.remove = function(widget) {
 			widget.main = false;
@@ -32,8 +35,10 @@ angular.module('app')
 
 		vm.isFullScreenMode = function(status){
 			if(status === 'true'){
+				vm.fullscreen.styles = {'display':'none'};
 				vm.prevDashboard = angular.copy(vm.dashboard.current); // to retain original grid item positions
 			}else if(status === 'false'){
+				vm.fullscreen.styles = {};
 				vm.dashboard.current = angular.copy(vm.prevDashboard);
 			}
 		}
