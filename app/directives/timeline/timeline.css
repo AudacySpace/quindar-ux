@@ -44,25 +44,24 @@ div.vis-group.groupheader{
 }
 div#visualization div.vis-inner {
     display:inline-flex !important;
-    min-width: 185px !important;
 }
 
 div#visualization div.onlyotherevents div.vis-inner {
     display:inline-flex !important;
-    min-width: 200px !important;
 }
 
 div.tzgroup div.vis-inner {
     display:inline-flex !important;
-    min-width: 201px !important /* macOS high sierra firefox*/
- /* min-width: 219px !important;*/ /* windows 10 firefox*/
+}
+
+
+.vis-left{
+    width: 15% !important;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {
     div.tzgroup div.vis-inner {
         display:inline-flex !important;
-    /*  min-width: 200px !important;*//* macOS high sierra chrome*/
-        min-width: 201px !important; /* windows 10 chrome*/
     }
 }
 
@@ -348,18 +347,18 @@ p.listItems{
     }
     div#visualization div.vis-inner {
         display:inline-flex !important;
-        min-width: 108px !important;
+       /* min-width: 108px !important;*/
         padding-left:5px !important;
     }
     div#visualization div.onlyotherevents div.vis-inner {
         display:inline-flex !important;
-        min-width: 120px !important;
+       /* min-width: 120px !important;*/
     }
 
     div.tzgroup div.vis-inner {
         display:inline-flex !important;
         padding:0px !important;
-        min-width: 120px !important;
+    /*    min-width: 120px !important;*/
     }
     div.tzgroup div.vis-group {
         background: #428bca !important;
@@ -530,7 +529,7 @@ p.listItems{
     }
     div#visualization div.vis-inner {
         display:inline-flex !important;
-        min-width: 186px !important;
+   /*     min-width: 186px !important;*/
     }
 
     div.tzgroup div.vis-group {

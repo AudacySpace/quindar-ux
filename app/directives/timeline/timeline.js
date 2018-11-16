@@ -238,7 +238,7 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
     timeline.on('rangechanged', function (properties) {
         for(var i=0;i<$scope.timezones.length;i++){
             try{
-                $scope.tztimeline[i].setWindow(properties.start, properties.end);
+                $scope.tztimeline[i].setOptions({start: new Date(vis.moment(properties.start).utcOffset($scope.timezones[i].utcoffset)),end:new Date(vis.moment(properties.end).utcOffset($scope.timezones[i].utcoffset))});
             }catch(e){
                 //console.log(e);
             }
