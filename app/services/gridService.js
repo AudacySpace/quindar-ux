@@ -205,7 +205,7 @@ function gridService ($http, $sessionStorage, $window, userService) {
     },
     {
         sizeY: 10,
-        sizeX: 12,
+        sizeX: 16,
         name: "Timeline",
         directive: "timeLine",
         directiveSettings: "timelinesettings",
