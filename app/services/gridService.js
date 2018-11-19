@@ -269,26 +269,22 @@ function gridService ($http, $sessionStorage, $window, userService) {
                         row: 0,
                         sizeY: 8,
                         sizeX: 10,
-                        name: "Line Plot",
-                        directive: "graph",
-                        directiveSettings: "linesettings",
-                        id: "addLine",
+                        name: "Command",
+                        directive: "command",
+                        directiveSettings: "commandsettings",
+                        id: "command",
                         icon: {
-                            id: "l-plot",
-                            type: "fa-line-chart"
+                            id: "alarm",
+                            type: "fa-window-maximize"
                         },
                         main: true,
                         settings: {
                             active: false,
-                                data : {
-                                    vehicles : [],
-                                    value : "",
-                                    key : ""
-                                },
-                                dataArray: []
-                            },
-                            saveLoad: false,
-                            delete: false
+                            commandlog: true,
+                            dataArray: []
+                        },
+                        saveLoad: false,
+                        delete: false
                         },
                         {
                             col: 10,
