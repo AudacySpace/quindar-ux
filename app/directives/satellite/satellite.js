@@ -10,7 +10,7 @@ app
 app.controller('SatCtrl', function($scope){
     checkSettings();
 
-    $scope.modelUrl = "./directives/satellite/models/satellite.json";
+    $scope.modelUrl = "./directives/satellite/models/a0_complex.json";
     $scope.step = 0.01;
     $scope.min = 0.2;
     $scope.max = 1.8;
