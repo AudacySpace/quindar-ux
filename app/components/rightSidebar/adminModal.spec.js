@@ -19,7 +19,7 @@ describe('Testing adminModal controller', function () {
             deferredRole = _$q_.defer();
             deferredSet = _$q_.defer();
             scope = $rootScope.$new();
-            userService = jasmine.createSpyObj('userService', ['getRoles', 'getUsers', 'setAllowedRoles']);
+            userService = jasmine.createSpyObj('userService', ['getRoles', 'getUsers', 'setAllowedRoles', 'getUserEmail']);
 
             userService.getRoles.and.callFake(function() {
                 return deferredRole.promise;
@@ -92,6 +92,11 @@ describe('Testing adminModal controller', function () {
             multiple : true,
             checked : false
         },{
+            name : 'Mission Director',
+            callsign : 'MD',
+            multiple : false,
+            checked : false
+        },{
             name : 'Ground Communications Controller',
             callsign : 'GCC',
             multiple : true,
@@ -153,6 +158,16 @@ describe('Testing adminModal controller', function () {
         }]
 
         var users = [{
+            'google' : {},
+            'currentRole' : {
+                name : 'Mission Director',
+                callsign : 'MD'
+            },
+            'allowedRoles' : {
+                VIP : 1,
+                MD : 1
+            }
+        }, {
             'google' : {},
             'currentRole' : {
                 name : 'Observer',

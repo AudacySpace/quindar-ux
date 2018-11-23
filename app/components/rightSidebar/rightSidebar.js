@@ -162,6 +162,7 @@ app.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userSer
     $ctrl.users = [];
     $ctrl.roles = [];
     $ctrl.mission = mission.missionName;
+    $ctrl.email = userService.getUserEmail();
     $scope.saveSuccess = false;
 
     userService.getRoles()
@@ -173,9 +174,7 @@ app.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userSer
 
                 roles[role].checked = false;
 
-                if(role != 'MD') {
-                    $ctrl.roles.push(roles[role]);
-                }
+                $ctrl.roles.push(roles[role]);
             }
         }
     });
@@ -185,9 +184,7 @@ app.controller('adminCtrl', function($scope, $filter, $uibModalInstance, userSer
         if(response.status == 200) {
             var users = response.data;
             for (var i=0; i<users.length; i++){
-                if(users[i].currentRole && users[i].currentRole.callsign != 'MD') {
-                    $ctrl.users.push(users[i]);
-                }
+                $ctrl.users.push(users[i]);
             }
         }
     });
