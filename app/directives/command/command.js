@@ -154,11 +154,15 @@ app.controller('CommandCtrl',
                     };
                     $scope.entered = true;
                     $scope.disableEnter = true;
+
                     if(command.locked) {
                         $scope.locked = true;
                         $scope.disableInput = true;
                         $scope.disableLock = true;
                         $scope.lockModel = "UNLOCK"
+                    } else {
+                        $scope.lockModel = "LOCK";
+                        $scope.locked = false;
                     }
                 }
             } else {
