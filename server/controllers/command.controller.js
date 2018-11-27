@@ -42,7 +42,6 @@ module.exports = {
 
     lockCommand: function(req,res){
         var mission = req.body.mission;
-        console.log(mission);
 
         Command.findOne( { 'mission' : mission, 'entered' : true, 'locked' : false, 'sent' : false }, function(err, command) {
             if(err){
@@ -63,7 +62,27 @@ module.exports = {
         });
     },
 
+    unlockCommand: function(req,res){
+        var mission = req.body.mission;
 
+        Command.findOne( { 'mission' : mission, 'entered' : true, 'locked' : true, 'sent' : false }, function(err, command) {
+            if(err){
+                console.log(err);
+            }
+
+            command.locked = false;
+
+            command.save(function(err,result) {
+                if (err){
+                    console.log(err);
+                }
+
+                if(result){
+                    res.send(result);
+                }
+            });
+        });
+    },
 
     sendCommand: function(req,res){
         var mission = req.body.mission;
@@ -106,14 +125,11 @@ module.exports = {
 
     removeCommand: function(req,res){
         var mission = req.body.mission;
-        console.log("removing");
 
         Command.findOne( { 'mission' : mission, 'entered' : true, 'sent' : false }, function(err, command) {
             if(err){
                 console.log(err);
             }
-
-            console.log(command);
 
             if(command){
                 command.remove();

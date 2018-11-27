@@ -161,8 +161,11 @@ var usr = require('./controllers/usermgmt.controller');
     //get the entered command for a particular mission
     app.get('/getCommand',cmd.getCommand);
 
-    //lock the enetered command for a particular mission
+    //lock the entered command for a particular mission
     app.post('/lockCommand',cmd.lockCommand);
+
+    //unlock the entered command for a particular mission
+    app.post('/unlockCommand',cmd.unlockCommand);
 
     //send the command for a particular mission
     app.post('/sendCommand',cmd.sendCommand);

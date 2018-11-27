@@ -23,6 +23,7 @@ app.controller('CommandCtrl',
 		$scope.disableEnter = false;
 		$scope.disableInput = false;
 		$scope.disableLock = true;
+        $scope.lockModel = "LOCK";
 
         $scope.command = {
             name : "",
@@ -49,14 +50,27 @@ app.controller('CommandCtrl',
 
     $scope.lockCommand = function(){
     	if($scope.command.name && $scope.entered) {
-            commandService.lockCommand($scope.mission.missionName)
-            .then(function(response) {
-                if(response.status == 200){
-                    $scope.locked = true;
-                    $scope.disableInput = true;
-                    $scope.disableLock = true;
-                }
-            });
+            if($scope.lockModel == "LOCK"){
+                commandService.lockCommand($scope.mission.missionName)
+                .then(function(response) {
+                    if(response.status == 200){
+                        $scope.locked = true;
+                        $scope.disableInput = true;
+                        $scope.disableLock = true;
+                        $scope.lockModel = "UNLOCK";
+                    }
+                });
+            } else {
+                commandService.unlockCommand($scope.mission.missionName)
+                .then(function(response) {
+                    if(response.status == 200){
+                        $scope.locked = false;
+                        $scope.disableInput = false;
+                        $scope.disableLock = false;
+                        $scope.lockModel = "LOCK";
+                    }
+                });
+            }
 	    } else {
 	    	$window.alert("Please enter the commands before locking");
 	    }
@@ -69,7 +83,7 @@ app.controller('CommandCtrl',
             commandService.removeCommand($scope.mission.missionName)
             .then(function(response) {
                 if(response.status == 200){
-                    console.log("removed")
+                    console.log("removed");
                 }
             });
     	} else {
@@ -144,6 +158,7 @@ app.controller('CommandCtrl',
                         $scope.locked = true;
                         $scope.disableInput = true;
                         $scope.disableLock = true;
+                        $scope.lockModel = "UNLOCK"
                     }
                 }
             } else {

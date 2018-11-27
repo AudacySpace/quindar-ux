@@ -55,6 +55,14 @@ app
             data: {"mission": mission}
         })
     }
+
+    function unlockCommand(mission){
+        return $http({
+            url: "/unlockCommand",
+            method: "POST",
+            data: {"mission": mission}
+        })
+    }
     
 	return {
         saveCommand : saveCommand,
@@ -63,6 +71,7 @@ app
         getCommand : getCommand,
         lockCommand : lockCommand,
         sendCommand : sendCommand,
-        removeCommand : removeCommand
+        removeCommand : removeCommand,
+        unlockCommand : unlockCommand
 	}
 }]);
