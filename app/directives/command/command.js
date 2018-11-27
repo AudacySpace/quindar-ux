@@ -164,6 +164,7 @@ app.controller('CommandCtrl',
                         $scope.lockModel = "LOCK";
                         $scope.locked = false;
                         $scope.disableLock = false;
+                        $scope.disableInput = false;
                     }
                 }
             } else {
