@@ -163,6 +163,7 @@ app.controller('CommandCtrl',
                     } else {
                         $scope.lockModel = "LOCK";
                         $scope.locked = false;
+                        $scope.disableLock = true;
                     }
                 }
             } else {
