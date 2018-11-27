@@ -23,10 +23,46 @@ app
             params: {"mission": mission}
         });
     }
+
+    function getCommand(mission){
+        return $http({
+            url: "/getCommand",
+            method: "GET",
+            params: {"mission": mission}
+        });
+    }
+
+    function lockCommand(mission){
+        return $http({
+            url: "/lockCommand",
+            method: "POST",
+            data: {"mission": mission}
+        })
+    }
+
+    function sendCommand(mission, timestamp){
+        return $http({
+            url: "/sendCommand",
+            method: "POST",
+            data: {"mission": mission, "timestamp" : timestamp}
+        })
+    }
+
+    function removeCommand(mission){
+        return $http({
+            url: "/removeCommand",
+            method: "POST",
+            data: {"mission": mission}
+        })
+    }
     
 	return {
         saveCommand : saveCommand,
         getCommandLog : getCommandLog,
-        getCommandList : getCommandList
+        getCommandList : getCommandList,
+        getCommand : getCommand,
+        lockCommand : lockCommand,
+        sendCommand : sendCommand,
+        removeCommand : removeCommand
 	}
 }]);
