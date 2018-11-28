@@ -28,7 +28,7 @@
                 <input aria-label="argument" ng-model="command.arguments" type="text" class="disabled" ng-disabled="true">
             </md-input-container>
             <md-input-container flex="25" class="lock-container">
-                <input aria-label="Lock" type="button" value="LOCK" ng-disabled="!disableEnter" ng-click="lockCommand()" ng-class="locked ? 'enter-clicked' : 'enter-button'">
+                <input aria-label="Lock" type="button" value="{{lockModel}}" ng-disabled="!disableEnter" ng-click="lockCommand()" ng-class="locked ? 'enter-clicked' : 'enter-button'">
             </md-input-container>
         </div>
         <div layout="row" flex="100">
