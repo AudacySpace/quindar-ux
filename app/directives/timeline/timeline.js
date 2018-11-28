@@ -236,6 +236,7 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
 
     //Event Listener to listen to change in the main timeline window range and move the timezone range accordingly
     timeline.on('rangechanged', function (properties) {
+        $scope.rangeProperties = angular.copy(properties);
         for(var i=0;i<$scope.timezones.length;i++){
             try{
                 $scope.tztimeline[i].setOptions({start: new Date(vis.moment(properties.start).utcOffset($scope.timezones[i].utcoffset)),end:new Date(vis.moment(properties.end).utcOffset($scope.timezones[i].utcoffset))});
@@ -250,7 +251,21 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
     //Function to Display current time using current mission time every second
     $scope.updateClock = function(){
         if(dashboardService.getTime('UTC').today){
+            var tlmStart;
+            var tlmEnd;
             //sets current time in all timezones of the timeline 
+            if($scope.rangeProperties.byUser === false){
+                tlmStart = vis.moment(dashboardService.getTime('UTC').today).utc() - 4000000;
+                tlmEnd = vis.moment(dashboardService.getTime('UTC').today).utc() + 3600000;
+            }else if($scope.rangeProperties.byUser === true){
+                // var count = 1000;
+                // tlmStart = vis.moment($scope.rangeProperties.start).utc();
+                // tlmStart = tlmStart + count;
+                // tlmEnd = vis.moment($scope.rangeProperties.end).utc();
+                // tlmEnd = tlmEnd + count;
+            }
+
+            timeline.setWindow(tlmStart,tlmEnd); 
             timeline.setCurrentTime(vis.moment(dashboardService.getTime('UTC').today).utc());
             if($scope.timezones.length >0){
                 for(var i=0;i<$scope.timezones.length;i++){
@@ -289,6 +304,9 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                     }
                 }
             }
+            // if(dashboardService.getTime('UTC').today){
+            //    timeline.setCurrentTime(vis.moment(dashboardService.getTime('UTC').today).utc()); 
+            // }
             $scope.realtimebutton.style = {background:'#cccccc52'};
             $scope.widget.settings.datetime = $scope.datetime;
             $scope.dateTimeErrMsg = "";
