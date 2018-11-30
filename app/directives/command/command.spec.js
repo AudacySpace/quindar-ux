@@ -1,6 +1,7 @@
 describe('Testing command controller', function () {
     var controller, dashboardService, scope, commandService, userService, 
-    $intervalSpy, deferredSave, deferredCommandLog, deferredCommandList;
+    $intervalSpy, deferredSave, deferredCommandLog, deferredCommandList,
+    deferredSend, deferredLock, deferredCommand;
 
     var mission = {
         missionName : 'ATest',
@@ -44,9 +45,15 @@ describe('Testing command controller', function () {
             deferredSave = _$q_.defer();
             deferredCommandLog = _$q_.defer();
             deferredCommandList = _$q_.defer();
+            deferredSend = _$q_.defer();
+            deferredLock = _$q_.defer();
+            deferredCommand = _$q_.defer();
             spyOn(commandService, "saveCommand").and.returnValue(deferredSave.promise);
             spyOn(commandService, "getCommandLog").and.returnValue(deferredCommandLog.promise);
             spyOn(commandService, "getCommandList").and.returnValue(deferredCommandList.promise);
+            spyOn(commandService, "sendCommand").and.returnValue(deferredSend.promise);
+            spyOn(commandService, "lockCommand").and.returnValue(deferredLock.promise);
+            spyOn(commandService, "getCommand").and.returnValue(deferredCommand.promise);
 
             scope = $rootScope.$new();
             scope.widget = {
@@ -99,6 +106,7 @@ describe('Testing command controller', function () {
         expect(scope.disableInput).toEqual(false);
         expect(scope.disableLock).toEqual(true);
         expect(scope.command).toEqual(nullCommand);
+        expect(scope.lockModel).toEqual("LOCK");
     })
 
     it('should set the user email and current mission name', function(){
@@ -120,7 +128,11 @@ describe('Testing command controller', function () {
         scope.cmd = "GET";
         scope.arguments = "00";
 
+        deferredSave.resolve({ data : {}, status : 200 });
         scope.enter();
+        // call digest cycle for this to work
+        scope.$digest();
+
         expect(scope.command.name).toEqual('GET');
         expect(scope.command.arguments).toEqual('00');
         expect(scope.entered).toEqual(true);
@@ -138,7 +150,12 @@ describe('Testing command controller', function () {
         }
         scope.entered = true;
 
+        deferredLock.resolve({ data : {}, status : 200 });
+
         scope.lockCommand();
+        // call digest cycle for this to work
+        scope.$digest();
+
         expect(scope.locked).toEqual(true);
         expect(scope.disableLock).toEqual(true);
         expect(scope.disableInput).toEqual(true);
@@ -195,7 +212,7 @@ describe('Testing command controller', function () {
         expect(scope.command.arguments).toEqual("00");
     })
 
-    it('should call saveCommand route and reset all values when scope.sendCommand is called', function() {
+    it('should call sendCommand route and reset all values when scope.sendCommand is called', function() {
         var time = {
             days : '070',
             minutes : '10',
@@ -225,13 +242,12 @@ describe('Testing command controller', function () {
             return time;
         });
 
-        deferredSave.resolve({ data : {}, status : 200 });
+        deferredSend.resolve({ data : {}, status : 200 });
         scope.sendCommand();
         // call digest cycle for this to work
         scope.$digest();
 
-        expect(commandService.saveCommand)
-        .toHaveBeenCalled();
+        expect(commandService.sendCommand).toHaveBeenCalled();
 
         //expect values to reset
         expect(scope.command).toEqual({ name: '', arguments: '', sent_timestamp: '', time: ''});
@@ -242,7 +258,7 @@ describe('Testing command controller', function () {
         expect(scope.disableLock).toEqual(true);
     });
 
-    it('should not reset variables when saveCommand status is other than 200', function() {
+    it('should not reset variables when sendCommand status is other than 200', function() {
         var time = {
             days : '070',
             minutes : '10',
@@ -263,12 +279,12 @@ describe('Testing command controller', function () {
             return time;
         });
 
-        deferredSave.resolve({ data : {}, status : 404 });
+        deferredSend.resolve({ data : {}, status : 404 });
         scope.sendCommand();
         // call digest cycle for this to work
         scope.$digest();
 
-        expect(commandService.saveCommand).toHaveBeenCalled();
+        expect(commandService.sendCommand).toHaveBeenCalled();
 
         //expect values not to reset
         expect(scope.command.name).toEqual("Null Command Echo");
@@ -344,6 +360,8 @@ describe('Testing command controller', function () {
         }];
 
         deferredCommandLog.resolve({ data : result, status: 200 });
+        deferredCommand.resolve({ data : {}, status: 200 });
+
         scope.updateCommandlog();
         // call digest cycle for this to work
         scope.$digest();

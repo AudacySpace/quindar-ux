@@ -1,13 +1,13 @@
 <md-progress-linear md-mode="indeterminate" ng-show="$ctrl.loadStatus.value === true || $ctrl.loadLayoutloaders.gridLoader === true" md-theme="blueTheme" style="position:fixed;top:0%;left:0%;z-index: 2000;transition: opacity 250ms linear;"></md-progress-linear>
 <div gridster="$ctrl.gridsterOptions" ng-show="$ctrl.loadStatus.value === false && $ctrl.loadLayoutloaders.gridLoader === false">
 	<ul>
-		<li gridster-item="widget" ng-repeat="widget in $ctrl.dashboard.current.widgets">
+		<li gridster-item="widget" ng-repeat="widget in $ctrl.dashboard.current.widgets" ng-style="$ctrl.gridItemFullScreenStyles"  ngsf-fullscreen>
 			<div class="box">
 				<div class="box-header">
 					<a><img class="drag-menu" ng-src="../../public/icons/panel-icons/dragIcon.svg"/></a>
 					<h4 class="widgetName">{{ widget.name }}</h4>
 					<div class="box-header-btns pull-right">
-						<a title="Settings" ng-click="$ctrl.openSettings(widget)">			
+						<a title="Settings" ng-click="$ctrl.openSettings(widget)" show-if-fullscreen=false>			
 							<img class="cog-menu" ng-src="../../public/icons/panel-icons/cog.svg"/>
 						</a>
 						<!--<a title="Save or Load Widget" ng-click="$ctrl.openSaveLoadSettings(widget)">
@@ -16,8 +16,14 @@
 				<!-- 		<a title="Save or Load Widget">
 							<img class="save-load-menu" ng-src="../../public/icons/panel-icons/save-load.svg"/>
 						</a> -->
-						<a title="Remove widget" ng-click="$ctrl.remove(widget)">
+						<a title="Remove qwidget" ng-click="$ctrl.remove(widget)" show-if-fullscreen=false>
 							<img class="trash-menu" ng-src="../../public/icons/panel-icons/trash.svg"/>
+						</a>
+						<a title="View qwidget in fullscreen" show-if-fullscreen=false ng-click="$ctrl.isFullScreenMode('true')" ngsf-toggle-fullscreen>
+							<img class="view-full-screen" ng-src="../../public/icons/panel-icons/expand.svg"/>
+						</a>
+						<a title="Exit fullscreen" show-if-fullscreen=true ng-click="$ctrl.isFullScreenMode('false')" ngsf-toggle-fullscreen>
+							<img class="exit-full-screen"  ng-src="../../public/icons/panel-icons/exitfullscreen.svg"/>
 						</a>
 					</div>
 				</div>

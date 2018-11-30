@@ -112,6 +112,7 @@ describe('Testing role modal controller', function () {
         expect(controller.updateRole).toBeDefined();
     });
 
+    // commented out as now MD role is handled similar to all other roles(more than one MD)
     // it('should not update the role if you are a Mission Director', function() {
     //     controller.cRole = { 
     //         name : 'Mission Director', 

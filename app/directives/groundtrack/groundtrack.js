@@ -295,8 +295,23 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 						dt0 = 1e-10,
 						integrator = odeService.IntegratorFactory( y0, eom, t0, dt0)
 						
-						// Integrate up to tmax:
-						var tmax = 1, tEst = [], yEst = []
+						if (!est[i]){
+							// Get the latest time in the database
+							var dateValue = new Date(telemetry['time']);
+							var timeDatabase = dateValue.getTime(); //time in milliseconds
+						
+							// Get the current mission time
+							var timeMission = dashboardService.getTime('UTC').today.getTime();
+							
+							// Integrate up to tmax:
+							var tmax = (timeMission - timeDatabase)/1000, tEst = [], yEst = []							
+						}	
+						else{
+							
+							var tmax = 1, tEst = [], yEst = []
+						}
+			
+
 						while( integrator.step( tmax ) ) {
 							// Store the solution at this timestep:
 							tEst.push( integrator.t );

@@ -398,7 +398,8 @@
           if (tempMoment.isValid()) {
             tempDate = tempMoment.toDate()
           } else {
-            throw new Error('Invalid date: ' + modelValue)
+            console.log('Invalid date: ' + modelValue);
+            //throw new Error('Invalid date: ' + modelValue)
           }
         }
         return tempDate.getTime() - (tempDate.getTimezoneOffset() * 60000)

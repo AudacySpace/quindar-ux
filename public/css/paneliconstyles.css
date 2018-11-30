@@ -11,13 +11,21 @@
     position: relative;
     width: 14px;
 }
+
 /*.save-load-menu {
     top: 8px;
     right: 12px;
     position: relative;
     width:15px;
 }*/
+
 .trash-menu {
+    top: 6px;
+    right: 7px;
+    position: relative;
+    width:14px;
+}
+.view-full-screen,.exit-full-screen  {
    top:6px;
    right:6px;
    position: relative;

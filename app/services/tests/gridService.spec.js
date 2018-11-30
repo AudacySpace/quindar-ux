@@ -13,22 +13,18 @@ describe('Testing gridService', function () {
                 row: 0,
                 sizeY: 8,
                 sizeX: 10,
-                name: "Line Plot",
-                directive: "graph",
-                directiveSettings: "linesettings",
-                id: "addLine",
+                name: "Command",
+                directive: "command",
+                directiveSettings: "commandsettings",
+                id: "command",
                 icon: {
-                    id: "l-plot",
-                    type: "fa-line-chart"
+                    id: "alarm",
+                    type: "fa-window-maximize"
                 },
                 main: true,
                 settings: {
                     active: false,
-                    data : {
-                        vehicles : [],
-                        value : "",
-                        key : ""
-                    },
+                    commandlog: true,
                     dataArray: []
                 },
                 saveLoad: false,

@@ -30,7 +30,7 @@ describe('Testing Satellite controller', function () {
 
     it('should define model url location', function(){
         expect(scope.modelUrl).toBeDefined();
-        expect(scope.modelUrl).toEqual('./directives/satellite/models/satellite.json');
+        expect(scope.modelUrl).toEqual('./directives/satellite/models/a0_complex.json');
     });
 
     it('should define step variable', function(){

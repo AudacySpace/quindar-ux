@@ -41,6 +41,8 @@ module.exports = function(config) {
       './public/scripts/ng-sortable.js',
       './public/scripts/moment.js',
       './public/scripts/moment-timezone-with-data-2012-2022.min.js',
+      './public/scripts/angular-screenfull.min.js',
+      './public/scripts/screenfull.js',
       './app/app.js',
       './app/components/**/*.js',
       './app/services/*.js',

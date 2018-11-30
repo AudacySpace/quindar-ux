@@ -9,13 +9,13 @@
         <div class="row" ng-if="$even">
             <div class="col-xs-6">
                 <label class="radio">
-                    <input type="radio" ng-model="$ctrl.role.currentRole.name" ng-value="$ctrl.roles[$index].name" ng-disabled="$ctrl.role.currentRole.name =='Mission Director'"> 
+                    <input type="radio" ng-model="$ctrl.role.currentRole.name" ng-value="$ctrl.roles[$index].name">
                     {{ $ctrl.roles[$index].name }} ({{ $ctrl.roles[$index].callsign }})
                 </label>
             </div>
             <div class="col-xs-6" ng-show="$ctrl.roles[$index+1]">
                 <label class="radio">
-                    <input type="radio" ng-model="$ctrl.role.currentRole.name" ng-value="$ctrl.roles[$index+1].name" ng-disabled="$ctrl.role.currentRole.name =='Mission Director'"> 
+                    <input type="radio" ng-model="$ctrl.role.currentRole.name" ng-value="$ctrl.roles[$index+1].name">
                     {{ $ctrl.roles[$index+1].name }} ({{ $ctrl.roles[$index+1].callsign }})
                 </label> 
             </div>

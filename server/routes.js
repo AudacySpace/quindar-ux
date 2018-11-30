@@ -158,6 +158,21 @@ var usr = require('./controllers/usermgmt.controller');
     //get the command log for a particular mission
     app.get('/getCommandLog',cmd.getCommandLog);
 
+    //get the entered command for a particular mission
+    app.get('/getCommand',cmd.getCommand);
+
+    //lock the entered command for a particular mission
+    app.post('/lockCommand',cmd.lockCommand);
+
+    //unlock the entered command for a particular mission
+    app.post('/unlockCommand',cmd.unlockCommand);
+
+    //send the command for a particular mission
+    app.post('/sendCommand',cmd.sendCommand);
+
+    //remove the command for a particular mission
+    app.post('/removeCommand',cmd.removeCommand);
+
     //get the command list for a particular mission
     app.get('/getCommandList',clist.getCommandList);
 
