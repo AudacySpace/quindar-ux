@@ -256,13 +256,10 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
     }
 
     $scope.setChangedRange = function(tlmStart,tlmEnd){
-        $scope.statusIcons = dashboardService.icons;
         if(dashboardService.getTime('UTC').today){
-
             var tlmStart  = vis.moment($scope.rangeProperties.start).utc();
             var tlmEnd = vis.moment($scope.rangeProperties.end).utc();
             timeline.setWindow(tlmStart,tlmEnd); 
-
             timeline.setCurrentTime(vis.moment(dashboardService.getTime('UTC').today).utc());
             if($scope.timezones.length >0){
                 for(var i=0;i<$scope.timezones.length;i++){
@@ -273,14 +270,30 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                     }
                 }
             }
-            if($scope.statusIcons.dIcon === 'green'){
-                $scope.realtimebutton = { 
-                    style : {
-                        background:'#12C700'
-                    }
-                };
-            }else {
+            if($scope.widget.settings.datetime){
                 $scope.datetime = $scope.widget.settings.datetime;
+            }
+            
+        }else {
+            if($scope.rangeProperties && $scope.rangeProperties.start && $scope.rangeProperties.end){
+                var tlmStart  = vis.moment($scope.rangeProperties.start).utc();
+                var tlmEnd = vis.moment($scope.rangeProperties.end).utc();
+                timeline.setWindow(tlmStart,tlmEnd); 
+
+                timeline.setCurrentTime(vis.moment().utc());
+                if($scope.timezones.length >0){
+                    for(var i=0;i<$scope.timezones.length;i++){
+                        try{
+                            $scope.tztimeline[i].setCurrentTime(vis.moment().utcOffset($scope.timezones[i].utcoffset));
+                        }catch(e){
+                        //console.log(e);
+                        }
+                    }
+                }
+                if($scope.widget.settings.datetime){
+                    $scope.datetime = $scope.widget.settings.datetime;
+                    timeline.setCurrentTime(vis.moment().utc());
+                }
             }
         }
     }
@@ -288,7 +301,6 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
 
     //Function to Display current time using current mission time every second
     $scope.updateClock = function(){
-        $scope.statusIcons = dashboardService.icons;
         if(dashboardService.getTime('UTC').today){
             var tlmStart;
             var tlmEnd;
@@ -307,16 +319,6 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                         }
                     }
                 }
-                if($scope.statusIcons.dIcon === 'green'){
-                    $scope.realtimebutton = { 
-                        style : {
-                            background:'#12C700'
-                        }
-                    };
-                }else {
-                    $scope.realtimebutton.style = {background:'#cccccc52'};                    
-                }
-
                 if($scope.widget.settings.datetime){
                     $scope.datetime = $scope.widget.settings.datetime;
                     timeline.setCurrentTime(vis.moment(dashboardService.getTime('UTC').today).utc());
@@ -327,6 +329,28 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
                 }
                 $scope.setChangedStartEnd();
             }
+        }else {
+            if($scope.rangeProperties && $scope.rangeProperties.start && $scope.rangeProperties.end){
+                var tlmStart  = vis.moment($scope.rangeProperties.start).utc();
+                var tlmEnd = vis.moment($scope.rangeProperties.end).utc();
+                timeline.setWindow(tlmStart,tlmEnd); 
+
+                timeline.setCurrentTime(vis.moment().utc());
+                if($scope.timezones.length >0){
+                    for(var i=0;i<$scope.timezones.length;i++){
+                        try{
+                            $scope.tztimeline[i].setCurrentTime(vis.moment().utcOffset($scope.timezones[i].utcoffset));
+                        }catch(e){
+                        //console.log(e);
+                        }
+                    }
+                }
+                if($scope.widget.settings.datetime){
+                    $scope.datetime = $scope.widget.settings.datetime;
+                    timeline.setCurrentTime(vis.moment().utc());
+                }
+            }
+
         }
     }
 
@@ -336,25 +360,41 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
     //Function to change date time using date time button on the widget and pan to that range.
     $scope.changetime = function(){
         if($scope.datetime){
-            $interval.cancel($scope.interval);
-            timeline.setOptions({start: new Date(vis.moment($scope.datetime).utc() - 1000 * 60 * 60),end:new Date(vis.moment($scope.datetime).utc() + 1000 * 60 * 60) });
+            if($scope.interval){
+                $interval.cancel($scope.interval);
+            }
+
+            if($scope.changedInterval){
+                $interval.cancel($scope.changedInterval);
+            }
+
+            timeline.setOptions({start: new Date(vis.moment($scope.datetime).utc() - 1000 * 60 * 60),end:new Date(vis.moment($scope.datetime).utc() + 1000 * 60 * 60)});
             if($scope.timezones.length > 0){
                 for(var i=0;i<$scope.timezones.length;i++){
                     try{
-                         $scope.tztimeline[i].setOptions({start: new Date(vis.moment($scope.datetime).utcOffset($scope.timezones[i].utcoffset) - 1000 * 60 * 60),end:new Date(vis.moment($scope.datetime).utcOffset($scope.timezones[i].utcoffset) + 1000 * 60 * 60) });
+                         $scope.tztimeline[i].setOptions({start: new Date(vis.moment($scope.datetime).utcOffset($scope.timezones[i].utcoffset) - 1000 * 60 * 60),end:new Date(vis.moment($scope.datetime).utcOffset($scope.timezones[i].utcoffset) + 1000 * 60 * 60)});
                     }catch(e){
                         //console.log(e);
                     }
                 }
             }
             if(dashboardService.getTime('UTC').today){
-               timeline.setCurrentTime(vis.moment(dashboardService.getTime('UTC').today).utc()); 
+                if($scope.interval){
+                    $interval.cancel($scope.interval);
+                }
+                if($scope.rangeProperties){
+                    timeline.setCurrentTime(vis.moment(dashboardService.getTime('UTC').today).utc());
+                    $scope.setChangedStartEnd();
+                }
             }else {
-                timeline.setCurrentTime(vis.moment());
-            }
-            $scope.statusIcons = dashboardService.icons;
-            if($scope.statusIcons.sIcon === 'grey' || $scope.statusIcons.sIcon === 'red' || $scope.statusIcons.dIcon === "blue" || $scope.statusIcons.dIcon === 'red'){
-                $scope.realtimebutton.style = {background:'#cccccc52'};
+                if($scope.interval){
+                    $interval.cancel($scope.interval);
+                }
+                if($scope.rangeProperties){
+                    timeline.setCurrentTime(vis.moment().utc());
+                    $scope.setChangedStartEnd();
+                }
+                
             }
             $scope.widget.settings.datetime = $scope.datetime;
             $scope.dateTimeErrMsg = "";
@@ -376,30 +416,29 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
             $interval.cancel($scope.changedInterval);
         }
         $scope.clock = dashboardService.getTime('UTC');
-        timeline.setOptions({start: new Date(vis.moment($scope.clock.today).utc() - 1000 * 60 * 60),end:new Date(vis.moment($scope.clock.today).utc() + 1000 * 60 * 60) });  
-        if($scope.timezones.length > 0){
-            for(var i=0;i<$scope.timezones.length;i++){
-                try{
-                    $scope.tztimeline[i].setOptions({start: new Date(vis.moment($scope.clock.today).utcOffset($scope.timezones[i].utcoffset) - 1000 * 60 * 60),end:new Date(vis.moment($scope.clock.today).utcOffset($scope.timezones[i].utcoffset) + 1000 * 60 * 60) });
-                }catch(e){
+        if($scope.clock){
+            timeline.setOptions({start: new Date(vis.moment($scope.clock.today).utc() - 1000 * 60 * 60),end:new Date(vis.moment($scope.clock.today).utc() + 1000 * 60 * 60) });  
+            if($scope.timezones.length > 0){
+                for(var i=0;i<$scope.timezones.length;i++){
+                    try{
+                        $scope.tztimeline[i].setOptions({start: new Date(vis.moment($scope.clock.today).utcOffset($scope.timezones[i].utcoffset) - 1000 * 60 * 60),end:new Date(vis.moment($scope.clock.today).utcOffset($scope.timezones[i].utcoffset) + 1000 * 60 * 60) });
+                    }catch(e){
                     //console.log(e);
-                }
+                    }
                        
+                }
             }
         }
+
         $scope.datetime = "";
         $scope.widget.settings.datetime = "";
         $scope.interval = $interval($scope.updateClock, 1000);
-        $scope.statusIcons = dashboardService.icons;
-        if($scope.statusIcons.sIcon === 'grey' || $scope.statusIcons.sIcon === 'red' || $scope.statusIcons.dIcon === "blue" || $scope.statusIcons.dIcon === 'red'){
-            $scope.realtimebutton.style = {background:'#cccccc52'};
-        }
-        // $scope.realtimebutton = { 
-        //     style : {
-        //         'background':'#12C700',
-        //         'float':'right'
-        //      }
-        // };
+        $scope.realtimebutton = { 
+            style : {
+                'background':'#12C700',
+                'float':'right'
+             }
+        };
         $scope.dateTimeErrMsg = "";
         $scope.dateTimeErrMsgStyles = {};
     }
@@ -759,6 +798,9 @@ app.controller('timelineCtrl', function (gridService,$scope,$interval,dashboardS
 
     //Function to fetch timeline options and display
     function gettimelineOptions(){
+        if($scope.changedInterval){
+            $interval.cancel($scope.changedInterval);
+        }
         if($scope.widget.settings.start && $scope.widget.settings.end){
             var options = setStartAndEndForOptions($scope.widget.settings.start,$scope.widget.settings.end);
             $scope.options = options;
