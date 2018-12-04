@@ -47,38 +47,38 @@
 <md-content flex-gt-sm="50" flex-xs="20" flex-sm="30" layout="column" class="command-log" ng-show="widget.settings.commandlog">
     <md-content class="header-log">
         <div layout="row">
-            <div flex="15" class="left-cmdlogheader">
+            <div flex="20" class="left-cmdlogheader">
                 Time
             </div>
             <div flex="15" class="left-cmdlogheader">
-                Command
-            </div>
-            <div flex="20" class="left-cmdlogheader">
-                Arguments
+                Cmd
             </div>
             <div flex="30" class="left-cmdlogheader">
+                Arguments
+            </div>
+            <div flex="20" class="left-cmdlogheader">
                 Status
             </div>
-            <div flex="20" class="right-cmdlogheader">
+            <div flex="15" class="right-cmdlogheader">
                 Data
             </div>
         </div>
     </md-content>
     <md-content class="commandLogTable">
         <div layout="row" ng-repeat="comm in commandLog | orderBy:'-sent_timestamp'">
-            <div flex="15" class="left-cmdlogrow" style="word-wrap: break-word;">
+            <div flex="20" class="left-cmdlogrow" style="overflow:auto; white-space: nowrap;">
                 {{comm.time}}
             </div>
             <div flex="15" class="left-cmdlogrow" style="word-wrap: break-word;">
                 {{comm.name}}
             </div>
-            <div flex="20" class="left-cmdlogrow" style="word-wrap: break-word;">
+            <div flex="30" class="left-cmdlogrow" style="word-wrap: break-word;">
                 {{comm.arguments}}
             </div>
-            <div flex="30" class="left-cmdlogrow" style="word-wrap: break-word;">
+            <div flex="20" class="left-cmdlogrow" style="word-wrap: break-word;">
                 {{ comm.responseStatus }}
             </div>
-            <div flex="20" class="right-cmdlogrow" style="word-wrap: break-word;">
+            <div flex="15" class="right-cmdlogrow" style="word-wrap: break-word;">
                 {{ comm.responseData }}
             </div>
         </div>
