@@ -21,6 +21,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 	var est = {};			// Is it estimation? Estimation=true, Actual=false
 	var prev_est = {};
 	var scHCurrent = {};
+    var first = {};   // True if it is the first data point of the plot
 	
 	$scope.dataStatus = dashboardService.icons;
 	//watch to check the database icon color to know about database status
@@ -175,6 +176,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 				scHCurrent[i] = "";
 				prev_est[i] = "";
 				est[i] = false;
+                first[i] = true;
             }
         }
 		
@@ -293,9 +295,11 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 						var y0 = [x,y,z,vx,vy,vz],
 						t0 = 0,
 						dt0 = 1e-10,
-						integrator = odeService.IntegratorFactory( y0, eom, t0, dt0)
+						integrator = odeService.IntegratorFactory( y0, eom, t0, dt0);
 						
-						if (!est[i]){
+						if (first[i]){
+                            //reset as this was the first point of plot
+                            first[i] = false;
 							// Get the latest time in the database
 							var dateValue = new Date(telemetry['time']);
 							var timeDatabase = dateValue.getTime(); //time in milliseconds
@@ -307,7 +311,6 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 							var tmax = (timeMission - timeDatabase)/1000, tEst = [], yEst = []							
 						}	
 						else{
-							
 							var tmax = 1, tEst = [], yEst = []
 						}
 			
@@ -329,7 +332,9 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
                         if($scope.timeObj[i][$scope.timeObj[i].length-1] != null){
                             var timestamp = $scope.timeObj[i][$scope.timeObj[i].length-1].timestamp + tmax*1000;
                         } else {
-                            var timestamp = "";
+                            //get current time
+                            var dateValue = new Date(telemetry['time']);
+                            var timestamp = dateValue.getTime(); //time in milliseconds
                         }
 
 						est[i] = true;
