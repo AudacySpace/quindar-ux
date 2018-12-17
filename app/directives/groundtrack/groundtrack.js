@@ -309,15 +309,17 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 							var timeMission = dashboardService.getTime('UTC').today.getTime();
 							
 							// Integrate up to tmax:
-							var tmax = (timeMission - timeDatabase)/1000, tEst = [], yEst = []							
+							var tmax = (timeMission - timeDatabase)/1000, tEst = [], yEst = []		
+//console.log(tmax)							
 						}	
 						else{
 							
 							// Get the current mission time
 							var timeMission = dashboardService.getTime('UTC').today.getTime();
-							var tInit = timeMission;
-							
-							var tmax = 1, tEst = [], yEst = []
+							var tInit =  $scope.timeObj[i][$scope.timeObj[i].length-1].timestamp;
+//console.log(tInit);
+							var tmax = (timeMission - tInit)/1000,  tEst = [], yEst = []
+//console.log(tmax);
 						}
 			
 
@@ -375,7 +377,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 						vz = rEcef[5];						
 						
 						var timestamp = timeMission;
-						
+
 						est[i] = true;
 					}
 
