@@ -310,22 +310,22 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 							
 							// Integrate up to tmax:
 							var tmax = (timeMission - timeDatabase)/1000, tEst = [], yEst = []		
-//console.log(tmax)							
+						
 						}	
 						else{
 							
 							// Get the current mission time
 							var timeMission = dashboardService.getTime('UTC').today.getTime();
 							var tInit =  $scope.timeObj[i][$scope.timeObj[i].length-1].timestamp;
-//console.log(tInit);
+
 							var tmax = (timeMission - tInit)/1000,  tEst = [], yEst = []
-//console.log(tmax);
+
 						}
 			
 
 						// Julian Date Century
 						var jdcJ2000Init = jDayCent(tInit);
-						
+					
 						// tGmst: Greenwich mean sidereal time [rad]
 						var tGmstInit = gmst(jdcJ2000Init);		
 
@@ -367,7 +367,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 						// Function to transform from Earth-centered inertial (ECI)  coordinate system to Earth-centered, Earth-fixed (ECEF) 
 						// coordinate system, J2000
 						var rEcef = eci2Ecef([xEci,yEci,zEci,vxEci,vyEci,vzEci], tGmstFin);
-				
+
 						// Update with the estimated value
 						x = rEcef[0];
 						y = rEcef[1];
