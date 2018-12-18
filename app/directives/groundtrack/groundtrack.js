@@ -309,16 +309,30 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 							var timeMission = dashboardService.getTime('UTC').today.getTime();
 							
 							// Integrate up to tmax:
-							var tmax = (timeMission - timeDatabase)/1000, tEst = [], yEst = []		
+							var tmax = (timeMission - timeDatabase)/1000, tEst = [], yEst = [];		
 						
 						}	
 						else{
 							
 							// Get the current mission time
 							var timeMission = dashboardService.getTime('UTC').today.getTime();
-							var tInit =  $scope.timeObj[i][$scope.timeObj[i].length-1].timestamp;
-
-							var tmax = (timeMission - tInit)/1000,  tEst = [], yEst = []
+							
+							// Make sure an empty timeObj does not give any errors
+							if ($scope.timeObj[i][$scope.timeObj[i].length-1].timestamp != ""){
+								
+								// Take the previous time as the initial time
+								var tInit =  $scope.timeObj[i][$scope.timeObj[i].length-1].timestamp;
+								
+								// Take the current mission clock as the final time
+								var tmax = (timeMission - tInit)/1000,  tEst = [], yEst = [];
+			
+							}else{
+								
+								// No timeObj, but timeObj should be defined at this point.
+								console.log("Not supposed to happen");	
+								var tInit = timeMission/1000 - 1;
+								var tmax = 1,  tEst = [], yEst = [];						
+							}
 
 						}
 			
@@ -337,10 +351,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 						var y0 = rEci,
 						t0 = 0,
 						dt0 = 1e-10,
-						integrator = odeService.IntegratorFactory( y0, eom, t0, dt0)
-			
-			
-			
+						integrator = odeService.IntegratorFactory( y0, eom, t0, dt0)		
 			
 						while( integrator.step( tmax ) ) {
 							// Store the solution at this timestep:
