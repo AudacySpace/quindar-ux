@@ -21,6 +21,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 	var est = {};			// Is it estimation? Estimation=true, Actual=false
 	var prev_est = {};
 	var scHCurrent = {};
+    var first = {};   // True if it is the first data point of the plot
 	
 	$scope.dataStatus = dashboardService.icons;
 	//watch to check the database icon color to know about database status
@@ -175,6 +176,7 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 				scHCurrent[i] = "";
 				prev_est[i] = "";
 				est[i] = false;
+                first[i] = true;
             }
         }
 		
@@ -293,44 +295,99 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
 						var y0 = [x,y,z,vx,vy,vz],
 						t0 = 0,
 						dt0 = 1e-10,
-						integrator = odeService.IntegratorFactory( y0, eom, t0, dt0)
+						integrator = odeService.IntegratorFactory( y0, eom, t0, dt0);
 						
-						if (!est[i]){
+						if (first[i]){
+                            //reset as this was the first point of plot
+                            first[i] = false;
 							// Get the latest time in the database
 							var dateValue = new Date(telemetry['time']);
 							var timeDatabase = dateValue.getTime(); //time in milliseconds
-						
+							var tInit = timeDatabase;	// Initial time	in milliseconds
+							
 							// Get the current mission time
 							var timeMission = dashboardService.getTime('UTC').today.getTime();
 							
 							// Integrate up to tmax:
-							var tmax = (timeMission - timeDatabase)/1000, tEst = [], yEst = []							
+							var tmax = (timeMission - timeDatabase)/1000, tEst = [], yEst = [];		
+						
 						}	
 						else{
 							
-							var tmax = 1, tEst = [], yEst = []
+							// Get the current mission time
+							var timeMission = dashboardService.getTime('UTC').today.getTime();
+							
+							// Make sure an empty timeObj does not give any errors
+							if ($scope.timeObj[i][$scope.timeObj[i].length-1].timestamp != ""){
+								
+								// Take the previous time as the initial time
+								var tInit =  $scope.timeObj[i][$scope.timeObj[i].length-1].timestamp;
+								
+								// Take the current mission clock as the final time
+								var tmax = (timeMission - tInit)/1000,  tEst = [], yEst = [];
+			
+							}else{
+								
+								// No timeObj, but timeObj should be defined at this point.
+								console.log("Not supposed to happen");	
+								var tInit = timeMission/1000 - 1;
+								var tmax = 1,  tEst = [], yEst = [];						
+							}
+
 						}
 			
 
+						// Julian Date Century
+						var jdcJ2000Init = jDayCent(tInit);
+					
+						// tGmst: Greenwich mean sidereal time [rad]
+						var tGmstInit = gmst(jdcJ2000Init);		
+
+						// transform from Earth-centered, Earth-fixed (ECEF)  coordinate system to Earth-centered inertial (ECI) 
+						// coordinate system, J2000
+						rEci = ecef2Eci([x,y,z,vx,vy,vz], tGmstInit);
+
+						// Initialize:
+						var y0 = rEci,
+						t0 = 0,
+						dt0 = 1e-10,
+						integrator = odeService.IntegratorFactory( y0, eom, t0, dt0)		
+			
 						while( integrator.step( tmax ) ) {
 							// Store the solution at this timestep:
 							tEst.push( integrator.t );
 							yEst.push( integrator.y );
 						}
 
-						// Update with the estimated value
-						x = yEst.pop()[0];
-						y = yEst.pop()[1];
-						z = yEst.pop()[2];
-						vx = yEst.pop()[3];
-						vy = yEst.pop()[4];
-						vz = yEst.pop()[5];
+						// Updated ECI values
+						var xEci = yEst.pop()[0];
+						var yEci = yEst.pop()[1];
+						var zEci = yEst.pop()[2];
+						var vxEci = yEst.pop()[3];
+						var vyEci = yEst.pop()[4];
+						var vzEci = yEst.pop()[5];						
+						
+						var tFin = tInit + tmax*1000;	// Final time in milliseconds
+				
+						// Julian Date Century
+						var jdcJ2000Fin = jDayCent(tFin);
+					
+						// tGmst: Greenwich mean sidereal time [rad]
+						var tGmstFin = gmst(jdcJ2000Fin);											
+					
+						// Function to transform from Earth-centered inertial (ECI)  coordinate system to Earth-centered, Earth-fixed (ECEF) 
+						// coordinate system, J2000
+						var rEcef = eci2Ecef([xEci,yEci,zEci,vxEci,vyEci,vzEci], tGmstFin);
 
-                        if($scope.timeObj[i][$scope.timeObj[i].length-1] != null){
-                            var timestamp = $scope.timeObj[i][$scope.timeObj[i].length-1].timestamp + tmax*1000;
-                        } else {
-                            var timestamp = "";
-                        }
+						// Update with the estimated value
+						x = rEcef[0];
+						y = rEcef[1];
+						z = rEcef[2];
+						vx = rEcef[3];
+						vy = rEcef[4];
+						vz = rEcef[5];						
+						
+						var timestamp = timeMission;
 
 						est[i] = true;
 					}
@@ -580,5 +637,190 @@ app.controller('GroundTrackCtrl',function ($scope,d3Service,$element,$interval,d
         return [position[0] + 180, -position[1]];
     }
  
+ 
+ 	// Function to calcualte Julian date
+	// INPUTS
+	// time: unix time [milliseconds]
+	// OUTPUTS
+	// jdcJ2000: Julian Date century since epoch J2000
+	function jDayCent(time)
+	{
+		var jdJ2000 = 2451545.0;	// epoch J2000, 1/1/2000, 12 PM
+		var jd0 = 2440587.5;	// Julian Date to Jan 1 1970, 0 AM
+		
+		var jd = jd0 + time / (1000*60*60*24);	// Julian date
+		
+		var jdcJ2000 = (jd-jdJ2000)/36525;		// Julian date since J2000
+		
+		return jdcJ2000;
+	}
+	
+	
+	// Function to calculate Greenwich Mean Sidereal Time
+	// INPUTS
+	// jdcJ2000: Julian century from the epoch J2000 [century]
+	// OUTPUTS
+	// tGmst: Greenwich mean sidereal time [rad]
+	function gmst(jdcJ2000)
+	{
+		// Calculate Greenwich Mean Sidereal Time in seconds
+		var tGmstSec = 67310.54841 + (876600*3600+8640184.812866)*jdcJ2000 +
+			0.093104*Math.pow(jdcJ2000, 2) - 6.2 *Math.pow(10, -6) * Math.pow(jdcJ2000,3);
+	
+		// Convert to radian, 1 sec = 1/240ᵒ (1ᵒ = 4 min)
+		var tGmst = (tGmstSec / 240. * Math.PI/180.) % (Math.PI*2);
+	
+		return tGmst;
+	}
+	
+	
+	// Function to calculate a direction cosine matrix
+	// to rotate a frame about the third axis
+	// INPUTS
+	// th: Angle of rotation [rad]
+	// OUTPUTS
+	// mat: transformation matrix, rotated by th along z-axis
+	function rot3Mat(th)
+	{
+	var mat = new Array(3);	// Create an Array [1 x 3]
+	
+	for (iRot=0; iRot<3; iRot++)
+		mat[iRot] = new Array(3);	// Expand mat to [3 x 3]
+	
+	mat[0][0] = Math.cos(th);
+	mat[0][1] = Math.sin(th);
+	mat[0][2] = 0.0;
+	mat[1][0] = -Math.sin(th);
+	mat[1][1] = Math.cos(th);
+	mat[1][2] = 0.0;
+	mat[2][0] = 0.0;
+	mat[2][1] = 0.0;
+	mat[2][2] = 1.0;
+	
+	return mat;
+	
+	}
+
+
+	// Function to express a vector in a new frame
+	// The new frame is rotated about the third axis
+	// INPUTS
+	// r: row vector [1 x 3]
+	// th: Angle of rotation [rad]
+	// OUTPUTS
+	// rRot: r expressed in a new frame rotated by th along z-axis
+	function rot3(r, th)
+	{
+		var matA = rot3Mat(th);
+		
+		var rRot = new Array(3);
+		
+		for (iRow=0; iRow<3; iRow++)
+			rRot[iRow] = matA[iRow][0]*r[0] + matA[iRow][1]*r[1] + matA[iRow][2]*r[2];
+		
+		return rRot;
+	}
+	
+	
+	// Function for a cross product of two arrays
+	// INPUTS
+	// a: Array 1 [1x3]
+	// b: Array 2 [1x3]
+	//OUTPUTS
+	// c: Cross product of a and b
+	function cross(a, b)
+	{
+		var c = [a[1]*b[2] - a[2]*b[1], -a[0]*b[2] + a[2]*b[0], a[0]*b[1] - a[1]*b[0]];
+		
+		return c;
+	}
+	
+	
+	// Function to express a velocity vector 
+	// in a new rotating frame
+	// using basic kinematic equation
+	// INPUTS
+	// r: Array [1 x 6] position, velocity
+	// omega: Angular velocity array [1x3] rad/s
+	// OUTPUTS
+	// rBke: Array [1 x 6] position, corrected velocity in the rotating frame
+	function bke(r, omega)
+	{
+		// Create an angular velocity array
+		//var omega = new Array(3);	
+		//omega[0] = 0.0;
+		//omega[1] = 0.0;
+		//omega[2] = -7.292115 * Math.pow(10,-5);	// rad/s
+		
+		var crossProd = cross(omega, [r[0],r[1],r[2]]);
+		
+		var rBke = Array(6);
+		rBke[0] = r[0];
+		rBke[1] = r[1];
+		rBke[2] = r[2];
+		rBke[3] = r[3] + crossProd[0];
+		rBke[4] = r[4] + crossProd[1];
+		rBke[5] = r[5] + crossProd[2];
+		
+		return rBke;	
+	}
+
+
+	// Function to transform from Earth-centered inertial (ECI)  
+	// coordinate system to Earth-centered, Earth-fixed (ECEF) 
+	// coordinate system, J2000
+	// INPUTS
+	// r: state vector 1x6 (position [km]; vector[km/s]) in ECI
+	// tGmst: Greenwich mean sidereal time [rad] 
+	// OUTPUTS
+	// rFinal: State vector 1x6 in ECEF
+	function eci2Ecef(r, tGmst)
+	{
+		var pEcef = new Array(3);	// Initialize position array
+		var vEcef = new Array(3);	// Initialize velocity array
+		
+		// Position in ECEF
+		pEcef = rot3([r[0],r[1],r[2]], tGmst);	
+	
+		// Velocity expressed in ECEF
+		vEcef = rot3([r[3],r[4],r[5]], tGmst);
+
+		// Use BKE to complete the velocity transformation
+		// eAngV: Earth rotation rate
+		var eAngV = 7.292115 * Math.pow(10,-5);	// rad/s
+		var rFinal = bke([pEcef[0],pEcef[1],pEcef[2],vEcef[0],vEcef[1],vEcef[2]], [0.,0.,-eAngV]);
+	
+		return rFinal;
+	
+	}
+	
+	
+	// Function to transform from Earth-centered, Earth-fixed (ECEF)  
+	// coordinate system to Earth-centered inertial (ECI) 
+	// coordinate system, J2000
+	// INPUTS
+	// r: state vector 6x1 (position [km]; vector[km/s]) in ECEF
+	// tGmst: Greenwich mean sidereal time [rad] 
+	// OUTPUTS
+	// stateEci: State vector 1x6 in ECI
+	function ecef2Eci(r, tGmst)
+	{
+		var pEci = new Array(3);	// Initialize position array
+		var vEci = new Array(3);	// Initialize velocity array
+	
+		// Position in ECI
+		pEci = rot3([r[0],r[1],r[2]], -tGmst);	
+	
+		// Velocity expressed in ECI
+		vEci = rot3([r[3],r[4],r[5]], -tGmst);
+	
+		// Use BKE to complete the velocity transformation
+		// eAngV: Earth rotation rate
+		var eAngV = 7.292115 * Math.pow(10,-5);	// rad/s
+		var stateEci = bke([pEci[0],pEci[1],pEci[2],vEci[0],vEci[1],vEci[2]], [0.,0.,eAngV]);
+	
+		return stateEci;
+
+	}
 });
 

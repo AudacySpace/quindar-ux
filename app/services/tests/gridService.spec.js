@@ -12,7 +12,7 @@ describe('Testing gridService', function () {
                 col: 0,
                 row: 0,
                 sizeY: 8,
-                sizeX: 10,
+                sizeX: 12,
                 name: "Command",
                 directive: "command",
                 directiveSettings: "commandsettings",
@@ -31,7 +31,7 @@ describe('Testing gridService', function () {
                 delete: false
             },
             {
-                col: 10,
+                col: 12,
                 row: 0,
                 sizeY: 8,
                 sizeX: 10,
