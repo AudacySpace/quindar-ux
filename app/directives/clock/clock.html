@@ -1,5 +1,7 @@
+
+
 <div layout="row" class="clock-row header-log">
-	<div flex="30" class="left-header">
+	<div flex="45" class="left-header">
 		Name
 	</div>
   	<div flex="5" class="center-header">
@@ -8,19 +10,19 @@
   	<div flex="10" class="center-header">
     	D
   	</div>
-  	<div flex="5" class="center-header">
+  	<div flex="1" class="center-header">
     	.
   	</div>
   	<div flex="10" class="center-header">
     	H
   	</div>
-  	<div flex="5" class="center-header">
+  	<div flex="1" class="center-header">
     	:
   	</div>
   	<div flex="10" class="center-header">
     	M
   	</div>
-  	<div flex="5" class="center-header">
+  	<div flex="1" class="center-header">
     	:
   	</div>
   	<div flex="10" class="center-header">
@@ -30,28 +32,28 @@
     </div>
 </div>
 <div layout="row" class="clock-row" ng-repeat="clock in clocks">
-  	<div flex="30" class="left-row" >
+  	<div flex="45" class="left-row" ng-style="clock.style">
     	{{clock.name}}
   	</div>
-  	<div flex="5" class="center-row" >
+  	<div flex="5" class="center-row" ng-style="clock.style">
     	{{clock.delta}}
   	</div>
   	<div flex="10" class="center-row" ng-style="clock.style">
     	{{clock.time.days}}
   	</div>
-  	<div flex="5" class="center-row" >
+  	<div flex="1" class="center-row" >
     	.
   	</div>
   	<div flex="10" class="center-row" ng-style="clock.style">
     	{{clock.time.hours}}
   	</div>
-  	<div flex="5" class="center-row" >
+  	<div flex="1" class="center-row" >
     	:
   	</div>
   	<div flex="10" class="center-row" ng-style="clock.style">
     	{{clock.time.minutes}}
   	</div>
-  	<div flex="5" class="center-row">
+  	<div flex="1" class="center-row">
     	:
   	</div>
   	<div flex="10" class="center-row" ng-style="clock.style">

@@ -50,6 +50,7 @@ app.controller('ClockCtrl', function($scope, dashboardService, datastatesService
 	$scope.checkForClockData();
 
 	$scope.updateClock = function(){
+		console.log(colorCaution);
 		for (var i=0; i<$scope.widget.settings.clocks.length; i++){
 			
 			if(typeof $scope.clocks[i] !== "object"){
@@ -62,46 +63,28 @@ app.controller('ClockCtrl', function($scope, dashboardService, datastatesService
 				$scope.clocks[i].time = dashboardService.getTime($scope.widget.settings.clocks[i].timezone);
 				$scope.clocks[i].delta = "";
 
-				// healthy if all the status icons are green, else stale 
-				if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green"){
-					$scope.clocks[i].style = colorHealthy;
-				} 
-				else{
-					$scope.clocks[i].style = colorStale;
-				}
-
 			} else { //Block for timer
 				tempTime = dashboardService.countdown($scope.widget.settings.clocks[i].reference);
 				$scope.clocks[i].name = $scope.widget.settings.clocks[i].name;
 				$scope.clocks[i].time = tempTime;
 				$scope.clocks[i].delta = tempTime.sign;
 
-				if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green"){
-					if(tempTime.sign == "-"){
-						if(tempTime.days == '000' && tempTime.hours == '00') {
-							if(tempTime.minutes <= '59' && tempTime.minutes > '10') {
-								//timer color when it is between 10 and 59 minutes
-								$scope.clocks[i].style = colorCaution; 
-							}
-							if(tempTime.minutes <= '10') {
-								//timer color when it is below 10 minutes
-								$scope.clocks[i].style = colorAlarm;
-							}
-						} else {
-							$scope.clocks[i].style = colorHealthy;
+				if(tempTime.sign == "-"){
+					if(tempTime.days == '000' && tempTime.hours == '00' && tempTime.minutes == '00') {
+						if(tempTime.seconds <= '59' && tempTime.seconds > '10') {
+							//timer color when it is between 10 and 59 seconds
+							$scope.clocks[i].style = colorCaution;
+						}
+						if(tempTime.seconds <= '10') {
+							//timer color when it is below 10 seconds
+							$scope.clocks[i].style = colorAlarm;
 						}
 					} else {
-						$scope.clocks[i].style = colorHealthy;
+						$scope.clocks[i].style = colorDefault;
 					}
-				}else {
-					$scope.clocks[i].style = colorStale;
+				} else {
+					$scope.clocks[i].style = colorDefault;
 				}
-
-			}
-
-			//show disconnected when database connection fails
-			if(dServiceObj.dIcon === "red"){
-				$scope.clocks[i].style = colorDisconnected;
 			}			
 		}
 	}
