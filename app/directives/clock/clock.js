@@ -50,7 +50,6 @@ app.controller('ClockCtrl', function($scope, dashboardService, datastatesService
 	$scope.checkForClockData();
 
 	$scope.updateClock = function(){
-		console.log(colorCaution);
 		for (var i=0; i<$scope.widget.settings.clocks.length; i++){
 			
 			if(typeof $scope.clocks[i] !== "object"){
@@ -79,6 +78,9 @@ app.controller('ClockCtrl', function($scope, dashboardService, datastatesService
 							//timer color when it is below 10 seconds
 							$scope.clocks[i].style = colorAlarm;
 						}
+						if(tempTime.seconds == '00') {
+							$scope.playAudio();
+						}
 					} else {
 						$scope.clocks[i].style = colorDefault;
 					}
@@ -101,5 +103,10 @@ app.controller('ClockCtrl', function($scope, dashboardService, datastatesService
 			$interval.cancel( $scope.interval );
 		}
 	);
+
+	$scope.playAudio = function() {
+        var audio = new Audio('/media/audio/quindar.mp3');
+        audio.play();
+    };
 
 })
