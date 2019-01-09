@@ -102,7 +102,7 @@ describe('Testing clock controller', function () {
 
     it('should call $interval one time', function(){
         expect($intervalSpy).toHaveBeenCalled();
-        expect($intervalSpy.calls.count()).toBe(1);
+        expect($intervalSpy.calls.count()).toBe(2);
     })
 
     it('should call $interval on updateClock function', function(){
@@ -125,7 +125,7 @@ describe('Testing clock controller', function () {
     it('should cancel interval when scope is destroyed', function(){
         spyOn($intervalSpy, 'cancel');
         scope.$destroy();
-        expect($intervalSpy.cancel.calls.count()).toBe(1);
+        expect($intervalSpy.cancel.calls.count()).toBe(2);
     })
 
 });

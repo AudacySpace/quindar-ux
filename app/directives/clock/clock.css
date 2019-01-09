@@ -6,22 +6,26 @@
 
 .center-header {
 	margin-right: 2px;
-    padding: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     font-size: 14px;
     background-color: #CFCFD5;
     text-align: center;
     font-weight: bold;
     text-transform: uppercase;
     overflow: hidden;
+    font-size: large;
 }
 .left-header {
 	margin-right: 2px;
     background-color: #CFCFD5;
     padding: 4px;
+    padding-left: 10px;
     font-size: 14px;
     font-weight: bold;
     text-transform: uppercase;
     overflow: hidden;
+    font-size: large;
 }
 
 .center-row {
@@ -29,12 +33,24 @@
     background-color: #F1F1F5;
     text-align: center;
     font-weight: 400;
+    font-size: large;
 }
+
+/*.clock-div {
+    position: relative;
+    top: 50%;
+    float: left;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}*/
+
 .left-row {
 	margin-right: 2px;
     background-color: #F1F1F5;
     padding-left: 10px;
     font-weight: 400;
+    font-size: large;
 }
 
 md-icon.delta {
