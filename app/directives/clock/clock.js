@@ -15,6 +15,7 @@ app.controller('ClockCtrl', function($scope, dashboardService, datastatesService
     var colorStale = datastatesService.colorValues.stalecolor;// Color staleblue for stale data
     var colorDisconnected = datastatesService.colorValues.disconnectedcolor;//Color grey for disconnected db
     var colorDefault = datastatesService.colorValues.defaultcolor;//Color black for default color
+    var timerAlarm = false;
 
 	$scope.statusIcons = dashboardService.icons;
 	
@@ -79,7 +80,8 @@ app.controller('ClockCtrl', function($scope, dashboardService, datastatesService
 							$scope.clocks[i].style = colorAlarm;
 						}
 						if(tempTime.seconds == '00') {
-							$scope.playAudio();
+							//alarm audio needs to be played
+							timerAlarm = true;
 						}
 					} else {
 						$scope.clocks[i].style = colorDefault;
@@ -93,6 +95,14 @@ app.controller('ClockCtrl', function($scope, dashboardService, datastatesService
 
 	$scope.interval = $interval($scope.updateClock, 500);
 
+	//interval to check if the alarm audio needs to go off
+	$scope.timerInterval = $interval(function(){
+		if(timerAlarm){
+			$scope.playAudio();
+			timerAlarm = false;
+		}
+	}, 1500)
+
 	$scope.remove = function($index) {
 		$scope.widget.settings.clocks.splice($index, 1);
 		$scope.clocks.splice($index, 1);
@@ -101,6 +111,7 @@ app.controller('ClockCtrl', function($scope, dashboardService, datastatesService
 	$scope.$on("$destroy", 
 		function(event) {
 			$interval.cancel( $scope.interval );
+			$interval.cancel( $scope.timerInterval );
 		}
 	);
 
