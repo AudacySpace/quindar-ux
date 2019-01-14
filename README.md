@@ -11,8 +11,8 @@ The rapidly falling cost of launching a satellite has resulted in near exponenti
 
 You can use Quindar for your own mission operations, deployed on your own metal, customized to suit your mission needs. Then give back and contribute to the development community on GitHub.
 
-## Installation
-For installing Quindar, follow the instructions mentioned in [quindar-deploy](https://github.com/quindar/quindar-deploy/blob/master/README.md) under **qux Install**.
+## Demo Server
+Check out out our demo Quindar server at https://quindar.space.
 
 ## How to Use Quindar
 Please check out the file [How_To_Use](https://github.com/quindar/quindar-ux/blob/develop/docs/How_To_Use.md) to learn about navigating around Quindar application.

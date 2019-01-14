@@ -22,6 +22,12 @@ If you found a bug,
 
 ## Contributing to the Quindar code
 
+### Pre-requisites
+
+* Install Git, e.g. `yum install -y git`
+* Install Docker (https://docs.docker.com/engine/installation/)
+* Install MongoDB on your desktop/server (https://docs.mongodb.com/manual/administration/install-community/). 
+
 ### Style Guides
 We're not super strict on style guides yet, but as Quindar grows and we increasingly automate the DevOps / QA processes, consistent coding style is increasingly important. To future proof your code, please consult the following guidelines:
 
@@ -74,8 +80,9 @@ Notes:
 
 2. For Windows users, enable Shared Drives in Docker settings to use the above docker run command.
 
-3. Update callbackURL in /server/config/auth.js to **https://<span></span>localhost/auth/google/callback**.
+3. Update databaseURL in /server/config/config.env.js to point to your database under LOCAL ENVIRONMENT. Currently, it is generic(written below) as it assumes that user has a mongo database on localhost on port 27017.
 
+        mongodb://localhost:27017/quindar
 
 ### Building new features/bug fixes for Quindar UX
 1. Create your own branch
@@ -135,14 +142,9 @@ Also, to add the widget on current dashboard, update variable **dashboards** in 
 
 ### To Do
 
-* improve documentation (README and CONTRIBUTING files) by adding linked images
-* 3D Attitude visualization Qwidget
+* improve documentation (README and CONTRIBUTING files)
 * 3D Orbit visualization Qwidget
-* System Map Qwidget 
-* Scheduling / Timeline Qwidget
-* Command Qwidget
-* Alarm Panel Qwidget + integration
-* Clock / Timer Qwidget
+* State Machine Qwidget
 * Live video feed qwidget
 * security hardening
 * additional login authentication options

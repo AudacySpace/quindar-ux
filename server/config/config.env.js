@@ -10,12 +10,13 @@ try{
 
 module.exports = function(){
 	if(isEmpty(config)){
+		//********************LOCAL ENVIRONMENT************************************
 		//default values if configuration not present
 		return {
 			'googleAuth' : {
-			    'clientID'         : '',
-			    'clientSecret'     : '',
-			    'callbackURL'      : ''
+				'clientID' : '6076920577-0uon1h086qbampdlt3e01dg8v1u1ab2h.apps.googleusercontent.com',
+				'clientSecret' : 'VtaXQlwXdZZ3_rj7eS18o-II',
+				'callbackURL' : 'https://localhost/auth/google/callback'
 			},
 			'databaseURL' : 'mongodb://localhost:27017/quindar',
 			'databaseOpts' : { useMongoClient : true }
