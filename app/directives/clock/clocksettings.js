@@ -37,6 +37,7 @@ app.controller('ClockSettingsCtrl', function($scope){
 				} 
 			} else if ($scope.selected.type.value == 'Timer') {
 				if ($scope.reference && $scope.name ) {
+					$scope.reference = new Date($scope.reference).toISOString();
 					widget.settings.clocks.push({
 						name : $scope.name,
 						reference : $scope.reference,
