@@ -83,6 +83,10 @@ Notes:
 3. Update databaseURL in /server/config/config.env.js to point to your database under LOCAL ENVIRONMENT. Currently, it is generic(written below) as it assumes that user has a mongo database on localhost on port 27017.
 
         mongodb://localhost:27017/quindar
+        
+    The format to be used for databaseURL is given below
+
+        mongodb://<host IP address>:<host port>/<database name>
 
 ### Building new features/bug fixes for Quindar UX
 1. Create your own branch
