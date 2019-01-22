@@ -37,22 +37,27 @@ angular.module('app')
 			sidebarService.setOpenLogo(true); //set to true if data menu opened through Quindar logo on Dashboard
 	    }
 
-	    vm.logout = function (ev) {
-    		prompt({
-                title:'Do you want to save this layout?',
-                input: true,
-                label: 'Layout Name',
-                value: dashboard["current"].name
-            }).then(function(name){
-                gridService.save(vm.email, name)
-                .then(function(response) {
-                    if(response.status == 200){
-                        $window.location.href = '/logout';
-                    }
-                });
-            },function(){
-            	$window.location.href = '/logout';
-            }).catch(function (err) {});
+	    vm.logout = function () {
+			userService.setUserOffline(vm.email, vm.currentMission)
+			.then(function(response) {
+                if(response.status == 200){
+					prompt({
+		                title:'Do you want to save this layout?',
+		                input: true,
+		                label: 'Layout Name',
+		                value: dashboard["current"].name
+		            }).then(function(name){
+		                gridService.save(vm.email, name)
+		                .then(function(resp) {
+		                    if(resp.status == 200){
+		                        $window.location.href = '/logout';
+		                    }
+		                });
+		            },function(){
+						$window.location.href = '/logout';
+		            }).catch(function (err) {});
+		        }
+            });
         };
 
 	    vm.openRightNav = function(){
