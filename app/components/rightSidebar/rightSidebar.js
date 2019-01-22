@@ -1,7 +1,7 @@
 app
 .component('rightSidebar', {
   	templateUrl: "./components/rightSidebar/right_sidebar.html",
-  	controller: function(gridService, dashboardService, prompt, $window, $mdSidenav, userService, $uibModal, $mdDialog) {
+  	controller: function(gridService, dashboardService, prompt, $window, $mdSidenav, userService, $uibModal, $interval) {
         var vm = this;
   		vm.name = userService.getUserName();
         vm.email = userService.getUserEmail();
@@ -23,6 +23,8 @@ app
         vm.widgetDefinitions = gridService.widgetDefinitions;
         vm.QwidgetMenu =  false;
         vm.addMenu = false;
+        vm.userMenu = false;
+        vm.users = [];
 
         vm.showQwidgetMenu = function(){
             vm.QwidgetMenu = !vm.QwidgetMenu;
@@ -144,6 +146,31 @@ app
             } else {
                 vm.userRole = userService.userRole;
             }
+        }
+
+        // toggle the user list menu
+        vm.showUsers = function(){
+            vm.userMenu = !vm.userMenu;
+        }
+
+        // create list of online users
+        vm.createUserList = function(){
+            var mission = dashboardService.getCurrentMission();
+            userService.getOnlineUsers(mission.missionName)
+            .then(function(response) {
+                if(response.status == 200){
+                    vm.users = response.data;
+                }
+            })
+        }
+
+        vm.createUserList();
+        // interval to fetch online users every 5 seconds
+        vm.interval = $interval(vm.createUserList, 5000);
+
+        // destroy the interval when component is destroyed
+        vm.$onDestroy = function () {
+            $interval.cancel( vm.interval );
         }
 	}
 })

@@ -77,6 +77,22 @@ app
             data: {"email" : email, "mission" : mission}
         });
     }
+
+    function setUserOffline(email, mission) {
+        return $http({
+            url: "/setUserOffline",
+            method: "POST",
+            data: {"email" : email, "mission" : mission}
+        });
+    }
+
+    function getOnlineUsers(mission) {
+        return $http({
+            url: "/getOnlineUsers",
+            method: "GET",
+            params: { "mission" : mission }
+        });
+    }
     
 	return {
         userRole : userRole,
@@ -88,6 +104,8 @@ app
         getUsers : getUsers,
         getRoles : getRoles,
         setAllowedRoles : setAllowedRoles,
-        setMissionForUser : setMissionForUser
+        setMissionForUser : setMissionForUser,
+        setUserOffline : setUserOffline,
+        getOnlineUsers : getOnlineUsers
 	}
 }]);

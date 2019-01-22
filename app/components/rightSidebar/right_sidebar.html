@@ -63,12 +63,26 @@
             <span flex></span>
         </md-list-item>
         <md-divider ng-show="$ctrl.userRole.cRole.callsign == 'MD'"></md-divider>
-<!--         <md-list-item ng-click="$ctrl.server()">
-            <i class="fa fa-server" aria-hidden="true" id="server-admin"></i></span>Server Administration
+        <md-list-item ng-click="$ctrl.showUsers()">
+            <i class="fa fa-server list1Icon" aria-hidden="true" id="user-list"></i>
+            <p class=" list1 listItemFonts">Users</p>
             <span flex></span>
             <span class="glyphicon glyphicon-menu-down"></span>
         </md-list-item>
-        <md-divider></md-divider> -->
+        <md-list ng-show="$ctrl.userMenu">
+            <md-divider></md-divider>
+            <md-list-item ng-repeat="user in $ctrl.users" ng-show="$ctrl.users.length > 0" class="list3">
+                <i class="fa fa-circle list3Icon" aria-hidden="true" style="color:#12C700"></i>
+                <p class=" list3 listItemFonts">
+                    {{ user.google.name }} ({{ user.missions[0].currentRole.callsign }})
+                    <span style="color:#cfcfcf7a" ng-show="$ctrl.email === user.google.email"> (you) </span>
+                </p>
+            </md-list-item>
+            <md-list-item ng-show="$ctrl.users.length === 0">
+                <div class="emptyDataRow list3">No Users Online</div>
+            </md-list-item>
+        </md-list>
+        <md-divider></md-divider>
         <md-list-item ng-click="$ctrl.showDoc()" class="list1">
             <i class="fa fa-file-text-o list1Icon" aria-hidden="true" id="docs" ></i>
             <p class=" list1 dataItem listItemFonts">Documentation</p>

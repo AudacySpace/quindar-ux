@@ -142,7 +142,8 @@ module.exports = {
                     missionObj =  {
                         'name' : mission,
                         'currentRole' : userRole,
-                        'allowedRoles' : []
+                        'allowedRoles' : [],
+                        'online' : true
                     };
                     missionObj.allowedRoles.push(defaultRole);
                     missionObj.allowedRoles.push(userRole);
@@ -156,6 +157,7 @@ module.exports = {
                                 //update current role to default role if current role is not a part of allowed roles
                                 user.missions[i].currentRole = defaultRole;
                             }
+                            user.missions[i].online = true;
                             missionObj = user.missions[i];
                             missionCount++;
                         }
@@ -166,7 +168,8 @@ module.exports = {
                         missionObj =  {
                             'name' : mission,
                             'currentRole' : defaultRole,
-                            'allowedRoles' : []
+                            'allowedRoles' : [],
+                            'online' : true
                         };
 
                         missionObj.allowedRoles.push(defaultRole);
@@ -185,8 +188,52 @@ module.exports = {
                 });
             });
         });
+    },
 
-     }
+    setUserOffline : function(req,res){
+        var email = req.body.email;
+        var mission = req.body.mission;
+
+        User.findOne({ 'google.email' : email }, function(err, user) {
+            if(err){
+                console.log(err);
+            }
+
+            for(var i=0; i<user.missions.length; i++){
+                if(user.missions[i].name === mission.missionName){
+                    user.missions[i].online = false;
+                }
+            }
+
+            user.markModified('missions');
+
+            user.save(function(err, result) {
+                if (err) {
+                    console.log(err)
+                };
+                res.send(result);
+            });
+        });
+    },
+
+    getOnlineUsers : function(req,res){
+        var mission = req.query.mission;
+        var userList = [];
+
+        User.find( { 'missions.name' : mission }, { 'google' : 1 , 'missions.$' : 1 }, function(err, users) {
+            if(err){
+                console.log(err);
+            }
+
+            for(var i=0; i<users.length; i++){
+                if(users[i].missions[0].online){
+                    userList.push(users[i]);
+                }
+            }
+
+            res.send(userList);
+        });
+    }
 
 };
 

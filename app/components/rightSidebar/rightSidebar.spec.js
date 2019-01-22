@@ -1,5 +1,6 @@
 describe('Testing right sidebar component', function () {
-    var $controller, dashboardService, gridService, userService, deferredLoad, scope;
+    var $controller, dashboardService, gridService, userService, 
+        deferredLoad, scope, deferredUser, $intervalSpy;
     var windowMock = {
         innerWidth: 1000
     };
@@ -23,15 +24,17 @@ describe('Testing right sidebar component', function () {
             });
         });
 
-        inject(function($componentController, _$q_, $rootScope){
+        inject(function($componentController, _$q_, $rootScope, $interval){
             scope = $rootScope.$new();
             deferredLoad = _$q_.defer();
+            deferredUser = _$q_.defer();
+            $intervalSpy = jasmine.createSpy('$interval', $interval);
 
             dashboardService = jasmine.createSpyObj('dashboardService', 
                 ['getLock', 'getCurrentMission', 'setRightLock','setLoadStatus']);
             gridService = jasmine.createSpyObj('gridService', 
                 ['addWidget', 'addWidgets', 'clear', 'getDashboard', 'save', 'load', 'showLayout', 'widgetDefinitions','setGridLoader']);
-            userService = jasmine.createSpyObj('userService', ['userRole', 'getUserName', 'getUserEmail']);
+            userService = jasmine.createSpyObj('userService', ['userRole', 'getUserName', 'getUserEmail', 'getOnlineUsers']);
             
             userService.getUserEmail.and.callFake(function() {
                 return 'john.smith@gmail.com';
@@ -48,6 +51,12 @@ describe('Testing right sidebar component', function () {
             gridService.load.and.callFake(function(){
                 return deferredLoad.promise;
             })
+            dashboardService.getCurrentMission.and.callFake(function() {
+                return { missionName : "ATest" };
+            })
+            userService.getOnlineUsers.and.callFake(function() {
+                return deferredUser.promise;
+            })
             
             $controller = $componentController('rightSidebar', {
                 $scope : scope,
@@ -55,7 +64,8 @@ describe('Testing right sidebar component', function () {
                 gridService : gridService,
                 userService : userService,
                 $uibModal : modalInstance,
-                ModalService : ModalService
+                ModalService : ModalService,
+                $interval: $intervalSpy
             });
         });
 
@@ -304,5 +314,65 @@ describe('Testing right sidebar component', function () {
         //expect the mocked mdSidenav open function to be called
         expect(modalInstance.open).toHaveBeenCalled();
     })
+
+    it('should define the function showUsers', function(){
+        expect($controller.showUsers).toBeDefined();
+    });
+
+    it('should toggle the parameter userMenu when called', function(){
+        $controller.userMenu = false;
+
+        $controller.showUsers();
+        expect($controller.userMenu).toEqual(true);
+
+        $controller.userMenu = true;
+
+        $controller.showUsers();
+        expect($controller.userMenu).toEqual(false);
+    });
+
+    it('should define the function createUserList', function(){
+        expect($controller.createUserList).toBeDefined();
+    });
+
+    it('should create a list of online users on user menu', function(){
+        var result = [{
+            google: {
+                email: "john.smith@gmail.com",
+                name: "John Smith",
+                id: "112313425445562239891"
+            },
+            missions: [{
+                name: "ATest",
+                currentRole: {
+                    name: "Observer",
+                    callsign: "VIP"
+                },
+                allowedRoles: [
+                {
+                    name: "Observer",
+                    callsign: "VIP"
+                }],
+                online: true
+            }]
+        }];
+
+        deferredUser.resolve({ data : result, status : 200});
+        $controller.createUserList();
+
+        //to make the deferred resolve work, call digest cycle
+        scope.$digest();
+
+        expect($controller.users).toEqual(result);
+    });
+
+    it('should call $interval one time', function(){
+        expect($intervalSpy).toHaveBeenCalled();
+        expect($intervalSpy.calls.count()).toBe(1);
+    });
+
+    it('should call $interval on createUserList function', function(){
+        expect($intervalSpy).toHaveBeenCalledWith($controller.createUserList, 5000);
+    });
 
 });
