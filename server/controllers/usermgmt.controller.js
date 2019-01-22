@@ -207,11 +207,11 @@ module.exports = {
 
             user.markModified('missions');
 
-            user.save(function(err) {
+            user.save(function(err, result) {
                 if (err) {
                     console.log(err)
                 };
-                res.send(user);
+                res.send(result);
             });
         });
     },

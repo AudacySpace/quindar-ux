@@ -154,7 +154,7 @@ app
         }
 
         // create list of online users
-        function createUserList(){
+        vm.createUserList = function(){
             var mission = dashboardService.getCurrentMission();
             userService.getOnlineUsers(mission.missionName)
             .then(function(response) {
@@ -164,9 +164,9 @@ app
             })
         }
 
-        createUserList();
+        vm.createUserList();
         // interval to fetch online users every 5 seconds
-        vm.interval = $interval(createUserList, 5000);
+        vm.interval = $interval(vm.createUserList, 5000);
 
         // destroy the interval when component is destroyed
         vm.$onDestroy = function () {
