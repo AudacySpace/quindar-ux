@@ -100,24 +100,37 @@ app
                     }
                 }
 
-                if(isEmpty(response.data) === false){//if data is not empty
-                    if(prevId === response.data._id){ //  if proxy application is not receiving any data from ground station
-                        icons.sIcon = "grey";
-                        icons.gIcon = "red";
-                        icons.pIcon = "green";
-                        icons.dIcon = "blue";
-                        loadCount++;
-                        loadStatus.value = false;
-                        loaders = gridService.getGridLoader();
+                if(!mission.simulated){
+                    if(isEmpty(response.data) === false){//if data is not empty
+                        if(prevId === response.data._id){ //  if proxy application is not receiving any data from ground station
+                            icons.sIcon = "grey";
+                            icons.gIcon = "red";
+                            icons.pIcon = "green";
+                            icons.dIcon = "blue";
+                            loadCount++;
+                            loadStatus.value = false;
+                            loaders = gridService.getGridLoader();
+                                if(loaders.gridLoader === true){
+                                    gridService.setGridLoader(false);
+                            }
+                        } else {
+                            icons.sIcon = "green";
+                            icons.gIcon = "green";
+                            icons.pIcon = "green";
+                            icons.dIcon = "green";
+                            prevId = response.data._id;
+                            loadCount++;
+                            loadStatus.value = false;
+                            loaders = gridService.getGridLoader();
                             if(loaders.gridLoader === true){
                                 gridService.setGridLoader(false);
+                            }
                         }
-                    } else {
-                        icons.sIcon = "green";
+                    } else { // if data received is empty
+                        icons.sIcon = "red";
                         icons.gIcon = "green";
                         icons.pIcon = "green";
                         icons.dIcon = "green";
-                        prevId = response.data._id;
                         loadCount++;
                         loadStatus.value = false;
                         loaders = gridService.getGridLoader();
@@ -125,16 +138,42 @@ app
                             gridService.setGridLoader(false);
                         }
                     }
-                } else { // if data received is empty
-                    icons.sIcon = "red";
-                    icons.gIcon = "green";
-                    icons.pIcon = "green";
-                    icons.dIcon = "green";
-                    loadCount++;
-                    loadStatus.value = false;
-                    loaders = gridService.getGridLoader();
-                    if(loaders.gridLoader === true){
-                        gridService.setGridLoader(false);
+                } else {
+                    if(isEmpty(response.data) === false && isEmpty(response.data.telemetry) === false){//if data is not empty
+                        if(!response.data.status){ //  if data received is old
+                            icons.sIcon = "red";
+                            icons.gIcon = "green";
+                            icons.pIcon = "green";
+                            icons.dIcon = "blue";
+                            loadCount++;
+                            loadStatus.value = false;
+                            loaders = gridService.getGridLoader();
+                                if(loaders.gridLoader === true){
+                                    gridService.setGridLoader(false);
+                            }
+                        } else {
+                            icons.sIcon = "green";
+                            icons.gIcon = "green";
+                            icons.pIcon = "green";
+                            icons.dIcon = "green";
+                            loadCount++;
+                            loadStatus.value = false;
+                            loaders = gridService.getGridLoader();
+                            if(loaders.gridLoader === true){
+                                gridService.setGridLoader(false);
+                            }
+                        }
+                    } else { // if data received is empty
+                        icons.sIcon = "red";
+                        icons.gIcon = "green";
+                        icons.pIcon = "green";
+                        icons.dIcon = "green";
+                        loadCount++;
+                        loadStatus.value = false;
+                        loaders = gridService.getGridLoader();
+                        if(loaders.gridLoader === true){
+                            gridService.setGridLoader(false);
+                        }
                     }
                 }
             }, function error(response){

@@ -22,6 +22,10 @@ var telemetrySchema = mongoose.Schema({
     telemetry : {
     	type: Object,
     	required: true
+    },
+    status : {
+        type: Boolean,
+        required: false
     }
 }, { collection: 'telemetry' });
 
