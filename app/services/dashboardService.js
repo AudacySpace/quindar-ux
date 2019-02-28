@@ -101,6 +101,7 @@ app
                 }
 
                 if(!mission.simulated){
+                    //This block contains old method to update status icons and only works for real time missions
                     if(isEmpty(response.data) === false){//if data is not empty
                         if(prevId === response.data._id){ //  if proxy application is not receiving any data from ground station
                             icons.sIcon = "grey";
@@ -139,8 +140,10 @@ app
                         }
                     }
                 } else {
+                    // This block should work in case of both simulated and non-simulated missions
                     if(isEmpty(response.data) === false && isEmpty(response.data.telemetry) === false){//if data is not empty
-                        if(!response.data.status){ //  if data received is old
+                        if((response.data.hasOwnProperty(status) && !response.data.status) || prevId === response.data._id){ //  if data received is old
+                            // this case shows that satellite is not connected/ not sending telemetry
                             icons.sIcon = "red";
                             icons.gIcon = "green";
                             icons.pIcon = "green";
@@ -156,6 +159,7 @@ app
                             icons.gIcon = "green";
                             icons.pIcon = "green";
                             icons.dIcon = "green";
+                            prevId = response.data._id;
                             loadCount++;
                             loadStatus.value = false;
                             loaders = gridService.getGridLoader();
