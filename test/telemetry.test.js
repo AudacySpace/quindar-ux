@@ -99,7 +99,7 @@ describe('Test Suite for Telemetry Model ', function() {
     });
 
     it('should validate mission is a valid string type and telemetry is an object type and timestamp is date type', function() {
-        var m = new TM({mission: 'AZero',timestamp:'2018-02-01T09:42:01.287Z',telemetry:{}, source: "Julia", createdDate:'2018-02-01T09:42:01.287Z'});
+        var m = new TM({mission: 'AZero',timestamp:'2018-02-01T09:42:01.287Z',telemetry:{}, source: "Julia", createdDate:'2018-02-01T09:42:01.287Z', status: false});
         m.validate(function(err){
             assert.isNull(err);
         });  

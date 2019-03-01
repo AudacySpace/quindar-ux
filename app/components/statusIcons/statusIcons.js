@@ -10,40 +10,33 @@ angular.module('app')
   		$scope.statusIcons = dashboardService.icons;
   		var dServiceObj = {};
 
+        function getHexCode(color){
+            var code = "#12C700";
+            switch(color) {
+                case "grey":
+                    code = "#CFCFD5"
+                    break;
+                case "red":
+                    code = "#FF0000"
+                    break;
+                case "green":
+                    code = "#12C700"
+                    break;
+                case "blue":
+                    code = "#71A5BC"
+                    break;
+                default:
+                    code = "#12C700"
+            }
+            return code;
+        }
+
   		$scope.$watch('statusIcons',function(newVal,oldVal){
         	dServiceObj = newVal; 
-        	if(dServiceObj.sIcon === "grey" && dServiceObj.gIcon === "grey" && dServiceObj.pIcon === "grey" &&dServiceObj.dIcon === "red"){
-				//if query failed
-				vm.satstatusIconColor = "#CFCFD5";
-				vm.gsstatusIconColor = "#CFCFD5";
-				vm.proxystatusIconColor = "#CFCFD5";
-  				vm.dbstatusIconColor = "#FF0000";
-	    	}else if(dServiceObj.sIcon === "grey" && dServiceObj.gIcon === "red" && dServiceObj.pIcon=== "green" && dServiceObj.dIcon === "blue"){
-	    		// if there is response from database but the data is stale
-	    		// or if proxy application is not receiving any data from ground station
-	    		vm.satstatusIconColor = "#CFCFD5";
-  				vm.gsstatusIconColor = "#FF0000";
-  				vm.proxystatusIconColor = "#12C700";
-  				vm.dbstatusIconColor = "#71A5BC";
-	    	}else if(dServiceObj.sIcon === "red" && dServiceObj.gIcon === "green" && dServiceObj.pIcon=== "green" && dServiceObj.dIcon === "green"){
-	    		//if the streamed data is empty
-	    		vm.satstatusIconColor = "#FF0000";
-  				vm.gsstatusIconColor = "#12C700";
-  				vm.proxystatusIconColor = "#12C700";
-  				vm.dbstatusIconColor = "#12C700";
-	    	}else if(dServiceObj.sIcon === "grey" && dServiceObj.gIcon === "grey" && dServiceObj.pIcon === "red" && dServiceObj.dIcon === "green"){
-	    		//If proxy application is not running
-	    		vm.satstatusIconColor = "#CFCFD5";
-  				vm.gsstatusIconColor = "#CFCFD5";
-  				vm.proxystatusIconColor = "#FF0000";
-  				vm.dbstatusIconColor = "#12C700";
-	    	}else if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green"){
-	    		//If everything works good
-	    		vm.satstatusIconColor = "#12C700";
-  				vm.gsstatusIconColor = "#12C700";
-  				vm.proxystatusIconColor = "#12C700";
-  				vm.dbstatusIconColor = "#12C700";
-	    	}
+            vm.satstatusIconColor = getHexCode(dServiceObj.sIcon);
+            vm.gsstatusIconColor = getHexCode(dServiceObj.gIcon);
+            vm.proxystatusIconColor = getHexCode(dServiceObj.pIcon);
+            vm.dbstatusIconColor = getHexCode(dServiceObj.dIcon);
     	},true);
 	}
 })
