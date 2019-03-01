@@ -142,7 +142,7 @@ app
                 } else {
                     // This block should work in case of both simulated and non-simulated missions
                     if(isEmpty(response.data) === false && isEmpty(response.data.telemetry) === false){//if data is not empty
-                        if((response.data.hasOwnProperty(status) && !response.data.status) || prevId === response.data._id){ //  if data received is old
+                        if((response.data.hasOwnProperty("status") && !response.data.status) || prevId === response.data._id){ //  if data received is old
                             // this case shows that satellite is not connected/ not sending telemetry
                             icons.sIcon = "red";
                             icons.gIcon = "green";
