@@ -161,7 +161,7 @@ span#qwidgets {
   /*  margin-right: 2px;*/
 }
 
-span#user-admin,i#server-admin,i#docs {
+span#user-admin,i#user-list,i#docs {
     position: relative;
 /*    top: -1px;
     right: 8px;*/

@@ -179,6 +179,12 @@ var usr = require('./controllers/usermgmt.controller');
     //Get timeline list
     app.get('/loadTimelineEvents',tl.getTimelineEvents);
 
+    //set user offline on logout
+    app.post('/setUserOffline',usr.setUserOffline);
+
+    //get list of online users
+    app.get('/getOnlineUsers',usr.getOnlineUsers);
+
 };
    
 // route middleware to ensure user is logged in

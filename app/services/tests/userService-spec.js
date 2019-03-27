@@ -207,5 +207,55 @@ describe('Testing userService', function () {
 
         httpBackend.flush();
     });
+
+    it('userService should be able to set the user offline', function () {
+        var mission = "ATest";
+
+        httpBackend.expectPOST("/setUserOffline")
+            .respond(200, {});
+
+        userService.setUserOffline(windowMock.user.google.email, mission).then( function(response){
+            expect(response.status).toBe(200);
+        });
+
+        httpBackend.flush();
+    });
+
+    it('userService should get all online users for current mission', function () {
+        var mission = "ATest";
+        var users;
+        var result = [{
+            google: {
+                email: "john.smith@gmail.com",
+                name: "John Smith",
+                id: "112313425445562239891"
+            },
+            missions: [{
+                name: "ATest",
+                currentRole: {
+                    name: "Observer",
+                    callsign: "VIP"
+                },
+                allowedRoles: [
+                {
+                    name: "Observer",
+                    callsign: "VIP"
+                }],
+                online: true
+            }]
+        }];
+ 
+        httpBackend.expectGET('/getOnlineUsers?mission=ATest').respond(200, result);
+ 
+        userService.getOnlineUsers(mission).then( function(response){
+            users = response.data;
+            expect(response.status).toBe(200);
+            expect(users).toBeDefined();
+            expect(users.length).toBeGreaterThan(0);
+            expect(users.length).toEqual(1);
+        });
+
+        httpBackend.flush();
+    });
  
 });

@@ -700,9 +700,10 @@ describe('Test Suite for User Management Controller', function() {
                                         name:"AZero",
                                         currentRole:'MD',
                                         allowedRoles:[
-                                        {callsign:'SYS'},
-                                        {callsign:'CC'}
-                                        ]
+                                            {callsign:'SYS'},
+                                            {callsign:'CC'}
+                                        ],
+                                        online: true
                                     }
                                     ]
                                 }
@@ -737,7 +738,7 @@ describe('Test Suite for User Management Controller', function() {
             model: function() {
                 return {
                     find: function(query,condition,callback) {
-                        var users = { status:400}
+                        var users = [];
                         var err = {name:"MongoError"};
                         callback(err,users); 
                     },
@@ -795,7 +796,8 @@ describe('Test Suite for User Management Controller', function() {
                                         allowedRoles:[
                                         {callsign:'SYS'},
                                         {callsign:'CC'}
-                                        ]
+                                        ],
+                                        online: true
                                     }
                                     ],
                                     markModified: function(message){},
@@ -810,7 +812,8 @@ describe('Test Suite for User Management Controller', function() {
                                                         {callsign:'SYS'},
                                                         {callsign:'IT'},
                                                         {callsign:'PROXY'}
-                                                    ]
+                                                    ],
+                                                    online: false
                                                 }
                                             ]
                                         },"status":200
@@ -1308,7 +1311,8 @@ describe('Test Suite for User Management Controller', function() {
                         {callsign:'SYS'},
                         {callsign:'IT'},
                         {callsign:'PROXY'}                    
-                    ]
+                    ],
+                    online: false
                 }]
             },
             "status":200
@@ -1369,7 +1373,8 @@ describe('Test Suite for User Management Controller', function() {
                         {callsign:'SYS'},
                         {callsign:'IT'},
                         {callsign:'PROXY'}                    
-                    ]
+                    ],
+                    online: false
                 }]
             },
             "status":200
@@ -1430,7 +1435,8 @@ describe('Test Suite for User Management Controller', function() {
         var output = {
             allowedRoles: [{ callsign: "VIP", name: "Observer" }, { callsign: "MD", name: "Mission Director" }],
             currentRole: defaultRole,
-            name: "AZero"
+            name: "AZero", 
+            online: true
         }
   
     
@@ -1464,7 +1470,8 @@ describe('Test Suite for User Management Controller', function() {
         var output = {
             allowedRoles: [{ callsign: "VIP", name: "Observer" }, { callsign: "MD", name: "Mission Director" }],
             currentRole: defaultRole,
-            name: "AZero"
+            name: "AZero",
+            online: true
         }
   
         var spy = chai.spy.on(usermgmtPostErrmodule, 'postMissionForUser');
@@ -1495,7 +1502,8 @@ describe('Test Suite for User Management Controller', function() {
         var output = { 
             name: 'AZero',
             currentRole: { name: 'Observer', callsign: 'VIP' },
-            allowedRoles: [ { name: 'Observer', callsign: 'VIP' } ] 
+            allowedRoles: [ { name: 'Observer', callsign: 'VIP' } ],
+            online: true
         }
   
     
@@ -1551,7 +1559,8 @@ describe('Test Suite for User Management Controller', function() {
         var output = {
             allowedRoles: [{ callsign: "SYS" }, { callsign: "CC" }],
             currentRole: { callsign: "VIP", name: "Observer" },
-            name: "AZero"
+            name: "AZero",
+            online: true
         }
   
     
@@ -1584,6 +1593,110 @@ describe('Test Suite for User Management Controller', function() {
         usermgmtPostErrmodule3.postMissionForUser(req, res);
         expect(spy).to.have.been.called();
         expect(res.send.calledOnce).to.be.true;        
+    });
+
+    it("should get all online users", function() {
+        var req = {
+            query : {
+                mission:'AZero'
+            }
+        }
+        var res = {
+            send: sinon.spy()
+        }
+
+        var output = [{
+            google: {},
+            missions: [{
+                name:"AZero",
+                currentRole:'MD',
+                allowedRoles:[{
+                    callsign:'SYS'
+                }, {
+                    callsign:'CC'
+                }],
+                online: true
+            }]
+        }];
+
+        var spy = chai.spy.on(usermgmtmodule, 'getOnlineUsers');
+        usermgmtmodule.getOnlineUsers(req, res);
+        expect(spy).to.have.been.called();
+        expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,output);
+    });
+
+    it("should not get all online users when error", function() {
+        var req = {
+            query : {
+                mission:'AZero'
+            }
+        }
+        var res = {
+            send: sinon.spy()
+        }
+
+        var output = [];
+
+        var spy = chai.spy.on(usermgmtErrmodule, 'getOnlineUsers');
+        usermgmtErrmodule.getOnlineUsers(req, res);
+        expect(spy).to.have.been.called();
+        expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,output);
+    });
+
+    it("should set user offline for a mission", function() {
+        var req = {
+            body : {
+                mission:'AZero',
+                email:'tgattu@gmail.com',
+            }
+        }
+        var res = {
+            send: sinon.spy()
+        }
+        var output = {
+            "data":{
+                google:{},
+                missions:[{
+                    name:"AZero",
+                    currentRole:'SYS',
+                    allowedRoles:[
+                        {callsign:'SYS'},
+                        {callsign:'IT'},
+                        {callsign:'PROXY'}
+                    ],
+                    online: false
+                }]
+            },
+            "status":200
+        };
+
+        var spy = chai.spy.on(usermgmtPostmodule, 'setUserOffline');
+        usermgmtPostmodule.setUserOffline(req, res);
+        expect(spy).to.have.been.called();
+        expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,output);
+    });
+
+
+    it("should not set user offline when error", function() {
+        var req = {
+            body : {
+                mission:'AZero',
+                email:'tgattu@gmail.com'
+            }
+        }
+        var res = {
+            send: sinon.spy()
+        }
+        var output = { "data": {}, "status": 413 };
+
+        var spy = chai.spy.on(usermgmtPostErrmodule, 'setUserOffline');
+        usermgmtPostErrmodule.setUserOffline(req, res);
+        expect(spy).to.have.been.called();
+        expect(res.send.calledOnce).to.be.true;
+        sinon.assert.calledWith(res.send,output);
     });
 
 });
