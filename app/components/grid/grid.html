@@ -2,6 +2,50 @@
 <div gridster="$ctrl.gridsterOptions" ng-show="$ctrl.loadStatus.value === false && $ctrl.loadLayoutloaders.gridLoader === false">
 	<ul>
 		<li gridster-item="widget" ng-repeat="widget in $ctrl.dashboard.current.widgets" ng-style="$ctrl.gridItemFullScreenStyles"  ngsf-fullscreen>
+			<nav id="statusBar" class="navbar navbar-default" show-if-fullscreen=true>
+                <div class="container-fluid" id="top-header">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#" id="QRegular" ng-click="$ctrl.openLeftNav()" ngsf-toggle-fullscreen>
+                            <img id="main-img" src="/media/logos/quindar_regular.svg" alt="Quindar"/>
+                        </a>
+                        <a class="navbar-brand" href="#" id="QBlack" ng-click="$ctrl.openLeftNav()" ngsf-toggle-fullscreen>
+                            <img id="main-img" src="/media/logos/Quindar_Icon_Black.svg" alt="Quindar"/>
+                        </a>
+                    </div>
+                    <ul class="nav navbar-nav navbar-left">
+                        <li>
+                            <img ng-src="{{$ctrl.currentMission.missionImage}}" ng-show="$ctrl.currentMission.missionImage" id="missionImage" alt="Mission Image"/>
+                            <span id="missionName">{{$ctrl.currentMission.missionName}}</span>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav">
+                        <li class="statusicons">
+                            <status-icons></status-icons> 
+                        </li>
+                        <li>
+                            <ul class="nav navbar-nav time">
+                                <li class="clock" id="txt">{{ $ctrl.clock.utc }}</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a class="dropdown-toggle" id="username" data-toggle="dropdown" href="#"
+                                >{{ $ctrl.name }}</a>
+                            <small id="callsign"> {{ $ctrl.role.cRole.callsign }} </small>
+                            <ul class="dropdown-menu logout-bar">
+                                <li ><a href="" ng-click="$ctrl.logout()" class="userSettings" target="_self" ngsf-toggle-fullscreen>Logout</a></li>
+                                <li ><a href="#" ng-click="$ctrl.showSettings()" class="userSettings" ngsf-toggle-fullscreen>Settings</a></li>
+                            </ul>
+                        </li>
+                        <li id="cfgmenu">
+                            <a href="#" id="add-widget" ng-click="$ctrl.openRightNav()" ngsf-toggle-fullscreen> 
+                                <span class="fa fa-bars bars" aria-hidden="true"> </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
 			<div class="box">
 				<div class="box-header">
 					<a><img class="drag-menu" ng-src="../../public/icons/panel-icons/dragIcon.svg"/></a>
