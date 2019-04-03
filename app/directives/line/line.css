@@ -2,7 +2,8 @@
     position: absolute;
     left: 10px;
     right: 10px;
-    top: 50px;
+  /*  top: 50px;*/
+    top: 10%;
     bottom: 50px;
     width:auto !important;
     height:auto !important;

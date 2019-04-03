@@ -29,12 +29,12 @@
                       <span class="sr-only">Toggle Dropdown</span>
                     </a>
                     <ul class="dropdown-menu drpmenu" role="menu" id="drpmenu">
-                        <li class="uldrpmenu"><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || getTelemetrydata($event, $index, false)">Select Telemetry Id</a></li>
+                        <li class="uldrpmenu"><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || getTelemetrydata($event, $index, false)" show-if-fullscreen=false>Select Telemetry Id</a></li>
                         <!--<li><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || getValue($event,row,$index)">Apply Telemetry Id</a></li>-->
-                        <li class="uldrpmenu"><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || getTelemetrydata($event, $index, true)">Select Group</a></li>
+                        <li class="uldrpmenu"><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || getTelemetrydata($event, $index, true)" show-if-fullscreen=false>Select Group</a></li>
                         <!--<li><a href="#" ng-class="{disabled:row.disabled}" ng-disabled="row.disabled" ng-click="row.disabled || applyGroup($event,row,$index)">Apply Group</a></li>-->
-                        <li class="divider liner"></li>
-                        <li><a href="#" class="row-above" ng-click="addRowAbove($index)" >Add Row Above</a></li>
+                        <li class="divider liner" show-if-fullscreen=false>></li>
+                        <li><a href="#" class="row-above" ng-click="addRowAbove($index)">Add Row Above</a></li>
                         <li><a href="#" class="row-below" ng-click="addRowBelow($index)">Add Row Below</a></li>
                         <li><a href="#" class="move-up" ng-click="moveRowUp($index)" ng-class="{disabled:$index === 0}" ng-disabled="$index === 0">Move Row Up</a></li>
                         <li><a href="#" class="move-down" ng-click="moveRowDown($index)" ng-class="{disabled:$index === table.rows.length-1}" ng-disabled="$index === table.rows.length-1">Move Row Down</a></li>
