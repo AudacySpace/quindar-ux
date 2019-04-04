@@ -1,16 +1,54 @@
 describe('Testing grid component', function () {
-    var $controller, gridService,dashboardService;
+    var $controller, gridService,dashboardService,userService, $interval, sidebarService;
+    var windowMock = {
+        location: {
+            href: "/"
+        },
+        innerWidth: 1000
+    };
+    var modalInstance = { open: function() {} };
 
     beforeEach(function () {
         // load the module
-        module('app');
+        module('app', function ($provide) {
+            $provide.value('$window', windowMock);
+            sideNavOpenMock = jasmine.createSpy();
+            $provide.factory('$mdSidenav', function() {
+                return function(sideNavId){
+                    return { open: sideNavOpenMock };
+                };
+            });
+        });
 
         inject(function($componentController){
-            gridService = jasmine.createSpyObj('gridService', ['getDashboard', 'gridsterOptions','getGridLoader']);
-            dashboardService = jasmine.createSpyObj('dashboardService', ['getLoadStatus']);
+            gridService = jasmine.createSpyObj('gridService', ['getDashboard', 'gridsterOptions','getGridLoader','save']);
+            dashboardService = jasmine.createSpyObj('dashboardService', ['getLoadStatus','getLock', 'getCurrentMission', 'getTime', 'setLeftLock', 'setRightLock']);
+            userService = jasmine.createSpyObj('userService', ['userRole', 'getUserName', 'getUserEmail']);
+            sidebarService = jasmine.createSpyObj('sidebarService', ['setMenuStatus', 'setOpenLogo']);
+
+
+            userService.getUserEmail.and.callFake(function() {
+                return 'john.smith@gmail.com';
+            });
+            userService.getUserName.and.callFake(function() {
+                return 'John Smith';
+            });
+            userService.userRole.and.callFake(function() {
+                return { cRole : { 'callsign' : 'MD'}};
+            });
+            dashboardService.getLock.and.callFake(function() {
+                return { lockLeft : false, lockRight : false };
+            });
+            dashboardService.getCurrentMission.and.callFake(function() {
+                return { missionName : 'ATest' };
+            });
             $controller = $componentController('grid', {
                 gridService: gridService,
-                dashboardService: dashboardService
+                dashboardService: dashboardService,
+                userService : userService,
+                sidebarService : sidebarService,
+                $uibModal : modalInstance,
+                $interval : $intervalSpy
             });
         });
 
