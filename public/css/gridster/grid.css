@@ -23,7 +23,21 @@ ul {
     position: relative;
    
 }
+.box-header-fullscreen {
+    background-color: #000;
+    padding: 0px 10px 0px 10px; /*0 30px 0 30px*/
+    position: relative; 
+}
 .box-header h4 {
+    margin-top: 10px;
+    display: inline-block;
+    text-transform: capitalize;
+    color: white;
+/*    font-size:1.0em;*/
+    font-size:14px;
+}
+
+.box-header-fullscreen h4 {
     margin-top: 10px;
     display: inline-block;
     text-transform: capitalize;
