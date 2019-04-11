@@ -40,7 +40,11 @@ angular.module('app')
 			widget.delete = false;			
 		};
 
-		vm.isFullScreenMode = function(status){
+		vm.isFullScreenMode = function(status,widget){
+			widget.main = true;
+			widget.settings.active = false;
+			widget.saveLoad = false;		
+			widget.delete = false;
 			if(status === 'true'){
 				vm.prevDashboard = angular.copy(vm.dashboard.current); // to retain original grid item positions
 			}else if(status === 'false'){
