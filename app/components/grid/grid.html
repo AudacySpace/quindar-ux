@@ -51,23 +51,14 @@
 					<a><img class="drag-menu" ng-src="../../public/icons/panel-icons/dragIcon.svg"/></a>
 					<h4 class="widgetName">{{ widget.name }}</h4>
 					<div class="box-header-btns pull-right">
-						<a title="Settings" ng-click="$ctrl.openSettings(widget)" show-if-fullscreen=false>			
+						<a title="Settings" ng-click="$ctrl.openSettings(widget)">			
 							<img class="cog-menu" ng-src="../../public/icons/panel-icons/cog.svg"/>
 						</a>
-						<!--<a title="Save or Load Widget" ng-click="$ctrl.openSaveLoadSettings(widget)">
-							<img class="save-load-menu" ng-src="../../public/icons/panel-icons/save-load.svg"/>
-						</a>-->
-				<!-- 		<a title="Save or Load Widget">
-							<img class="save-load-menu" ng-src="../../public/icons/panel-icons/save-load.svg"/>
-						</a> -->
-						<a title="Remove qwidget" ng-click="$ctrl.remove(widget)" show-if-fullscreen=false>
+						<a title="Remove qwidget" ng-click="$ctrl.remove(widget)">
 							<img class="trash-menu" ng-src="../../public/icons/panel-icons/trash.svg"/>
 						</a>
-						<a title="View qwidget in fullscreen" show-if-fullscreen=false ng-click="$ctrl.isFullScreenMode('true',widget)" ngsf-toggle-fullscreen>
+						<a title="View qwidget in fullscreen" ng-click="$ctrl.isFullScreenMode('true',widget)" ngsf-toggle-fullscreen>
 							<img class="view-full-screen" ng-src="../../public/icons/panel-icons/expand.svg"/>
-						</a>
-						<a title="Exit fullscreen" show-if-fullscreen=true ng-click="$ctrl.isFullScreenMode('false',widget)" ngsf-toggle-fullscreen>
-							<img class="exit-full-screen"  ng-src="../../public/icons/panel-icons/exitfullscreen.svg"/>
 						</a>
 					</div>
 				</div>
@@ -75,22 +66,7 @@
                     <a><img class="drag-menu" ng-src="../../public/icons/panel-icons/dragIcon.svg"/></a>
                     <h4 class="widgetName">{{ widget.name }}</h4>
                     <div class="box-header-btns pull-right">
-                        <a title="Settings" ng-click="$ctrl.openSettings(widget)" show-if-fullscreen=false>         
-                            <img class="cog-menu" ng-src="../../public/icons/panel-icons/cog.svg"/>
-                        </a>
-                        <!--<a title="Save or Load Widget" ng-click="$ctrl.openSaveLoadSettings(widget)">
-                            <img class="save-load-menu" ng-src="../../public/icons/panel-icons/save-load.svg"/>
-                        </a>-->
-                <!--        <a title="Save or Load Widget">
-                            <img class="save-load-menu" ng-src="../../public/icons/panel-icons/save-load.svg"/>
-                        </a> -->
-                        <a title="Remove qwidget" ng-click="$ctrl.remove(widget)" show-if-fullscreen=false>
-                            <img class="trash-menu" ng-src="../../public/icons/panel-icons/trash.svg"/>
-                        </a>
-                        <a title="View qwidget in fullscreen" show-if-fullscreen=false ng-click="$ctrl.isFullScreenMode('true',widget)" ngsf-toggle-fullscreen>
-                            <img class="view-full-screen" ng-src="../../public/icons/panel-icons/expand.svg"/>
-                        </a>
-                        <a title="Exit fullscreen" show-if-fullscreen=true ng-click="$ctrl.isFullScreenMode('false',widget)" ngsf-toggle-fullscreen>
+                        <a title="Exit fullscreen" ng-click="$ctrl.isFullScreenMode('false',widget)" ngsf-toggle-fullscreen>
                             <img class="exit-full-screen"  ng-src="../../public/icons/panel-icons/exitfullscreen.svg"/>
                         </a>
                     </div>
