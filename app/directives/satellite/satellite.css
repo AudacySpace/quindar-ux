@@ -17,7 +17,8 @@
 #vehicle {
 	position: absolute;
     display: block;
-    top: 45px;
+ /*   top: 45px;*/
+    top: 10%;
     left: 10px;
     border: 1px solid #ccc;
     background-color: #f2f3f4;
@@ -27,7 +28,8 @@
 	position: absolute;
     float: right;
     right: 10px;
-    top: 45px;
+   /* top: 45px;*/
+    top: 10%;
     display: block;
     border: 1px solid #ccc;
     background-color: #f2f3f4;
