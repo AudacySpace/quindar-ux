@@ -682,6 +682,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                         var id = key.split('.').slice(-1)[0];
 
                         var currentData = dashboardService.getData(key);
+                        console.log(currentData);
                         if(currentData) {
                             var valType = typeof currentData.value;
                             if(valType === "number"){
@@ -707,7 +708,18 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                                 //stale data
                                 if(dServiceObjVal.sIcon === "green" && dServiceObjVal.gIcon === "green" && 
                                     dServiceObjVal.pIcon === "green" && dServiceObjVal.dIcon === "green" ){
+                                        // tempRow.contents[3].datacolor = colorHealthy;
+
+                                    //Streaming data with constant value
+                                    var colorVal = datastatesService.getDataColor(currentData.alarm_low, currentData.alarm_high,
+                                                    currentData.value, currentData.warn_low, currentData.warn_high, valType);
+                                    if(colorVal === "red"){
+                                        tempRow.contents[3].datacolor = colorAlarm;
+                                    }else if(colorVal === "orange"){
+                                        tempRow.contents[3].datacolor = colorCaution;
+                                    }else{
                                         tempRow.contents[3].datacolor = colorHealthy;
+                                    }
                                 } else {
                                     tempRow.contents[3].datacolor = colorStale;
                                 }

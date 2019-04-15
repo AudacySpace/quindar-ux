@@ -276,7 +276,17 @@ app
 			//color of q1 
 			if(q1tempval === q1.value){
 				if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green" ){
-					$scope.quaternion.color[0] = colorHealthy;
+					//$scope.quaternion.color[0] = colorHealthy;
+
+					//Streaming data with constant value
+					var colorValq1 =  datastatesService.getDataColor(q1.alarm_low,q1.alarm_high,q1.value,q1.warn_low,q1.warn_high,valTypeq1); 
+					if(colorValq1 === "red"){
+	                    $scope.quaternion.color[0] = colorAlarm;
+	                }else if(colorValq1 === "orange"){
+	                    $scope.quaternion.color[0] = colorCaution;
+	                }else{
+	                    $scope.quaternion.color[0] = colorHealthy;
+	                }
 				}else {
 					$scope.quaternion.color[0] = colorStale;
 				}	
@@ -296,7 +306,17 @@ app
 			//color of q2
 			if(q2tempval === q2.value){
 				if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green" ){
-					$scope.quaternion.color[1] = colorHealthy;
+					// $scope.quaternion.color[1] = colorHealthy;
+
+					//Streaming data with constant value
+					var colorValq2 =  datastatesService.getDataColor(q2.alarm_low,q2.alarm_high,q2.value,q2.warn_low,q2.warn_high,valTypeq2);
+					if(colorValq2 === "red"){
+	                    $scope.quaternion.color[1] = colorAlarm;
+	                }else if(colorValq2 === "orange"){
+	                    $scope.quaternion.color[1] = colorCaution;
+	                }else{
+	                    $scope.quaternion.color[1] = colorHealthy;
+	                }
 				}else {
 					$scope.quaternion.color[1] = colorStale;
 				}	
@@ -315,7 +335,18 @@ app
 			//color of q3
 			if(q3tempval === q3.value){
 				if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green" ){
-					$scope.quaternion.color[2] = colorHealthy;
+					// $scope.quaternion.color[2] = colorHealthy;
+
+					//Streaming data with constant value
+					var colorValq3 =  datastatesService.getDataColor(q3.alarm_low,q3.alarm_high,q3.value,q3.warn_low,q3.warn_high,valTypeq3);
+					if(colorValq3 === "red"){
+	                    $scope.quaternion.color[2] =  colorAlarm;
+
+	                }else if(colorValq3 === "orange"){
+	                    $scope.quaternion.color[2] = colorCaution;
+	                }else{
+	                    $scope.quaternion.color[2] = colorHealthy;
+	                }
 				}else {
 					$scope.quaternion.color[2] = colorStale;
 				}
@@ -335,7 +366,17 @@ app
 			//color of q4
 			if(q4tempval === q4.value){
 				if(dServiceObj.sIcon === "green" && dServiceObj.gIcon === "green" && dServiceObj.pIcon === "green" && dServiceObj.dIcon === "green" ){
-					$scope.quaternion.color[3] = colorHealthy;
+					//$scope.quaternion.color[3] = colorHealthy;
+
+					//Streaming data with constant value
+					var colorValq4 =  datastatesService.getDataColor(q4.alarm_low,q4.alarm_high,q4.value,q4.warn_low,q4.warn_high,valTypeq4);		
+					if(colorValq4 === "red"){
+	                    $scope.quaternion.color[3] =  colorAlarm; 
+	                }else if(colorValq4 === "orange"){
+	                    $scope.quaternion.color[3] = colorCaution;
+	                }else{
+	                    $scope.quaternion.color[3] = colorHealthy;
+	                }
 				}else {
 					$scope.quaternion.color[3] = colorStale;
 				}
