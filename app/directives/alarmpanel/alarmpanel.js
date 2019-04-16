@@ -38,11 +38,12 @@ app.controller('AlarmPanelCtrl',
                         var index = $scope.contents.findIndex(content => content.vehicle === key);
 
                         //add in contents if not exists
+                        var subsystems = Object.keys(data[key]).sort();
                         if(index == -1){
                             $scope.contents.push({
                                 "vehicle":key,
                                 "flexprop":"",
-                                "categories":Object.keys(data[key]),
+                                "categories":subsystems,
                                 "vehicleColor":"",
                                 "categoryColors": [],
                                 "tableArray":[],
@@ -52,7 +53,7 @@ app.controller('AlarmPanelCtrl',
 
                             $scope.vehicleColors.push({"vehicle":key,"status":false});
                         } else { //update categories if vehicle exists in contents
-                            $scope.contents[index].categories = Object.keys(data[key])
+                            $scope.contents[index].categories = subsystems;
                         }
                     }
                 }
