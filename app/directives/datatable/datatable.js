@@ -682,7 +682,7 @@ app.controller('DataTableCtrl',function ($scope,$mdSidenav,$window,$interval,$ti
                         var id = key.split('.').slice(-1)[0];
 
                         var currentData = dashboardService.getData(key);
-                        console.log(currentData);
+
                         if(currentData) {
                             var valType = typeof currentData.value;
                             if(valType === "number"){
