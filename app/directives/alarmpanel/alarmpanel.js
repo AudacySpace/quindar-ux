@@ -76,21 +76,23 @@ app.controller('AlarmPanelCtrl',
 
         for(var i=0;i<$scope.contents.length;i++){
             $scope.contents[i].tableArray = [];
-            $scope.contents[i].subCategoryColors = [];
+           
             if($scope.contents[i].vehicle && dashboardService.isEmpty($scope.telemetry) === false){
 
                 // Get nested data tree from telemetry object
                 var dataTree = dashboardService.getDataTree($scope.telemetry.data);
-
                 var vehicle = $scope.contents[i].vehicle;
+
                 if($scope.contents[i].categories.length > 0){
                     var categories = $scope.contents[i].categories;
                     for(var j=0;j<categories.length;j++){
+                        $scope.contents[i].subCategoryColors[j] = [];
                         //Get list from the nested data tree for each vehicle - category
-                        var dataPoints = convertTreeToList(dataTree[j]);
-                        
-                        for(var d=0;d<dataPoints.length;d++){
-                            var telemetryValue = dashboardService.getData(dataPoints[d].value);
+                        var dataPoints = convertTreeToList(dataTree[i]);                
+                        var  dpoints = getCategoryBasedPoints(dataPoints,categories[j]);
+
+                        for(var d=0;d<dpoints.length;d++){
+                            var telemetryValue = dashboardService.getData(dpoints[d].value);
                             alowValue = telemetryValue.alarm_low;
                             ahighValue = telemetryValue.alarm_high;
                             dataValue = telemetryValue.value;
@@ -101,8 +103,8 @@ app.controller('AlarmPanelCtrl',
                             //get colors from datastatesService
                             var status = datastatesService.getDataColorBound(alowValue,ahighValue,
                                             dataValue,wlowValue,whighValue,valueType);
-                                        
-                            $scope.contents[i].subCategoryColors.push(status.color);
+
+                            $scope.contents[i].subCategoryColors[j].push(status.color);
 
                             var subsystem = categories[j];
                             var channel = dataPoints[d].value;
@@ -201,6 +203,16 @@ app.controller('AlarmPanelCtrl',
             hashMap[node.value] = true;
             array.push(node);
         }
+    }
+
+    function getCategoryBasedPoints(list,categoryname){
+        var res = [];
+        for(var k=0;k<list.length;k++){
+            if(list[k].value.includes(categoryname)){
+                res.push(list[k]);
+            }
+        }
+        return res;
     }
 });
 
