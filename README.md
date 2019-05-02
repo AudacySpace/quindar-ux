@@ -15,7 +15,7 @@ You can use Quindar for your own mission operations, deployed on your own metal,
 Check out out our demo Quindar server at https://quindar.space.
 
 ## How to Use Quindar
-Please check out the [Usage Guide](https://github.com/AudacySpace/quindar-ux/wiki/Usage-Guide) to learn about navigating around Quindar application.
+Please check out the [Usage Guide](https://github.com/AudacySpace/quindar-ux/wiki/Usage-Guide) to learn about navigating around Quindar application. For installation on your local machine, check out the pre-requisites and steps [here](https://github.com/AudacySpace/quindar-ux/blob/master/CONTRIBUTING.md#contributing-to-the-quindar-code)
 
 ## Contributing
 We encourage you to contribute to Quindar! Please check out the file [CONTRIBUTING.md](https://github.com/AudacySpace/quindar-ux/blob/master/CONTRIBUTING.md) for guidelines about how to proceed.
