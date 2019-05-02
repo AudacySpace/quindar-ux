@@ -17,7 +17,7 @@ If you are subject to or witness unacceptable behavior, or have any other concer
 ## Reporting an Issue
 Quindar uses GitHub Issue Tracking to track issues (primarily bugs and contributions of new code). 
 If you found a bug,
-* Ensure that the bug was not previously reported by searching on Github under [Issues](https://github.com/quindar/quindar-ux/issues).
+* Ensure that the bug was not previously reported by searching on Github under [Issues](https://github.com/AudacySpace/quindar-ux/issues).
 * If you are unable to find an existing open issue, open a new issue. It should have a clear and descriptive title, steps to reproduce the issue, expected and actual behavior. Include code samples, screenshots wherever needed.
 
 ## Contributing to the Quindar code
@@ -46,7 +46,8 @@ We're not super strict on style guides yet, but as Quindar grows and we increasi
   * /css - stores CSS files of the application
   * /scripts - stores JS scripts(Bootstrap, Gridster)
 * /server - NodeJS server folder
-  * /server/config - stores server-side configuration files
+  * /server/config - stores server-side environment configuration files
+  * /server/controllers - stores definitions of the API route controller functions
   * /server/models - stores MongoDB models
   * /server/routes.js - stores the API routes for the application
 
@@ -60,8 +61,8 @@ Clone the two repositories in a single folder, such as ~/repositories
     cd ~
     mkdir repositories
     cd repositories
-    git clone https://github.com/quindar/quindar-deploy.git
-    git clone https://github.com/quindar/quindar-ux.git
+    git clone https://github.com/AudacySpace/quindar-deploy.git
+    git clone https://github.com/AudacySpace/quindar-ux.git
     
 ### Build and Run Docker container for Quindar GUI
 Follow steps to build and deploy the container on localhost. Shared Drives feature of Docker is used to create a developer environment, where in the changes in your code are reflected on the docker container running locally on your computer.
@@ -80,7 +81,7 @@ Notes:
 
 2. For Windows users, enable Shared Drives in Docker settings to use the above docker run command.
 
-3. Update databaseURL in /server/config/config.env.js to point to your database under LOCAL ENVIRONMENT. Currently, it is generic(written below) as it assumes that user has a mongo database on localhost on port 27017.
+3. Update the environment variables in /server/config/config.env.js in the first "if" block (default values if configuration not present). For Google Authentication, create credentials following this [link](https://developers.google.com/adwords/api/docs/guides/authentication#webapp). Add credentials (client ID and client secret) with the callback URL in the config file. For database connection, it is generic(written below) currently as it assumes that user has a mongo database named "quindar" on localhost on port 27017. Update as needed for your project.
 
         mongodb://localhost:27017/quindar
         
@@ -143,12 +144,3 @@ To create a sample widget, /app/directives/sample folder will be used. Steps bel
 
 Also, to add the widget on current dashboard, update variable **dashboards** in /app/services/gridService.js to include the object defined in Step 1 above, in **widgets** property of 'Home' dashboard.
 
-
-### To Do
-
-* improve documentation (README and CONTRIBUTING files)
-* 3D Orbit visualization Qwidget
-* State Machine Qwidget
-* Live video feed qwidget
-* security hardening
-* additional login authentication options
