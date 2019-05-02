@@ -204,8 +204,8 @@ describe('Testing statusboardService', function () {
             categories : ["GNC"],
             categoryColors : [{background: "#FF0000"}],
             flexprop : 100,
-            subCategoryColors : ["#12C700", "#12C700", "#12C700", "#12C700", "#12C700", "#12C700", 
-            "#12C700", "#12C700", "#12C700", "#FF0000", "#12C700", "#12C700", "#12C700", "#12C700", "#12C700"],
+            subCategoryColors : [["#12C700", "#12C700", "#12C700", "#12C700", "#12C700", "#12C700", 
+            "#12C700", "#12C700", "#12C700", "#FF0000", "#12C700", "#12C700", "#12C700", "#12C700", "#12C700"]],
             tableArray : [],
             vehicle : "A0",
             vehicleColor : {background: "#FF0000"}
@@ -264,8 +264,8 @@ describe('Testing statusboardService', function () {
             categories : ["GNC"],
             categoryColors : [{background: "#FFFF00"}],
             flexprop : 100,
-            subCategoryColors : ["#12C700", "#FFFF00", "#12C700", "#12C700", "#12C700", "#12C700", 
-            "#12C700", "#12C700", "#12C700", "#12C700", "#12C700", "#12C700", "#12C700", "#12C700", "#12C700"],
+            subCategoryColors : [["#12C700", "#FFFF00", "#12C700", "#12C700", "#12C700", "#12C700", 
+            "#12C700", "#12C700", "#12C700", "#12C700", "#12C700", "#12C700", "#12C700", "#12C700", "#12C700"]],
             tableArray : [],
             vehicle : "A0",
             vehicleColor : {background: "#FFFF00"}

@@ -112,7 +112,7 @@ app
         //4.setMasterAlarmColor
         for(var i=0;i<contents.length;i++){
             for(var j=0;j<contents[i].categories.length;j++){
-               contents[i].categoryColors[j] = getHighPriorityColor(contents[i].subCategoryColors);
+               contents[i].categoryColors[j] = getHighPriorityColor(contents[i].subCategoryColors[j]);
             } 
         }
         setMasterAlarmColor(contents);

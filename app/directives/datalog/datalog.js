@@ -99,8 +99,19 @@ app.controller('DataLogCtrl',function ($scope,$interval,dashboardService,datasta
             if(prevLogData[prevLogData.length-1] === currentData.value){
                 if(dServiceObjVal.sIcon === "green" && dServiceObjVal.gIcon === "green" && 
                     dServiceObjVal.pIcon === "green" && dServiceObjVal.dIcon === "green"){
-                    dataColor = colorHealthy; 
+                    // dataColor = colorHealthy;
 
+                    // Streaming data with constant value
+                    var colorVal = datastatesService.getDataColor(currentData.alarm_low, 
+                    currentData.alarm_high, currentData.value, currentData.warn_low, currentData.warn_high, valType); 
+
+                    if(colorVal === "red"){
+                        dataColor = colorAlarm;
+                    }else if(colorVal === "orange"){
+                        dataColor = colorCaution;
+                    }else {
+                        dataColor = colorHealthy;
+                    } 
                 } else {
                     dataColor = colorStale;
                 }

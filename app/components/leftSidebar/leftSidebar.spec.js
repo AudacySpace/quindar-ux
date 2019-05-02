@@ -13,7 +13,7 @@ describe('Testing leftSidebar component', function () {
         });
 
         inject( function($componentController, _$interval_, _$q_){
-            dashboardService = jasmine.createSpyObj('dashboardService', ['getTelemetryValues', 'getLock']);
+            dashboardService = jasmine.createSpyObj('dashboardService', ['getTelemetryValues', 'getLock','getDataTree']);
             sidebarService = jasmine.createSpyObj('sidebarService', ['setVehicleInfo', 'getMenuStatus', 'setMenuStatus', 'getOpenLogo']);
             $interval = _$interval_;
 
@@ -97,6 +97,10 @@ describe('Testing leftSidebar component', function () {
 
         sidebarService.getMenuStatus.and.callFake(function(){
             return true;
+        });
+
+         dashboardService.getDataTree.and.callFake(function() {
+            return dataTree;
         });
 
         $interval.flush(1001);

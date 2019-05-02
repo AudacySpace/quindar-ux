@@ -10,7 +10,7 @@ describe('Testing alarm panel controller', function () {
         inject(function($controller, $rootScope, _$interval_){
             $interval = _$interval_;
             dashboardService = jasmine.createSpyObj('dashboardService', 
-                ['sortObject', 'telemetry', 'isEmpty']);
+                ['sortObject', 'telemetry', 'isEmpty','getDataTree','getData']);
             datastatesService = jasmine.createSpyObj('datastatesService', ['getDataColorBound']);
             userService = jasmine.createSpyObj('userService', ['getUserName', 'userRole']);
             statusboardService = jasmine.createSpyObj('statusboardService', 
@@ -171,7 +171,7 @@ describe('Testing alarm panel controller', function () {
         var expectedContents_2 = [{
             vehicle: 'A0',
             flexprop: 50,
-            categories: [ 'GNC', 'CMD' ],
+            categories: [ 'CMD','GNC' ],
             vehicleColor: '',
             categoryColors: [  ],
             tableArray: [  ],
@@ -214,10 +214,11 @@ describe('Testing alarm panel controller', function () {
             vehicleColor: '', 
             categoryColors: [  ], 
             tableArray: [  ], 
-            subCategoryColors: [  ], 
+            subCategoryColors: [ [] ], 
             ackStatus: false 
         }];
         scope.telemetry = {
+            "data":{
             'A0' : {
                 'GNC' : {
                     'Velocity' : {
@@ -247,8 +248,59 @@ describe('Testing alarm panel controller', function () {
                 }
             },
             "time": "2018-02-16T00:26:41.439Z"
-        };
+        }
+    };
 
+    var dataTree = [{
+            "name":"A0",
+            "nodes":[{
+                "name":"GNC",
+                "nodes":[
+                {
+                    "name":"Velocity",
+                    "nodes":[{
+                        "name":"vx",
+                        "nodes":[],
+                        "value":"A0.GNC.Velocity.vx",
+                        "active":false
+                    }],
+                    "value":"A0.GNC.Velocity",
+                    "active":false
+                },
+                {
+                    "name":"Attitude",
+                    "nodes":[{
+                        "name":"q1",
+                        "nodes":[],
+                        "value":"A0.GNC.Attitude.q1",
+                        "active":false
+                    }],
+                    "value":"A0.GNC.Attitude",
+                    "active":false
+                }
+                ],
+                "value":"A0.GNC",
+                "active":false
+            }],
+            "value":"A0",
+            "active":false
+        }];
+
+        dashboardService.getDataTree.and.callFake(function() {
+            return dataTree;
+        });
+
+        dashboardService.getData.and.callFake(function() {
+            return {
+                "value": -0.3201368817947103,
+                "warn_high": "10",
+                "warn_low": "-10",
+                "alarm_high": "14",
+                "alarm_low": "-14",
+                "units": "km/s",
+                "notes": ""
+            };
+        });
         scope.updateColors();
 
         expect(statusboardService.saveAlerts).not.toHaveBeenCalled();
@@ -281,16 +333,17 @@ describe('Testing alarm panel controller', function () {
             categories: [ 'GNC' ], 
             vehicleColor: '', 
             categoryColors: [  ], 
-            tableArray: [  ], 
-            subCategoryColors: [  ], 
+            tableArray: [ ], 
+            subCategoryColors: [[]], 
             ackStatus: false 
         }];
-        scope.telemetry = {
+        scope.telemetry ={
+            "data":{
             'A0' : {
                 'GNC' : {
                     'Velocity' : {
                         'vx' : {
-                            "value": -0.3201368817947103,
+                            "value": 15,
                             "warn_high": "10",
                             "warn_low": "-10",
                             "alarm_high": "14",
@@ -303,12 +356,52 @@ describe('Testing alarm panel controller', function () {
                 }
             },
             "time": "2018-02-16T00:26:41.439Z"
-        };
+        }
+        } 
 
+        var dataTree = [{
+            "name":"A0",
+            "nodes":[{
+                "name":"GNC",
+                "nodes":[
+                {
+                    "name":"Velocity",
+                    "nodes":[{
+                        "name":"vx",
+                        "nodes":[],
+                        "value":"A0.GNC.Velocity.vx",
+                        "active":false
+                    }],
+                    "value":"A0.GNC.Velocity",
+                    "active":false
+                }
+                ],
+                "value":"A0.GNC",
+                "active":false
+            }],
+            "value":"A0",
+            "active":false
+        }];
+
+        dashboardService.getDataTree.and.callFake(function() {
+            return dataTree;
+        });
+
+        dashboardService.getData.and.callFake(function() {
+            return {
+                "value": 15,
+                "warn_high": "10",
+                "warn_low": "-10",
+                "alarm_high": "14",
+                "alarm_low": "-14",
+                "units": "km/s",
+                "notes": ""
+            };
+        });
+        scope.telemetry['time'] = '2018-02-16T00:26:41.439Z' ;
         scope.updateColors();
-
         expect(scope.contents[0].tableArray).toEqual(expectedTable);
-        expect(scope.contents[0].subCategoryColors).toEqual([ '#FF0000' ]);
+        expect(scope.contents[0].subCategoryColors[0]).toEqual([ '#FF0000' ]);
         expect(statusboardService.saveAlerts).toHaveBeenCalled();
         expect(statusboardService.setSubSystemColors).toHaveBeenCalledWith(scope.contents);
         expect(statusboardService.setAlertsTable).toHaveBeenCalled();

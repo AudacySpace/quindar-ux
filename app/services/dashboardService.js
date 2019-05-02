@@ -409,6 +409,81 @@ app
         loadStatus.value = status;
     }
 
+
+    //recursive function to create the tree structure data
+    // This function is used in leftsidebar component and alarmpanel directive
+    function getDataTree(data, cKey){
+        var tree = [];
+        for(var key in data) {
+            if(data.hasOwnProperty(key)) {
+                var nodes = [];
+                var flag = true;
+                var newKey = (cKey ? cKey + "." + key : key);
+
+                var node = {
+                    value: "",
+                    key: ""
+                }
+
+                if(typeof data[key] === 'object'){
+                    for(var key2 in data[key]) {
+                        if(data[key].hasOwnProperty(key2)) {
+                            //if not an object, then maybe the last nodes(metadata) 
+                            //like value, units etc. and need not be there in the 
+                            //data menu
+                            if(typeof data[key][key2] !== 'object'){
+                                flag=false;
+                                break;
+                            }
+                        }
+                    }
+
+                    if(flag){
+                        nodes = getDataTree(data[key], newKey);
+                    }
+                }
+
+                if(nodes.length != 0) {
+                    key = initCaps(key);
+                }
+
+                var node = {
+                    'name' : key,
+                    'nodes' : nodes,
+                    'value' : newKey,
+                    'active' : false
+                };
+
+                tree.push(node);
+            }
+        }
+
+        //sort the tree based on the name property of the objects inside it
+        tree.sort(function(a, b){
+            var nameA = a.name;
+            var nameB = b.name;
+            if (nameA < nameB) //sort string ascending
+                return -1;
+            if (nameA > nameB)
+                return 1;
+            return 0;
+        });
+
+        return tree;
+    }
+
+    //function to capitalise the first letter of a string
+    function initCaps(str){
+        words = str.split(' ');
+
+        for(var i = 0; i < words.length; i++) {
+            var letters = words[i].split('');
+            letters[0] = letters[0].toUpperCase();
+            words[i] = letters.join('');
+        }
+        return words.join(' ');
+    }
+
 	return {
         locks : locks,
         telemetry : telemetry,
@@ -427,6 +502,8 @@ app
         getConfig : getConfig,
         getTelemetryValues : getTelemetryValues,
         getLoadStatus : getLoadStatus,
-        setLoadStatus : setLoadStatus
+        setLoadStatus : setLoadStatus,
+        getDataTree : getDataTree,
+        initCaps : initCaps
 	}
 }]);

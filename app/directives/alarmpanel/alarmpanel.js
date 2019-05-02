@@ -38,11 +38,12 @@ app.controller('AlarmPanelCtrl',
                         var index = $scope.contents.findIndex(content => content.vehicle === key);
 
                         //add in contents if not exists
+                        var subsystems = Object.keys(data[key]).sort();
                         if(index == -1){
                             $scope.contents.push({
                                 "vehicle":key,
                                 "flexprop":"",
-                                "categories":Object.keys(data[key]),
+                                "categories":subsystems,
                                 "vehicleColor":"",
                                 "categoryColors": [],
                                 "tableArray":[],
@@ -52,7 +53,7 @@ app.controller('AlarmPanelCtrl',
 
                             $scope.vehicleColors.push({"vehicle":key,"status":false});
                         } else { //update categories if vehicle exists in contents
-                            $scope.contents[index].categories = Object.keys(data[key])
+                            $scope.contents[index].categories = subsystems;
                         }
                     }
                 }
@@ -75,54 +76,58 @@ app.controller('AlarmPanelCtrl',
 
         for(var i=0;i<$scope.contents.length;i++){
             $scope.contents[i].tableArray = [];
-            $scope.contents[i].subCategoryColors = [];
+           
             if($scope.contents[i].vehicle && dashboardService.isEmpty($scope.telemetry) === false){
+
+                // Get nested data tree from telemetry object
+                var dataTree = dashboardService.getDataTree($scope.telemetry.data);
                 var vehicle = $scope.contents[i].vehicle;
+
                 if($scope.contents[i].categories.length > 0){
                     var categories = $scope.contents[i].categories;
                     for(var j=0;j<categories.length;j++){
-                        for(var key in $scope.telemetry[vehicle][categories[j]]){
-                            if($scope.telemetry[vehicle][categories[j]].hasOwnProperty(key)) {
-                                for(var keyval in $scope.telemetry[vehicle][categories[j]][key] ){
-                                    if($scope.telemetry[vehicle][categories[j]][key].hasOwnProperty(keyval)){
-                                        var telemetryValue = $scope.telemetry[vehicle][categories[j]][key][keyval];
-                                        alowValue = telemetryValue.alarm_low;
-                                        ahighValue = telemetryValue.alarm_high;
-                                        dataValue = telemetryValue.value;
-                                        wlowValue = telemetryValue.warn_low;
-                                        whighValue = telemetryValue.warn_high;
-                                        valueType = typeof telemetryValue.value;
+                        $scope.contents[i].subCategoryColors[j] = [];
+                        //Get list from the nested data tree for each vehicle - category
+                        var dataPoints = convertTreeToList(dataTree[i]);                
+                        var  dpoints = getCategoryBasedPoints(dataPoints,categories[j]);
 
-                                        //get colors from datastatesService
-                                        var status = datastatesService.getDataColorBound(alowValue,ahighValue,
+                        for(var d=0;d<dpoints.length;d++){
+                            var telemetryValue = dashboardService.getData(dpoints[d].value);
+                            alowValue = telemetryValue.alarm_low;
+                            ahighValue = telemetryValue.alarm_high;
+                            dataValue = telemetryValue.value;
+                            wlowValue = telemetryValue.warn_low;
+                            whighValue = telemetryValue.warn_high;
+                            valueType = typeof telemetryValue.value;
+
+                            //get colors from datastatesService
+                            var status = datastatesService.getDataColorBound(alowValue,ahighValue,
                                             dataValue,wlowValue,whighValue,valueType);
-                                        
-                                        $scope.contents[i].subCategoryColors.push(status.color);
 
-                                        var subsystem = categories[j];
-                                        var channel = vehicle + "." + subsystem + "." + key + "." + keyval;
+                            $scope.contents[i].subCategoryColors[j].push(status.color);
 
-                                        var timestamp = Math.round(new Date(time).getTime()/1000);
-                                        ack = "";
+                            var subsystem = categories[j];
+                            var channel = dataPoints[d].value;
 
-                                        if(status.alert === "ALARM" || status.alert === "CAUTION"){
-                                            $scope.contents[i].ackStatus = false; 
-                                            $scope.contents[i].tableArray.push(
-                                                {
-                                                    "alert" : status.alert,
-                                                    "bound" : status.bound,
-                                                    "vehicle" : vehicle,
-                                                    "time" : time,
-                                                    "channel" : channel,
-                                                    "ack" : ack,
-                                                    "timestamp" : timestamp
-                                                }
-                                            );  
-                                        }
-                                    }   
-                                }
+                            var timestamp = Math.round(new Date(time).getTime()/1000);
+                            ack = "";
+
+                            if(status.alert === "ALARM" || status.alert === "CAUTION"){
+                                $scope.contents[i].ackStatus = false; 
+                                $scope.contents[i].tableArray.push(
+                                {
+                                    "alert" : status.alert,
+                                    "bound" : status.bound,
+                                    "vehicle" : vehicle,
+                                    "time" : time,
+                                    "channel" : channel,
+                                    "ack" : ack,
+                                    "timestamp" : timestamp
+                                });  
                             }
+
                         }
+ 
                     }
                 }
                 newtablearray = newtablearray.concat($scope.contents[i].tableArray);
@@ -174,6 +179,41 @@ app.controller('AlarmPanelCtrl',
             $interval.cancel($scope.configInterval);
         }
     );
+
+    function convertTreeToList(root) {
+        var stack = [], array = [], hashMap = {};
+        stack.push(root);
+        
+        while(stack.length !== 0) {
+            var node = stack.pop();
+            if(node.nodes.length === 0) {
+                visitNode(node, hashMap, array);
+            } else {
+                for(var i = node.nodes.length - 1; i >= 0; i--) {
+                    stack.push(node.nodes[i]);
+                }
+            }
+        }
+
+        return array;
+    }
+
+    function visitNode(node, hashMap, array) {
+        if(!hashMap[node.value]) {
+            hashMap[node.value] = true;
+            array.push(node);
+        }
+    }
+
+    function getCategoryBasedPoints(list,categoryname){
+        var res = [];
+        for(var k=0;k<list.length;k++){
+            if(list[k].value.includes(categoryname)){
+                res.push(list[k]);
+            }
+        }
+        return res;
+    }
 });
 
 
